@@ -1,0 +1,93 @@
+{
+  "run_timestamp_utc": "2026-09-21T16:16:46.433347+00:00",
+  "total_calls": 8,
+  "client_config": {
+    "base_url": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-latest",
+    "timeout_s": 30.0,
+    "max_retries": 2
+  },
+  "config_hash": "73a093999d5d64859171f060f0246d6dd4ff34296c1e98d854b9fac055d2d000",
+  "package_versions": {
+    "python": "3.14.5",
+    "requests": "2.34.2",
+    "pydantic": "2.13.5"
+  },
+  "severity_pool": {
+    "L0a": "The tooltip on the settings icon is misaligned by a few pixels on Safari.",
+    "L0b": "A footer link points to an outdated documentation URL that still resolves correctly.",
+    "L0c": "The changelog page lists a feature as 'coming soon' that already shipped last quarter.",
+    "L1a": "Exporting a report to PDF fails intermittently, but exporting to CSV works as a workaround.",
+    "L1b": "The dashboard's live-refresh stops updating after 10 minutes, but a manual reload fixes it.",
+    "L1c": "Search results are missing filters for one category, but users can still find items by browsing.",
+    "L2a": "The password reset endpoint returns a 500 error for every request, locking out affected users.",
+    "L2b": "Background job processing has stopped entirely; no queued jobs have completed in over an hour.",
+    "L2c": "All outbound emails, including password resets and receipts, have stopped sending entirely."
+  },
+  "items": [
+    {
+      "key": "score_clear_L0",
+      "condition": "clear_level0",
+      "sentence_keys": [
+        "L0a",
+        "L0b"
+      ]
+    },
+    {
+      "key": "score_clear_L2",
+      "condition": "clear_level2",
+      "sentence_keys": [
+        "L2a",
+        "L2b"
+      ]
+    },
+    {
+      "key": "score_mix_L0_L2",
+      "condition": "contradictory_0v2",
+      "sentence_keys": [
+        "L0a",
+        "L2a"
+      ]
+    },
+    {
+      "key": "score_mix_L1_L2",
+      "condition": "boundary_1v2",
+      "sentence_keys": [
+        "L1a",
+        "L2b"
+      ]
+    },
+    {
+      "key": "score_mix_L0_L1",
+      "condition": "boundary_0v1",
+      "sentence_keys": [
+        "L0c",
+        "L1c"
+      ]
+    },
+    {
+      "key": "score_mix_L1_L2_swapped",
+      "condition": "boundary_1v2_order_swap",
+      "sentence_keys": [
+        "L2b",
+        "L1a"
+      ]
+    },
+    {
+      "key": "score_mix_L1_L2_repeat1",
+      "condition": "boundary_1v2_repeat",
+      "sentence_keys": [
+        "L1a",
+        "L2b"
+      ]
+    },
+    {
+      "key": "score_mix_L1_L2_repeat2",
+      "condition": "boundary_1v2_repeat",
+      "sentence_keys": [
+        "L1a",
+        "L2b"
+      ]
+    }
+  ]
+}

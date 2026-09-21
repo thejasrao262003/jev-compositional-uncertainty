@@ -1,0 +1,418 @@
+{
+  "stage": "stage0",
+  "metadata": {
+    "opaque_id_permutation_seed": 20260921,
+    "created_at_utc": "2026-09-21T00:00:00Z",
+    "spec_revision": "step0b_design_specification.md Revision 3, \u00a73/\u00a711"
+  },
+  "items": [
+    {
+      "item_id": "noul_5to0",
+      "primitive": "noul",
+      "domain": "stage0_domain1",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "s9dws",
+          "semantic_label": "supports_yes",
+          "text": "The account logged in from four different countries within a single hour today."
+        },
+        {
+          "opaque_id": "sr8w9",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address was changed twice in the three minutes before checkout completed."
+        },
+        {
+          "opaque_id": "s4pkj",
+          "semantic_label": "supports_yes",
+          "text": "This purchase was for $6,200, roughly forty times the account's typical order size."
+        },
+        {
+          "opaque_id": "ss5hh",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no browsing or login history with this account whatsoever."
+        },
+        {
+          "opaque_id": "srjg4",
+          "semantic_label": "supports_yes",
+          "text": "The session began at 3:47am local time, outside every prior login this account has made."
+        }
+      ],
+      "canonical_order": [
+        "s4pkj",
+        "s9dws",
+        "sr8w9",
+        "srjg4",
+        "ss5hh"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "calls_planned": 2
+    },
+    {
+      "item_id": "noul_4to1",
+      "primitive": "noul",
+      "domain": "stage0_domain1",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "srkns",
+          "semantic_label": "supports_yes",
+          "text": "Three failed password attempts preceded this session, followed by an immediate success."
+        },
+        {
+          "opaque_id": "s9qb9",
+          "semantic_label": "supports_yes",
+          "text": "The billing name on the card does not match any name previously used on this account."
+        },
+        {
+          "opaque_id": "s2vs2",
+          "semantic_label": "supports_yes",
+          "text": "A second, smaller test transaction was made ninety seconds before the main purchase."
+        },
+        {
+          "opaque_id": "s6z8g",
+          "semantic_label": "supports_yes",
+          "text": "The account's email address was changed eleven minutes before this order was placed."
+        },
+        {
+          "opaque_id": "sxb4n",
+          "semantic_label": "supports_no",
+          "text": "The purchase category matches roughly a third of this account's orders over the past year."
+        }
+      ],
+      "canonical_order": [
+        "s2vs2",
+        "s6z8g",
+        "s9qb9",
+        "srkns",
+        "sxb4n"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "calls_planned": 2
+    },
+    {
+      "item_id": "noul_3to2",
+      "primitive": "noul",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sv2yw",
+          "semantic_label": "supports_yes",
+          "text": "The delivery address is a freight-forwarding warehouse rather than a residential address."
+        },
+        {
+          "opaque_id": "s9mzw",
+          "semantic_label": "supports_yes",
+          "text": "This is the account's first purchase over $500 in its eight-month history."
+        },
+        {
+          "opaque_id": "sfsnz",
+          "semantic_label": "supports_yes",
+          "text": "The order was placed using a VPN endpoint the account has not used before."
+        },
+        {
+          "opaque_id": "s5bnn",
+          "semantic_label": "supports_no",
+          "text": "The card passed a 3-D Secure challenge with a code sent to the phone on file."
+        },
+        {
+          "opaque_id": "scspm",
+          "semantic_label": "supports_no",
+          "text": "The account has placed six similar orders from the same city over the past year."
+        }
+      ],
+      "canonical_order": [
+        "s5bnn",
+        "s9mzw",
+        "scspm",
+        "sfsnz",
+        "sv2yw"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "calls_planned": 2
+    },
+    {
+      "item_id": "noul_2to2",
+      "primitive": "noul",
+      "domain": "stage0_domain1",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "s5p4w",
+          "semantic_label": "supports_yes",
+          "text": "The order total is close to the account's single largest purchase on record."
+        },
+        {
+          "opaque_id": "s3yvh",
+          "semantic_label": "supports_yes",
+          "text": "The recipient name on the shipping label differs from the name on the account."
+        },
+        {
+          "opaque_id": "sk4kw",
+          "semantic_label": "supports_no",
+          "text": "The account has completed four prior orders shipped to this same address."
+        },
+        {
+          "opaque_id": "ss99s",
+          "semantic_label": "supports_no",
+          "text": "The purchase occurred during the account's usual Saturday-afternoon shopping window."
+        }
+      ],
+      "canonical_order": [
+        "s3yvh",
+        "s5p4w",
+        "sk4kw",
+        "ss99s"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "calls_planned": 2
+    },
+    {
+      "item_id": "choice_nm_001",
+      "primitive": "choice",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s4wx5",
+          "semantic_label": "supports_regression",
+          "text": "The error rate climbed above 5% for the third consecutive deploy this week."
+        },
+        {
+          "opaque_id": "st7c2",
+          "semantic_label": "supports_regression",
+          "text": "The stack trace points directly at a null check missing from yesterday's new module."
+        },
+        {
+          "opaque_id": "swmcg",
+          "semantic_label": "supports_regression",
+          "text": "Rolling back the last deploy immediately resolved the issue in a staging test."
+        },
+        {
+          "opaque_id": "s3szy",
+          "semantic_label": "supports_noise",
+          "text": "The on-call engineer could not reproduce the issue after two separate attempts."
+        },
+        {
+          "opaque_id": "swphk",
+          "semantic_label": "supports_noise",
+          "text": "A similar report last quarter turned out to be a monitoring false positive."
+        }
+      ],
+      "canonical_order": [
+        "s3szy",
+        "s4wx5",
+        "st7c2",
+        "swmcg",
+        "swphk"
+      ],
+      "reference_label": "regression",
+      "is_contested": false,
+      "calls_planned": 3
+    },
+    {
+      "item_id": "choice_nm_002",
+      "primitive": "choice",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sqqyx",
+          "semantic_label": "supports_regression",
+          "text": "Four separate teams filed tickets describing the identical intermittent failure this week."
+        },
+        {
+          "opaque_id": "s67bd",
+          "semantic_label": "supports_regression",
+          "text": "The regression only reproduces on the code path added in yesterday's release."
+        },
+        {
+          "opaque_id": "spkyp",
+          "semantic_label": "supports_regression",
+          "text": "Reverting a single recent commit made the failure stop appearing in every test run."
+        },
+        {
+          "opaque_id": "stjpv",
+          "semantic_label": "supports_noise",
+          "text": "The affected users are concentrated in one region with known unstable network conditions."
+        },
+        {
+          "opaque_id": "sknfk",
+          "semantic_label": "supports_noise",
+          "text": "The failure only appears under a synthetic load pattern that doesn't match real traffic."
+        }
+      ],
+      "canonical_order": [
+        "s67bd",
+        "sknfk",
+        "spkyp",
+        "sqqyx",
+        "stjpv"
+      ],
+      "reference_label": "regression",
+      "is_contested": false,
+      "calls_planned": 3
+    },
+    {
+      "item_id": "choice_nm_003",
+      "primitive": "choice",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sfy9q",
+          "semantic_label": "supports_regression",
+          "text": "The crash-reporting dashboard shows a tenfold spike starting exactly at the deploy time."
+        },
+        {
+          "opaque_id": "s6pdq",
+          "semantic_label": "supports_regression",
+          "text": "Three independent customers reported the same error message within an hour of release."
+        },
+        {
+          "opaque_id": "s7573",
+          "semantic_label": "supports_regression",
+          "text": "A bisect of recent commits isolates the failure to a single, small code change."
+        },
+        {
+          "opaque_id": "sn82y",
+          "semantic_label": "supports_noise",
+          "text": "The metric spike coincides with a known third-party outage unrelated to this service."
+        },
+        {
+          "opaque_id": "sjt5b",
+          "semantic_label": "supports_noise",
+          "text": "Support could not find any customer-facing impact matching the internal alert."
+        }
+      ],
+      "canonical_order": [
+        "s6pdq",
+        "s7573",
+        "sfy9q",
+        "sjt5b",
+        "sn82y"
+      ],
+      "reference_label": "regression",
+      "is_contested": false,
+      "calls_planned": 3
+    },
+    {
+      "item_id": "score_nm_001",
+      "primitive": "score",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_2to1_adjacent",
+      "sentences": [
+        {
+          "opaque_id": "shfxc",
+          "semantic_label": "level1",
+          "text": "Bulk export times out for files over 200MB, but exporting in smaller batches works."
+        },
+        {
+          "opaque_id": "s8nbf",
+          "semantic_label": "level1",
+          "text": "Saved filters occasionally reset on login, but can be manually reconfigured each time."
+        },
+        {
+          "opaque_id": "s2r8s",
+          "semantic_label": "level2",
+          "text": "New user signups fail at the final step for every account, with no alternate path."
+        }
+      ],
+      "canonical_order": [
+        "s2r8s",
+        "s8nbf",
+        "shfxc"
+      ],
+      "reference_label": "1",
+      "is_contested": false,
+      "calls_planned": 3
+    },
+    {
+      "item_id": "score_nm_002",
+      "primitive": "score",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_2to1_adjacent",
+      "sentences": [
+        {
+          "opaque_id": "s3tx3",
+          "semantic_label": "level1",
+          "text": "The mobile app's push notifications are delayed by several minutes during peak hours."
+        },
+        {
+          "opaque_id": "snkcy",
+          "semantic_label": "level1",
+          "text": "Dark mode renders one settings panel with unreadably low contrast on older phones."
+        },
+        {
+          "opaque_id": "s3b6g",
+          "semantic_label": "level2",
+          "text": "The billing webhook has stopped firing entirely, so no invoices are being generated."
+        }
+      ],
+      "canonical_order": [
+        "s3b6g",
+        "s3tx3",
+        "snkcy"
+      ],
+      "reference_label": "1",
+      "is_contested": false,
+      "calls_planned": 3
+    },
+    {
+      "item_id": "score_nm_003",
+      "primitive": "score",
+      "domain": "stage0_domain1",
+      "condition": "near_majority_2to1_adjacent",
+      "sentences": [
+        {
+          "opaque_id": "s9bgs",
+          "semantic_label": "level1",
+          "text": "The in-app search occasionally returns stale results until the page is manually refreshed."
+        },
+        {
+          "opaque_id": "s2rf4",
+          "semantic_label": "level1",
+          "text": "CSV imports silently drop rows containing emoji, requiring users to strip them first."
+        },
+        {
+          "opaque_id": "s2w6x",
+          "semantic_label": "level2",
+          "text": "Two-factor codes are never delivered, permanently locking out all affected accounts."
+        }
+      ],
+      "canonical_order": [
+        "s2rf4",
+        "s2w6x",
+        "s9bgs"
+      ],
+      "reference_label": "1",
+      "is_contested": false,
+      "calls_planned": 3
+    }
+  ],
+  "questions_spec": {
+    "noul": {
+      "instructions": "Does this transaction look fraudulent?"
+    },
+    "choice": {
+      "instructions": "Should this be treated as a genuine regression requiring rollback, or as noise?",
+      "criteria": {
+        "regression": "Strong, corroborated evidence of a real code-caused regression requiring rollback",
+        "noise": "Evidence suggests this is not a genuine, reproducible regression"
+      }
+    },
+    "score": {
+      "instructions": "How severe is the reported issue?",
+      "criteria": [
+        "Cosmetic; no impact to functionality",
+        "Broken or degraded feature, but a workaround exists",
+        "Blocking issue; no workaround exists"
+      ]
+    }
+  }
+}

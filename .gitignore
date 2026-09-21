@@ -1,0 +1,25 @@
+# Secrets
+.env
+.env.*
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+
+# Large/raw experiment artifacts (revisit once results/ layout exists —
+# raw predictions and figures should likely be tracked or DVC-managed
+# rather than blanket-ignored; placeholder for now)
+results/raw_predictions/

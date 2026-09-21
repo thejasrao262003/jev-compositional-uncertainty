@@ -1,0 +1,13 @@
+[PASS] #1 unique opaque IDs: 43 sentences, all opaque IDs unique
+[PASS] #2 opaque IDs content-blind: permutation seed recorded; no opaque ID contains a token from its semantic label
+[PASS] #3 canonical order derivable from opaque IDs: canonical_order == sorted(opaque_ids) for all 10 items
+[PASS] #4 reference labels match condition: all 10 items: reference_label presence matches is_contested
+[PASS] #5 manifest immutability: no prior hash on record for stage=stage0; recorded 4e9f33cbe81e8440... as baseline
+[PASS] #6 seeds recorded: metadata contains: ['opaque_id_permutation_seed']
+[N/A ] #7 robustness/repeat subset fixed: manifest has no robustness_repeat_subset_ids field (e.g. a Stage 0 manifest)
+[N/A ] #8 reserve rules structural: manifest has no overflow_replacement_list field
+[N/A ] #9 uses JevClient (not raw requests): no analysis/runner script path given, or file does not exist yet
+[N/A ] #10 noul metrics gated on h2a_passed: no analysis script path given, or file does not exist yet
+[N/A ] #11 complete-cell filtering before aggregation: no analysis script path given, or file does not exist yet
+
+Overall: PASS (no failures; N/A items need a manifest/script to check)

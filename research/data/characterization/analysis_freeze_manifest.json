@@ -1,0 +1,44 @@
+{
+  "purpose": "Compact freeze record for the Stage 1 H1/H2b formal analysis (choice + noul). Locks the exact inputs, code, and outputs this analysis's numbers and conclusions rest on, so any later change to the report can be checked against what actually produced it.",
+  "scope": "choice + noul only. score is excluded/blocked - not part of this freeze.",
+  "frozen_at_utc": "2026-09-22T00:00:00Z",
+  "artifacts": {
+    "raw_responses": {
+      "path": "research/data/characterization/stage1_raw_responses.jsonl",
+      "sha256": "fca3adcc98b9a9be44cdfe83a4c275654a42c0779a1f06c6338f338c6988ab07",
+      "purpose": "Identifies the exact analyzed API output (108 Stage 1 calls)"
+    },
+    "manifest": {
+      "path": "research/data/characterization/stage1_manifest_choice_noul.json",
+      "sha256": "a91700a8e1c622856be1a41c121e576f8800cd89f6ccba6c435676f02ba605d7",
+      "purpose": "Identifies item construction, opaque IDs, and construction-defined reference labels"
+    },
+    "stage0_gate_outcomes": {
+      "path": "research/data/characterization/stage0_gate_outcomes.json",
+      "sha256": "d219a7d8972c33ed8c27ce2d788bb56f6272edac62a8a23562755f5daeae0a3c",
+      "purpose": "Establishes the H2a authorization state this analysis's noul metrics are gated on (recorded pass=true)"
+    },
+    "analysis_script": {
+      "path": "research/src/stage1_h1h2b_analysis.py",
+      "sha256": "6d6b5ef36d32033b0319326bcd104662fc864ff31c05f781f12d84c778a48faa",
+      "purpose": "Identifies the exact computation logic (scoring-rule definitions, binning, correlation, hedged wording) behind every reported number"
+    },
+    "item_level_audit_csv": {
+      "path": "research/results/stage1_h1h2b_item_level_audit.csv",
+      "sha256": "6b18f3f8abae94bb81580c577d362434be3d56c3641e72c9069ac8da693e389f",
+      "purpose": "Locks the Step 8 supplementary audit deliverable (all 48 non-contested items) reviewers can independently re-derive the reported patterns from"
+    }
+  },
+  "runtime": {
+    "python_version": "3.14.5",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "package_versions": {
+      "requests": "2.34.2",
+      "pydantic": "2.13.5"
+    }
+  },
+  "execution_timestamp_utc_of_underlying_api_calls": "2026-09-21T17:40:31.211040+00:00",
+  "git_commit": null,
+  "git_note": "This repository has no commits yet (git init only, nothing committed). No commit SHA exists to bind these artifacts to a source snapshot - the artifact hashes above are the only binding available until a commit is made. If/when this work is committed, the resulting commit SHA should be added here.",
+  "change_discipline": "Any future change to research/results/stage1_h1h2b_analysis.md must be classified as either (a) EDITORIAL - wording/formatting only, no numbers or logic affected, artifact hashes above remain valid, or (b) NUMERICAL/LOGIC - requires re-running stage1_h1h2b_analysis.py, re-hashing all five artifacts above, and updating this freeze record with the new hashes and a note explaining what changed and why. Never silently update this file's hashes without that note."
+}

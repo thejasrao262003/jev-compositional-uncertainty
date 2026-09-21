@@ -1,0 +1,8 @@
+On-disk manifest (raw bytes) sha256:        a91700a8e1c622856be1a41c121e576f8800cd89f6ccba6c435676f02ba605d7
+On-disk manifest (sort_keys) sha256:         2bf8c78d1f87dcfd1f893146689bd313a8fff9d27a6dd9671be0f6431e891c94
+Freshly re-derived manifest (sort_keys) sha256: 2bf8c78d1f87dcfd1f893146689bd313a8fff9d27a6dd9671be0f6431e891c94
+PASS: freshly re-derived manifest is content-identical to the manifest on disk (full manifest, not just the subset - opaque IDs, sentence selection, subset selection, and alternate-order generation are all reproducible from the recorded seeds).
+PASS: robustness_repeat_subset_ids re-derives identically from seed (12 items).
+PASS: alternate_orders re-derive identically from seed (12 items).
+
+Overall: PASS

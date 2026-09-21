@@ -1,0 +1,33 @@
+{
+  "run_timestamp_utc": "2026-09-21T15:48:30.022578+00:00",
+  "total_calls": 21,
+  "test_groups": [
+    "basic_choice",
+    "basic_noul",
+    "basic_score",
+    "edge_invalid",
+    "mixed_primitives",
+    "repeated_identical"
+  ],
+  "client_config": {
+    "base_url": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-latest",
+    "timeout_s": 30.0,
+    "max_retries": 2
+  },
+  "config_hash": "73a093999d5d64859171f060f0246d6dd4ff34296c1e98d854b9fac055d2d000",
+  "package_versions": {
+    "python": "3.14.5",
+    "requests": "2.34.2",
+    "pydantic": "2.13.5"
+  },
+  "http_status_counts": {
+    "200": 19,
+    "400": 1,
+    "422": 1
+  },
+  "parse_status_counts": {
+    "success": 19,
+    "http_error": 2
+  }
+}

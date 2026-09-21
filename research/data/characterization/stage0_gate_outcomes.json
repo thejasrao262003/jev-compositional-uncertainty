@@ -1,0 +1,28 @@
+{
+  "source_report": "research/results/stage0_report.md",
+  "generated_from_manifest_hash": "recorded in stage0_manifest_hashes.json under key 'stage0'",
+  "gates": {
+    "noul_h2a": {
+      "status": "pass",
+      "sub_criteria": {
+        "direction_monotonic": "pass",
+        "bounded_repeats": "pass",
+        "consistent_with_documentation": "pass"
+      },
+      "authorizes": ["noul_h2b_evaluation_in_stage1"],
+      "does_not_establish": ["h2b_hypothesis", "noul_calibration"]
+    },
+    "choice_near_majority_3to2": {
+      "status": "pass",
+      "authorizes": ["choice_stage1_manifest_generation", "choice_stage1_execution_pending_separate_signoff"],
+      "does_not_establish": ["h1_hypothesis"]
+    },
+    "score_near_majority_2to1_adjacent": {
+      "status": "flagged_blocked",
+      "reason": "majority-sentence-count reference-label rule contradicted by observed output in 3/3 items",
+      "authorizes": [],
+      "blocks": ["score_stage1_manifest_generation", "score_stage1_execution"]
+    }
+  },
+  "note": "This file is the machine-readable persistence of stage0_report.md's Gate decision table, read by analyze_stage1.py before computing any noul H2b metric (validator check #10) and consulted before generating any score Stage 1 manifest."
+}

@@ -1,0 +1,106 @@
+{
+  "run_timestamp_utc": "2026-09-21T15:59:07.592990+00:00",
+  "total_calls": 12,
+  "client_config": {
+    "base_url": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-latest",
+    "timeout_s": 30.0,
+    "max_retries": 2
+  },
+  "config_hash": "73a093999d5d64859171f060f0246d6dd4ff34296c1e98d854b9fac055d2d000",
+  "package_versions": {
+    "python": "3.14.5",
+    "requests": "2.34.2",
+    "pydantic": "2.13.5"
+  },
+  "choice_matrix": [
+    {
+      "condition": "baseline",
+      "item": "baseline_network",
+      "sentence_keys": [
+        "N1",
+        "N2",
+        "N3",
+        "N4"
+      ],
+      "ratio": "4:0"
+    },
+    {
+      "condition": "baseline",
+      "item": "baseline_database",
+      "sentence_keys": [
+        "D1",
+        "D2",
+        "D3",
+        "D4"
+      ],
+      "ratio": "0:4"
+    },
+    {
+      "condition": "moderate",
+      "item": "moderate_network",
+      "sentence_keys": [
+        "N1",
+        "N2",
+        "N3",
+        "D1"
+      ],
+      "ratio": "3:1"
+    },
+    {
+      "condition": "moderate",
+      "item": "moderate_database",
+      "sentence_keys": [
+        "N1",
+        "D1",
+        "D2",
+        "D3"
+      ],
+      "ratio": "1:3"
+    },
+    {
+      "condition": "high_overlap",
+      "item": "high_overlap_a",
+      "sentence_keys": [
+        "N1",
+        "N2",
+        "D1",
+        "D2"
+      ],
+      "ratio": "2:2"
+    },
+    {
+      "condition": "high_overlap",
+      "item": "high_overlap_b",
+      "sentence_keys": [
+        "D3",
+        "D4",
+        "N3",
+        "N4"
+      ],
+      "ratio": "2:2"
+    },
+    {
+      "condition": "symmetric",
+      "item": "symmetric_a",
+      "sentence_keys": [
+        "N1",
+        "D1",
+        "N2",
+        "D2"
+      ],
+      "ratio": "2:2 (mirrored pairs, interleaved)"
+    },
+    {
+      "condition": "symmetric",
+      "item": "symmetric_b",
+      "sentence_keys": [
+        "D1",
+        "N1",
+        "D2",
+        "N2"
+      ],
+      "ratio": "2:2 (mirrored pairs, order-swapped)"
+    }
+  ]
+}

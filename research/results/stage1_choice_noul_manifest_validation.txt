@@ -1,0 +1,13 @@
+[PASS] #1 unique opaque IDs: 308 sentences, all opaque IDs unique
+[PASS] #2 opaque IDs content-blind: permutation seed recorded; no opaque ID contains a token from its semantic label
+[PASS] #3 canonical order derivable from opaque IDs: canonical_order == sorted(opaque_ids) for all 64 items
+[PASS] #4 reference labels match condition: all 64 items: reference_label presence matches is_contested
+[PASS] #5 manifest immutability: stage=stage1_choice_noul manifest hash unchanged (2bf8c78d1f87dcfd...)
+[PASS] #6 seeds recorded: metadata contains: ['opaque_id_permutation_seed', 'subset_selection_seed']
+[PASS] #7 robustness/repeat subset fixed: 12 item IDs, all present in manifest, no duplicates (full re-derivation-from-seed check requires the subset-selection code, not just the manifest)
+[PASS] #8 reserve rules structural: 4 preregistered replacements, each matching its original's primitive/condition
+[PASS] #9 uses JevClient (not raw requests): JevClient referenced in: ['research/src/run_stage1.py']
+[PASS] #10 noul metrics gated on h2a_passed: H2a gate logic referenced in: ['research/src/analyze_stage1.py']
+[PASS] #11 complete-cell filtering before aggregation: explicit m==3 / k==3 completeness check found in: ['research/src/analyze_stage1.py']
+
+Overall: PASS (no failures; N/A items need a manifest/script to check)

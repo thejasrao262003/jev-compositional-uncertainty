@@ -1,0 +1,55 @@
+{
+  "run_timestamp_utc": "2026-09-21T16:16:38.553542+00:00",
+  "total_calls": 18,
+  "client_config": {
+    "base_url": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-latest",
+    "timeout_s": 30.0,
+    "max_retries": 2
+  },
+  "config_hash": "73a093999d5d64859171f060f0246d6dd4ff34296c1e98d854b9fac055d2d000",
+  "package_versions": {
+    "python": "3.14.5",
+    "requests": "2.34.2",
+    "pydantic": "2.13.5"
+  },
+  "permutations": {
+    "P1_pairadj_N-first": [
+      "Requests are timing out at the load balancer before reaching any application server.",
+      "Query execution times in the slow-query log have increased tenfold in the last hour.",
+      "Ping latency to the affected host has spiked from 2ms to over 400ms.",
+      "The connection pool is reporting frequent 'too many connections' errors."
+    ],
+    "P2_pairadj_D-first": [
+      "Query execution times in the slow-query log have increased tenfold in the last hour.",
+      "Requests are timing out at the load balancer before reaching any application server.",
+      "The connection pool is reporting frequent 'too many connections' errors.",
+      "Ping latency to the affected host has spiked from 2ms to over 400ms."
+    ],
+    "P3_block_N-then-D": [
+      "Requests are timing out at the load balancer before reaching any application server.",
+      "Ping latency to the affected host has spiked from 2ms to over 400ms.",
+      "Query execution times in the slow-query log have increased tenfold in the last hour.",
+      "The connection pool is reporting frequent 'too many connections' errors."
+    ],
+    "P4_block_D-then-N": [
+      "Query execution times in the slow-query log have increased tenfold in the last hour.",
+      "The connection pool is reporting frequent 'too many connections' errors.",
+      "Requests are timing out at the load balancer before reaching any application server.",
+      "Ping latency to the affected host has spiked from 2ms to over 400ms."
+    ],
+    "P5_cross_a": [
+      "Requests are timing out at the load balancer before reaching any application server.",
+      "The connection pool is reporting frequent 'too many connections' errors.",
+      "Ping latency to the affected host has spiked from 2ms to over 400ms.",
+      "Query execution times in the slow-query log have increased tenfold in the last hour."
+    ],
+    "P6_cross_b": [
+      "The connection pool is reporting frequent 'too many connections' errors.",
+      "Requests are timing out at the load balancer before reaching any application server.",
+      "Query execution times in the slow-query log have increased tenfold in the last hour.",
+      "Ping latency to the affected host has spiked from 2ms to over 400ms."
+    ]
+  },
+  "repeats_per_permutation": 3
+}

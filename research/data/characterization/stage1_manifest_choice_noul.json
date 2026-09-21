@@ -1,0 +1,3028 @@
+{
+  "stage": "stage1_choice_noul",
+  "metadata": {
+    "opaque_id_permutation_seed": 20260922,
+    "subset_selection_seed": 20260923,
+    "created_at_utc": "2026-09-22T00:00:00Z",
+    "spec_revision": "step0b_design_specification.md Revision 3, \u00a73/\u00a76/\u00a77/\u00a711",
+    "note": "score excluded - blocked pending semantic-validation follow-up (see stage0_report.md)"
+  },
+  "items": [
+    {
+      "item_id": "choice_A_01_clear_5to0",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "stvqv",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for catalog failed intermittently across 8 availability zones."
+        },
+        {
+          "opaque_id": "srb25",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 33% cache-miss rate for search, well above its usual baseline."
+        },
+        {
+          "opaque_id": "svwr5",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for checkout failed intermittently across 11 availability zones."
+        },
+        {
+          "opaque_id": "s3mx3",
+          "semantic_label": "supports_infrastructure",
+          "text": "A network partition was observed between the catalog cluster and its replicas."
+        },
+        {
+          "opaque_id": "sz94w",
+          "semantic_label": "supports_infrastructure",
+          "text": "A network partition was observed between the search cluster and its replicas."
+        }
+      ],
+      "canonical_order": [
+        "s3mx3",
+        "srb25",
+        "stvqv",
+        "svwr5",
+        "sz94w"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_02_clear_5to0",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "sy9bv",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the billing host crossed 32% shortly before the incident began."
+        },
+        {
+          "opaque_id": "stb39",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for auth failed intermittently across 9 availability zones."
+        },
+        {
+          "opaque_id": "sskpg",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the checkout backend spiked to 981ms starting at 09:14."
+        },
+        {
+          "opaque_id": "sfgtk",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the catalog backend spiked to 324ms starting at 13:02."
+        },
+        {
+          "opaque_id": "s2j8r",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 7 upstream timeout errors in the last 16 minutes."
+        }
+      ],
+      "canonical_order": [
+        "s2j8r",
+        "sfgtk",
+        "sskpg",
+        "stb39",
+        "sy9bv"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_03_clear_5to0",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "stzgc",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the catalog backend spiked to 216ms starting at 04:50."
+        },
+        {
+          "opaque_id": "ssdr6",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 12% cache-miss rate for search, well above its usual baseline."
+        },
+        {
+          "opaque_id": "shf26",
+          "semantic_label": "supports_infrastructure",
+          "text": "A network partition was observed between the billing cluster and its replicas."
+        },
+        {
+          "opaque_id": "sqpy4",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the notifications host crossed 68% shortly before the incident began."
+        },
+        {
+          "opaque_id": "sm6b9",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 7 upstream timeout errors in the last 27 minutes."
+        }
+      ],
+      "canonical_order": [
+        "shf26",
+        "sm6b9",
+        "sqpy4",
+        "ssdr6",
+        "stzgc"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_04_moderate_4to1",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "sp9yw",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 11 upstream timeout errors in the last 8 minutes."
+        },
+        {
+          "opaque_id": "s27yy",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the checkout backend spiked to 784ms starting at 13:02."
+        },
+        {
+          "opaque_id": "ssn58",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for auth failed intermittently across 6 availability zones."
+        },
+        {
+          "opaque_id": "ssq42",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 4 upstream timeout errors in the last 15 minutes."
+        },
+        {
+          "opaque_id": "sft9b",
+          "semantic_label": "supports_application",
+          "text": "The auth team's last three deploys have each required a follow-up hotfix."
+        }
+      ],
+      "canonical_order": [
+        "s27yy",
+        "sft9b",
+        "sp9yw",
+        "ssn58",
+        "ssq42"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_05_moderate_4to1",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "sjjrw",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the catalog host crossed 39% shortly before the incident began."
+        },
+        {
+          "opaque_id": "sh2vh",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the checkout host crossed 45% shortly before the incident began."
+        },
+        {
+          "opaque_id": "sf8t8",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 93% cache-miss rate for checkout, well above its usual baseline."
+        },
+        {
+          "opaque_id": "s97s7",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 33% cache-miss rate for auth, well above its usual baseline."
+        },
+        {
+          "opaque_id": "smn3h",
+          "semantic_label": "supports_application",
+          "text": "The search team's last three deploys have each required a follow-up hotfix."
+        }
+      ],
+      "canonical_order": [
+        "s97s7",
+        "sf8t8",
+        "sh2vh",
+        "sjjrw",
+        "smn3h"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_06_moderate_4to1",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "s56yn",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the auth host crossed 65% shortly before the incident began."
+        },
+        {
+          "opaque_id": "s6vms",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the checkout backend spiked to 673ms starting at 17:37."
+        },
+        {
+          "opaque_id": "srjpv",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 1 upstream timeout errors in the last 12 minutes."
+        },
+        {
+          "opaque_id": "sfskw",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 69% cache-miss rate for notifications, well above its usual baseline."
+        },
+        {
+          "opaque_id": "sntwm",
+          "semantic_label": "supports_application",
+          "text": "Unit tests for the checkout change were skipped in the CI run that shipped this release."
+        }
+      ],
+      "canonical_order": [
+        "s56yn",
+        "s6vms",
+        "sfskw",
+        "sntwm",
+        "srjpv"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_07_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "snv4w",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 4 upstream timeout errors in the last 13 minutes."
+        },
+        {
+          "opaque_id": "sjntt",
+          "semantic_label": "supports_infrastructure",
+          "text": "A network partition was observed between the notifications cluster and its replicas."
+        },
+        {
+          "opaque_id": "s539b",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the notifications backend spiked to 829ms starting at 09:14."
+        },
+        {
+          "opaque_id": "syf4h",
+          "semantic_label": "supports_application",
+          "text": "The checkout team's last three deploys have each required a follow-up hotfix."
+        },
+        {
+          "opaque_id": "sjhw6",
+          "semantic_label": "supports_application",
+          "text": "The search deploy at 17:37 introduced a change to the request-validation logic."
+        }
+      ],
+      "canonical_order": [
+        "s539b",
+        "sjhw6",
+        "sjntt",
+        "snv4w",
+        "syf4h"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_08_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s3b3t",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the search backend spiked to 890ms starting at 22:41."
+        },
+        {
+          "opaque_id": "swv8y",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 10 upstream timeout errors in the last 29 minutes."
+        },
+        {
+          "opaque_id": "swfyx",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the search backend spiked to 994ms starting at 13:02."
+        },
+        {
+          "opaque_id": "srq3t",
+          "semantic_label": "supports_application",
+          "text": "A feature flag for checkout was enabled for 79% of traffic just before the incident."
+        },
+        {
+          "opaque_id": "sz62x",
+          "semantic_label": "supports_application",
+          "text": "The billing deploy at 09:14 introduced a change to the request-validation logic."
+        }
+      ],
+      "canonical_order": [
+        "s3b3t",
+        "srq3t",
+        "swfyx",
+        "swv8y",
+        "sz62x"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_09_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sy2t8",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the catalog host crossed 40% shortly before the incident began."
+        },
+        {
+          "opaque_id": "s7hjw",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for search failed intermittently across 5 availability zones."
+        },
+        {
+          "opaque_id": "s82k8",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the search host crossed 53% shortly before the incident began."
+        },
+        {
+          "opaque_id": "s9889",
+          "semantic_label": "supports_application",
+          "text": "Application logs show a stack trace originating in the search module's new code path."
+        },
+        {
+          "opaque_id": "sb9xx",
+          "semantic_label": "supports_application",
+          "text": "The notifications deploy at 09:14 introduced a change to the request-validation logic."
+        }
+      ],
+      "canonical_order": [
+        "s7hjw",
+        "s82k8",
+        "s9889",
+        "sb9xx",
+        "sy2t8"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_10_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "szdzb",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the billing host crossed 9% shortly before the incident began."
+        },
+        {
+          "opaque_id": "s9gfq",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the checkout backend spiked to 387ms starting at 09:14."
+        },
+        {
+          "opaque_id": "sjx49",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the auth backend spiked to 210ms starting at 04:50."
+        },
+        {
+          "opaque_id": "sw6wd",
+          "semantic_label": "supports_application",
+          "text": "A feature flag for notifications was enabled for 65% of traffic just before the incident."
+        },
+        {
+          "opaque_id": "swptb",
+          "semantic_label": "supports_application",
+          "text": "Unit tests for the billing change were skipped in the CI run that shipped this release."
+        }
+      ],
+      "canonical_order": [
+        "s9gfq",
+        "sjx49",
+        "sw6wd",
+        "swptb",
+        "szdzb"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_11_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s8dk6",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the notifications backend spiked to 800ms starting at 13:02."
+        },
+        {
+          "opaque_id": "ssnv6",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for notifications failed intermittently across 7 availability zones."
+        },
+        {
+          "opaque_id": "sqkfd",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 4 upstream timeout errors in the last 22 minutes."
+        },
+        {
+          "opaque_id": "shtk7",
+          "semantic_label": "supports_application",
+          "text": "The catalog service's error budget was already exhausted before this incident began."
+        },
+        {
+          "opaque_id": "s43gk",
+          "semantic_label": "supports_application",
+          "text": "The notifications deploy at 22:41 introduced a change to the request-validation logic."
+        }
+      ],
+      "canonical_order": [
+        "s43gk",
+        "s8dk6",
+        "shtk7",
+        "sqkfd",
+        "ssnv6"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_12_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "syvxg",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 63% cache-miss rate for auth, well above its usual baseline."
+        },
+        {
+          "opaque_id": "s66v5",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the checkout backend spiked to 587ms starting at 09:14."
+        },
+        {
+          "opaque_id": "s7gbx",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 10% cache-miss rate for catalog, well above its usual baseline."
+        },
+        {
+          "opaque_id": "s4vxc",
+          "semantic_label": "supports_application",
+          "text": "Unit tests for the catalog change were skipped in the CI run that shipped this release."
+        },
+        {
+          "opaque_id": "sfpvx",
+          "semantic_label": "supports_application",
+          "text": "The checkout service's error budget was already exhausted before this incident began."
+        }
+      ],
+      "canonical_order": [
+        "s4vxc",
+        "s66v5",
+        "s7gbx",
+        "sfpvx",
+        "syvxg"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_13_contested_2to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "szpjg",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 11% cache-miss rate for notifications, well above its usual baseline."
+        },
+        {
+          "opaque_id": "s4jsb",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the search backend spiked to 202ms starting at 09:14."
+        },
+        {
+          "opaque_id": "sd3vf",
+          "semantic_label": "supports_application",
+          "text": "Unit tests for the auth change were skipped in the CI run that shipped this release."
+        },
+        {
+          "opaque_id": "sm7z3",
+          "semantic_label": "supports_application",
+          "text": "The catalog team's last three deploys have each required a follow-up hotfix."
+        }
+      ],
+      "canonical_order": [
+        "s4jsb",
+        "sd3vf",
+        "sm7z3",
+        "szpjg"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_14_contested_2to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "sj3mm",
+          "semantic_label": "supports_infrastructure",
+          "text": "Latency to the checkout backend spiked to 531ms starting at 22:41."
+        },
+        {
+          "opaque_id": "s7vvf",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 3 upstream timeout errors in the last 33 minutes."
+        },
+        {
+          "opaque_id": "s8fj5",
+          "semantic_label": "supports_application",
+          "text": "A feature flag for search was enabled for 78% of traffic just before the incident."
+        },
+        {
+          "opaque_id": "skf2f",
+          "semantic_label": "supports_application",
+          "text": "A feature flag for billing was enabled for 39% of traffic just before the incident."
+        }
+      ],
+      "canonical_order": [
+        "s7vvf",
+        "s8fj5",
+        "sj3mm",
+        "skf2f"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_A_15_contested_2to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "sg7b6",
+          "semantic_label": "supports_infrastructure",
+          "text": "The load balancer logged 4 upstream timeout errors in the last 11 minutes."
+        },
+        {
+          "opaque_id": "sbbpx",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the notifications host crossed 15% shortly before the incident began."
+        },
+        {
+          "opaque_id": "syv57",
+          "semantic_label": "supports_application",
+          "text": "The checkout deploy at 13:02 introduced a change to the request-validation logic."
+        },
+        {
+          "opaque_id": "sdk7q",
+          "semantic_label": "supports_application",
+          "text": "The auth service's error budget was already exhausted before this incident began."
+        }
+      ],
+      "canonical_order": [
+        "sbbpx",
+        "sdk7q",
+        "sg7b6",
+        "syv57"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_B_01_clear_5to0",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "sspbd",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #10,852 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "sbk5g",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $28.50 on order #22,348."
+        },
+        {
+          "opaque_id": "ssfct",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #9,193 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "s6zqx",
+          "semantic_label": "supports_billing",
+          "text": "The customer's saved payment method was declined for $14.99 despite having sufficient funds."
+        },
+        {
+          "opaque_id": "skn8d",
+          "semantic_label": "supports_billing",
+          "text": "A refund of $103.75 was promised on last Tuesday but has not appeared on the customer's statement."
+        }
+      ],
+      "canonical_order": [
+        "s6zqx",
+        "sbk5g",
+        "skn8d",
+        "ssfct",
+        "sspbd"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_02_clear_5to0",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "sghdh",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #65,836 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "sdq77",
+          "semantic_label": "supports_billing",
+          "text": "A refund of $61.20 was promised on the 14th but has not appeared on the customer's statement."
+        },
+        {
+          "opaque_id": "s34tc",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $103.75 twice for the same order placed on April 1st."
+        },
+        {
+          "opaque_id": "sj6dp",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #68,068 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "sqvpg",
+          "semantic_label": "supports_billing",
+          "text": "A refund of $28.50 was promised on the 14th but has not appeared on the customer's statement."
+        }
+      ],
+      "canonical_order": [
+        "s34tc",
+        "sdq77",
+        "sghdh",
+        "sj6dp",
+        "sqvpg"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_03_clear_5to0",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "s6gch",
+          "semantic_label": "supports_billing",
+          "text": "The customer's saved payment method was declined for $61.20 despite having sufficient funds."
+        },
+        {
+          "opaque_id": "sw5yx",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $103.75 on order #10,720."
+        },
+        {
+          "opaque_id": "s82dd",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #76,738 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "sxs49",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #87,944 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "s939h",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $14.99 twice for the same order placed on the 14th."
+        }
+      ],
+      "canonical_order": [
+        "s6gch",
+        "s82dd",
+        "s939h",
+        "sw5yx",
+        "sxs49"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_04_moderate_4to1",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "skxxd",
+          "semantic_label": "supports_billing",
+          "text": "The customer's saved payment method was declined for $28.50 despite having sufficient funds."
+        },
+        {
+          "opaque_id": "s8gzs",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $9.99 twice for the same order placed on April 1st."
+        },
+        {
+          "opaque_id": "s8x3c",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $28.50 occurred despite the subscription being cancelled on last Tuesday."
+        },
+        {
+          "opaque_id": "s2xgn",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #85,521 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "s8rfn",
+          "semantic_label": "supports_shipping",
+          "text": "Customs held order #73,476 for 8 days with no update from the carrier."
+        }
+      ],
+      "canonical_order": [
+        "s2xgn",
+        "s8gzs",
+        "s8rfn",
+        "s8x3c",
+        "skxxd"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_05_moderate_4to1",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "sdqsx",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $103.75 on order #73,433."
+        },
+        {
+          "opaque_id": "sgj5y",
+          "semantic_label": "supports_billing",
+          "text": "A refund of $14.99 was promised on the 14th but has not appeared on the customer's statement."
+        },
+        {
+          "opaque_id": "s2dtz",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $103.75 on order #63,410."
+        },
+        {
+          "opaque_id": "sbm8j",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $103.75 on order #61,320."
+        },
+        {
+          "opaque_id": "snbv3",
+          "semantic_label": "supports_shipping",
+          "text": "The customer received someone else's package instead of their order #9,268."
+        }
+      ],
+      "canonical_order": [
+        "s2dtz",
+        "sbm8j",
+        "sdqsx",
+        "sgj5y",
+        "snbv3"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_06_moderate_4to1",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "s92y4",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $103.75 on order #53,461."
+        },
+        {
+          "opaque_id": "sh3k6",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $103.75 occurred despite the subscription being cancelled on last Tuesday."
+        },
+        {
+          "opaque_id": "sgqqk",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $61.20 occurred despite the subscription being cancelled on two weeks ago."
+        },
+        {
+          "opaque_id": "sf9hc",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $61.20 occurred despite the subscription being cancelled on March 3rd."
+        },
+        {
+          "opaque_id": "s79ms",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #89,164 says delivered, but the customer states it never arrived."
+        }
+      ],
+      "canonical_order": [
+        "s79ms",
+        "s92y4",
+        "sf9hc",
+        "sgqqk",
+        "sh3k6"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_07_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sytz2",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #89,484 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "sr4jq",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $103.75 occurred despite the subscription being cancelled on April 1st."
+        },
+        {
+          "opaque_id": "s8mq5",
+          "semantic_label": "supports_billing",
+          "text": "A refund of $9.99 was promised on last Tuesday but has not appeared on the customer's statement."
+        },
+        {
+          "opaque_id": "sjbx2",
+          "semantic_label": "supports_shipping",
+          "text": "Order #10,001 has shown 'label created' with no movement for 1 days."
+        },
+        {
+          "opaque_id": "s2q2d",
+          "semantic_label": "supports_shipping",
+          "text": "Order #60,978 has shown 'label created' with no movement for 12 days."
+        }
+      ],
+      "canonical_order": [
+        "s2q2d",
+        "s8mq5",
+        "sjbx2",
+        "sr4jq",
+        "sytz2"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_08_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s3985",
+          "semantic_label": "supports_billing",
+          "text": "The customer's saved payment method was declined for $9.99 despite having sufficient funds."
+        },
+        {
+          "opaque_id": "sjzgh",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $9.99 on order #67,774."
+        },
+        {
+          "opaque_id": "scfcd",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $61.20 on order #29,800."
+        },
+        {
+          "opaque_id": "s7zgf",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #30,616 says delivered, but the customer states it never arrived."
+        },
+        {
+          "opaque_id": "s3zmf",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #84,105 says delivered, but the customer states it never arrived."
+        }
+      ],
+      "canonical_order": [
+        "s3985",
+        "s3zmf",
+        "s7zgf",
+        "scfcd",
+        "sjzgh"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_09_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "ss777",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $61.20 twice for the same order placed on April 1st."
+        },
+        {
+          "opaque_id": "s5jwh",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $14.99 on order #24,611."
+        },
+        {
+          "opaque_id": "sfjbn",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $61.20 twice for the same order placed on the 14th."
+        },
+        {
+          "opaque_id": "s639n",
+          "semantic_label": "supports_shipping",
+          "text": "Order #74,726 has shown 'label created' with no movement for 10 days."
+        },
+        {
+          "opaque_id": "sp9ds",
+          "semantic_label": "supports_shipping",
+          "text": "The customer received someone else's package instead of their order #28,535."
+        }
+      ],
+      "canonical_order": [
+        "s5jwh",
+        "s639n",
+        "sfjbn",
+        "sp9ds",
+        "ss777"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_10_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "skbzp",
+          "semantic_label": "supports_billing",
+          "text": "The customer's saved payment method was declined for $103.75 despite having sufficient funds."
+        },
+        {
+          "opaque_id": "s9t5m",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $28.50 twice for the same order placed on two weeks ago."
+        },
+        {
+          "opaque_id": "szxg5",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $61.20 on order #9,980."
+        },
+        {
+          "opaque_id": "spf4d",
+          "semantic_label": "supports_shipping",
+          "text": "Order #52,214 has shown 'label created' with no movement for 11 days."
+        },
+        {
+          "opaque_id": "sycz4",
+          "semantic_label": "supports_shipping",
+          "text": "The customer requested to change the delivery address for order #76,812 before it ships."
+        }
+      ],
+      "canonical_order": [
+        "s9t5m",
+        "skbzp",
+        "spf4d",
+        "sycz4",
+        "szxg5"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_11_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sr69x",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $14.99 twice for the same order placed on two weeks ago."
+        },
+        {
+          "opaque_id": "sv3j5",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $14.99 on order #81,182."
+        },
+        {
+          "opaque_id": "svr8g",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $103.75 twice for the same order placed on the 14th."
+        },
+        {
+          "opaque_id": "sx8sq",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #84,286 says delivered, but the customer states it never arrived."
+        },
+        {
+          "opaque_id": "sbcgt",
+          "semantic_label": "supports_shipping",
+          "text": "Customs held order #46,635 for 2 days with no update from the carrier."
+        }
+      ],
+      "canonical_order": [
+        "sbcgt",
+        "sr69x",
+        "sv3j5",
+        "svr8g",
+        "sx8sq"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_12_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sdj7y",
+          "semantic_label": "supports_billing",
+          "text": "A refund of $103.75 was promised on March 3rd but has not appeared on the customer's statement."
+        },
+        {
+          "opaque_id": "sg4ph",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $103.75 occurred despite the subscription being cancelled on two weeks ago."
+        },
+        {
+          "opaque_id": "snqtj",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $14.99 on order #26,194."
+        },
+        {
+          "opaque_id": "s2hv3",
+          "semantic_label": "supports_shipping",
+          "text": "The customer requested to change the delivery address for order #43,715 before it ships."
+        },
+        {
+          "opaque_id": "svtnr",
+          "semantic_label": "supports_shipping",
+          "text": "The customer received someone else's package instead of their order #10,220."
+        }
+      ],
+      "canonical_order": [
+        "s2hv3",
+        "sdj7y",
+        "sg4ph",
+        "snqtj",
+        "svtnr"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_13_contested_2to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "shys7",
+          "semantic_label": "supports_billing",
+          "text": "An automatic renewal for $14.99 occurred despite the subscription being cancelled on the 14th."
+        },
+        {
+          "opaque_id": "ssf3n",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $14.99 on order #97,726."
+        },
+        {
+          "opaque_id": "s96hy",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #30,864 says delivered, but the customer states it never arrived."
+        },
+        {
+          "opaque_id": "sj96x",
+          "semantic_label": "supports_shipping",
+          "text": "Order #22,483 has shown 'label created' with no movement for 10 days."
+        }
+      ],
+      "canonical_order": [
+        "s96hy",
+        "shys7",
+        "sj96x",
+        "ssf3n"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_14_contested_2to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "s33gt",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #90,986 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "s67ks",
+          "semantic_label": "supports_billing",
+          "text": "The customer says they were charged $14.99 twice for the same order placed on April 1st."
+        },
+        {
+          "opaque_id": "sbr64",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #10,741 says delivered, but the customer states it never arrived."
+        },
+        {
+          "opaque_id": "spgzc",
+          "semantic_label": "supports_shipping",
+          "text": "Tracking for order #11,975 says delivered, but the customer states it never arrived."
+        }
+      ],
+      "canonical_order": [
+        "s33gt",
+        "s67ks",
+        "sbr64",
+        "spgzc"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "choice_B_15_contested_2to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "swzqt",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #87,917 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "s2wyd",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $61.20 on order #69,442."
+        },
+        {
+          "opaque_id": "s4365",
+          "semantic_label": "supports_shipping",
+          "text": "The customer requested to change the delivery address for order #102,864 before it ships."
+        },
+        {
+          "opaque_id": "sc42f",
+          "semantic_label": "supports_shipping",
+          "text": "The customer requested to change the delivery address for order #24,442 before it ships."
+        }
+      ],
+      "canonical_order": [
+        "s2wyd",
+        "s4365",
+        "sc42f",
+        "swzqt"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "noul_A_01_clear_5to0",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "snfrg",
+          "semantic_label": "supports_yes",
+          "text": "The account logged in from a new jurisdiction within the last hour, a location never used before."
+        },
+        {
+          "opaque_id": "smhyj",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 6 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "ssdg9",
+          "semantic_label": "supports_yes",
+          "text": "The account logged in from a country the account has never visited within the last hour, a location never used before."
+        },
+        {
+          "opaque_id": "szh43",
+          "semantic_label": "supports_yes",
+          "text": "This session began at 4:15am local time, outside the account's usual active hours."
+        },
+        {
+          "opaque_id": "syfxj",
+          "semantic_label": "supports_yes",
+          "text": "This session began at 11pm-1am local time, outside the account's usual active hours."
+        }
+      ],
+      "canonical_order": [
+        "smhyj",
+        "snfrg",
+        "ssdg9",
+        "syfxj",
+        "szh43"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_02_clear_5to0",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "sz4hj",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 11 times in the 5 minutes before checkout."
+        },
+        {
+          "opaque_id": "spxhj",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 11 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "scjcf",
+          "semantic_label": "supports_yes",
+          "text": "This session began at 3am local time, outside the account's usual active hours."
+        },
+        {
+          "opaque_id": "s7grh",
+          "semantic_label": "supports_yes",
+          "text": "This session began at 2:50am local time, outside the account's usual active hours."
+        },
+        {
+          "opaque_id": "scznz",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $2,551 was made, about 26x the account's average transaction size."
+        }
+      ],
+      "canonical_order": [
+        "s7grh",
+        "scjcf",
+        "scznz",
+        "spxhj",
+        "sz4hj"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_03_clear_5to0",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "sqjdc",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 16-month lifetime."
+        },
+        {
+          "opaque_id": "srjnn",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 19-month lifetime."
+        },
+        {
+          "opaque_id": "s9mn6",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 22-month lifetime."
+        },
+        {
+          "opaque_id": "s99fy",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 6 times in the 2 minutes before checkout."
+        },
+        {
+          "opaque_id": "s38pc",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 3 times in the 1 minutes before checkout."
+        }
+      ],
+      "canonical_order": [
+        "s38pc",
+        "s99fy",
+        "s9mn6",
+        "sqjdc",
+        "srjnn"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_04_moderate_4to1",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "s4gwx",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 5 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "sp835",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 6 times in the 1 minutes before checkout."
+        },
+        {
+          "opaque_id": "szyk5",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 8 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "sb48t",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 8 times in the 12 minutes before checkout."
+        },
+        {
+          "opaque_id": "s9hzr",
+          "semantic_label": "supports_no",
+          "text": "The account has placed 3 similar orders from this location over the past year."
+        }
+      ],
+      "canonical_order": [
+        "s4gwx",
+        "s9hzr",
+        "sb48t",
+        "sp835",
+        "szyk5"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_05_moderate_4to1",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "smd8d",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $1,205 was made, about 53x the account's average transaction size."
+        },
+        {
+          "opaque_id": "s4vz9",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 4 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "ss6cy",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 8 times in the 5 minutes before checkout."
+        },
+        {
+          "opaque_id": "sqz6q",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $51 was made, about 8x the account's average transaction size."
+        },
+        {
+          "opaque_id": "stgyc",
+          "semantic_label": "supports_no",
+          "text": "The card passed a 3-D Secure challenge with a code sent to the phone on file."
+        }
+      ],
+      "canonical_order": [
+        "s4vz9",
+        "smd8d",
+        "sqz6q",
+        "ss6cy",
+        "stgyc"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_06_moderate_4to1",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "sfq8h",
+          "semantic_label": "supports_yes",
+          "text": "The account logged in from an unfamiliar region within the last hour, a location never used before."
+        },
+        {
+          "opaque_id": "sfbw3",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $3,164 was made, about 15x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sxn9s",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 2 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "s67h3",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 3 times in the 10 minutes before checkout."
+        },
+        {
+          "opaque_id": "scwrs",
+          "semantic_label": "supports_no",
+          "text": "The device has been associated with this account for 20 months of regular use."
+        }
+      ],
+      "canonical_order": [
+        "s67h3",
+        "scwrs",
+        "sfbw3",
+        "sfq8h",
+        "sxn9s"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_07_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s8jck",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 6 times in the 10 minutes before checkout."
+        },
+        {
+          "opaque_id": "s83vk",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $72 was made, about 22x the account's average transaction size."
+        },
+        {
+          "opaque_id": "szx45",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 10-month lifetime."
+        },
+        {
+          "opaque_id": "scz3d",
+          "semantic_label": "supports_no",
+          "text": "The session falls within the account's normal 2:50am-hour shopping window."
+        },
+        {
+          "opaque_id": "swr4p",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 18 months without change."
+        }
+      ],
+      "canonical_order": [
+        "s83vk",
+        "s8jck",
+        "scz3d",
+        "swr4p",
+        "szx45"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_08_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sqwg5",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 6-month lifetime."
+        },
+        {
+          "opaque_id": "smfmn",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 4 times in the 6 minutes before checkout."
+        },
+        {
+          "opaque_id": "ssjrs",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $71 was made, about 24x the account's average transaction size."
+        },
+        {
+          "opaque_id": "s9568",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 7 months without change."
+        },
+        {
+          "opaque_id": "snmnn",
+          "semantic_label": "supports_no",
+          "text": "The purchase matches the account's usual category, at roughly $66, consistent with history."
+        }
+      ],
+      "canonical_order": [
+        "s9568",
+        "smfmn",
+        "snmnn",
+        "sqwg5",
+        "ssjrs"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_09_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "scrhy",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 10 times in the 4 minutes before checkout."
+        },
+        {
+          "opaque_id": "sp383",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $2,674 was made, about 20x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sws5h",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 6 times in the 11 minutes before checkout."
+        },
+        {
+          "opaque_id": "sr74k",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 19 months without change."
+        },
+        {
+          "opaque_id": "sxjtj",
+          "semantic_label": "supports_no",
+          "text": "The device has been associated with this account for 6 months of regular use."
+        }
+      ],
+      "canonical_order": [
+        "scrhy",
+        "sp383",
+        "sr74k",
+        "sws5h",
+        "sxjtj"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_10_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "st72k",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $1,197 was made, about 28x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sdxpr",
+          "semantic_label": "supports_yes",
+          "text": "The account attempted 10 failed logins before this session succeeded."
+        },
+        {
+          "opaque_id": "s8v7g",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $2,447 was made, about 5x the account's average transaction size."
+        },
+        {
+          "opaque_id": "skmgv",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 20 months without change."
+        },
+        {
+          "opaque_id": "sk54f",
+          "semantic_label": "supports_no",
+          "text": "The device has been associated with this account for 13 months of regular use."
+        }
+      ],
+      "canonical_order": [
+        "s8v7g",
+        "sdxpr",
+        "sk54f",
+        "skmgv",
+        "st72k"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_11_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s232s",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $70 was made, about 41x the account's average transaction size."
+        },
+        {
+          "opaque_id": "smghk",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $1,078 was made, about 17x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sdwm8",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $50 was made, about 6x the account's average transaction size."
+        },
+        {
+          "opaque_id": "ss7y2",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 13 months without change."
+        },
+        {
+          "opaque_id": "s493s",
+          "semantic_label": "supports_no",
+          "text": "The device has been associated with this account for 9 months of regular use."
+        }
+      ],
+      "canonical_order": [
+        "s232s",
+        "s493s",
+        "sdwm8",
+        "smghk",
+        "ss7y2"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_12_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sh258",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 3 times in the 5 minutes before checkout."
+        },
+        {
+          "opaque_id": "sjk3j",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $3,078 was made, about 18x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sbc2z",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $78 was made, about 5x the account's average transaction size."
+        },
+        {
+          "opaque_id": "snp8w",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 4 months without change."
+        },
+        {
+          "opaque_id": "sjrjn",
+          "semantic_label": "supports_no",
+          "text": "The purchase matches the account's usual category, at roughly $472, consistent with history."
+        }
+      ],
+      "canonical_order": [
+        "sbc2z",
+        "sh258",
+        "sjk3j",
+        "sjrjn",
+        "snp8w"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_13_contested_2to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "sz2jc",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 7 times in the 4 minutes before checkout."
+        },
+        {
+          "opaque_id": "smv82",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $2,899 was made, about 19x the account's average transaction size."
+        },
+        {
+          "opaque_id": "s4249",
+          "semantic_label": "supports_no",
+          "text": "The session falls within the account's normal 11pm-1am-hour shopping window."
+        },
+        {
+          "opaque_id": "sxtm2",
+          "semantic_label": "supports_no",
+          "text": "The device has been associated with this account for 8 months of regular use."
+        }
+      ],
+      "canonical_order": [
+        "s4249",
+        "smv82",
+        "sxtm2",
+        "sz2jc"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_14_contested_2to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "sgvkv",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 24-month lifetime."
+        },
+        {
+          "opaque_id": "sfxhq",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 1 times in the 8 minutes before checkout."
+        },
+        {
+          "opaque_id": "s9fnx",
+          "semantic_label": "supports_no",
+          "text": "The account has placed 2 similar orders from this location over the past year."
+        },
+        {
+          "opaque_id": "scq4n",
+          "semantic_label": "supports_no",
+          "text": "The purchase matches the account's usual category, at roughly $1,111, consistent with history."
+        }
+      ],
+      "canonical_order": [
+        "s9fnx",
+        "scq4n",
+        "sfxhq",
+        "sgvkv"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_A_15_contested_2to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "sktgp",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $2,903 was made, about 20x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sbr2h",
+          "semantic_label": "supports_yes",
+          "text": "A charge of $1,300 was made, about 12x the account's average transaction size."
+        },
+        {
+          "opaque_id": "sdfq7",
+          "semantic_label": "supports_no",
+          "text": "The account has placed 11 similar orders from this location over the past year."
+        },
+        {
+          "opaque_id": "swy9n",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 22 months without change."
+        }
+      ],
+      "canonical_order": [
+        "sbr2h",
+        "sdfq7",
+        "sktgp",
+        "swy9n"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_B_01_clear_5to0",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "ss3p8",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 24 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "s73b7",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 751 different recipients within 39 minutes."
+        },
+        {
+          "opaque_id": "sw6rj",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 49 minutes before posting this message."
+        },
+        {
+          "opaque_id": "sctph",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 44 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s7tnj",
+          "semantic_label": "supports_yes",
+          "text": "The message asks the recipient to confirm a password via an external link."
+        }
+      ],
+      "canonical_order": [
+        "s73b7",
+        "s7tnj",
+        "sctph",
+        "ss3p8",
+        "sw6rj"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_02_clear_5to0",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "s4s9n",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 326 different recipients within 51 minutes."
+        },
+        {
+          "opaque_id": "sr3xn",
+          "semantic_label": "supports_yes",
+          "text": "The sender's display name impersonates a known brand, but the account is unverified."
+        },
+        {
+          "opaque_id": "szx5j",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 7 days ago."
+        },
+        {
+          "opaque_id": "sk3y6",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 50 different recipients within 37 minutes."
+        },
+        {
+          "opaque_id": "sgzqc",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 327 different recipients within 4 minutes."
+        }
+      ],
+      "canonical_order": [
+        "s4s9n",
+        "sgzqc",
+        "sk3y6",
+        "sr3xn",
+        "szx5j"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_03_clear_5to0",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "clear_5to0",
+      "sentences": [
+        {
+          "opaque_id": "sjjmm",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 1 days ago."
+        },
+        {
+          "opaque_id": "s85g7",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 8 days ago."
+        },
+        {
+          "opaque_id": "sjv8d",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 10 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "snh7x",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 14 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "sz4nx",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 53 different recipients within 49 minutes."
+        }
+      ],
+      "canonical_order": [
+        "s85g7",
+        "sjjmm",
+        "sjv8d",
+        "snh7x",
+        "sz4nx"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_04_moderate_4to1",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "spxkt",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 11 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "sx89c",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 3 days ago."
+        },
+        {
+          "opaque_id": "s8kg4",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 1 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "szgcc",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 2 days ago."
+        },
+        {
+          "opaque_id": "sctpx",
+          "semantic_label": "supports_no",
+          "text": "The sender has an account history of 13 months with no prior reports."
+        }
+      ],
+      "canonical_order": [
+        "s8kg4",
+        "sctpx",
+        "spxkt",
+        "sx89c",
+        "szgcc"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_05_moderate_4to1",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "sgf8p",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 38 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s7z74",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 850 different recipients within 17 minutes."
+        },
+        {
+          "opaque_id": "sc7x8",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 42 minutes before posting this message."
+        },
+        {
+          "opaque_id": "ssg49",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 17 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s6tbf",
+          "semantic_label": "supports_no",
+          "text": "The link in the message points to the sender's own previously-verified domain."
+        }
+      ],
+      "canonical_order": [
+        "s6tbf",
+        "s7z74",
+        "sc7x8",
+        "sgf8p",
+        "ssg49"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_06_moderate_4to1",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "moderate_4to1",
+      "sentences": [
+        {
+          "opaque_id": "s97yd",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 12 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "sfm2p",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 28 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "s5sn6",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 4 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s64hj",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 22 minutes before posting this message."
+        },
+        {
+          "opaque_id": "smd9q",
+          "semantic_label": "supports_no",
+          "text": "The message was sent to a single recipient who had messaged first."
+        }
+      ],
+      "canonical_order": [
+        "s5sn6",
+        "s64hj",
+        "s97yd",
+        "sfm2p",
+        "smd9q"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_07_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "st22g",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 3 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "s976v",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 4 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "sn793",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 774 different recipients within 15 minutes."
+        },
+        {
+          "opaque_id": "shr5q",
+          "semantic_label": "supports_no",
+          "text": "The sender has an account history of 11 months with no prior reports."
+        },
+        {
+          "opaque_id": "sbc6v",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 2 months."
+        }
+      ],
+      "canonical_order": [
+        "s976v",
+        "sbc6v",
+        "shr5q",
+        "sn793",
+        "st22g"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_08_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "scxh6",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 3 minutes before posting this message."
+        },
+        {
+          "opaque_id": "sdrmc",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 135 different recipients within 22 minutes."
+        },
+        {
+          "opaque_id": "sh58k",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 7 minutes before posting this message."
+        },
+        {
+          "opaque_id": "sfd3b",
+          "semantic_label": "supports_no",
+          "text": "The sender has an account history of 14 months with no prior reports."
+        },
+        {
+          "opaque_id": "stbg3",
+          "semantic_label": "supports_no",
+          "text": "The message is a reply within an existing 1-day-old conversation thread."
+        }
+      ],
+      "canonical_order": [
+        "scxh6",
+        "sdrmc",
+        "sfd3b",
+        "sh58k",
+        "stbg3"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_09_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s94zq",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 755 different recipients within 44 minutes."
+        },
+        {
+          "opaque_id": "sjc73",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 56 different recipients within 3 minutes."
+        },
+        {
+          "opaque_id": "szx7d",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 7 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "snc4q",
+          "semantic_label": "supports_no",
+          "text": "The account has 111 mutual connections with the recipient."
+        },
+        {
+          "opaque_id": "s9mv9",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 10 months."
+        }
+      ],
+      "canonical_order": [
+        "s94zq",
+        "s9mv9",
+        "sjc73",
+        "snc4q",
+        "szx7d"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_10_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s5yzq",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 126 different recipients within 24 minutes."
+        },
+        {
+          "opaque_id": "sbgcn",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 52 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s9t3j",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 111 different recipients within 9 minutes."
+        },
+        {
+          "opaque_id": "sx5sq",
+          "semantic_label": "supports_no",
+          "text": "The account has 52 mutual connections with the recipient."
+        },
+        {
+          "opaque_id": "stvsr",
+          "semantic_label": "supports_no",
+          "text": "The account has 747 mutual connections with the recipient."
+        }
+      ],
+      "canonical_order": [
+        "s5yzq",
+        "s9t3j",
+        "sbgcn",
+        "stvsr",
+        "sx5sq"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_11_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "spt64",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 6 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "sjwpj",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 4 days ago."
+        },
+        {
+          "opaque_id": "st7xw",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 58 different recipients within 10 minutes."
+        },
+        {
+          "opaque_id": "s87t7",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 20 months."
+        },
+        {
+          "opaque_id": "sgsz2",
+          "semantic_label": "supports_no",
+          "text": "The message is a reply within an existing 7-day-old conversation thread."
+        }
+      ],
+      "canonical_order": [
+        "s87t7",
+        "sgsz2",
+        "sjwpj",
+        "spt64",
+        "st7xw"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_12_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "s4ffx",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 5 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "s9pgb",
+          "semantic_label": "supports_yes",
+          "text": "The message contains a link to a domain registered 5 days ago."
+        },
+        {
+          "opaque_id": "s7yfz",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 294 different recipients within 11 minutes."
+        },
+        {
+          "opaque_id": "s28h9",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 12 months."
+        },
+        {
+          "opaque_id": "sqw9t",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 11 months."
+        }
+      ],
+      "canonical_order": [
+        "s28h9",
+        "s4ffx",
+        "s7yfz",
+        "s9pgb",
+        "sqw9t"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_13_contested_2to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "sf4pp",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 792 different recipients within 15 minutes."
+        },
+        {
+          "opaque_id": "s8j5c",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 12 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s3hjr",
+          "semantic_label": "supports_no",
+          "text": "The sender has an account history of 4 months with no prior reports."
+        },
+        {
+          "opaque_id": "sd2yd",
+          "semantic_label": "supports_no",
+          "text": "The account has 121 mutual connections with the recipient."
+        }
+      ],
+      "canonical_order": [
+        "s3hjr",
+        "s8j5c",
+        "sd2yd",
+        "sf4pp"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_14_contested_2to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "s5xjz",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 2 minutes before posting this message."
+        },
+        {
+          "opaque_id": "sfz5r",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 45 minutes before posting this message."
+        },
+        {
+          "opaque_id": "spmsp",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 3 months."
+        },
+        {
+          "opaque_id": "s67wn",
+          "semantic_label": "supports_no",
+          "text": "The message content matches the sender's typical posting topics over 5 months."
+        }
+      ],
+      "canonical_order": [
+        "s5xjz",
+        "s67wn",
+        "sfz5r",
+        "spmsp"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "noul_B_15_contested_2to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "contested_2to2",
+      "sentences": [
+        {
+          "opaque_id": "s4jnm",
+          "semantic_label": "supports_yes",
+          "text": "The message was sent identically to 117 different recipients within 9 minutes."
+        },
+        {
+          "opaque_id": "s99mn",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 47 minutes before posting this message."
+        },
+        {
+          "opaque_id": "ss967",
+          "semantic_label": "supports_no",
+          "text": "The message is a reply within an existing 6-day-old conversation thread."
+        },
+        {
+          "opaque_id": "snq5q",
+          "semantic_label": "supports_no",
+          "text": "The sender has an account history of 17 months with no prior reports."
+        }
+      ],
+      "canonical_order": [
+        "s4jnm",
+        "s99mn",
+        "snq5q",
+        "ss967"
+      ],
+      "reference_label": null,
+      "is_contested": true,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    },
+    {
+      "item_id": "choice_A_overflow01_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "sf4jk",
+          "semantic_label": "supports_infrastructure",
+          "text": "DNS resolution for billing failed intermittently across 9 availability zones."
+        },
+        {
+          "opaque_id": "s3bjx",
+          "semantic_label": "supports_infrastructure",
+          "text": "Disk utilization on the search host crossed 37% shortly before the incident began."
+        },
+        {
+          "opaque_id": "sj46z",
+          "semantic_label": "supports_infrastructure",
+          "text": "The CDN reported a 27% cache-miss rate for billing, well above its usual baseline."
+        },
+        {
+          "opaque_id": "sct87",
+          "semantic_label": "supports_application",
+          "text": "Application logs show a stack trace originating in the auth module's new code path."
+        },
+        {
+          "opaque_id": "sqq3p",
+          "semantic_label": "supports_application",
+          "text": "The billing service's error budget was already exhausted before this incident began."
+        }
+      ],
+      "canonical_order": [
+        "s3bjx",
+        "sct87",
+        "sf4jk",
+        "sj46z",
+        "sqq3p"
+      ],
+      "reference_label": "infrastructure",
+      "is_contested": false,
+      "question_instructions": "Is this incident most likely caused by infrastructure or by an application-level change?",
+      "question_criteria": {
+        "infrastructure": "Network, hardware, DNS, load-balancing, or platform-level causes",
+        "application": "A code, configuration, or deploy-level cause within a specific service"
+      }
+    },
+    {
+      "item_id": "choice_B_overflow01_near_majority_3to2",
+      "primitive": "choice",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "smhny",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #49,178 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "sbw9d",
+          "semantic_label": "supports_billing",
+          "text": "A promotional code was not applied, resulting in an overcharge of $61.20 on order #11,053."
+        },
+        {
+          "opaque_id": "sqnb4",
+          "semantic_label": "supports_billing",
+          "text": "The invoice for order #25,744 lists a tax amount that doesn't match the order total."
+        },
+        {
+          "opaque_id": "swgk5",
+          "semantic_label": "supports_shipping",
+          "text": "The customer requested to change the delivery address for order #90,317 before it ships."
+        },
+        {
+          "opaque_id": "sv6nz",
+          "semantic_label": "supports_shipping",
+          "text": "The customer received someone else's package instead of their order #11,901."
+        }
+      ],
+      "canonical_order": [
+        "sbw9d",
+        "smhny",
+        "sqnb4",
+        "sv6nz",
+        "swgk5"
+      ],
+      "reference_label": "billing",
+      "is_contested": false,
+      "question_instructions": "Which team should handle this support ticket: billing or shipping?",
+      "question_criteria": {
+        "billing": "Charges, invoices, refunds, payment methods, promotional codes",
+        "shipping": "Delivery status, tracking, damaged or lost packages, address changes"
+      }
+    },
+    {
+      "item_id": "noul_A_overflow01_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "A",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "swy3h",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 25-month lifetime."
+        },
+        {
+          "opaque_id": "smg7b",
+          "semantic_label": "supports_yes",
+          "text": "The device used has no prior history with this account across its 8-month lifetime."
+        },
+        {
+          "opaque_id": "sf8vc",
+          "semantic_label": "supports_yes",
+          "text": "The shipping address changed 2 times in the 15 minutes before checkout."
+        },
+        {
+          "opaque_id": "s67dk",
+          "semantic_label": "supports_no",
+          "text": "The purchase matches the account's usual category, at roughly $406, consistent with history."
+        },
+        {
+          "opaque_id": "spq24",
+          "semantic_label": "supports_no",
+          "text": "The billing and shipping addresses have matched for over 5 months without change."
+        }
+      ],
+      "canonical_order": [
+        "s67dk",
+        "sf8vc",
+        "smg7b",
+        "spq24",
+        "swy3h"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this transaction look fraudulent?"
+    },
+    {
+      "item_id": "noul_B_overflow01_near_majority_3to2",
+      "primitive": "noul",
+      "domain": "B",
+      "condition": "near_majority_3to2",
+      "sentences": [
+        {
+          "opaque_id": "swybx",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 48 minutes before posting this message."
+        },
+        {
+          "opaque_id": "s4svz",
+          "semantic_label": "supports_yes",
+          "text": "The account was created 46 minutes before posting this message."
+        },
+        {
+          "opaque_id": "sp538",
+          "semantic_label": "supports_yes",
+          "text": "The message urges the recipient to act within 19 hours 'or lose access'."
+        },
+        {
+          "opaque_id": "svvxq",
+          "semantic_label": "supports_no",
+          "text": "The message is a reply within an existing 3-day-old conversation thread."
+        },
+        {
+          "opaque_id": "shs72",
+          "semantic_label": "supports_no",
+          "text": "The message is a reply within an existing 2-day-old conversation thread."
+        }
+      ],
+      "canonical_order": [
+        "s4svz",
+        "shs72",
+        "sp538",
+        "svvxq",
+        "swybx"
+      ],
+      "reference_label": "yes",
+      "is_contested": false,
+      "question_instructions": "Does this message look like a phishing or scam attempt?"
+    }
+  ],
+  "robustness_repeat_subset_ids": [
+    "choice_A_08_near_majority_3to2",
+    "choice_A_10_near_majority_3to2",
+    "choice_A_12_near_majority_3to2",
+    "choice_B_11_near_majority_3to2",
+    "choice_B_14_contested_2to2",
+    "choice_B_15_contested_2to2",
+    "noul_A_01_clear_5to0",
+    "noul_A_07_near_majority_3to2",
+    "noul_A_14_contested_2to2",
+    "noul_B_01_clear_5to0",
+    "noul_B_06_moderate_4to1",
+    "noul_B_11_near_majority_3to2"
+  ],
+  "alternate_orders": {
+    "choice_A_08_near_majority_3to2": {
+      "reverse": [
+        "sz62x",
+        "swv8y",
+        "swfyx",
+        "srq3t",
+        "s3b3t"
+      ],
+      "seeded_shuffle": [
+        "swv8y",
+        "sz62x",
+        "swfyx",
+        "srq3t",
+        "s3b3t"
+      ]
+    },
+    "choice_A_10_near_majority_3to2": {
+      "reverse": [
+        "szdzb",
+        "swptb",
+        "sw6wd",
+        "sjx49",
+        "s9gfq"
+      ],
+      "seeded_shuffle": [
+        "s9gfq",
+        "szdzb",
+        "sjx49",
+        "sw6wd",
+        "swptb"
+      ]
+    },
+    "choice_A_12_near_majority_3to2": {
+      "reverse": [
+        "syvxg",
+        "sfpvx",
+        "s7gbx",
+        "s66v5",
+        "s4vxc"
+      ],
+      "seeded_shuffle": [
+        "s4vxc",
+        "sfpvx",
+        "s66v5",
+        "s7gbx",
+        "syvxg"
+      ]
+    },
+    "choice_B_11_near_majority_3to2": {
+      "reverse": [
+        "sx8sq",
+        "svr8g",
+        "sv3j5",
+        "sr69x",
+        "sbcgt"
+      ],
+      "seeded_shuffle": [
+        "svr8g",
+        "sbcgt",
+        "sv3j5",
+        "sr69x",
+        "sx8sq"
+      ]
+    },
+    "choice_B_14_contested_2to2": {
+      "reverse": [
+        "spgzc",
+        "sbr64",
+        "s67ks",
+        "s33gt"
+      ],
+      "seeded_shuffle": [
+        "spgzc",
+        "s67ks",
+        "s33gt",
+        "sbr64"
+      ]
+    },
+    "choice_B_15_contested_2to2": {
+      "reverse": [
+        "swzqt",
+        "sc42f",
+        "s4365",
+        "s2wyd"
+      ],
+      "seeded_shuffle": [
+        "sc42f",
+        "s4365",
+        "swzqt",
+        "s2wyd"
+      ]
+    },
+    "noul_A_01_clear_5to0": {
+      "reverse": [
+        "szh43",
+        "syfxj",
+        "ssdg9",
+        "snfrg",
+        "smhyj"
+      ],
+      "seeded_shuffle": [
+        "szh43",
+        "snfrg",
+        "smhyj",
+        "ssdg9",
+        "syfxj"
+      ]
+    },
+    "noul_A_07_near_majority_3to2": {
+      "reverse": [
+        "szx45",
+        "swr4p",
+        "scz3d",
+        "s8jck",
+        "s83vk"
+      ],
+      "seeded_shuffle": [
+        "s83vk",
+        "szx45",
+        "scz3d",
+        "s8jck",
+        "swr4p"
+      ]
+    },
+    "noul_A_14_contested_2to2": {
+      "reverse": [
+        "sgvkv",
+        "sfxhq",
+        "scq4n",
+        "s9fnx"
+      ],
+      "seeded_shuffle": [
+        "s9fnx",
+        "sfxhq",
+        "scq4n",
+        "sgvkv"
+      ]
+    },
+    "noul_B_01_clear_5to0": {
+      "reverse": [
+        "sw6rj",
+        "ss3p8",
+        "sctph",
+        "s7tnj",
+        "s73b7"
+      ],
+      "seeded_shuffle": [
+        "s7tnj",
+        "sw6rj",
+        "s73b7",
+        "sctph",
+        "ss3p8"
+      ]
+    },
+    "noul_B_06_moderate_4to1": {
+      "reverse": [
+        "smd9q",
+        "sfm2p",
+        "s97yd",
+        "s64hj",
+        "s5sn6"
+      ],
+      "seeded_shuffle": [
+        "sfm2p",
+        "s64hj",
+        "smd9q",
+        "s97yd",
+        "s5sn6"
+      ]
+    },
+    "noul_B_11_near_majority_3to2": {
+      "reverse": [
+        "st7xw",
+        "spt64",
+        "sjwpj",
+        "sgsz2",
+        "s87t7"
+      ],
+      "seeded_shuffle": [
+        "sgsz2",
+        "s87t7",
+        "sjwpj",
+        "spt64",
+        "st7xw"
+      ]
+    }
+  },
+  "overflow_replacement_list": {
+    "choice_A_07_near_majority_3to2": "choice_A_overflow01_near_majority_3to2",
+    "choice_B_07_near_majority_3to2": "choice_B_overflow01_near_majority_3to2",
+    "noul_A_07_near_majority_3to2": "noul_A_overflow01_near_majority_3to2",
+    "noul_B_07_near_majority_3to2": "noul_B_overflow01_near_majority_3to2"
+  }
+}

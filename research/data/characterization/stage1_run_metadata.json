@@ -1,0 +1,21 @@
+{
+  "run_timestamp_utc": "2026-09-21T17:40:31.211040+00:00",
+  "manifest_path": "/Users/thejas-rao/PERSONAL_PROJECTS/jev_exploration/research/data/characterization/stage1_manifest_choice_noul.json",
+  "manifest_content_hash": "2bf8c78d1f87dcfd1f893146689bd313a8fff9d27a6dd9671be0f6431e891c94",
+  "total_calls_planned": 108,
+  "total_calls_made": 108,
+  "client_config": {
+    "base_url": "https://api.typesafe.ai/v1/systemone",
+    "model": "jev-latest",
+    "timeout_s": 30.0,
+    "max_retries": 2
+  },
+  "package_versions": {
+    "python": "3.14.5",
+    "requests": "2.34.2",
+    "pydantic": "2.13.5"
+  },
+  "http_status_counts": {
+    "200": 108
+  }
+}
