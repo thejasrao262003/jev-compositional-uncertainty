@@ -1,0 +1,95 @@
+{
+  "primary_compositions": [
+    "(0, 0, 0, 1)",
+    "(0, 0, 0, 2)",
+    "(0, 0, 1, 2)",
+    "(0, 1, 1, 2)",
+    "(0, 1, 2, 2)",
+    "(1, 1, 1, 2)"
+  ],
+  "per_item_separation": {
+    "(0, 0, 0, 1)": {
+      "values": {
+        "M": 0,
+        "X": 1,
+        "A": 0
+      },
+      "separates": {
+        "M-X": true,
+        "M-A": false,
+        "X-A": true
+      }
+    },
+    "(0, 0, 0, 2)": {
+      "values": {
+        "M": 0,
+        "X": 2,
+        "A": 1
+      },
+      "separates": {
+        "M-X": true,
+        "M-A": true,
+        "X-A": true
+      }
+    },
+    "(0, 0, 1, 2)": {
+      "values": {
+        "M": 0,
+        "X": 2,
+        "A": 1
+      },
+      "separates": {
+        "M-X": true,
+        "M-A": true,
+        "X-A": true
+      }
+    },
+    "(0, 1, 1, 2)": {
+      "values": {
+        "M": 1,
+        "X": 2,
+        "A": 1
+      },
+      "separates": {
+        "M-X": true,
+        "M-A": false,
+        "X-A": true
+      }
+    },
+    "(0, 1, 2, 2)": {
+      "values": {
+        "M": 2,
+        "X": 2,
+        "A": 1
+      },
+      "separates": {
+        "M-X": false,
+        "M-A": true,
+        "X-A": true
+      }
+    },
+    "(1, 1, 1, 2)": {
+      "values": {
+        "M": 1,
+        "X": 2,
+        "A": 1
+      },
+      "separates": {
+        "M-X": true,
+        "M-A": false,
+        "X-A": true
+      }
+    }
+  },
+  "per_pair_identifiability_count": {
+    "M-X": 5,
+    "M-A": 3,
+    "X-A": 6
+  },
+  "weakest_pair": "M-A",
+  "weakest_pair_count": 3,
+  "strongest_pair": "X-A",
+  "strongest_pair_count": 6,
+  "asymmetric": true,
+  "items_uniquely_informative_for_weakest_pair": []
+}

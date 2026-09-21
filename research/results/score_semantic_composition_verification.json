@@ -1,0 +1,26 @@
+{
+  "verified_at": "design-time, no API calls, no network dependency",
+  "verifier_script_sha256": "ffb86c3f3580d623d9db0d8fedb4de947e6826879cd2df6fa57b78ce303d86ee",
+  "total_multisets_enumerated": 15,
+  "primary_gate_compositions": [
+    "(0, 0, 0, 1)",
+    "(0, 0, 0, 2)",
+    "(0, 0, 1, 2)",
+    "(0, 1, 1, 2)",
+    "(0, 1, 2, 2)",
+    "(1, 1, 1, 2)"
+  ],
+  "primary_gate_size": 6,
+  "three_way_count": 2,
+  "two_way_count": 4,
+  "supplementary_composition": "(0, 0, 2, 2)",
+  "supplementary_membership_tag": "supplementary_contested_tie",
+  "control_compositions": [
+    "(0, 0, 0, 0)",
+    "(1, 1, 1, 1)",
+    "(2, 2, 2, 2)"
+  ],
+  "all_spec_claims_matched": true,
+  "mutation_tests_passed": true,
+  "primitive_unit_tests_passed": true
+}

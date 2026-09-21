@@ -1,0 +1,8 @@
+Exhaustive verification of score_semantic_validation_specification.md §5.2's gate logic.
+Verifier script sha256: 12dfa3eda2917c2f6894c9aee31fe1363a18777550b097f09f5f940e3112dd69
+Enumerated all 343 (matches_M, matches_X, matches_A) combinations in [0,6]^3.
+Outcome distribution: {'CLARITY': 96, 'FAILURE': 64, 'AMBIGUITY': 183}
+Precedence case (5,4,0) [leader clears clarity floor, another exceeds FAILURE_MAX]: AMBIGUITY (correct).
+8/8 tie-at-the-top regression cases correctly resolved to non-CLARITY.
+Mutation testing: disabling the tie-check branch changes 0/343 outcomes under the shipped constants (proven mathematically redundant here, not a test gap - see script comments); the same disabled branch DOES produce wrongful CLARITY cases under a nearby hypothetical threshold (CLARITY_OTHERS_MAX=CLARITY_MIN), confirming the branch is a real safeguard against future threshold changes and that the mutation methodology is sound. Loosening FAILURE_MAX and tightening CLARITY_MIN both change the outcome distribution as expected (both constants load-bearing).
+Result: PASS - exhaustive, mutually exclusive, tie-safe, precedence-correct, mutation-tested.

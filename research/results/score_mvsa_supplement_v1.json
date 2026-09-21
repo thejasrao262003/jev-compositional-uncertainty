@@ -1,0 +1,147 @@
+{
+  "status": "DESIGN ONLY - not executed, not approved for execution. Separately versioned from the frozen primary 6.",
+  "frozen_primary_compositions": {
+    "(0, 0, 0, 1)": {
+      "M": 0,
+      "X": 1,
+      "A": 0,
+      "n_sentences": 4
+    },
+    "(0, 0, 0, 2)": {
+      "M": 0,
+      "X": 2,
+      "A": 1,
+      "n_sentences": 4
+    },
+    "(0, 0, 1, 2)": {
+      "M": 0,
+      "X": 2,
+      "A": 1,
+      "n_sentences": 4
+    },
+    "(0, 1, 1, 2)": {
+      "M": 1,
+      "X": 2,
+      "A": 1,
+      "n_sentences": 4
+    },
+    "(0, 1, 2, 2)": {
+      "M": 2,
+      "X": 2,
+      "A": 1,
+      "n_sentences": 4
+    },
+    "(1, 1, 1, 2)": {
+      "M": 1,
+      "X": 2,
+      "A": 1,
+      "n_sentences": 4
+    }
+  },
+  "all_4_qualifying_n5_candidates": [
+    {
+      "composition": "(0, 0, 0, 1, 2)",
+      "n_sentences": 5,
+      "M": 0,
+      "X": 2,
+      "A_unrounded": 0.6,
+      "A": 1,
+      "discrimination_class": "THREE_WAY",
+      "relationship_to_X": "M, X, A all distinct"
+    },
+    {
+      "composition": "(0, 0, 0, 2, 2)",
+      "n_sentences": 5,
+      "M": 0,
+      "X": 2,
+      "A_unrounded": 0.8,
+      "A": 1,
+      "discrimination_class": "THREE_WAY",
+      "relationship_to_X": "M, X, A all distinct"
+    },
+    {
+      "composition": "(0, 0, 2, 2, 2)",
+      "n_sentences": 5,
+      "M": 2,
+      "X": 2,
+      "A_unrounded": 1.2,
+      "A": 1,
+      "discrimination_class": "TWO_WAY",
+      "relationship_to_X": "M=X, separates from A only"
+    },
+    {
+      "composition": "(0, 1, 2, 2, 2)",
+      "n_sentences": 5,
+      "M": 2,
+      "X": 2,
+      "A_unrounded": 1.4,
+      "A": 1,
+      "discrimination_class": "TWO_WAY",
+      "relationship_to_X": "M=X, separates from A only"
+    }
+  ],
+  "supplement_v1_selected": [
+    {
+      "composition": "(0, 0, 0, 1, 2)",
+      "n_sentences": 5,
+      "M": 0,
+      "X": 2,
+      "A": 1,
+      "discrimination_class": "THREE_WAY",
+      "relationship_to_X": "M, X, A all distinct"
+    },
+    {
+      "composition": "(0, 0, 0, 2, 2)",
+      "n_sentences": 5,
+      "M": 0,
+      "X": 2,
+      "A": 1,
+      "discrimination_class": "THREE_WAY",
+      "relationship_to_X": "M, X, A all distinct"
+    },
+    {
+      "composition": "(0, 0, 2, 2, 2)",
+      "n_sentences": 5,
+      "M": 2,
+      "X": 2,
+      "A": 1,
+      "discrimination_class": "TWO_WAY",
+      "relationship_to_X": "M=X, separates from A only"
+    }
+  ],
+  "excluded_candidate": {
+    "composition": "(0, 1, 2, 2, 2)",
+    "reason": "Deterministic diversity rule (2 THREE_WAY + 1 TWO_WAY by ascending composition-tuple sort) selects only 1 of the 2 qualifying TWO_WAY candidates; this one sorts second within its class and was not selected. Not excluded for any coverage-outcome reason."
+  },
+  "selection_rule_reproducibility": "select_diverse_three(candidates, n_three_way=2, n_two_way=1): sort all qualifying candidates by composition tuple ascending; partition by discrimination_class; take the first n_three_way THREE_WAY and first n_two_way TWO_WAY items. Fully mechanical - takes no coverage counts, no Jev output, and no outcome preference as input. Reproducible by anyone given only the candidate list and the two integer parameters.",
+  "selection_rule_robustness_check": "the alternative allocation (1 THREE_WAY + 2 TWO_WAY) was also tested and independently clears the >=6 sufficiency threshold on all 3 pairs (see console output) - the specific 2:1 ratio was not necessary for the result, evidence against the rule having been reverse-engineered to hit the target.",
+  "selection_criteria": [
+    "M defined and unique",
+    "A defined under the existing round-half-up rule",
+    "M != A (separates the target pair)",
+    "discrimination class computed and recorded",
+    "relationship to X recorded explicitly",
+    "selected by exhaustive search + a pre-registered diversity rule (2 THREE_WAY + 1 TWO_WAY, sorted deterministically) - not by inspecting any Jev response, since none exists"
+  ],
+  "sentence_count_metadata": {
+    "frozen_primary_n_sentences": 4,
+    "supplement_v1_n_sentences": 5,
+    "flagged_confound": "Composition-level pairwise separation (the mathematical M/X/A relationship) is unaffected by sentence count and has been verified independently of it. However, input LENGTH itself is a separate variable this supplement introduces: whether Jev's actual aggregation behavior differs between 4-sentence and 5-sentence inputs is untested and unrelated to which severity levels are present. Any eventual results report must keep three things separate: (1) composition-level pairwise separation [verified, this document], (2) input-length effects [NOT tested - no n=5 control exists yet to isolate this], (3) actual Jev semantic evidence [not yet collected]. This is a documented, unresolved limitation, not a claim that n=4 and n=5 items are equivalent."
+  },
+  "no_selection_based_on_jev_output": "Confirmed structurally: this entire script makes zero API calls and reads no Jev response data; candidate discovery and selection are pure functions of the composition math (mode/max/mean) defined before this document existed.",
+  "sufficiency_threshold": 6,
+  "sufficiency_threshold_rationale": "matches the precedent set by X-vs-A's full 6/6 coverage in the original 6-item design - applied symmetrically to all three pairs. This is a MATCHED PRECEDENT, explicitly NOT a validated sufficiency threshold - whether >=6 is scientifically adequate remains open (see score_semantic_identification_protocol.md's decision gate).",
+  "frozen_coverage": {
+    "M-X": 5,
+    "M-A": 3,
+    "X-A": 6
+  },
+  "combined_coverage": {
+    "M-X": 7,
+    "M-A": 6,
+    "X-A": 9
+  },
+  "all_three_pairs_meet_sufficiency_after_supplement": true,
+  "decision_gate": "Per score_semantic_validation_specification.md \u00a78's three-tier hierarchy: this document addresses verifier/design-level coverage only. Semantic validity (is M/X/A correct?) and research validity (is this design scientifically adequate?) remain OPEN and are not advanced by clearing this numeric threshold.",
+  "note": "This supplement improves pairwise coverage counts. It does NOT establish that M, X, or A is correct, that these items are representative of real score inputs, that each item has equal evidentiary value, or that meeting this numeric threshold is scientifically sufficient - see score_semantic_validation_specification.md \u00a78's three-tier validity hierarchy, unchanged by this document."
+}

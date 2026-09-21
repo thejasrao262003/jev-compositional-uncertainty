@@ -1,0 +1,18 @@
+{
+  "purpose": "Immutability record for score_phase_b_manifest.json, the actual sentence content backing the 9 abstract compositions frozen elsewhere. Any change to which sentences are used, their assignment, or the composition set requires a new version label and a new entry here, per the same discipline as score_supplement_hashes.json.",
+  "manifest_path": "research/data/characterization/score_phase_b_manifest.json",
+  "manifest_sha256": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+  "builder_script_path": "research/src/build_score_phase_b_manifest.py",
+  "builder_script_sha256": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+  "item_ids_immutable_identity": [
+    "frozen_primary_0_0_0_1",
+    "frozen_primary_0_0_0_2",
+    "frozen_primary_0_0_1_2",
+    "frozen_primary_0_1_1_2",
+    "frozen_primary_0_1_2_2",
+    "frozen_primary_1_1_1_2",
+    "supplement_v1_0_0_0_1_2",
+    "supplement_v1_0_0_0_2_2",
+    "supplement_v1_0_0_2_2_2"
+  ]
+}

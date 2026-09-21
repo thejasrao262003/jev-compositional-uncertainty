@@ -1,0 +1,16 @@
+composition,n,M,X,A_unrounded,A_rounded,discrimination_class
+"(0, 0, 0, 0)",4,0,0,0.0,0,NON_DISCRIMINATIVE
+"(0, 0, 0, 1)",4,0,1,0.25,0,TWO_WAY
+"(0, 0, 0, 2)",4,0,2,0.5,1,THREE_WAY
+"(0, 0, 1, 1)",4,,1,0.5,1,M_UNDEFINED
+"(0, 0, 1, 2)",4,0,2,0.75,1,THREE_WAY
+"(0, 0, 2, 2)",4,,2,1.0,1,M_UNDEFINED
+"(0, 1, 1, 1)",4,1,1,0.75,1,NON_DISCRIMINATIVE
+"(0, 1, 1, 2)",4,1,2,1.0,1,TWO_WAY
+"(0, 1, 2, 2)",4,2,2,1.25,1,TWO_WAY
+"(0, 2, 2, 2)",4,2,2,1.5,2,NON_DISCRIMINATIVE
+"(1, 1, 1, 1)",4,1,1,1.0,1,NON_DISCRIMINATIVE
+"(1, 1, 1, 2)",4,1,2,1.25,1,TWO_WAY
+"(1, 1, 2, 2)",4,,2,1.5,2,M_UNDEFINED
+"(1, 2, 2, 2)",4,2,2,1.75,2,NON_DISCRIMINATIVE
+"(2, 2, 2, 2)",4,2,2,2.0,2,NON_DISCRIMINATIVE

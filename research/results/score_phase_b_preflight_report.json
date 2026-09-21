@@ -1,0 +1,498 @@
+{
+  "status": "PREFLIGHT PASSED - dry-run only, zero network calls made",
+  "hash_checks": {
+    "design_script": {
+      "path": "research/src/design_score_mvsa_supplement.py",
+      "expected": "a773236e5f75fc2e4c657270aff6ebeecadaca5b3d831fa81524706a436e3b58",
+      "actual": "a773236e5f75fc2e4c657270aff6ebeecadaca5b3d831fa81524706a436e3b58",
+      "match": true
+    },
+    "supplement_record": {
+      "path": "research/results/score_mvsa_supplement_v1.json",
+      "expected": "d0b12c5ca4a3f60b3a7ad05b98edf74c0d42270ff005cc58de89b8363d7539e0",
+      "actual": "d0b12c5ca4a3f60b3a7ad05b98edf74c0d42270ff005cc58de89b8363d7539e0",
+      "match": true
+    },
+    "phase_b_manifest": {
+      "path": "research/data/characterization/score_phase_b_manifest.json",
+      "expected": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "actual": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "match": true
+    },
+    "phase_b_manifest_builder": {
+      "path": "research/src/build_score_phase_b_manifest.py",
+      "expected": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "actual": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "match": true
+    },
+    "gate_script": {
+      "path": "research/src/verify_score_gate_logic.py",
+      "expected": "12dfa3eda2917c2f6894c9aee31fe1363a18777550b097f09f5f940e3112dd69",
+      "actual": "12dfa3eda2917c2f6894c9aee31fe1363a18777550b097f09f5f940e3112dd69",
+      "match": true
+    }
+  },
+  "item_count": 9,
+  "planned_call_count": 27,
+  "plan": [
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "source_group": "frozen_primary",
+      "repeat_index": 1,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "source_group": "frozen_primary",
+      "repeat_index": 2,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "source_group": "frozen_primary",
+      "repeat_index": 3,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 1,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 2,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 3,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 1,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 2,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 3,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_1_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 1,
+      "state": "The help center search bar's magnifying glass icon is misaligned by a few pixels in Safari. Uploading a profile photo larger than 5MB fails silently, but resizing the image first allows the upload to complete. Two-factor authentication codes sent by SMS are occasionally delayed by a minute or two, but the authenticator app option works instantly. The permissions service is denying access to all users, including administrators, locking everyone out of the platform.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_1_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 2,
+      "state": "The help center search bar's magnifying glass icon is misaligned by a few pixels in Safari. Uploading a profile photo larger than 5MB fails silently, but resizing the image first allows the upload to complete. Two-factor authentication codes sent by SMS are occasionally delayed by a minute or two, but the authenticator app option works instantly. The permissions service is denying access to all users, including administrators, locking everyone out of the platform.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_1_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 3,
+      "state": "The help center search bar's magnifying glass icon is misaligned by a few pixels in Safari. Uploading a profile photo larger than 5MB fails silently, but resizing the image first allows the upload to complete. Two-factor authentication codes sent by SMS are occasionally delayed by a minute or two, but the authenticator app option works instantly. The permissions service is denying access to all users, including administrators, locking everyone out of the platform.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_1_2_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 1,
+      "state": "The changelog entry for last month's release has a typo in the word 'improvements.' The team calendar view does not sync recurring events created on mobile, but events created on desktop sync correctly. Real-time analytics dashboards have shown no data for six hours because the ingestion pipeline has stalled completely. Database replication between the primary and read replicas has stopped entirely, and no failover has occurred.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_1_2_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 2,
+      "state": "The changelog entry for last month's release has a typo in the word 'improvements.' The team calendar view does not sync recurring events created on mobile, but events created on desktop sync correctly. Real-time analytics dashboards have shown no data for six hours because the ingestion pipeline has stalled completely. Database replication between the primary and read replicas has stopped entirely, and no failover has occurred.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_1_2_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 3,
+      "state": "The changelog entry for last month's release has a typo in the word 'improvements.' The team calendar view does not sync recurring events created on mobile, but events created on desktop sync correctly. Real-time analytics dashboards have shown no data for six hours because the ingestion pipeline has stalled completely. Database replication between the primary and read replicas has stopped entirely, and no failover has occurred.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_1_1_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 1,
+      "state": "The search index lags behind newly created records by up to ten minutes, though records are still retrievable by direct link. Autosave stops working after the browser tab has been idle for over an hour, though a manual save still succeeds. Bulk-exporting more than 500 rows to Excel times out, but exporting in smaller batches of 200 rows succeeds. The main API gateway is returning HTTP 503 for every request, regardless of endpoint or payload.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_1_1_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 2,
+      "state": "The search index lags behind newly created records by up to ten minutes, though records are still retrievable by direct link. Autosave stops working after the browser tab has been idle for over an hour, though a manual save still succeeds. Bulk-exporting more than 500 rows to Excel times out, but exporting in smaller batches of 200 rows succeeds. The main API gateway is returning HTTP 503 for every request, regardless of endpoint or payload.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_1_1_1_2",
+      "source_group": "frozen_primary",
+      "repeat_index": 3,
+      "state": "The search index lags behind newly created records by up to ten minutes, though records are still retrievable by direct link. Autosave stops working after the browser tab has been idle for over an hour, though a manual save still succeeds. Bulk-exporting more than 500 rows to Excel times out, but exporting in smaller batches of 200 rows succeeds. The main API gateway is returning HTTP 503 for every request, regardless of endpoint or payload.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_0_1_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 1,
+      "state": "A deprecated banner about an old feature still appears on a settings tab that no longer has that feature. The support ticket confirmation email's logo is rendered at a slightly lower resolution than in other emails. The settings page's save confirmation toast appears in the wrong corner on ultra-wide monitors. The mobile app's push notifications arrive with a delay of several minutes, though in-app notifications still update immediately. Scheduled backups have not completed successfully for the past four consecutive nights.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_0_1_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 2,
+      "state": "A deprecated banner about an old feature still appears on a settings tab that no longer has that feature. The support ticket confirmation email's logo is rendered at a slightly lower resolution than in other emails. The settings page's save confirmation toast appears in the wrong corner on ultra-wide monitors. The mobile app's push notifications arrive with a delay of several minutes, though in-app notifications still update immediately. Scheduled backups have not completed successfully for the past four consecutive nights.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_0_1_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 3,
+      "state": "A deprecated banner about an old feature still appears on a settings tab that no longer has that feature. The support ticket confirmation email's logo is rendered at a slightly lower resolution than in other emails. The settings page's save confirmation toast appears in the wrong corner on ultra-wide monitors. The mobile app's push notifications arrive with a delay of several minutes, though in-app notifications still update immediately. Scheduled backups have not completed successfully for the past four consecutive nights.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_0_2_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 1,
+      "state": "A placeholder image is shown for roughly one second before the user's avatar loads on first login. An unused CSS class causes a 2-pixel margin discrepancy on the notifications panel in Firefox only. The footer copyright year has not been updated to the current year on the marketing site. The password reset flow fails at every step because the email delivery service has stopped accepting new jobs. The authentication service is rejecting all valid login attempts with a generic 'internal error' response.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_0_2_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 2,
+      "state": "A placeholder image is shown for roughly one second before the user's avatar loads on first login. An unused CSS class causes a 2-pixel margin discrepancy on the notifications panel in Firefox only. The footer copyright year has not been updated to the current year on the marketing site. The password reset flow fails at every step because the email delivery service has stopped accepting new jobs. The authentication service is rejecting all valid login attempts with a generic 'internal error' response.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_0_2_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 3,
+      "state": "A placeholder image is shown for roughly one second before the user's avatar loads on first login. An unused CSS class causes a 2-pixel margin discrepancy on the notifications panel in Firefox only. The footer copyright year has not been updated to the current year on the marketing site. The password reset flow fails at every step because the email delivery service has stopped accepting new jobs. The authentication service is rejecting all valid login attempts with a generic 'internal error' response.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_2_2_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 1,
+      "state": "The billing history table's date column header is left-aligned while every other column header is centered. The keyboard shortcut hint for 'undo' still references a key combination from an older version of the app. The mobile app crashes immediately on launch for all users on the latest OS update, with no workaround available. Encrypted file uploads are being corrupted in transit, making every uploaded document unreadable on download. Customer support agents are unable to open any existing ticket; the ticket detail view crashes on load for all users.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_2_2_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 2,
+      "state": "The billing history table's date column header is left-aligned while every other column header is centered. The keyboard shortcut hint for 'undo' still references a key combination from an older version of the app. The mobile app crashes immediately on launch for all users on the latest OS update, with no workaround available. Encrypted file uploads are being corrupted in transit, making every uploaded document unreadable on download. Customer support agents are unable to open any existing ticket; the ticket detail view crashes on load for all users.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "supplement_v1_0_0_2_2_2",
+      "source_group": "supplement_v1",
+      "repeat_index": 3,
+      "state": "The billing history table's date column header is left-aligned while every other column header is centered. The keyboard shortcut hint for 'undo' still references a key combination from an older version of the app. The mobile app crashes immediately on launch for all users on the latest OS update, with no workaround available. Encrypted file uploads are being corrupted in transit, making every uploaded document unreadable on download. Customer support agents are unable to open any existing ticket; the ticket detail view crashes on load for all users.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    }
+  ]
+}

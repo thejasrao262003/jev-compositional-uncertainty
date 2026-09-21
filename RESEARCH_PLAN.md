@@ -378,6 +378,446 @@ still unresolved), and (b) any future workflow-policy experiment, which
 per this section should be separately specified and reviewed, not
 derived directly from these aggregate results.
 
+**Update (repository committed, 2 commits, 2026-09-22):** `f480613`
+(62-file freeze of Stage 0/Stage 1 work) and `c8b6197` (provenance
+correction to `analysis_freeze_manifest.json` — fixed the self-
+referential-hash problem by renaming the field to `preceding_commit` with
+an explicit note explaining why a file can't contain the hash of the
+commit that carries its own current bytes; artifact hashes unchanged,
+confirmed via `git diff --stat` before committing).
+
+**Update (`score` semantic-validation specification written, 2026-09-22
+— design only, not executed):**
+`research/methodology/score_semantic_validation_specification.md`.
+Recovers the documented `score` contract and isolates exactly what's
+undocumented (how evidence aggregates into a probability distribution —
+not the distribution-to-scalar formula, which was already confirmed).
+Defines three candidate target semantics computable independently of any
+Jev output (majority-count, highest-severity, severity-weighted-average;
+a fourth, risk-sensitive, is explicitly deferred to the future workflow-
+policy stage since it needs an externally supplied loss function this
+study has no principled way to invent). Designs 10 three-sentence
+compositions (3 unanimous-control anchors + 7 discriminative, chosen so
+the three candidates predict different levels — including the exact
+2:1 composition Stage 0 already tested once) and a pre-registered,
+threshold-based gate (≥5/7 discriminative-item matches = semantic
+clarity; otherwise ambiguity or failure) that is fixed *before* any data
+exists, explicitly binding against picking whichever interpretation
+happens to fit the data. Small budget (30 calls, feasibility-scale, no
+robustness/repeat layer — that question is already answered in general
+from Step 0A.2). All three gate outcomes (clarity/ambiguity/failure) are
+mapped to what each would authorize next, none presumed.
+
+**No API calls made.** This is a design document only, submitted for
+review before any manifest is built or call is made.
+
+**Update (Revision 2, 2026-09-22 — still no API calls):** fixed 3 major
+protocol issues and 4 smaller ones. The gate denominators were
+inconsistent (M's undefined cell on `(0,1,2)` meant M had 6 scorable
+items while X/A had 7, under one shared "5 of 7" label) — fixed by
+moving `(0,1,2)` entirely out of the primary gate onto a fixed 6-item set
+where all three candidates are defined, reported only as a supplementary
+X-vs-A comparison. The three gate outcomes (clarity/ambiguity/failure)
+were not mutually exclusive as originally worded — a low-match-everywhere
+case satisfied both "ambiguity" and "failure" simultaneously — fixed with
+an explicit **ordered** decision procedure (clarity checked first, then
+failure, everything else falls to ambiguity by construction; verified
+exhaustive/mutually-exclusive by enumeration). The 5/7 threshold's status
+was underspecified — now stated explicitly as a feasibility-stage design
+heuristic, not statistical/inferential proof, with the candidates'
+structural overlap (M=X on several compositions, etc.) named directly.
+Also added: explicit repeat-aggregation and tie-handling rules (modal
+decision across 3 repeats, a genuine "no consistent decision" category
+that is never forced into a fake mode, full repeat-level data retained
+regardless of the reduction); a hard separation between categorical
+matching (argmax vs. M/X/A) and scalar proximity (`score` vs. unrounded
+A) into two explicitly distinct analyses; and softened language on both
+the single-domain scope and the presentation-order exclusion, framing
+both as disclosed restrictions rather than implied generality claims.
+
+Submitted for review before any manifest is built.
+
+**Update (Revision 7, 2026-09-22 — still no API calls, moving from
+implementation-audit to semantic-validation review):** froze the entire
+verifier audit —
+`research/data/characterization/score_verifier_freeze_manifest.json`
+(exact script/spec hashes, full boundary matrix, every mutation operator
+and result, independent fixture definitions, the `[1,9,9]→[1,9,1,9]`
+test-construction history, documented limitations) — no semantic changes
+follow this freeze; anything found later is a new, separately-tracked
+issue. Added a **dedicated semantic fixture audit**
+(`research/results/score_semantic_fixture_audit.md`), distinct from the
+gate implementation audit: walks all 6 primary compositions individually
+through an 8-point checklist (multiset size, M/X/A definedness and
+derivation, no `M=X=A`, claimed class correctness, supplementary
+exclusion) — all 6 independently verified.
+
+Restructured spec §8 around the explicit **three-tier hierarchy**
+(verifier validity: addressed; semantic validity: open; research
+validity: open) rather than a binary split. Split the mutation-testing
+claim that was at risk of being collapsed: the shipped-threshold finding
+(branch mathematically redundant) and the hypothetical-threshold finding
+(branch matters, but that configuration is explicitly labeled *outside
+the declared admissible space*, a robustness probe only) are now two
+separate, clearly-scoped claims. Stated explicitly that `[0,0,0,9]`
+proves the implementation distinguishes mode/max/mean from each
+other and nothing about which one `score` actually uses.
+
+**Per review: implementation audit is done. Semantic validity and
+research adequacy are both still fully open — that is the explicit
+handoff point to the next phase, not a gap to paper over.**
+
+**Update (semantic-validation handoff, 2026-09-22 — still no API calls):**
+wrote `research/methodology/score_semantic_identification_protocol.md`,
+sitting one level above the gate spec — references rather than duplicates
+existing content (contract inventory, candidate definitions already
+covered; nothing restated in different words for its own sake).
+
+**Its actual new contribution**: workstream 3 ("identifiability
+analysis") computes something never previously checked —
+`research/src/verify_score_identifiability.py` finds that the 6 primary
+items' pairwise discriminating power is **asymmetric**: X-vs-A is
+separated on all 6 items, M-vs-X on 5 of 6, but **M-vs-A on only 3 of
+6** (`(0,0,0,1)`, `(0,1,1,2)`, `(1,1,1,2)` all happen to have
+`A_rounded == M`, silently uninformative for that specific comparison
+despite being labeled "discriminative" overall). Consequence: a future
+CLARITY outcome driven mainly by M-vs-A disagreement would rest on half
+the evidence base a X-vs-A-driven outcome would. This is now a required
+disclosure in workstream 5's extended decision rules, and a new stopping
+condition ("evidence insufficient for Stage 1") triggers if CLARITY is
+reached only via the low-coverage pair.
+
+Also formalized as explicit binding rules (both already true in the
+existing implementation, now named rather than merely implicit): (1)
+agreement with Jev's output is never proof of intended semantics,
+regardless of how many items agree; (2) an item non-discriminating for a
+*specific pair* must never be counted as evidence for that pair, even
+when it remains valid evidence for the pairs it does separate.
+
+**One open question submitted to review, not resolved unilaterally**:
+whether to proceed with the current 6-item design (disclosing the M-vs-A
+limitation) or add supplementary items to close that specific gap before
+any further work.
+
+**Update (Supplement v1 designed, 2026-09-22 — still no API calls, frozen
+6 unmodified):** per review's decision to augment rather than modify,
+built `research/src/design_score_mvsa_supplement.py` — searched a
+genuinely new composition space (n=5 sentences; every one of the 15
+possible n=4/3-level multisets was already exhausted across the existing
+categories, so no new n=4 pattern was available) under 7 pre-registered
+criteria (M defined+unique, A defined under the unchanged rounding rule,
+`M≠A`, discrimination class recorded, relationship-to-X recorded,
+selection by exhaustive search + a deterministic diversity rule with zero
+dependence on any Jev output, combined coverage reported before any
+semantic evaluation). Found 4 qualifying compositions, selected 3 (2
+THREE_WAY + 1 TWO_WAY, per the diversity rule) — `(0,0,0,1,2)`,
+`(0,0,0,2,2)`, `(0,0,2,2,2)`.
+
+**Result, script-verified**: combined with the frozen 6, M-vs-A coverage
+rises from 3/6 to 6/9 — and applying the *same* `≥6` threshold
+symmetrically (per review's explicit request, not just to M-vs-A) shows
+**all three pairs now clear it**: M-X 7/9, M-A 6/9, X-A 9/9. Full record:
+`score_mvsa_supplement_v1.json`.
+
+Generalized the stopping rule in the identification protocol to be
+symmetric across all three pairs (formalized as `n_P` = pair-specific
+separating-item count, with an explicit rule that only those items may
+ever count as evidence for that pair), and added the explicit
+frozen-vs-newly-open list review requested. **Nothing here builds actual
+manifest items, estimates a budget, or authorizes any API call** — that
+remains the next, separate step if this design is approved.
+
+**Update (supplement manifest spec + sentence-count confound named,
+2026-09-22 — still no API calls):** wrote
+`research/methodology/score_mvsa_supplement_manifest_spec.md`, the
+requested next artifact, containing all 10 required elements. Two
+substantive additions beyond restating prior results: (1) a **selection-
+rule robustness check** — ran the alternative allocation (1 THREE_WAY + 2
+TWO_WAY instead of 2+1) and confirmed it *also* independently clears the
+≥6 threshold on all 3 pairs (M-X 6/9, M-A 6/9, X-A 9/9), which is direct
+evidence the 2:1 ratio wasn't reverse-engineered to hit the target — a
+different reasonable rule gets there too. (2) **The n=4-vs-n=5
+sentence-count confound review flagged is now named as its own tracked
+limitation**, not folded into the composition-level math: the frozen 6
+use 4 sentences, the supplement uses 5 (because the n=4 space is fully
+exhausted — no larger n=4 M-vs-A set exists to build instead), and no
+n=5 control exists yet to isolate whether input length itself changes
+Jev's behavior independent of severity content. Documented as a binding
+rule for any future write-up: composition-level separation (verified),
+input-length effects (untested), and actual semantic evidence
+(uncollected) must never be blended into one conclusion.
+
+Also recorded, per the design script's output: the full 4-candidate table
+(not just the 3 selected), the excluded candidate (`(0,1,2,2,2)`) with
+its purely mechanical exclusion reason, and an explicit decision-gate
+restatement that none of this advances semantic or research validity —
+only design-level coverage.
+
+**Update (bounded semantic-validation protocol, 2026-09-22 — Phase A
+complete, Phase B defined but NOT executed):** wrote
+`research/methodology/score_bounded_semantic_validation_protocol.md`.
+**The most important addition**: M, X, and A are all defined purely from
+the *multiset* of severity levels — every one is order-invariant by
+construction. Step 0A.2 already found real, replicated order-sensitivity
+for `choice` (confidence 0.82→0.01 from a two-sentence swap) *and* a
+smaller but real order effect on `score` itself (the same 1+2 boundary
+composition, order-reversed, moved confidence 0.73→0.86 and level-2 mass
+0.18→0.09). This means order-dependence isn't a generic hypothetical
+alternative semantic family to list alongside the others — it's already
+evidenced, and it's a structural blind spot no candidate in `{M,X,A}` can
+ever cover. Built this into a formal candidate-set adequacy gate: any
+Phase B result must be reported as "discrimination among M/X/A under
+canonical presentation," never as "`score`'s semantics identified,"
+until order-dependence (and four other unexcluded families: weighted
+statistics, transformations, probability-derived statistics, nonlinear/
+concentration effects) are separately addressed.
+
+Also resolved, as an explicit design decision open to override: rather
+than invent and re-verify new 3-way gate thresholds for 9 items, the
+already-audited N=6 gate runs unchanged on the frozen 6 only; the
+supplement's 3 items feed exclusively into pair-specific `n_P`
+accounting. Phase B is fully specified (9 items, canonical-only, 3
+repeats/item, 27 calls) but **not executed** — Phase C's review criteria
+(stability check, frozen-6 gate outcome, pair-specific cross-check,
+candidate-adequacy re-application, "underidentified" as an acceptable
+outcome, no automatic Stage 1 expansion) are defined for data that
+doesn't exist yet. All 6 of review's binding conditions are satisfied by
+the design; none of them authorizes running it.
+
+**Update (artifact-level preflight, 2026-09-22 — still no API calls),
+addressing review's 6-point preflight review of the protocol document
+itself:**
+
+1. **Order-sensitivity citation verified against the actual run script**,
+   not assumed: `run_step0a2.py` lines 124/126 confirm `score_mix_L1_L2`
+   vs. `score_mix_L1_L2_swapped` use the identical two sentences and
+   identical instructions/criteria — concatenation order is the *only*
+   variable that differs. The "assuming the prior comparison controlled
+   for composition" caveat is now resolved, not carried forward as an
+   assumption. Added the exact do/don't-establish table (mechanism
+   unknown; order effect doesn't necessarily equal intended semantics).
+2. **Phase B's inability to investigate order-sensitivity is now its own
+   named, explicit exclusion** (previously implied by "canonical
+   presentation only") — stated as a rule that Phase B's own data may
+   never be used as evidence about order-invariance either way.
+3. **N=6-gate/N=9-accounting separation made concrete**: added a
+   quantities table (gate input/denominator vs. pairwise-accounting
+   denominator, explicitly different), a prohibited-phrasing rule ("the
+   nine-item gate passed" — banned, no such gate exists) plus the
+   required replacement phrasing verbatim, and a code-level requirement
+   that any future Phase B analysis script call the frozen `gate()`
+   function unmodified on the 6-item data and compute `n_P` via a
+   *separate* function on the 9-item data — never one merged function.
+4. **Immutable identity for the 3 supplement compositions**: new
+   `research/data/characterization/score_supplement_hashes.json` (design
+   script + supplement record SHA-256, the 3 compositions' identities) —
+   kept separate from the already-frozen verifier audit rather than
+   retroactively editing it.
+5. **27-call budget confirmed fixed**, with retry-accounting stated
+   explicitly (client-level retries don't add to the planned count, per
+   established convention).
+6. **Full outcome-interpretation matrix added to Phase C** — every
+   combination of {frozen-6 gate outcome} × {stability} × {pair-specific
+   sufficiency} now has a required report phrase, including the
+   previously-undefined "CLARITY but unstable" and "AMBIGUITY but
+   inconclusive due to instability" cells, not just the favorable
+   combinations.
+
+**Protocol design is now at the preflight-complete stage the review
+described.** No execution has occurred; none is authorized by this
+update.
+
+**Update (Revision 6, 2026-09-22 — still no API calls, all four remaining
+checks closed with real code):** (1) space-definition confirmed rather
+than assumed — the gate verifier now asserts the achievable per-candidate
+match range is exactly `{0..6}` (7 values, never a padded `{0..7}`), so
+343 = 7³ is provably the exact logically-possible space, not oversized.
+(2) An 8-case named boundary matrix added (leader at `CLARITY_MIN±1`,
+other candidate at `CLARITY_OTHERS_MAX`/`+1`, ties at the floor, all tied
+high, all at/below `FAILURE_MAX`) — each individually visible and
+asserted, not just silently swept up by the exhaustive sweep. (3)
+Primitive-test independence strengthened with the actual limitation named
+in the script's docstring: this n=4/3-level domain only ever produces
+quarter-fraction means, so no quarter-fraction test is *truly*
+independent of it — fixed with 7 genuinely out-of-domain values
+(negative, large, non-quarter-fraction) plus the specific mode-detection
+cases requested (two-way tie, three-way tie, order-invariance, and the
+one that matters most — "max level is not the mode," `[0,0,0,9]→mode=0`,
+directly exercising the M≠X property this whole study depends on).
+**Building this caught a real bug**: an order-invariance test case,
+`[1,9,9]`, wasn't actually the same multiset as the tie case it was
+meant to re-test (missing a `1`) — caught by running it, not by
+inspection, fixed to `[1,9,1,9]`. (4) A new §8, "Verifier validity vs.
+semantic validity," makes explicit what passing every script does *not*
+establish: that M/X/A is correct, that 6 items are sufficient, that the
+thresholds are optimal, that a future Stage 1 experiment would have valid
+ground truth, or that any of this generalizes past the tested domain.
+
+Both verifiers re-ran clean end-to-end after the fix.
+
+**Update (Revision 5, 2026-09-22 — still no API calls, genuine
+implementation audit):** upgraded both verification scripts with real
+mutation testing, not just prose claims of protectiveness. Composition
+verifier: added independent primitive unit tests (textbook values,
+unrelated to any composition) for `round_half_up`/`mode_with_tie_
+detection` before trusting them on real data; added 4 mutation tests
+(corrupt a discrimination-class claim, relabel the supplementary item as
+primary, break rounding, break tie-detection) — all 4 confirmed caught;
+added CSV/JSON artifact-integrity checks (row count, duplicate keys,
+credential-string scan, verifier script hash recorded in the JSON). A
+real bug surfaced building this: the "no network dependency" check's
+first draft used substring search on its own source and matched its own
+forbidden-word list literal — fixed with an AST-based import check
+instead, reported not silently patched.
+
+Gate-logic verifier: added the explicit precedence case from review's
+item B4 (`M=5,X=4,A=0` → AMBIGUITY, confirmed never CLARITY/FAILURE), and
+3 mutation tests. **The most interesting result**: disabling the tie-
+check branch changes **0 of 343** outcomes under the shipped thresholds —
+proven mathematically (any tie-at-max necessarily puts a co-tied,
+above-threshold candidate into the "others" check, which alone already
+blocks CLARITY), not a test gap. A second mutation, using a hypothetical
+threshold configuration where the branch *would* matter, confirmed 16
+wrongful CLARITY cases appear without it — proving the mutation
+methodology itself is sound rather than the branch being dead weight or
+the tests being vacuous. `FAILURE_MAX`/`CLARITY_MIN` separately confirmed
+load-bearing (perturbing either measurably shifts the outcome
+distribution).
+
+Both scripts re-ran clean end-to-end after fixes.
+
+**Update (Revision 4, 2026-09-22 — still no API calls):** the composition
+table is no longer hand-derived or hand-checked. Two new verification
+scripts, both run and both clean:
+`research/src/verify_score_semantic_compositions.py` enumerates all 15
+possible 4-sentence/3-level multisets, computes `(M, X, A_unrounded,
+A_rounded)` independently for each, and asserts the spec's every claim
+against that computed table (primary-set size/composition, zero
+`M=X=A_rounded` items, the 2-three-way/4-two-way split count, the
+supplementary item's M-undefined status and its exclusion from the
+primary set) — output saved to `score_semantic_composition_table.csv`
+and `score_semantic_composition_verification.json`.
+`research/src/verify_score_gate_logic.py` exhaustively runs the gate
+pseudocode over all 343 possible `(matches_M, matches_X, matches_A)`
+combinations (not just spot-checked tie cases), confirming a tied leader
+can never produce CLARITY and that the three outcomes are exhaustive and
+mutually exclusive across the *entire* space, not just by construction
+argument — output saved to `score_gate_logic_verification.txt`.
+
+Also: the supplementary item now carries an explicit
+`"supplementary_contested_tie"` membership tag (asserted structurally by
+the verification script, not just described in prose) so it can't be
+accidentally swept into the primary set by a generic filter; a mandatory
+6-quantity reporting table added so `repeat_unstable` counts are never
+confused with semantic mismatch in the eventual write-up; the gate
+pseudocode restructured with an explicit tie-branch and the failure
+threshold spelled out as a literal integer constant; and an explicit
+caution that this n=4 design's results won't be directly comparable to a
+hypothetical n=3 run.
+
+**Update (Revision 3, 2026-09-22 — still no API calls):** review caught
+that `(1,1,2)`'s "all three distinct" label was mathematically wrong
+(rounded A=1=M, only X=2 differs) — checking every Revision 2 row the
+same way (not just the flagged one) found this was a real design flaw,
+not a typo: **with 3-sentence/3-level compositions, only 4 of the 6
+"primary gate" items were actually usable** — `(0,1,1)` and `(1,2,2)`
+have M=X=A after rounding (zero discrimination), mislabeled as
+discriminative since Revision 1. Root cause: only 10 possible 3-sentence/
+3-level multisets exist, too few to supply 6 well-separated items without
+collisions. Fixed by moving to **4-sentence items** (re-deriving the full
+table by direct enumeration, script-verified, not hand-computed) — yields
+6 genuinely discriminative compositions with zero rounding coincidences
+(2 three-way, 4 two-way splits) plus a cleaner supplementary tie item
+`(0,0,2,2)`; controls also moved to n=4 for internal consistency. Budget
+unchanged (still 10 compositions × 3 calls = 30).
+
+Also addressed review's two final checks: an explicit unit-of-analysis
+statement (the gate operates on 6 composition-level modal decisions,
+never the 18 raw repeat-level observations, with a stated, justified rule
+for why `repeat_unstable` items contribute 0 to every candidate's count
+rather than shrinking the denominator — shrinking it would let a
+candidate's rate rise just by excluding its own hard cases); and literal,
+executable pseudocode for the ordered gate, including a by-construction
+proof that a tie at the top can never produce a CLARITY outcome (no
+special-case branch needed).
+
+Submitted for review before any manifest is built.
+
+**Update (Phase B runner built, self-tested, and EXECUTED — 27 live API
+calls, 2026-09-22):** review's blocking finding on `score_bounded_
+semantic_validation_protocol.md` was that no executable Phase B runner
+existed to enforce the protocol's requirements, only prose describing
+them. Addressed with two new scripts, both self-tested before any call:
+
+- `research/src/build_score_phase_b_manifest.py` — closed a real gap
+  surfaced by trying to make the protocol executable: the frozen 6 items
+  (`score_semantic_validation_specification.md` §3) and the 3 supplement
+  items (`score_mvsa_supplement_v1.json`) had only ever been defined as
+  abstract level-multisets, e.g. `(0,0,0,1)` — no actual sentence text
+  existed to send to the API. This script authors 39 fresh, single-domain
+  sentences (18 cosmetic / 9 degraded / 12 blocking), checked at runtime
+  for zero overlap with any prior manifest's text, assigns them via a
+  seeded deterministic shuffle (seed `1729`, no Jev output involved), and
+  independently re-derives M/X/A from each item's level multiset before
+  writing anything — asserting agreement with the pre-registered expected
+  values. Output: `research/data/characterization/score_phase_b_manifest.json`
+  + `score_phase_b_manifest_hashes.json` (same immutability discipline as
+  `score_supplement_hashes.json`).
+- `research/src/run_score_phase_b.py` — hash-verifies all four upstream
+  inputs (design script, supplement record, the new manifest + its
+  builder, the frozen `verify_score_gate_logic.py`) before touching
+  anything; validates the exact 9-item identity set and the exact 27-call
+  plan (rejects extra/missing/duplicate cells); imports `gate()` directly
+  from `verify_score_gate_logic` rather than reimplementing it; keeps
+  `compute_pairwise_np` structurally separate, operating on all 9 items;
+  implements the §5.0 modal-reduction rule (0.02 tie tolerance, ≥2/3
+  agreement); maps outcomes through the full 12-cell (gate × stability ×
+  sufficiency) interpretation matrix; gates live execution behind two
+  independent flags (`--live` + `--confirm-27-calls`) on top of
+  `--mode live`.
+- **7-case self-test suite, run and passing**: hash-tamper detection
+  fires and un-fires correctly; an injected 10th item, a truncated
+  26-call plan, and a duplicate cell are each rejected; `gate.__module__`
+  confirms no local reimplementation; the 9-item pairwise scope is
+  confirmed structurally distinct from the 6-item-only gate call site;
+  `requests.post` was monkeypatched to raise and the dry-run preflight
+  completed without triggering it. **A real bug was caught by the first
+  self-test run, not glossed over**: `compute_pairwise_np` initially
+  assumed an `"A"` key where the manifest correctly stores
+  `"A_unrounded"`/`"A_rounded"` separately (per §2's rounding-rule
+  distinction) — fixed with one `normalize_expected()` function rather
+  than scattered ad hoc fixes.
+
+**Executed, per explicit approval ("Approved: proceed with the 27 Phase B
+calls")**: rebuild → hash match, self-tests → 7/7, dry-run preflight →
+clean, then all 27 calls ran. Result: 27/27 HTTP 200, zero retries, zero
+deviations. Full record: `research/results/score_phase_b_execution_manifest.json`;
+raw/parsed data in `research/data/characterization/score_phase_b_{raw,parsed}_responses.jsonl`.
+
+**Frozen six-item gate (denominator 6, unmodified)**: matches M=1, X=6,
+A=0 → **CLARITY, leader X (Highest-severity)**, stability 6/6. **Nine-item
+pairwise n_P (separate accounting)**: M-X 7 designed/6 favor X; M-A 6
+designed/2 favor M, 1 favor A, 3 unstable-or-neither; X-A 9 designed/8
+favor X, 1 favor A. Classification: `CLARITY/low-instability/sufficient`.
+
+**Required report phrasing, per §A.2/§A.3 (binding, not optional)**:
+*"discrimination among M, X, and A under canonical (fixed) presentation
+only"* — never "score's intended semantics identified," "score implements
+a maximum operator," or any claim that this generalizes across
+presentation order. Order-dependence was already evidenced for `score`
+(Step 0A.2, `score_mix_L1_L2` vs. `_swapped`) before this run and remains
+completely untouched by it — Phase B's canonical-only design structurally
+cannot speak to it either way. The four other unmodeled candidate families
+(weighted statistic, transformation/normalization, probability-derived
+statistic, nonlinear/concentration effect) remain unexcluded.
+
+**No automatic Stage 1 expansion** (Phase C criterion 6) — two disposition
+options are on the table and neither has been chosen yet: (A) close the
+`score`-semantic investigation at this bounded result, or (B) a
+separately designed, separately approved presentation-sensitivity study
+(explicitly not an implicit extension of Phase B). Awaiting a decision on
+which to pursue, if either, before any further `score` API calls.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

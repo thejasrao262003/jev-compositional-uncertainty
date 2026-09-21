@@ -1,0 +1,154 @@
+{
+  "purpose": "Freeze record for the score semantic-validation verifier audit (Revision 6), per review. Captures the exact tested state before any further semantic-validity or research-adequacy work proceeds. No semantic changes are permitted after this freeze without a separately recorded, reviewed issue - a semantic concern discovered later is a NEW issue, not a silent edit to this record.",
+  "frozen_at_utc": "2026-09-22T00:00:00Z",
+  "scope": "Implementation/verifier audit only. Does NOT freeze or certify: (a) that M, X, or A is the correct semantic interpretation of `score` (semantic validity - open), or (b) that 6 primary compositions and the chosen thresholds are scientifically adequate (research validity - open). See the spec's §8 three-tier validity hierarchy.",
+
+  "tested_source_revisions": {
+    "specification": {
+      "path": "research/methodology/score_semantic_validation_specification.md",
+      "sha256": "69d85885672abe9f8db13f71529d2579d6a0625ac7cc551837abb20ed7c6afca",
+      "revision_label": "Revision 6"
+    },
+    "composition_verifier": {
+      "path": "research/src/verify_score_semantic_compositions.py",
+      "sha256": "ffb86c3f3580d623d9db0d8fedb4de947e6826879cd2df6fa57b78ce303d86ee"
+    },
+    "gate_logic_verifier": {
+      "path": "research/src/verify_score_gate_logic.py",
+      "sha256": "12dfa3eda2917c2f6894c9aee31fe1363a18777550b097f09f5f940e3112dd69"
+    }
+  },
+
+  "composition_table_result": {
+    "total_multisets_enumerated": 15,
+    "primary_gate_compositions": ["(0,0,0,1)", "(0,0,0,2)", "(0,0,1,2)", "(0,1,1,2)", "(0,1,2,2)", "(1,1,1,2)"],
+    "primary_gate_size": 6,
+    "three_way_split_count": 2,
+    "two_way_split_count": 4,
+    "supplementary_composition": "(0,0,2,2)",
+    "supplementary_membership_tag": "supplementary_contested_tie",
+    "control_compositions": ["(0,0,0,0)", "(1,1,1,1)", "(2,2,2,2)"],
+    "all_spec_claims_matched": true,
+    "full_table_artifact": "research/results/score_semantic_composition_table.csv (15 rows)",
+    "full_table_artifact_sha256_note": "hash the CSV at freeze time if bit-for-bit binding is needed later; content is fully reproducible from the frozen verifier script"
+  },
+
+  "gate_logic_result": {
+    "denominator": 6,
+    "achievable_range_per_candidate": "{0,1,2,3,4,5,6} (7 values) - asserted, not assumed",
+    "total_space_enumerated": 343,
+    "outcome_distribution": {"CLARITY": 96, "FAILURE": 64, "AMBIGUITY": 183},
+    "constants": {"CLARITY_MIN": 5, "CLARITY_OTHERS_MAX": 3, "FAILURE_MAX": 3},
+    "boundary_matrix": [
+      {"case": "leader at CLARITY_MIN-1 (=4)", "input": [4, 0, 0], "expected": "AMBIGUITY"},
+      {"case": "leader at CLARITY_MIN (=5)", "input": [5, 0, 0], "expected": "CLARITY"},
+      {"case": "other at CLARITY_OTHERS_MAX (=3)", "input": [5, 3, 0], "expected": "CLARITY"},
+      {"case": "other at CLARITY_OTHERS_MAX+1 (=4)", "input": [5, 4, 0], "expected": "AMBIGUITY"},
+      {"case": "two candidates at CLARITY_MIN (=5)", "input": [5, 5, 0], "expected": "AMBIGUITY"},
+      {"case": "all three tied at the maximum (=6)", "input": [6, 6, 6], "expected": "AMBIGUITY"},
+      {"case": "all three at or below FAILURE_MAX (=3)", "input": [3, 2, 1], "expected": "FAILURE"},
+      {"case": "all three at exactly FAILURE_MAX (=3)", "input": [3, 3, 3], "expected": "FAILURE"}
+    ],
+    "boundary_matrix_all_passed": true,
+    "tie_regression_cases_tested": 8,
+    "tie_regression_all_correctly_non_clarity": true
+  },
+
+  "mutation_operators_and_results": [
+    {
+      "target": "composition verifier",
+      "operator": "corrupt a primary item's claimed discrimination_class",
+      "detected": true
+    },
+    {
+      "target": "composition verifier",
+      "operator": "relabel the supplementary (M-undefined) item as 'primary'",
+      "detected": true
+    },
+    {
+      "target": "composition verifier",
+      "operator": "break round_half_up (drop the +0.5)",
+      "detected": true,
+      "note": "changed A_rounded on 2 of 6 primary compositions; both changes were caught"
+    },
+    {
+      "target": "composition verifier",
+      "operator": "break mode detection to never report a tie",
+      "detected": true
+    },
+    {
+      "target": "gate logic verifier",
+      "operator": "disable the tie-at-the-top branch, SHIPPED thresholds (CLARITY_MIN=5, CLARITY_OTHERS_MAX=3)",
+      "outcome_changed": false,
+      "classification": "declared-admissible-config finding, not a mutation escape",
+      "note": "Mathematically proven redundant under these specific thresholds - see spec §5.2. This is an honest finding about the current configuration, not a gap in mutation coverage."
+    },
+    {
+      "target": "gate logic verifier",
+      "operator": "disable the tie-at-the-top branch, HYPOTHETICAL thresholds (CLARITY_OTHERS_MAX raised to equal CLARITY_MIN)",
+      "outcome_changed": true,
+      "classification": "EXPLORATORY ROBUSTNESS MUTATION, OUTSIDE the declared admissible configuration space - labeled explicitly as such, not evidence about current production behavior",
+      "wrongful_clarity_cases_introduced": 16,
+      "note": "Confirms the branch is a real safeguard should thresholds ever change, and confirms the mutation methodology itself is sound (capable of detecting a real defect when one exists)."
+    },
+    {
+      "target": "gate logic verifier",
+      "operator": "loosen FAILURE_MAX from 3 to 5",
+      "outcome_changed": true,
+      "detail": "FAILURE count changed 64 -> 125"
+    },
+    {
+      "target": "gate logic verifier",
+      "operator": "tighten CLARITY_MIN from 5 to 3",
+      "outcome_changed": true,
+      "detail": "CLARITY count changed 96 -> 171"
+    }
+  ],
+
+  "independent_fixture_definitions": {
+    "round_half_up_out_of_domain": [[-0.5, 0], [-1.5, -1], [10.5, 11], [100.5, 101], [3.33, 3], [7.1, 7], [-2.4, -2]],
+    "round_half_up_in_domain_boundary_coincidental": [[0.25, 0], [0.75, 1], [0.5, 1], [1.5, 2], [2.5, 3]],
+    "mode_detection_textbook_cases": [
+      "[5,5,5,7] -> 5 (unique mode)",
+      "[9,9,1,1] -> None (two-way tie)",
+      "[4,4,6,6,6] -> 6",
+      "[2,2,5,5,9] -> None",
+      "[1,2,3] -> None (three-way tie, all distinct)",
+      "[1,9,1,9] -> None (SAME multiset as [9,9,1,1], different order - order-invariance check)",
+      "[0,0,0,9] -> 0 (max level is NOT the mode - the core M vs X distinction)",
+      "[1,2,3,4] -> None",
+      "[3,3,3,3] -> 3",
+      "[0,0,0,1] -> 0",
+      "['a','a','b'] -> 'a' (type-generality check)"
+    ]
+  },
+
+  "test_construction_history_note": {
+    "issue": "An initial order-invariance fixture incorrectly changed the multiset cardinality.",
+    "original_fixture": "[1, 9, 9]",
+    "intended_fixture": "the same multiset as [9,9,1,1] ({9:2, 1:2}), reordered",
+    "actual_problem": "[1,9,9] is {9:2, 1:1} - not the same multiset, missing one occurrence of 1",
+    "how_caught": "Test execution raised AssertionError on first run (expected None, got 9) - caught by running the test, not by code review or inspection.",
+    "corrected_fixture": "[1, 9, 1, 9]",
+    "resolution": "Fixture corrected without changing the invariant under test (order-invariance of mode detection) or the implementation being tested (mode_with_tie_detection itself was never at fault).",
+    "why_preserved_here": "Per review: this is stronger evidence than a code-review assertion that the test 'looks right' - it demonstrates the test construction itself is executed and checked, not merely inspected."
+  },
+
+  "documented_limitations_at_freeze_time": [
+    "M/X/A candidate correctness is NOT established by this audit (semantic validity - open, see spec §8).",
+    "Sufficiency of 6 primary compositions to characterize score's aggregation behavior is NOT established (research validity - open).",
+    "Threshold optimality is NOT established - only that the thresholds are load-bearing (changing them changes results), which is a different claim from correctness.",
+    "The [0,0,0,9] mode/max/mean-separation fixture demonstrates the IMPLEMENTATION distinguishes these three statistics; it does NOT establish which statistic is the correct semantic target for Jev's `score` primitive.",
+    "Single domain, n=4 sentences, 3 severity levels - explicitly scoped, not claimed general (spec §4).",
+    "No API calls have been made under this specification. Nothing here characterizes live Jev behavior - only the pre-registered procedure that would later be applied to it."
+  ],
+
+  "end_to_end_rerun_confirmation": {
+    "composition_verifier_exit_code": 0,
+    "gate_logic_verifier_exit_code": 0,
+    "rerun_after_final_fix": true,
+    "note": "Both scripts re-run clean, end-to-end, after the order-invariance fixture fix - this record reflects that final clean state, not an earlier failing run."
+  },
+
+  "next_step_per_review": "Proceed to semantic-validation review (are M/X/A the right constructs, and are 6 items adequate) - explicitly NOT proceeding to score Stage 1 manifest generation or any API call from this freeze alone."
+}

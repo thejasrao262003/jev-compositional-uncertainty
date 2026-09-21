@@ -1,0 +1,18 @@
+{
+  "purpose": "Immutability record for the M-vs-A supplement artifacts, separate from score_verifier_freeze_manifest.json (which is frozen and not retroactively edited). Any future change to either file below must be accompanied by an explicit re-baseline note here, per the same discipline established for the Stage 1 manifest hash tracking (stage0_manifest_hashes.json).",
+  "design_script": {
+    "path": "research/src/design_score_mvsa_supplement.py",
+    "sha256": "a773236e5f75fc2e4c657270aff6ebeecadaca5b3d831fa81524706a436e3b58"
+  },
+  "supplement_record": {
+    "path": "research/results/score_mvsa_supplement_v1.json",
+    "sha256": "d0b12c5ca4a3f60b3a7ad05b98edf74c0d42270ff005cc58de89b8363d7539e0"
+  },
+  "supplement_v1_compositions_immutable_identity": [
+    "(0, 0, 0, 1, 2)",
+    "(0, 0, 0, 2, 2)",
+    "(0, 0, 2, 2, 2)"
+  ],
+  "recorded_at_utc": "2026-09-22T00:00:00Z",
+  "note": "These three compositions are the identity of Supplement v1. Any change to which compositions are selected, their M/X/A values, or the selection rule requires a new version label (v2) and a new entry here - never a silent overwrite of v1's identity."
+}

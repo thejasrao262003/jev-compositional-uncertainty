@@ -1,0 +1,212 @@
+{
+  "status": "PHASE B EXECUTED",
+  "executed_at_calls": 27,
+  "planned_calls": 27,
+  "budget_matches_plan": true,
+  "retry_count_not_counted_toward_planned_budget": 0,
+  "input_hashes": {
+    "design_script": {
+      "path": "research/src/design_score_mvsa_supplement.py",
+      "expected": "a773236e5f75fc2e4c657270aff6ebeecadaca5b3d831fa81524706a436e3b58",
+      "actual": "a773236e5f75fc2e4c657270aff6ebeecadaca5b3d831fa81524706a436e3b58",
+      "match": true
+    },
+    "supplement_record": {
+      "path": "research/results/score_mvsa_supplement_v1.json",
+      "expected": "d0b12c5ca4a3f60b3a7ad05b98edf74c0d42270ff005cc58de89b8363d7539e0",
+      "actual": "d0b12c5ca4a3f60b3a7ad05b98edf74c0d42270ff005cc58de89b8363d7539e0",
+      "match": true
+    },
+    "phase_b_manifest": {
+      "path": "research/data/characterization/score_phase_b_manifest.json",
+      "expected": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "actual": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "match": true
+    },
+    "phase_b_manifest_builder": {
+      "path": "research/src/build_score_phase_b_manifest.py",
+      "expected": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "actual": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "match": true
+    },
+    "gate_script": {
+      "path": "research/src/verify_score_gate_logic.py",
+      "expected": "12dfa3eda2917c2f6894c9aee31fe1363a18777550b097f09f5f940e3112dd69",
+      "actual": "12dfa3eda2917c2f6894c9aee31fe1363a18777550b097f09f5f940e3112dd69",
+      "match": true
+    }
+  },
+  "analysis": {
+    "frozen_six_item_gate": {
+      "matches_M": 1,
+      "matches_X": 6,
+      "matches_A": 0,
+      "denominator": 6,
+      "outcome": "CLARITY",
+      "leader": "X",
+      "stable_count": 6,
+      "stability_rate": 1.0
+    },
+    "nine_item_pairwise_n_P": {
+      "M-X": {
+        "n_P_designed": 7,
+        "favored_first": 0,
+        "favored_second": 6,
+        "unstable_or_neither": 1
+      },
+      "M-A": {
+        "n_P_designed": 6,
+        "favored_first": 2,
+        "favored_second": 1,
+        "unstable_or_neither": 3
+      },
+      "X-A": {
+        "n_P_designed": 9,
+        "favored_first": 8,
+        "favored_second": 1,
+        "unstable_or_neither": 0
+      }
+    },
+    "classification": "CLARITY/low-instability/sufficient",
+    "required_report_phrase": "discrimination among M/X/A, canonical presentation only",
+    "prohibited_phrasing_note": "\"the nine-item gate passed\" is banned per the protocol \u00a7A.3 - no nine-item gate exists; only the frozen six-item gate above, plus separate nine-item pairwise accounting.",
+    "nine_item_modal_decisions": {
+      "frozen_primary_0_0_0_1": {
+        "expected": {
+          "M": 0,
+          "X": 1,
+          "A_unrounded": 0.25,
+          "A_rounded": 0
+        },
+        "modal_level": 1,
+        "stability": "stable",
+        "raw_levels": [
+          1,
+          1,
+          1
+        ]
+      },
+      "frozen_primary_0_0_0_2": {
+        "expected": {
+          "M": 0,
+          "X": 2,
+          "A_unrounded": 0.5,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      },
+      "frozen_primary_0_0_1_2": {
+        "expected": {
+          "M": 0,
+          "X": 2,
+          "A_unrounded": 0.75,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      },
+      "frozen_primary_0_1_1_2": {
+        "expected": {
+          "M": 1,
+          "X": 2,
+          "A_unrounded": 1.0,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      },
+      "frozen_primary_0_1_2_2": {
+        "expected": {
+          "M": 2,
+          "X": 2,
+          "A_unrounded": 1.25,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      },
+      "frozen_primary_1_1_1_2": {
+        "expected": {
+          "M": 1,
+          "X": 2,
+          "A_unrounded": 1.25,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      },
+      "supplement_v1_0_0_0_1_2": {
+        "expected": {
+          "M": 0,
+          "X": 2,
+          "A_unrounded": 0.6,
+          "A_rounded": 1
+        },
+        "modal_level": 1,
+        "stability": "stable",
+        "raw_levels": [
+          1,
+          1,
+          1
+        ]
+      },
+      "supplement_v1_0_0_0_2_2": {
+        "expected": {
+          "M": 0,
+          "X": 2,
+          "A_unrounded": 0.8,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      },
+      "supplement_v1_0_0_2_2_2": {
+        "expected": {
+          "M": 2,
+          "X": 2,
+          "A_unrounded": 1.2,
+          "A_rounded": 1
+        },
+        "modal_level": 2,
+        "stability": "stable",
+        "raw_levels": [
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    "deviations": []
+  }
+}
