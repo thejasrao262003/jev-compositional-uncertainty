@@ -1,0 +1,390 @@
+{
+  "status": "PRESENTATION-SENSITIVITY STUDY EXECUTED",
+  "study_description": "A two-variant presentation-sensitivity study (P2_full_reverse, P3_severity_first) with a canonical-equivalent replication control (P4_severity_last), evaluated across three selected items.",
+  "planned_calls": 36,
+  "actual_calls": 36,
+  "input_hashes": {
+    "phase_b_manifest": {
+      "path": "research/data/characterization/score_phase_b_manifest.json",
+      "expected": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "actual": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "match": true
+    },
+    "phase_b_manifest_builder": {
+      "path": "research/src/build_score_phase_b_manifest.py",
+      "expected": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "actual": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "match": true
+    },
+    "sensitivity_manifest": {
+      "path": "research/data/characterization/score_presentation_sensitivity_manifest.json",
+      "expected": "5deb554fb6748c8dec0cb9ce83e1c3a49b48b6e8f6759e21e07f25fdbac83df5",
+      "actual": "5deb554fb6748c8dec0cb9ce83e1c3a49b48b6e8f6759e21e07f25fdbac83df5",
+      "match": true
+    },
+    "sensitivity_manifest_builder": {
+      "path": "research/src/build_score_presentation_sensitivity_manifest.py",
+      "expected": "fea1caf2154a87a96330555945c4a53f684268eb6a64b2243698126d1059f997",
+      "actual": "fea1caf2154a87a96330555945c4a53f684268eb6a64b2243698126d1059f997",
+      "match": true
+    }
+  },
+  "item_cells": {
+    "frozen_primary_0_0_0_2": {
+      "P1_canonical": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.9766666666666666,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.01,
+          "2": 0.9899999999999999
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P2_full_reverse": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.9533333333333333,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.02666666666666667,
+          "2": 0.9733333333333333
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P3_severity_first": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.9499999999999998,
+        "mean_probabilities": {
+          "0": 0.006666666666666667,
+          "1": 0.02,
+          "2": 0.9733333333333333
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P4_severity_last": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.98,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.01,
+          "2": 0.9899999999999999
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      }
+    },
+    "frozen_primary_0_0_1_2": {
+      "P1_canonical": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.7233333333333333,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.18000000000000002,
+          "2": 0.82
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P2_full_reverse": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.6133333333333333,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.25666666666666665,
+          "2": 0.7433333333333333
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P3_severity_first": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.5499999999999999,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.2966666666666667,
+          "2": 0.7033333333333333
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P4_severity_last": {
+        "modal_level": 2,
+        "stable": true,
+        "mean_confidence": 0.7399999999999999,
+        "mean_probabilities": {
+          "0": 0.0,
+          "1": 0.17333333333333334,
+          "2": 0.8266666666666667
+        },
+        "raw_levels": [
+          2,
+          2,
+          2
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      }
+    },
+    "frozen_primary_0_0_0_1": {
+      "P1_canonical": {
+        "modal_level": 1,
+        "stable": true,
+        "mean_confidence": 0.9533333333333333,
+        "mean_probabilities": {
+          "0": 0.02666666666666667,
+          "1": 0.9733333333333333,
+          "2": 0.0
+        },
+        "raw_levels": [
+          1,
+          1,
+          1
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P2_full_reverse": {
+        "modal_level": 1,
+        "stable": true,
+        "mean_confidence": 0.9899999999999999,
+        "mean_probabilities": {
+          "0": 0.01,
+          "1": 0.9899999999999999,
+          "2": 0.0
+        },
+        "raw_levels": [
+          1,
+          1,
+          1
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P3_severity_first": {
+        "modal_level": 1,
+        "stable": true,
+        "mean_confidence": 0.9866666666666667,
+        "mean_probabilities": {
+          "0": 0.01,
+          "1": 0.9899999999999999,
+          "2": 0.0
+        },
+        "raw_levels": [
+          1,
+          1,
+          1
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      },
+      "P4_severity_last": {
+        "modal_level": 1,
+        "stable": true,
+        "mean_confidence": 0.9533333333333333,
+        "mean_probabilities": {
+          "0": 0.03,
+          "1": 0.9700000000000001,
+          "2": 0.0
+        },
+        "raw_levels": [
+          1,
+          1,
+          1
+        ],
+        "deviations": [],
+        "n_valid_responses": 3
+      }
+    }
+  },
+  "eligibility": {
+    "frozen_primary_0_0_0_2": {
+      "canonical_stable": true,
+      "eligible_noncanonical": {
+        "P2_full_reverse": true,
+        "P3_severity_first": true
+      },
+      "n_eligible_noncanonical_comparisons": 2
+    },
+    "frozen_primary_0_0_1_2": {
+      "canonical_stable": true,
+      "eligible_noncanonical": {
+        "P2_full_reverse": true,
+        "P3_severity_first": true
+      },
+      "n_eligible_noncanonical_comparisons": 2
+    },
+    "frozen_primary_0_0_0_1": {
+      "canonical_stable": true,
+      "eligible_noncanonical": {
+        "P2_full_reverse": true,
+        "P3_severity_first": true
+      },
+      "n_eligible_noncanonical_comparisons": 2
+    }
+  },
+  "decision_change": {
+    "numerator": 0,
+    "denominator": 6,
+    "rate": 0.0,
+    "n_noncanonical_comparisons_planned": 6,
+    "n_excluded": 0,
+    "exclusions": []
+  },
+  "confidence_range": {
+    "frozen_primary_0_0_0_2": 0.026666666666666727,
+    "frozen_primary_0_0_1_2": 0.17333333333333334,
+    "frozen_primary_0_0_0_1": 0.036666666666666625
+  },
+  "tv_distance": {
+    "frozen_primary_0_0_0_2": 0.01666666666666664,
+    "frozen_primary_0_0_1_2": 0.11666666666666668,
+    "frozen_primary_0_0_0_1": 0.01666666666666664
+  },
+  "instability_rate": 0.0,
+  "classification": {
+    "final_classification": "MATERIAL",
+    "raw_classification": "MATERIAL",
+    "item_coverage_complete": true,
+    "n_items_with_eligible_comparisons": 3,
+    "n_items_without_eligible_comparisons": 0,
+    "n_excluded_canonical_equivalent_controls": 3,
+    "instability_rate": 0.0,
+    "high_instability": false
+  },
+  "secondary_alignment_descriptive_only": {
+    "frozen_primary_0_0_0_2": {
+      "P1_canonical": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P2_full_reverse": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P3_severity_first": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P4_severity_last": {
+        "M": false,
+        "X": true,
+        "A": false
+      }
+    },
+    "frozen_primary_0_0_1_2": {
+      "P1_canonical": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P2_full_reverse": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P3_severity_first": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P4_severity_last": {
+        "M": false,
+        "X": true,
+        "A": false
+      }
+    },
+    "frozen_primary_0_0_0_1": {
+      "P1_canonical": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P2_full_reverse": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P3_severity_first": {
+        "M": false,
+        "X": true,
+        "A": false
+      },
+      "P4_severity_last": {
+        "M": false,
+        "X": true,
+        "A": false
+      }
+    }
+  },
+  "canonical_control_diagnostic_P1_vs_P4_descriptive_only": {
+    "frozen_primary_0_0_0_2": {
+      "both_stable": true,
+      "modal_decision_agreement": true,
+      "confidence_difference_P4_minus_P1": 0.0033333333333334103,
+      "probability_tv_distance": 0.0,
+      "interpretation": "baseline repeat/session noise diagnostic - NOT evidence about order sensitivity"
+    },
+    "frozen_primary_0_0_1_2": {
+      "both_stable": true,
+      "modal_decision_agreement": true,
+      "confidence_difference_P4_minus_P1": 0.016666666666666607,
+      "probability_tv_distance": 0.006666666666666696,
+      "interpretation": "baseline repeat/session noise diagnostic - NOT evidence about order sensitivity"
+    },
+    "frozen_primary_0_0_0_1": {
+      "both_stable": true,
+      "modal_decision_agreement": true,
+      "confidence_difference_P4_minus_P1": 0.0,
+      "probability_tv_distance": 0.0033333333333332594,
+      "interpretation": "baseline repeat/session noise diagnostic - NOT evidence about order sensitivity"
+    }
+  }
+}

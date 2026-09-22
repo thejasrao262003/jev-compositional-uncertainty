@@ -1,0 +1,644 @@
+{
+  "status": "PREFLIGHT PASSED",
+  "hash_checks": {
+    "phase_b_manifest": {
+      "path": "research/data/characterization/score_phase_b_manifest.json",
+      "expected": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "actual": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8",
+      "match": true
+    },
+    "phase_b_manifest_builder": {
+      "path": "research/src/build_score_phase_b_manifest.py",
+      "expected": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "actual": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+      "match": true
+    },
+    "sensitivity_manifest": {
+      "path": "research/data/characterization/score_presentation_sensitivity_manifest.json",
+      "expected": "5deb554fb6748c8dec0cb9ce83e1c3a49b48b6e8f6759e21e07f25fdbac83df5",
+      "actual": "5deb554fb6748c8dec0cb9ce83e1c3a49b48b6e8f6759e21e07f25fdbac83df5",
+      "match": true
+    },
+    "sensitivity_manifest_builder": {
+      "path": "research/src/build_score_presentation_sensitivity_manifest.py",
+      "expected": "fea1caf2154a87a96330555945c4a53f684268eb6a64b2243698126d1059f997",
+      "actual": "fea1caf2154a87a96330555945c4a53f684268eb6a64b2243698126d1059f997",
+      "match": true
+    }
+  },
+  "planned_call_count": 36,
+  "plan": [
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P1_canonical",
+      "repeat_index": 1,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P1_canonical",
+      "repeat_index": 2,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P1_canonical",
+      "repeat_index": 3,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 1,
+      "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 2,
+      "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 3,
+      "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P3_severity_first",
+      "repeat_index": 1,
+      "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P3_severity_first",
+      "repeat_index": 2,
+      "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P3_severity_first",
+      "repeat_index": 3,
+      "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P4_severity_last",
+      "repeat_index": 1,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P4_severity_last",
+      "repeat_index": 2,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "permutation": "P4_severity_last",
+      "repeat_index": 3,
+      "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P1_canonical",
+      "repeat_index": 1,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P1_canonical",
+      "repeat_index": 2,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P1_canonical",
+      "repeat_index": 3,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 1,
+      "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 2,
+      "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 3,
+      "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P3_severity_first",
+      "repeat_index": 1,
+      "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P3_severity_first",
+      "repeat_index": 2,
+      "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P3_severity_first",
+      "repeat_index": 3,
+      "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P4_severity_last",
+      "repeat_index": 1,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P4_severity_last",
+      "repeat_index": 2,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "permutation": "P4_severity_last",
+      "repeat_index": 3,
+      "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P1_canonical",
+      "repeat_index": 1,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P1_canonical",
+      "repeat_index": 2,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P1_canonical",
+      "repeat_index": 3,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 1,
+      "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 2,
+      "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P2_full_reverse",
+      "repeat_index": 3,
+      "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P3_severity_first",
+      "repeat_index": 1,
+      "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P3_severity_first",
+      "repeat_index": 2,
+      "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P3_severity_first",
+      "repeat_index": 3,
+      "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P4_severity_last",
+      "repeat_index": 1,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P4_severity_last",
+      "repeat_index": 2,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "permutation": "P4_severity_last",
+      "repeat_index": 3,
+      "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+      "questions": {
+        "severity": {
+          "type": "score",
+          "instructions": "How severe is the reported issue?",
+          "criteria": [
+            "Cosmetic; no impact to functionality",
+            "Broken or degraded feature, but a workaround exists",
+            "Blocking issue; no workaround exists"
+          ]
+        }
+      }
+    }
+  ]
+}

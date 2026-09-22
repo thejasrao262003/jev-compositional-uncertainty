@@ -1,0 +1,301 @@
+{
+  "status": "DESIGN CONTENT ONLY - no API calls made or authorized by this script.",
+  "purpose": "Manifest for score_presentation_sensitivity_protocol.md Revision 4. Reuses 3 of Phase B's frozen n=4 items' sentence content verbatim (cross-checked byte-for-byte above), under 4 pre-registered permutations each. P4_severity_last is a canonical-equivalent replication control (content-identical to P1 for every item here, verified below), NOT a third non-canonical comparison arm - only P2_full_reverse and P3_severity_first are eligible for sensitivity comparison.",
+  "protocol_reference": "research/methodology/score_presentation_sensitivity_protocol.md",
+  "noncanonical_labels": [
+    "P2_full_reverse",
+    "P3_severity_first"
+  ],
+  "permutation_roles": {
+    "P1_canonical": "canonical_reference",
+    "P2_full_reverse": "noncanonical_comparison",
+    "P3_severity_first": "noncanonical_comparison",
+    "P4_severity_last": "canonical_repeat_control"
+  },
+  "phase_b_manifest_reference": {
+    "path": "research/data/characterization/score_phase_b_manifest.json",
+    "sha256_at_build_time": "8ed4473b94903b57b6a29e0c78e5cdcaa1c20d00c2691a9f21e5238fc356d5a8"
+  },
+  "severity_instructions": "How severe is the reported issue?",
+  "severity_criteria": [
+    "Cosmetic; no impact to functionality",
+    "Broken or degraded feature, but a workaround exists",
+    "Blocking issue; no workaround exists"
+  ],
+  "permutation_labels": [
+    "P1_canonical",
+    "P2_full_reverse",
+    "P3_severity_first",
+    "P4_severity_last"
+  ],
+  "items": [
+    {
+      "item_id": "frozen_primary_0_0_0_2",
+      "composition_multiset": [
+        0,
+        0,
+        0,
+        2
+      ],
+      "expected": {
+        "M": 0,
+        "X": 2,
+        "A_unrounded": 0.5,
+        "A_rounded": 1
+      },
+      "permutations": {
+        "P1_canonical": {
+          "sentence_ids_order": [
+            "b005",
+            "b006",
+            "b007",
+            "b008"
+          ],
+          "sentence_texts_order": [
+            "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+            "An extra blank line appears at the bottom of exported CSV files when opened in a text editor.",
+            "The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+            "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request."
+          ],
+          "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+          "role": "canonical_reference",
+          "permutation_distinct_from_P1": null,
+          "eligible_for_sensitivity_comparison": false
+        },
+        "P2_full_reverse": {
+          "sentence_ids_order": [
+            "b008",
+            "b007",
+            "b006",
+            "b005"
+          ],
+          "sentence_texts_order": [
+            "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+            "The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+            "An extra blank line appears at the bottom of exported CSV files when opened in a text editor.",
+            "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar."
+          ],
+          "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+          "role": "noncanonical_comparison",
+          "permutation_distinct_from_P1": true,
+          "eligible_for_sensitivity_comparison": true
+        },
+        "P3_severity_first": {
+          "sentence_ids_order": [
+            "b008",
+            "b005",
+            "b006",
+            "b007"
+          ],
+          "sentence_texts_order": [
+            "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+            "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+            "An extra blank line appears at the bottom of exported CSV files when opened in a text editor.",
+            "The favicon appears slightly blurry when the browser window is resized below 400 pixels wide."
+          ],
+          "state": "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request. The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+          "role": "noncanonical_comparison",
+          "permutation_distinct_from_P1": true,
+          "eligible_for_sensitivity_comparison": true
+        },
+        "P4_severity_last": {
+          "sentence_ids_order": [
+            "b005",
+            "b006",
+            "b007",
+            "b008"
+          ],
+          "sentence_texts_order": [
+            "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar.",
+            "An extra blank line appears at the bottom of exported CSV files when opened in a text editor.",
+            "The favicon appears slightly blurry when the browser window is resized below 400 pixels wide.",
+            "Order fulfillment has halted because the warehouse integration is silently dropping every shipment request."
+          ],
+          "state": "The dark mode theme renders the secondary sidebar with a slightly lighter shade than the primary sidebar. An extra blank line appears at the bottom of exported CSV files when opened in a text editor. The favicon appears slightly blurry when the browser window is resized below 400 pixels wide. Order fulfillment has halted because the warehouse integration is silently dropping every shipment request.",
+          "role": "canonical_repeat_control",
+          "permutation_distinct_from_P1": false,
+          "eligible_for_sensitivity_comparison": false
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_1_2",
+      "composition_multiset": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "expected": {
+        "M": 0,
+        "X": 2,
+        "A_unrounded": 0.75,
+        "A_rounded": 1
+      },
+      "permutations": {
+        "P1_canonical": {
+          "sentence_ids_order": [
+            "b009",
+            "b010",
+            "b011",
+            "b012"
+          ],
+          "sentence_texts_order": [
+            "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+            "The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+            "Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it.",
+            "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card."
+          ],
+          "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+          "role": "canonical_reference",
+          "permutation_distinct_from_P1": null,
+          "eligible_for_sensitivity_comparison": false
+        },
+        "P2_full_reverse": {
+          "sentence_ids_order": [
+            "b012",
+            "b011",
+            "b010",
+            "b009"
+          ],
+          "sentence_texts_order": [
+            "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+            "Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it.",
+            "The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+            "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale."
+          ],
+          "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+          "role": "noncanonical_comparison",
+          "permutation_distinct_from_P1": true,
+          "eligible_for_sensitivity_comparison": true
+        },
+        "P3_severity_first": {
+          "sentence_ids_order": [
+            "b012",
+            "b011",
+            "b009",
+            "b010"
+          ],
+          "sentence_texts_order": [
+            "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+            "Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it.",
+            "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+            "The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view."
+          ],
+          "state": "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+          "role": "noncanonical_comparison",
+          "permutation_distinct_from_P1": true,
+          "eligible_for_sensitivity_comparison": true
+        },
+        "P4_severity_last": {
+          "sentence_ids_order": [
+            "b009",
+            "b010",
+            "b011",
+            "b012"
+          ],
+          "sentence_texts_order": [
+            "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale.",
+            "The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view.",
+            "Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it.",
+            "The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card."
+          ],
+          "state": "The dropdown menu for language selection lists 'English' twice, both pointing to the same locale. The onboarding checklist still shows a completed step with a strikethrough that renders inconsistently in print view. Inline comments on shared documents fail to load on the first attempt, but a page refresh reliably fixes it. The checkout page throws an unhandled exception for every user attempting to pay with a stored credit card.",
+          "role": "canonical_repeat_control",
+          "permutation_distinct_from_P1": false,
+          "eligible_for_sensitivity_comparison": false
+        }
+      }
+    },
+    {
+      "item_id": "frozen_primary_0_0_0_1",
+      "composition_multiset": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "expected": {
+        "M": 0,
+        "X": 1,
+        "A_unrounded": 0.25,
+        "A_rounded": 0
+      },
+      "permutations": {
+        "P1_canonical": {
+          "sentence_ids_order": [
+            "b001",
+            "b002",
+            "b003",
+            "b004"
+          ],
+          "sentence_texts_order": [
+            "A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+            "A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere.",
+            "The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+            "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it."
+          ],
+          "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+          "role": "canonical_reference",
+          "permutation_distinct_from_P1": null,
+          "eligible_for_sensitivity_comparison": false
+        },
+        "P2_full_reverse": {
+          "sentence_ids_order": [
+            "b004",
+            "b003",
+            "b002",
+            "b001"
+          ],
+          "sentence_texts_order": [
+            "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+            "The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+            "A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere.",
+            "A tooltip on the export button remains visible for about half a second after the mouse moves away."
+          ],
+          "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+          "role": "noncanonical_comparison",
+          "permutation_distinct_from_P1": true,
+          "eligible_for_sensitivity_comparison": true
+        },
+        "P3_severity_first": {
+          "sentence_ids_order": [
+            "b004",
+            "b001",
+            "b002",
+            "b003"
+          ],
+          "sentence_texts_order": [
+            "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+            "A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+            "A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere.",
+            "The loading spinner on the reports page briefly flashes twice before settling into a steady animation."
+          ],
+          "state": "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it. A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+          "role": "noncanonical_comparison",
+          "permutation_distinct_from_P1": true,
+          "eligible_for_sensitivity_comparison": true
+        },
+        "P4_severity_last": {
+          "sentence_ids_order": [
+            "b001",
+            "b002",
+            "b003",
+            "b004"
+          ],
+          "sentence_texts_order": [
+            "A tooltip on the export button remains visible for about half a second after the mouse moves away.",
+            "A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere.",
+            "The loading spinner on the reports page briefly flashes twice before settling into a steady animation.",
+            "The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it."
+          ],
+          "state": "A tooltip on the export button remains visible for about half a second after the mouse moves away. A decorative divider line between sections is rendered one pixel thicker on mobile Safari than elsewhere. The loading spinner on the reports page briefly flashes twice before settling into a steady animation. The API rate-limit counter resets incorrectly for accounts on the legacy pricing plan, but a support-issued token bypasses it.",
+          "role": "canonical_repeat_control",
+          "permutation_distinct_from_P1": false,
+          "eligible_for_sensitivity_comparison": false
+        }
+      }
+    }
+  ],
+  "builder_script_sha256": "fea1caf2154a87a96330555945c4a53f684268eb6a64b2243698126d1059f997"
+}

@@ -818,6 +818,91 @@ separately designed, separately approved presentation-sensitivity study
 (explicitly not an implicit extension of Phase B). Awaiting a decision on
 which to pursue, if either, before any further `score` API calls.
 
+**Update (Option B — presentation-sensitivity study designed, revised
+4x, and EXECUTED — 36 live API calls, 2026-09-22):** Option B was chosen.
+`research/methodology/score_presentation_sensitivity_protocol.md` went
+through 4 review-driven revisions before any manifest was built:
+
+- **Rev 1→2**: stable-cell eligibility made explicit (an unstable
+  canonical cell excludes the item from comparisons, never zeroes it);
+  continuous aggregation defined to use all 3 raw responses per cell, not
+  just modal-matching ones; `MATERIAL_CONF=0.15` disclosed as conservative
+  relative to Step 0A.2's ~0.13 prior shift; `P3`/`P4` given fully
+  executable, independent stable-sort definitions (proven NOT reverses of
+  each other via a worked `(0,0,1,2)` example); decision-change given an
+  explicit formula/denominator; primary vs. secondary (M/X/A) analysis
+  split; `UNCLASSIFIABLE`/`INCONCLUSIVE_BY_INSTABILITY` outcomes added so
+  a high-instability run could never surface as a negligible-sensitivity
+  finding.
+- **Rev 2→3**: closed a P0 loophole — the raw classification could reach
+  `NEGLIGIBLE` even when 2 of 3 items had **zero** eligible non-canonical
+  comparisons, silently ignoring missing coverage. Fixed with an
+  `item_coverage_complete` guard (all 3 items must have ≥1 eligible
+  comparison) required for `NEGLIGIBLE`, mutation-tested.
+- **Rev 3→4 — a real design flaw caught by literal artifact inspection,
+  not structural review alone**: `P1_canonical` and `P4_severity_last`
+  turned out to be **byte-identical** for all 3 selected items, and
+  structurally for all 9 Phase B items — every composition in this track
+  has always been written as a non-decreasing tuple, and sentence IDs are
+  assigned in that same iteration order, so ascending-ID canonical order
+  always already equals ascending-severity order. Caught only by
+  comparing actual manifest contents cell-by-cell, not by reviewing the
+  permutation *definitions* (which were individually correct). Fixed via
+  **Option B**: `P4` reclassified from "third non-canonical permutation"
+  to **canonical-equivalent replication control** — its 3 calls stay in
+  the 36-call budget and remain their own separately-recorded cell (never
+  pooled into `P1`), feeding only a separate P1-vs-P4 replication
+  diagnostic (§6.3), structurally excluded from the decision-change/
+  confidence-range/TV-distance estimands and from `classify()`. The
+  manifest builder now asserts and would abort if `P2`/`P3` were ever
+  content-identical to `P1` (mutation-tested).
+
+**Self-tests: 15/15 passing** (runner) + 2 (builder's verbatim-reuse and
+content-equivalence mutation tests), including explicit fixtures for
+every precedence rule named across all 4 revisions.
+
+**Executed, per explicit approval**: 36/36 calls, all HTTP 200, 0
+retries, 0 deviations. **Result: `MATERIAL`.** Decomposed, precisely (per
+review's phrasing corrections, adopted here):
+
+- **No modal decision changes were observed** across the 6 eligible
+  `P2`/`P3` comparisons (0/6) — this is an observation about the tested
+  sample, not a claim of order invariance as a property of the model.
+- **Confidence-range sensitivity exceeded the pre-registered `MATERIAL_
+  CONF=0.15` threshold on 1 of 3 items** (`(0,0,1,2)`: canonical 0.723,
+  full-reverse 0.613, severity-first 0.550, control 0.740 — range
+  0.173). TV distance for that item (0.117) stayed below `MATERIAL_
+  DIST=0.20` — the confidence-range criterion alone drove the `MATERIAL`
+  classification, not a decision flip and not TV distance.
+- **P1/P4 canonical-control diagnostic** (baseline same-content
+  replication noise, one 3-call sample per item, not a general noise
+  bound): confidence differences of 0.003/0.017/0.000 across the 3 items
+  — an order of magnitude smaller than `(0,0,1,2)`'s 0.173 range,
+  supporting (not proving) that the observed variation there is
+  presentation-associated rather than pure sampling noise.
+- **All tested presentations retained the descriptive X-alignment** for
+  all 3 items across all 4 permutations (`X=true`, `M=A=false`
+  everywhere) — Phase B's categorical result did not change in this
+  sample; what changed was the confidence signal, not the decision.
+
+**Established**: presentation-associated variation in `score`'s
+confidence output, material on 1 of 3 tested items, coexisting with
+decision stability across the same comparisons. **Not established**:
+`score`'s intended semantics; order-sensitivity generalizing beyond this
+domain/item-set/permutation-set; miscalibration; that this signal should
+inform any specific escalation policy. No Stage 1 manifest or escalation
+policy is authorized by this result (per protocol §9).
+
+**Open next-question framing (not yet designed or authorized)**, per
+review: any workflow-relevance follow-up should separately distinguish
+(1) decision stability, (2) confidence sensitivity — both addressed here
+— from (3) operational consequence and (4) reliability/error-risk
+correspondence, neither of which this study touches.
+
+All artifacts (protocol, manifest, hash-locks, builder/runner scripts,
+raw/parsed responses, execution manifest) currently untracked — not yet
+committed.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

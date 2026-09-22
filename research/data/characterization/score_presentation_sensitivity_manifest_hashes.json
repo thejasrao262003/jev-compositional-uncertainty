@@ -1,0 +1,18 @@
+{
+  "purpose": "Immutability record for score_presentation_sensitivity_manifest.json. Any change to which sentences, items, or permutation definitions are used requires a new version label and a new entry here.",
+  "manifest_path": "research/data/characterization/score_presentation_sensitivity_manifest.json",
+  "manifest_sha256": "5deb554fb6748c8dec0cb9ce83e1c3a49b48b6e8f6759e21e07f25fdbac83df5",
+  "builder_script_path": "research/src/build_score_presentation_sensitivity_manifest.py",
+  "builder_script_sha256": "fea1caf2154a87a96330555945c4a53f684268eb6a64b2243698126d1059f997",
+  "item_ids_immutable_identity": [
+    "frozen_primary_0_0_0_2",
+    "frozen_primary_0_0_1_2",
+    "frozen_primary_0_0_0_1"
+  ],
+  "permutation_labels_immutable_identity": [
+    "P1_canonical",
+    "P2_full_reverse",
+    "P3_severity_first",
+    "P4_severity_last"
+  ]
+}
