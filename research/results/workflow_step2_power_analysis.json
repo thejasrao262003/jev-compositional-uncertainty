@@ -1,0 +1,53 @@
+{
+  "status": "POWER ANALYSIS COMPUTED - per workflow_uncertainty_composition_protocol.md Revision 8 \u00a714",
+  "source_pilot_execution_manifest": "research/results/workflow_calibration_pilot_execution_manifest.json",
+  "source_pilot_calls": 270,
+  "inputs": {
+    "alpha_two_sided": 0.05,
+    "power": 0.8,
+    "z_alpha_over_2": 1.959963985,
+    "z_power": 0.8416212336,
+    "MDE": 0.05,
+    "MIN_DISCORDANCE_FLOOR": 0.03333333333333333
+  },
+  "formula": "n_required = ceil( (z_alpha/2 + z_power)^2 * d_hat / MDE^2 )",
+  "comparisons": {
+    "2_vs_3": {
+      "d_hat_raw": 0.3,
+      "floor_applied": false,
+      "d_hat_used": 0.3,
+      "n_required": 942
+    },
+    "2_vs_4a": {
+      "d_hat_raw": 0.23333333333333334,
+      "floor_applied": false,
+      "d_hat_used": 0.23333333333333334,
+      "n_required": 733
+    }
+  },
+  "N_final": 942,
+  "N_final_rule": "max(n_required(2v3), n_required(2v4a)) - never averaged or pooled",
+  "implied_main_run_call_budget": {
+    "K_nodes": 3,
+    "repeats_per_node": 3,
+    "total_calls": 8478
+  },
+  "binding_note": "This N_final is NOT yet authorized for a main evaluation manifest - a separate, explicit go/no-go, given its scale relative to every prior batch in this project.",
+  "directional_breakdown_b_c_added_for_audit": {
+    "2_vs_3": {
+      "b_strategy2_right_comparator_wrong": 1,
+      "c_strategy2_wrong_comparator_right": 8,
+      "b_plus_c": 9,
+      "b_minus_c_pilot_observed_delta": -0.23333333333333334,
+      "note": "b_plus_c must equal the discordance count already reported; b_minus_c is the PILOT's own raw effect estimate - NOT used as the MDE, which remains the pre-specified 0.05 from the cost matrix (\u00a716.1). Reported for transparency/audit only, per review's explicit request."
+    },
+    "2_vs_4a": {
+      "b_strategy2_right_comparator_wrong": 2,
+      "c_strategy2_wrong_comparator_right": 5,
+      "b_plus_c": 7,
+      "b_minus_c_pilot_observed_delta": -0.1,
+      "note": "b_plus_c must equal the discordance count already reported; b_minus_c is the PILOT's own raw effect estimate - NOT used as the MDE, which remains the pre-specified 0.05 from the cost matrix (\u00a716.1). Reported for transparency/audit only, per review's explicit request."
+    }
+  },
+  "parameterization_note": "Sample size formula is parameterized by (d, MDE), not (b, c) or (b/c ratio) - these are equivalent parameterizations of the same 2-parameter family (b=n(d+MDE)/2, c=n(d-MDE)/2), and (b,c) individually are not required as formula inputs because MDE is a pre-specified design target (from the cost matrix, \u00a716.1), never estimated from the pilot's own directional split - the pilot supplies ONLY the nuisance parameter d, per \u00a716.5's prohibited-use list."
+}

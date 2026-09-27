@@ -1,0 +1,18 @@
+{
+  "status": "PREFLIGHT PASSED",
+  "hash_checks": {
+    "pilot_manifest": {
+      "path": "research/data/characterization/workflow_calibration_pilot_manifest.json",
+      "expected": "d179e9a2dd0b56f93c1d7fdd3b534c84351ba1440cd80b4c5f1b6170e8ec9111",
+      "actual": "d179e9a2dd0b56f93c1d7fdd3b534c84351ba1440cd80b4c5f1b6170e8ec9111",
+      "match": true
+    },
+    "pilot_manifest_builder": {
+      "path": "research/src/build_workflow_calibration_pilot_manifest.py",
+      "expected": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de",
+      "actual": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de",
+      "match": true
+    }
+  },
+  "total_planned_calls": 270
+}

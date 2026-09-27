@@ -1,0 +1,412 @@
+{
+  "status": "DESIGN CONTENT ONLY - no API calls made or authorized by this script.",
+  "purpose": "Content-blind manifest for the workflow-composition calibration pilot (workflow_calibration_pilot_protocol.md). Reuses the frozen task/F table from workflow_uncertainty_composition_protocol.md \u00a716.2 exactly; only sentence content is new.",
+  "protocol_reference": "research/methodology/workflow_calibration_pilot_protocol.md",
+  "generation_seed": 20260927,
+  "n_calib": 30,
+  "choice_instructions": "Which subsystem is most likely responsible for this incident?",
+  "choice_criteria": {
+    "network": "Issues with connectivity, latency, routing, DNS, or packet loss between systems",
+    "database": "Issues with query performance, connection pooling, disk I/O, replication, or locking"
+  },
+  "noul_instructions": "Is this incident customer-facing?",
+  "severity_instructions": "How severe is this incident?",
+  "severity_criteria": [
+    "Cosmetic; no impact to functionality",
+    "Broken or degraded feature, but a workaround exists",
+    "Blocking issue; no workaround exists"
+  ],
+  "items": [
+    {
+      "item_id": "calib_01_network_0_0",
+      "c1_star": "network",
+      "c2_star": 0,
+      "c3_star": 0,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "MTU mismatches between two subnets are causing large packets to be silently dropped.",
+        "This subsystem exists solely to feed the internal cost-accounting dashboard, unseen by customers.",
+        "An unused feature flag still shows a 'beta' badge next to a feature that shipped months ago."
+      ],
+      "shared_evidence_state": "MTU mismatches between two subnets are causing large packets to be silently dropped. This subsystem exists solely to feed the internal cost-accounting dashboard, unseen by customers. An unused feature flag still shows a 'beta' badge next to a feature that shipped months ago."
+    },
+    {
+      "item_id": "calib_02_network_0_1",
+      "c1_star": "network",
+      "c2_star": 0,
+      "c3_star": 1,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "DNS resolution for the internal service mesh is intermittently returning stale IP addresses.",
+        "No customer-facing endpoints depend on this service; it only feeds an internal dashboard.",
+        "The keyboard shortcut for search stopped working, though clicking the search icon still opens it."
+      ],
+      "shared_evidence_state": "DNS resolution for the internal service mesh is intermittently returning stale IP addresses. No customer-facing endpoints depend on this service; it only feeds an internal dashboard. The keyboard shortcut for search stopped working, though clicking the search icon still opens it."
+    },
+    {
+      "item_id": "calib_03_network_0_2",
+      "c1_star": "network",
+      "c2_star": 0,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "A misconfigured route table is sending a portion of east-coast traffic through the west-coast gateway.",
+        "This component is used exclusively by the internal analytics team for ad hoc reporting.",
+        "Every attempt to submit the primary onboarding form returns a server error with no retry path."
+      ],
+      "shared_evidence_state": "A misconfigured route table is sending a portion of east-coast traffic through the west-coast gateway. This component is used exclusively by the internal analytics team for ad hoc reporting. Every attempt to submit the primary onboarding form returns a server error with no retry path."
+    },
+    {
+      "item_id": "calib_04_network_1_0",
+      "c1_star": "network",
+      "c2_star": 1,
+      "c3_star": 0,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "Packet loss on the inter-region link has been holding steady at around eight percent.",
+        "The status page's public incident thread already has dozens of customer replies reporting the same symptom.",
+        "The new icon set renders one pixel taller than the old one in the collapsed sidebar."
+      ],
+      "shared_evidence_state": "Packet loss on the inter-region link has been holding steady at around eight percent. The status page's public incident thread already has dozens of customer replies reporting the same symptom. The new icon set renders one pixel taller than the old one in the collapsed sidebar."
+    },
+    {
+      "item_id": "calib_05_network_1_1",
+      "c1_star": "network",
+      "c2_star": 1,
+      "c3_star": 1,
+      "a_star": "defer",
+      "shared_evidence_sentences": [
+        "The BGP route to the secondary data center flapped four times in the last hour.",
+        "Support has received over forty tickets in the last hour from users unable to complete checkout.",
+        "The API's pagination cursor occasionally skips a page, but requesting the next cursor recovers it."
+      ],
+      "shared_evidence_state": "The BGP route to the secondary data center flapped four times in the last hour. Support has received over forty tickets in the last hour from users unable to complete checkout. The API's pagination cursor occasionally skips a page, but requesting the next cursor recovers it."
+    },
+    {
+      "item_id": "calib_06_network_1_2",
+      "c1_star": "network",
+      "c2_star": 1,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "The service mesh's sidecar proxies are timing out on roughly fifteen percent of outbound calls.",
+        "The affected endpoint is called directly by the customer-facing dashboard on every page load.",
+        "The core API gateway is returning empty responses for every request regardless of endpoint."
+      ],
+      "shared_evidence_state": "The service mesh's sidecar proxies are timing out on roughly fifteen percent of outbound calls. The affected endpoint is called directly by the customer-facing dashboard on every page load. The core API gateway is returning empty responses for every request regardless of endpoint."
+    },
+    {
+      "item_id": "calib_07_network_unclear_0",
+      "c1_star": "network",
+      "c2_star": "unclear",
+      "c3_star": 0,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "Network interface counters on the affected hosts show a sharp rise in retransmitted packets.",
+        "This is a shared library used by several services, and not all of their customer exposure is known.",
+        "A leftover placeholder string appears briefly before the real page title loads."
+      ],
+      "shared_evidence_state": "Network interface counters on the affected hosts show a sharp rise in retransmitted packets. This is a shared library used by several services, and not all of their customer exposure is known. A leftover placeholder string appears briefly before the real page title loads."
+    },
+    {
+      "item_id": "calib_08_network_unclear_1",
+      "c1_star": "network",
+      "c2_star": "unclear",
+      "c3_star": 1,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "Cross-region replication traffic is being throttled by an unexpectedly aggressive rate limiter on the network edge.",
+        "The dependency graph for this component has not been updated since a large refactor last quarter.",
+        "Scheduled exports larger than 10,000 rows fail, but splitting them into smaller batches succeeds."
+      ],
+      "shared_evidence_state": "Cross-region replication traffic is being throttled by an unexpectedly aggressive rate limiter on the network edge. The dependency graph for this component has not been updated since a large refactor last quarter. Scheduled exports larger than 10,000 rows fail, but splitting them into smaller batches succeeds."
+    },
+    {
+      "item_id": "calib_09_network_unclear_2",
+      "c1_star": "network",
+      "c2_star": "unclear",
+      "c3_star": 2,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "The ISP peering point serving this region reported a partial outage window overlapping the incident.",
+        "It is not yet known whether the affected cache is also used by any customer-facing service.",
+        "The search index has stopped updating, and no manual reindex trigger is currently available."
+      ],
+      "shared_evidence_state": "The ISP peering point serving this region reported a partial outage window overlapping the incident. It is not yet known whether the affected cache is also used by any customer-facing service. The search index has stopped updating, and no manual reindex trigger is currently available."
+    },
+    {
+      "item_id": "calib_10_database_0_0",
+      "c1_star": "database",
+      "c2_star": 0,
+      "c3_star": 0,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "Statistics on the largest table have gone stale, causing the query planner to choose a poor execution plan.",
+        "The affected service is a decommissioned internal tool still running in a legacy environment.",
+        "A tooltip's arrow points slightly off-center when the browser is zoomed to 110 percent."
+      ],
+      "shared_evidence_state": "Statistics on the largest table have gone stale, causing the query planner to choose a poor execution plan. The affected service is a decommissioned internal tool still running in a legacy environment. A tooltip's arrow points slightly off-center when the browser is zoomed to 110 percent."
+    },
+    {
+      "item_id": "calib_11_database_0_1",
+      "c1_star": "database",
+      "c2_star": 0,
+      "c3_star": 1,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "The primary database's connection limit was reached during a scheduled backup window.",
+        "The broken cron job only regenerates an internal cache that customers never query directly.",
+        "The dashboard's real-time widget lags by up to two minutes, though the underlying data is otherwise correct."
+      ],
+      "shared_evidence_state": "The primary database's connection limit was reached during a scheduled backup window. The broken cron job only regenerates an internal cache that customers never query directly. The dashboard's real-time widget lags by up to two minutes, though the underlying data is otherwise correct."
+    },
+    {
+      "item_id": "calib_12_database_0_2",
+      "c1_star": "database",
+      "c2_star": 0,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "A batch reporting job is issuing full table scans against a table that normally serves point lookups.",
+        "This is a staging-environment issue and has no path to production customer traffic.",
+        "The billing service is rejecting all payment methods, including ones that worked minutes earlier."
+      ],
+      "shared_evidence_state": "A batch reporting job is issuing full table scans against a table that normally serves point lookups. This is a staging-environment issue and has no path to production customer traffic. The billing service is rejecting all payment methods, including ones that worked minutes earlier."
+    },
+    {
+      "item_id": "calib_13_database_1_0",
+      "c1_star": "database",
+      "c2_star": 1,
+      "c3_star": 0,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "The database's autovacuum process has fallen behind, and table bloat is now affecting query planning.",
+        "Customers in the free tier and the enterprise tier are both reporting the identical failure.",
+        "The email digest's footer link uses last year's support hours, which have since changed."
+      ],
+      "shared_evidence_state": "The database's autovacuum process has fallen behind, and table bloat is now affecting query planning. Customers in the free tier and the enterprise tier are both reporting the identical failure. The email digest's footer link uses last year's support hours, which have since changed."
+    },
+    {
+      "item_id": "calib_14_database_1_1",
+      "c1_star": "database",
+      "c2_star": 1,
+      "c3_star": 1,
+      "a_star": "defer",
+      "shared_evidence_sentences": [
+        "A recently deployed query is missing a WHERE clause and is scanning the entire orders table.",
+        "The mobile app's crash reports show a spike originating entirely from real end-user sessions.",
+        "Inline editing on the settings page occasionally reverts unsaved changes, but a manual save button works."
+      ],
+      "shared_evidence_state": "A recently deployed query is missing a WHERE clause and is scanning the entire orders table. The mobile app's crash reports show a spike originating entirely from real end-user sessions. Inline editing on the settings page occasionally reverts unsaved changes, but a manual save button works."
+    },
+    {
+      "item_id": "calib_15_database_1_2",
+      "c1_star": "database",
+      "c2_star": 1,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "Query execution times on the primary read replica have increased roughly eightfold since this morning.",
+        "Social media mentions of the outage have started appearing from users outside the company's own monitoring.",
+        "Every scheduled job across the platform has stopped firing since the scheduler process crashed."
+      ],
+      "shared_evidence_state": "Query execution times on the primary read replica have increased roughly eightfold since this morning. Social media mentions of the outage have started appearing from users outside the company's own monitoring. Every scheduled job across the platform has stopped firing since the scheduler process crashed."
+    },
+    {
+      "item_id": "calib_16_database_unclear_0",
+      "c1_star": "database",
+      "c2_star": "unclear",
+      "c3_star": 0,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "A long-running migration job is holding a table lock that is blocking routine write transactions.",
+        "The on-call engineer flagged that this component's downstream consumers have not been fully mapped.",
+        "A debug console.log statement is visible in the browser's developer tools on the login page."
+      ],
+      "shared_evidence_state": "A long-running migration job is holding a table lock that is blocking routine write transactions. The on-call engineer flagged that this component's downstream consumers have not been fully mapped. A debug console.log statement is visible in the browser's developer tools on the login page."
+    },
+    {
+      "item_id": "calib_17_database_unclear_1",
+      "c1_star": "database",
+      "c2_star": "unclear",
+      "c3_star": 1,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "An index that normally covers the most common lookup pattern was dropped during last night's schema change.",
+        "The service's ownership recently changed teams, and its current customer exposure is undocumented.",
+        "Autosave on the document editor pauses after forty-five minutes of continuous editing, requiring a manual save."
+      ],
+      "shared_evidence_state": "An index that normally covers the most common lookup pattern was dropped during last night's schema change. The service's ownership recently changed teams, and its current customer exposure is undocumented. Autosave on the document editor pauses after forty-five minutes of continuous editing, requiring a manual save."
+    },
+    {
+      "item_id": "calib_18_database_unclear_2",
+      "c1_star": "database",
+      "c2_star": "unclear",
+      "c3_star": 2,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "Disk I/O wait times on the database host have tripled compared to the same period last week.",
+        "It's unclear whether the affected feature flag is enabled for any customer segment right now.",
+        "The primary authentication provider is returning errors for one hundred percent of login attempts."
+      ],
+      "shared_evidence_state": "Disk I/O wait times on the database host have tripled compared to the same period last week. It's unclear whether the affected feature flag is enabled for any customer segment right now. The primary authentication provider is returning errors for one hundred percent of login attempts."
+    },
+    {
+      "item_id": "calib_19_network_0_1",
+      "c1_star": "network",
+      "c2_star": 0,
+      "c3_star": 1,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "TCP connection resets are appearing in the firewall logs for roughly one in twenty requests.",
+        "The affected pipeline processes data that is not surfaced to any customer for several days.",
+        "The report scheduler misses its exact time slot by a few minutes but always eventually runs."
+      ],
+      "shared_evidence_state": "TCP connection resets are appearing in the firewall logs for roughly one in twenty requests. The affected pipeline processes data that is not surfaced to any customer for several days. The report scheduler misses its exact time slot by a few minutes but always eventually runs."
+    },
+    {
+      "item_id": "calib_20_network_0_2",
+      "c1_star": "network",
+      "c2_star": 0,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "Ping latency between the edge load balancer and the origin servers has climbed from under 5ms to over 300ms.",
+        "The affected job runs only on an internal nightly schedule with no customer-visible output.",
+        "User provisioning has stopped entirely; no new accounts can be created through any channel."
+      ],
+      "shared_evidence_state": "Ping latency between the edge load balancer and the origin servers has climbed from under 5ms to over 300ms. The affected job runs only on an internal nightly schedule with no customer-visible output. User provisioning has stopped entirely; no new accounts can be created through any channel."
+    },
+    {
+      "item_id": "calib_21_network_1_0",
+      "c1_star": "network",
+      "c2_star": 1,
+      "c3_star": 0,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "A recent firmware update to the core switches appears to have introduced intermittent link flaps.",
+        "A customer's automated integration began failing and paged their own on-call team, who then contacted support.",
+        "The dark theme's disabled-button state is barely distinguishable from its enabled state."
+      ],
+      "shared_evidence_state": "A recent firmware update to the core switches appears to have introduced intermittent link flaps. A customer's automated integration began failing and paged their own on-call team, who then contacted support. The dark theme's disabled-button state is barely distinguishable from its enabled state."
+    },
+    {
+      "item_id": "calib_22_network_1_2",
+      "c1_star": "network",
+      "c2_star": 1,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "The VPN tunnel between the two availability zones dropped and reconnected four times overnight.",
+        "The affected feature is on the critical path for every paying customer's daily workflow.",
+        "All webhook deliveries are failing silently with no error surfaced to the sending service."
+      ],
+      "shared_evidence_state": "The VPN tunnel between the two availability zones dropped and reconnected four times overnight. The affected feature is on the critical path for every paying customer's daily workflow. All webhook deliveries are failing silently with no error surfaced to the sending service."
+    },
+    {
+      "item_id": "calib_23_network_unclear_0",
+      "c1_star": "network",
+      "c2_star": "unclear",
+      "c3_star": 0,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "The CDN's edge nodes in the affected region are reporting elevated TLS handshake failures.",
+        "Some but not all of this service's consumers are known; the rest are unconfirmed at this time.",
+        "The print stylesheet omits the company logo that appears in every other view."
+      ],
+      "shared_evidence_state": "The CDN's edge nodes in the affected region are reporting elevated TLS handshake failures. Some but not all of this service's consumers are known; the rest are unconfirmed at this time. The print stylesheet omits the company logo that appears in every other view."
+    },
+    {
+      "item_id": "calib_24_network_unclear_1",
+      "c1_star": "network",
+      "c2_star": "unclear",
+      "c3_star": 1,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "The load balancer's health checks are marking otherwise-healthy backends as down every few minutes.",
+        "Whether this outage reaches paying customers depends on a fallback path whose current status is unknown.",
+        "The mobile app's offline mode drops the last few seconds of typed input, but nothing further back."
+      ],
+      "shared_evidence_state": "The load balancer's health checks are marking otherwise-healthy backends as down every few minutes. Whether this outage reaches paying customers depends on a fallback path whose current status is unknown. The mobile app's offline mode drops the last few seconds of typed input, but nothing further back."
+    },
+    {
+      "item_id": "calib_25_database_0_1",
+      "c1_star": "database",
+      "c2_star": 0,
+      "c3_star": 1,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "The database failover completed, but several application nodes are still pointed at the old primary's address.",
+        "The impacted tool is used only by the internal support team to triage other tickets.",
+        "Bulk user invites fail above 200 recipients per batch, but smaller batches complete normally."
+      ],
+      "shared_evidence_state": "The database failover completed, but several application nodes are still pointed at the old primary's address. The impacted tool is used only by the internal support team to triage other tickets. Bulk user invites fail above 200 recipients per batch, but smaller batches complete normally."
+    },
+    {
+      "item_id": "calib_26_database_0_2",
+      "c1_star": "database",
+      "c2_star": 0,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "Row-level lock contention has spiked on the table that tracks user session state.",
+        "Customer traffic is served by a separate, unaffected cluster; this one only handles internal batch work.",
+        "Account deletion requests are silently failing, leaving affected accounts in an inconsistent state."
+      ],
+      "shared_evidence_state": "Row-level lock contention has spiked on the table that tracks user session state. Customer traffic is served by a separate, unaffected cluster; this one only handles internal batch work. Account deletion requests are silently failing, leaving affected accounts in an inconsistent state."
+    },
+    {
+      "item_id": "calib_27_database_1_0",
+      "c1_star": "database",
+      "c2_star": 1,
+      "c3_star": 0,
+      "a_star": "accept",
+      "shared_evidence_sentences": [
+        "The connection pool to the primary database is exhausted, with new connections queuing for several seconds.",
+        "Live chat volume has tripled in the last twenty minutes, almost entirely about this one symptom.",
+        "The onboarding tour's fourth step points to a button that has since moved two pixels left."
+      ],
+      "shared_evidence_state": "The connection pool to the primary database is exhausted, with new connections queuing for several seconds. Live chat volume has tripled in the last twenty minutes, almost entirely about this one symptom. The onboarding tour's fourth step points to a button that has since moved two pixels left."
+    },
+    {
+      "item_id": "calib_28_database_1_2",
+      "c1_star": "database",
+      "c2_star": 1,
+      "c3_star": 2,
+      "a_star": "escalate",
+      "shared_evidence_sentences": [
+        "The database's write-ahead log is filling faster than it can be archived to the backup target.",
+        "Multiple enterprise customers have escalated through their account managers within the last thirty minutes.",
+        "Data export has been completely disabled after the underlying storage bucket became unreachable."
+      ],
+      "shared_evidence_state": "The database's write-ahead log is filling faster than it can be archived to the backup target. Multiple enterprise customers have escalated through their account managers within the last thirty minutes. Data export has been completely disabled after the underlying storage bucket became unreachable."
+    },
+    {
+      "item_id": "calib_29_database_unclear_0",
+      "c1_star": "database",
+      "c2_star": "unclear",
+      "c3_star": 0,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "Deadlocks between two competing transaction types have started appearing in the database's error log.",
+        "Whether this queue feeds a customer-visible feature depends on a routing rule nobody has confirmed yet.",
+        "The date picker's month label overflows its container by a few pixels in Japanese locale."
+      ],
+      "shared_evidence_state": "Deadlocks between two competing transaction types have started appearing in the database's error log. Whether this queue feeds a customer-visible feature depends on a routing rule nobody has confirmed yet. The date picker's month label overflows its container by a few pixels in Japanese locale."
+    },
+    {
+      "item_id": "calib_30_database_unclear_1",
+      "c1_star": "database",
+      "c2_star": "unclear",
+      "c3_star": 1,
+      "a_star": "request_more_evidence",
+      "shared_evidence_sentences": [
+        "Replication lag between the primary and its read replicas has grown to several minutes.",
+        "The team that owns this service could not immediately confirm which customers, if any, are affected.",
+        "Two-factor recovery codes fail to regenerate on the first attempt but succeed on a second try."
+      ],
+      "shared_evidence_state": "Replication lag between the primary and its read replicas has grown to several minutes. The team that owns this service could not immediately confirm which customers, if any, are affected. Two-factor recovery codes fail to regenerate on the first attempt but succeed on a second try."
+    }
+  ],
+  "builder_script_sha256": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de"
+}

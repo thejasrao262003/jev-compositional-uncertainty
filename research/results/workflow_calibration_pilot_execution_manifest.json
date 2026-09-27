@@ -1,0 +1,506 @@
+{
+  "status": "CALIBRATION PILOT EXECUTED - result feeds ONLY the \u00a714 sample-size formula, per the exhaustive prohibited-use list in workflow_calibration_pilot_protocol.md \u00a72",
+  "total_calls": 270,
+  "input_hashes": {
+    "pilot_manifest": {
+      "path": "research/data/characterization/workflow_calibration_pilot_manifest.json",
+      "expected": "d179e9a2dd0b56f93c1d7fdd3b534c84351ba1440cd80b4c5f1b6170e8ec9111",
+      "actual": "d179e9a2dd0b56f93c1d7fdd3b534c84351ba1440cd80b4c5f1b6170e8ec9111",
+      "match": true
+    },
+    "pilot_manifest_builder": {
+      "path": "research/src/build_workflow_calibration_pilot_manifest.py",
+      "expected": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de",
+      "actual": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de",
+      "match": true
+    }
+  },
+  "per_item_results": {
+    "calib_01_network_0_0": {
+      "a_star": "accept",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_02_network_0_1": {
+      "a_star": "accept",
+      "actions": {
+        "1": "accept",
+        "2": "accept",
+        "3": "accept",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4a": 0
+      }
+    },
+    "calib_03_network_0_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_04_network_1_0": {
+      "a_star": "accept",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_05_network_1_1": {
+      "a_star": "defer",
+      "actions": {
+        "1": "escalate",
+        "2": "accept",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_06_network_1_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "accept",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_07_network_unclear_0": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_08_network_unclear_1": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_09_network_unclear_2": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_10_database_0_0": {
+      "a_star": "accept",
+      "actions": {
+        "1": "accept",
+        "2": "escalate",
+        "3": "accept",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 0
+      }
+    },
+    "calib_11_database_0_1": {
+      "a_star": "accept",
+      "actions": {
+        "1": "accept",
+        "2": "escalate",
+        "3": "accept",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 0
+      }
+    },
+    "calib_12_database_0_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_13_database_1_0": {
+      "a_star": "accept",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_14_database_1_1": {
+      "a_star": "defer",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 0
+      }
+    },
+    "calib_15_database_1_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "accept",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_16_database_unclear_0": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_17_database_unclear_1": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_18_database_unclear_2": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "escalate",
+        "2": "accept",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_19_network_0_1": {
+      "a_star": "accept",
+      "actions": {
+        "1": "accept",
+        "2": "escalate",
+        "3": "accept",
+        "4a": "accept"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_20_network_0_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_21_network_1_0": {
+      "a_star": "accept",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_22_network_1_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "accept",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_23_network_unclear_0": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_24_network_unclear_1": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "defer",
+        "2": "escalate",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_25_database_0_1": {
+      "a_star": "accept",
+      "actions": {
+        "1": "accept",
+        "2": "escalate",
+        "3": "accept",
+        "4a": "accept"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 0,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_26_database_0_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_27_database_1_0": {
+      "a_star": "accept",
+      "actions": {
+        "1": "escalate",
+        "2": "accept",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 1,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_28_database_1_2": {
+      "a_star": "escalate",
+      "actions": {
+        "1": "escalate",
+        "2": "escalate",
+        "3": "escalate",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4a": 1
+      }
+    },
+    "calib_29_database_unclear_0": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "accept",
+        "2": "escalate",
+        "3": "accept",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    },
+    "calib_30_database_unclear_1": {
+      "a_star": "request_more_evidence",
+      "actions": {
+        "1": "defer",
+        "2": "accept",
+        "3": "defer",
+        "4a": "escalate"
+      },
+      "Y_decision": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4a": 0
+      }
+    }
+  },
+  "discordance": {
+    "2_vs_3": {
+      "n_discordant": 9,
+      "n_total": 30,
+      "rate": 0.3
+    },
+    "2_vs_4a": {
+      "n_discordant": 7,
+      "n_total": 30,
+      "rate": 0.23333333333333334
+    },
+    "1_vs_2": {
+      "n_discordant": 9,
+      "n_total": 30,
+      "rate": 0.3
+    },
+    "1_vs_3": {
+      "n_discordant": 0,
+      "n_total": 30,
+      "rate": 0.0
+    },
+    "1_vs_4a": {
+      "n_discordant": 4,
+      "n_total": 30,
+      "rate": 0.13333333333333333
+    },
+    "3_vs_4a": {
+      "n_discordant": 4,
+      "n_total": 30,
+      "rate": 0.13333333333333333
+    }
+  },
+  "primary_discordance_rates_for_power_analysis": {
+    "2_vs_3": 0.3,
+    "2_vs_4a": 0.23333333333333334
+  }
+}
