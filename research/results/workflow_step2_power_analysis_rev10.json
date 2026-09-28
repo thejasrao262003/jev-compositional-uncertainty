@@ -1,0 +1,29 @@
+{
+  "status": "BINDING SIZING - workflow_uncertainty_composition_protocol.md Revision 10, section 14",
+  "supersedes": "research/results/workflow_step2_power_analysis.json (Revision 9, N_final=942; preserved unmodified)",
+  "reason_for_revision": "Strategy 2 vs 3 dropped as a primary comparison: under the pre-specified deployable-trigger set, Strategy 3 never activates score suppression and computes Strategy 1's rule. Structural equivalence from protocol inspection, not a pilot outcome.",
+  "derivation": "recomputed from the 270 raw pilot responses via run_workflow_calibration_pilot.analyze(), cross-checked against the committed execution manifest",
+  "primary_comparison": "2_vs_4a (sole)",
+  "multiplicity": "one primary comparison, no correction required",
+  "inputs": {
+    "alpha_two_sided": 0.05,
+    "power": 0.8,
+    "MDE": 0.05,
+    "z_alpha_over_2": 1.959963985,
+    "z_power": 0.8416212336,
+    "strategy2_threshold_as_measured": 0.5,
+    "cross_node_rule_as_measured": "none"
+  },
+  "pilot_2_vs_4a": {
+    "b_2right_4a_wrong": 2,
+    "c_2wrong_4a_right": 5,
+    "d_hat": 0.23333333333333334,
+    "floor_applied": false
+  },
+  "descriptive_only_S1_equals_S3_all_30": true,
+  "formula": "n_required = ceil((z_alpha/2 + z_power)^2 * d_hat / MDE^2)",
+  "N_final": 733,
+  "policy_development_split": "removed - all N_final instances are evaluation instances",
+  "implied_main_run_calls": 6597,
+  "binding_note": "No 733-instance manifest exists; no Step 2 call is authorized by this record."
+}

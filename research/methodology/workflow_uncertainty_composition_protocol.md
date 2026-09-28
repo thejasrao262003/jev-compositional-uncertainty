@@ -1,19 +1,107 @@
-# Workflow Uncertainty Composition Protocol — Step 2, Specified (Revision 9)
+# Workflow Uncertainty Composition Protocol — Step 2, Specified (Revision 10)
 
-Status: **design only — no manifest built, no API calls made or
-authorized (with one narrow, disclosed exception noted in §16.5).** This
-document is **Step 2** of `pilot_experiment_specification.md`, now
-specified after Step 0A, Step 0B (`stage1_h1h2b_analysis.md`), and the
-entire `score` track. It operationalizes `compositional_reliability_
-baseline.md`'s `Δ`/`conf_product` statistics. Per review's own verdict on
-Revision 4: **methodology is not being reopened** — Revision 5 makes
-three already-agreed guarantees explicit *in the artifact itself* rather
-than leaving them as conversational claims, since review correctly noted
-it could only audit a summary, not the file. Pipeline: §16 frozen
-(Revision 4) → these three locks made explicit (Revision 5) → the
-30-instance calibration pilot (its own separate go/no-go) → power
-calculation → manifest generation → hash lock → preflight/self-tests →
-main evaluation run.
+Status (Revision 10): **no Step 2 evaluation manifest exists and no
+Step 2 call has been made or authorized.** The first calibration pilot
+(30 instances, 270 calls, hand-written content) has run, and its result
+is committed at `5c16f4c`. This document is **Step 2** of
+`pilot_experiment_specification.md`. It operationalizes
+`compositional_reliability_baseline.md`'s `Δ`/`conf_product` statistics.
+
+**Current pipeline position:** Revision 10 (this file) → freeze the
+deterministic template grammar (`workflow_template_grammar_spec.md`) →
+independent grammar audit → a second 270-call calibration pilot on
+templated content → `d_template` → recompute `N` → freeze `N` → build
+the evaluation manifest → manifest audit and preflight → explicit Step 2
+authorization. **`N = 733` is provisional** (§14); see the Revision 10
+audit addendum below.
+
+## Revision 10 audit addendum — content generator changes, so N is provisional again
+
+The independent audit of the Revision 10 file accepted the B(ii) change
+and chose **Option 1** for the evaluation content:
+
+- **Why.** §16.2's no-reuse rule requires about 2,199 unique evidence
+  sentences for the main run. The existing generator is a fixed pool of
+  90 hand-written sentences with no grammar, so any way of reaching
+  that number is a new generation mechanism. The audit chose a
+  deterministic template grammar. It rejected hand-writing about 2,199
+  sentences, relaxing no-reuse, and any Jev-authored text.
+- **Consequence for N.** `d(2v4a) = 7/30` was measured on hand-written
+  content. The main run will use templated content, which is a
+  different distribution, so carrying `7/30` over would be an untested
+  transportability assumption at exactly the point where it sets N. A
+  second 30-instance calibration pilot on templated content will
+  measure `d_template`, and `N` is recomputed from that.
+- **What makes N provisional.** Only the change of content generator.
+  No Step 2 outcome exists or was observed. Strategy 2 (threshold 0.5),
+  4a (triggers as in §7.4a), the cost matrix, `F`, MDE, α and power are
+  unchanged and stay frozen through the second pilot.
+- **Sequencing.** The grammar is frozen and independently audited
+  **before** the second pilot runs. That pilot measures `d_template`
+  for sizing only; it cannot be used to judge or revise the grammar.
+- **Document cleanup the audit found.** §16.5, §16.6's status line and
+  §17 still described the first pilot as not yet run and still used the
+  two-comparison design. They now carry Revision 10 status notes, with
+  the old text kept as a marked superseded record rather than deleted.
+
+## Changelog from Revision 9 — design correction (B(ii)), not a post-hoc reduction of N
+
+**Causal sequence, stated so it cannot be misread**: protocol inspection →
+structural equivalence → design correction. *Not*: pilot result →
+undesirable result → reduce N.
+
+**The finding.** §7.3 zeroes `w_score` only when a *deployable*
+presentation-risk trigger fires, but §8 defines no such trigger — its
+only `score` flag is the diagnostic-only construction-class flag, walled
+off from every real strategy. So `w_score = 1` on every instance, and
+Strategy 3 computes `F(noul decision, score decision)`, which is Strategy
+1's rule. The two differ only in the degenerate case where every `noul`
+call fails (Strategy 3 escalates; Strategy 1 would pass an undefined
+input to `F`), which did not occur in the pilot. The pilot's `1 vs 3 =
+0/30` is consistent with this, but it is not the reason for the change;
+the protocol text alone establishes the equivalence.
+
+**The decision.** Strategy 3 was removed from the primary comparison set
+because, under the pre-specified deployable-trigger configuration, its
+presentation-risk suppression condition is never activated; consequently
+its computation is identical to Strategy 1 over the evaluation domain.
+Retaining 2-vs-3 as a primary comparison would duplicate an existing arm
+rather than evaluate a distinct composition strategy. Strategy 3 is kept
+only as a descriptive implementation-equivalence arm (§7.3).
+
+**Propagated consequences:**
+
+1. **One primary comparison, 2 vs 4a** (§11–§14). `N_final = 733`
+   (§14), reusing the already-computed `n_required(2v4a)`; the `942`
+   figure is superseded, not reinterpreted.
+2. **Multiplicity — a latent gap, now moot, disclosed rather than left
+   to vanish silently.** Revisions 7–9 had two primary comparisons, each
+   at α = 0.05, with no multiplicity rule stated (family-wise error up to
+   ≈0.10). With one primary comparison, α = 0.05 applies directly and no
+   correction is needed.
+3. **Strategy 2 and 4a pinned to exactly the definitions `d(2v4a)` was
+   measured under.** `d(2v4a) = 7/30` came from the pilot's Strategy 2
+   with threshold `0.5` and the pilot's 4a with no cross-node-
+   disagreement rule. The main run must use those same two definitions,
+   or the power calculation no longer describes the comparison it sizes.
+   Both values were fixed before the pilot ran (pilot protocol §5; the
+   runner's `cross_node_disagreement = False`), so this matches the main
+   run to what was measured; it doesn't choose values after seeing
+   results. Strategy 2's threshold is now frozen at `0.5` (§7.2, was "fit
+   on a policy-development set"), and the cross-node rule is frozen as
+   *none* for this task (§8).
+4. **The policy-development split is removed** (§8, §9, §16.6). After
+   item 3, nothing is left to fit: Strategy 3's constants, 4a's triggers
+   (the `0.90` boundary comes from Step 0B), and Strategy 2's threshold
+   are all fixed. So all 733 instances are evaluation instances. This
+   also resolves an ambiguity §16.6 never addressed: under a 30/70 split,
+   733 evaluation instances would have needed `ceil(733/0.7) = 1048` in
+   total. Per §8's own fallback rule, the deployable triggers are
+   reported as pre-specified exploratory rules, not calibrated ones.
+5. **The claims matrix is re-scoped** (§13). The "primitive-aware"
+   wording now refers to 4a, described precisely as `F`-composition plus
+   the deployable escalation triggers (one of which, `choice` confidence
+   ≥ 0.90, is primitive-specific). Strategy 3 appears in no claim.
 
 ## Changelog from Revision 8
 
@@ -265,7 +353,9 @@ field corrupted or removed; the strategy's output action must not
 change. A strategy whose output changes under this mutation is a defect
 in that strategy's implementation, caught before any live call.
 
-**Shared-response design (frozen)**: all four strategies (1, 2, 3, 4a —
+**Shared-response design (frozen)**: all four strategies (1, 2, 3, 4a;
+since Revision 10, 2 vs 4a is the sole primary comparison, and 1 and 3
+are computed descriptively only —
 §7) are evaluated on the **same** measurement bundles per input. Raw
 calls are made **once** per input (3 repeats × 3 nodes = 9 calls/input,
 per §6's `C_measurement`), and every strategy's policy runs over that one
@@ -479,11 +569,40 @@ Feature contract: primitive identities, node positions, native
 ```
 conf_i = confidence (choice, score) or 2*|noul-0.5| (noul).
 conf_product = Π conf_i
-π_2: threshold(conf_product) -> action, threshold frozen on the
-  policy-development set (§8), never on the evaluation set.
+π_2: accept if conf_product >= 0.5, else escalate.
+  Threshold FROZEN at 0.5 (Revision 10) - the exact value the
+  calibration pilot used when it measured d(2v4a), fixed before that
+  pilot ran. No longer fit on a policy-development set (removed, §8).
+  Missing confidence on choice or score -> escalate.
 ```
 
-### 7.3 Strategy 3 — Primitive-aware composition (Revision 6 — resolved against the concrete generator)
+**Disclosed reversal (Revision 10).** Before the pilot ran, its own
+documents described `0.5` as *provisional* and "explicitly NOT the
+frozen Step 2 threshold" (`workflow_calibration_pilot_protocol.md` §5;
+the `STRATEGY2_PROVISIONAL_THRESHOLD` comment in
+`run_workflow_calibration_pilot.py`). Revision 10 adopts that same value
+as Step 2's frozen threshold. This reverses a pre-pilot statement, so it
+is recorded here. The adoption doesn't depend on any pilot outcome
+(`b`, `c`, `d`, any action): `d(2v4a)` describes Strategy 2 at `0.5`,
+and sizing the main run with it while running Strategy 2 at any other
+threshold would detach the power calculation from the comparison it
+sizes. The pilot files are left unedited because they record what ran.
+The main-run runner, when written, must define this constant as frozen
+rather than provisional.
+
+### 7.3 Strategy 3 — descriptive implementation-equivalence arm only (Revision 10; not a primary comparison)
+
+**Status (Revision 10)**: Strategy 3 is **not** a primary comparison arm
+and appears in no claim (§13). Under this protocol's deployable-trigger
+set (§8), `w_score` is never zeroed, so the rule below computes
+`F(noul decision, score decision)`, which is Strategy 1's rule. The only
+difference arises when every `noul` call fails. Strategy 3 is still
+computed and reported descriptively, as a record that the specified
+primitive-aware arm is empty under this configuration. It does not stand
+for primitive-aware composition as such. Making it distinct would
+require a *deployable* `score` presentation-risk signal, which this
+protocol does not have and which is out of scope for this pass. The text
+below is kept as the Revision 6 record of how the rule was resolved.
 
 **Finding, disclosed (Revision 6)**: attempting to actually implement
 this section against §16.2's concrete generator surfaced a real
@@ -540,14 +659,29 @@ introduce a tunable choice. `w_choice` is unused by this generator's
 action rule and is disclosed as such rather than silently dropped from
 the constant list.
 
-### 7.4a Strategy 4a — Abstention-aware composition (deployable; the actual evaluated policy)
+### 7.4a Strategy 4a — Abstention-aware composition (deployable; the sole primary comparator, Revision 10)
 
 ```
-π_4a: as Strategy 3 (§7.3), PLUS escalate if any DEPLOYABLE trigger
-  (§8) fires: repeat instability, choice confidence >= 0.90, or
-  cross-node disagreement. Uses only information a real deployed system
-  observes at decision time.
+π_4a, stated exactly as the calibration pilot implemented it (Revision
+10 - the main run must match this, since d(2v4a) was measured under it):
+  1. if the choice node OR the score node is repeat_unstable (§2)
+       -> ESCALATE    (noul has no modal-stability concept, §2, so it
+                       does not enter this check)
+  2. elif choice mean_confidence >= 0.90
+       -> ESCALATE    (primitive-specific trigger, Step 0B boundary)
+  3. elif cross-node disagreement
+       -> ESCALATE    (rule frozen as NONE for this task, §8 - so this
+                       branch never fires; kept for contract completeness)
+  4. else -> Strategy 3's rule (§7.3), which here equals
+       F(noul decision, score decision), ESCALATE on undefined input.
+Uses only information a real deployed system observes at decision time.
 ```
+
+What makes 4a "primitive-aware" is **only** its triggers. The
+`choice`-confidence trigger is primitive-specific, and the repeat-
+instability check reflects §2's measurement layer, which differs by
+primitive. The composition step itself is `F`. That is the scope in
+which §13's claims use the term.
 
 ### 7.4b Strategy 4b — Diagnostic ceiling (NOT a policy; never compared as one)
 
@@ -568,8 +702,8 @@ policy comparison or §13's outcome/claims matrix as a real strategy.
 |---|---|---|---|---|---|
 | 1 — Decision-only | Yes | No | No | No | Structural rule only |
 | 2 — Naive confidence | Yes | No | Confidence scalar only | No | Threshold-based |
-| 3 — Primitive-aware | Yes | No | Yes | Weights from policy-development set only | Fallback only |
-| 4a — Abstention-aware (deployable) | Yes (base) | Yes — same repeats every node already has (§2), no extra calls | Yes | Yes, deployable-trigger thresholds only | Yes, primary role |
+| 3 — Descriptive equivalence arm (Rev. 10) | Yes | No | Yes | No — fixed constants only | Fallback only |
+| 4a — Abstention-aware (deployable, sole primary comparator) | Yes (base) | Yes — same repeats every node already has (§2), no extra calls | Yes | No — trigger thresholds fixed from prior findings (Step 0B), not fit to Step 2 data | Yes, primary role |
 | 4b — Diagnostic ceiling (oracle, NOT a policy) | Yes (base) | Yes | Yes | Yes, **plus** generator-side construction-class knowledge | Yes, oracle only |
 
 **Binding rule**: strategies 1–3 receive exactly the same single-call
@@ -590,37 +724,43 @@ triggers feed Strategy 4a.
 |---|---|---|---|
 | Repeat instability | A node's 3-call modal reduction (§2) produced no modal decision | **Deployable** — the repeat calls are always made, their outcome is directly observed | 4a |
 | `choice` confidence ≥ 0.90 | Exact boundary of Step 0B's observed subgroup (n=6), frozen | **Deployable** — confidence is a real, observed API field | 4a |
-| Cross-node disagreement | Task-specific joint-inconsistency rule, frozen at manifest-build time | **Deployable** — decisions are observed at decision time | 4a |
+| Cross-node disagreement | Task-specific joint-inconsistency rule. **Frozen as NONE for this task (Revision 10)**, matching the calibration pilot under which `d(2v4a)` was measured. For this generator, "inconsistent" would have to be defined over `choice`'s routing label, which `F` doesn't use (§7.3), so no principled rule exists | **Deployable** in form; inert here | 4a (never fires) |
 | `score` construction-class flag | Item's *true* construction matches the presentation-sensitivity study's `MATERIAL`-flagged composition class | **Diagnostic-only** — requires generator-side knowledge no deployed system has | 4b (oracle) **only** |
 
-**Discovery/policy-development/evaluation separation, unchanged for
-every deployable trigger's threshold**:
+**Data separation (Revision 10 — policy-development set removed)**:
 
 ```
 Discovery set:            prior findings (Step 0B, the score track) -
                            already spent, not re-derived from Step 2 data.
-Policy-development set:   a held-out portion of Step 2's instances,
-                           used to fix any threshold/weight as a frozen
-                           constant BEFORE evaluation.
-Evaluation set:            scores the frozen triggers/weights only - no
-                           post-hoc adjustment.
+Calibration pilot:         the 30-instance pilot - supplies d(2v4a) for
+                           sizing ONLY (§14, §16.5 prohibited-use list);
+                           its instances never enter the evaluation set.
+Policy-development set:   REMOVED (Revision 10). Every threshold and
+                           weight is now fixed before Step 2 data exists
+                           (Strategy 2: 0.5; 4a: 0.90 from Step 0B, cross-
+                           node rule = none; Strategy 3: fixed constants),
+                           so a held-out fitting set would fit nothing.
+Evaluation set:            all N_final = 733 instances - scores the frozen
+                           rules only, no post-hoc adjustment.
 External validation set:   later, separate, out of scope here (§4.1).
 ```
 
-If Step 2's sample is too small for a real split, every deployable
+Because no trigger is calibrated on Step 2 data, every deployable
 trigger is reported as a **pre-specified exploratory rule**, not a
-calibrated one — and the `score` construction-class flag is reported
-**only** via 4b's oracle-ceiling framing regardless of sample size, since
-its diagnostic-only status is structural, not a data-volume problem.
+calibrated one, as §8's original fallback clause requires. The `score`
+construction-class flag is reported **only** through 4b's oracle-ceiling
+framing. Its diagnostic-only status is structural, not a matter of data
+volume.
 
 ## 9. Risk–coverage–cost reporting — full frontier, no post-hoc threshold selection
 
-No strategy's threshold is chosen after seeing evaluation-set outcomes —
-fixed on the policy-development set (§8).
+No strategy's threshold is chosen after seeing evaluation-set outcomes.
+As of Revision 10, every threshold is fixed before Step 2 data exists
+(§7.2, §7.4a, §8); none is fit on any Step 2 subset.
 
 **Required reporting per strategy, on the evaluation set**: full
-empirical risk–coverage frontier (headline point = policy-development-
-set-derived threshold; frontier itself is context, not license to
+empirical risk–coverage frontier (headline point = the frozen threshold,
+e.g. Strategy 2's `0.5`; frontier itself is context, not license to
 cherry-pick post hoc); `P(Y_decision=1)`, `P(Y_decision=1|Y_resolved=1)`,
 coverage, escalation rate (§5); mean/tail `C_total` by component (§6);
 `n_i^reached` per node; the threshold-selection procedure actually used.
@@ -635,10 +775,17 @@ instability rate per node type; **Strategy 4b's oracle ceiling** (§7.4b).
 
 ## 11. Policy-level analyses (kept separate from mechanism diagnosis)
 
-Evaluate whether a strategy improves operational outcomes — strategies
-1, 2, 3, 4a **only** (never 4b): `P(Y_decision=1)` per strategy
-(primary); coverage, escalation rate, `C_total` (§9); risk–coverage–cost
-frontier (§9); paired differences (§2's shared-response design).
+**Sole primary, powered comparison (Revision 10)**: Strategy 2 vs.
+Strategy 4a, paired McNemar test on `Y_decision` at α = 0.05 (§14).
+
+**Reported descriptively, not as hypothesis tests**: Strategy 1 (decision-
+only baseline) and Strategy 3 (implementation-equivalence arm, §7.3),
+with the same metrics. Their comparisons carry no significance claim and
+no power guarantee. Never 4b.
+
+Metrics per strategy: `P(Y_decision=1)`; coverage, escalation rate,
+`C_total` (§9); risk–coverage–cost frontier (§9); paired differences (§2's
+shared-response design).
 
 **A favorable mechanism-level finding is never, by itself, evidence that
 any specific strategy in §7 fixes it** — that is this section's separate
@@ -649,21 +796,57 @@ comparison.
 | Tier | Question | What would establish it |
 |---|---|---|
 | Verifier validity | Does the strategy code correctly implement its own frozen contract (§7)? | Exhaustive/mutation-tested unit verification, same discipline as `verify_score_gate_logic.py`, plus §2's bundle-isolation self-test |
-| Strategy validity | Does 3 or 4a improve `P(Y_decision=1)`, coverage, or cost vs. §7's baselines, on the construction-defined evaluation set, using only policy-development-derived thresholds? | A properly powered Step 2 run (§14) |
+| Strategy validity | Does 4a improve `P(Y_decision=1)` over Strategy 2 on the construction-defined evaluation set, using only thresholds fixed before Step 2 data existed? (Revision 10: 4a is the sole primary comparator; Strategy 3 is not tested.) | A properly powered Step 2 run (§14, `N_final = 733`) |
 | External validity | Does that improvement hold on independently-validated ground truth? | The separate, later externally-validated task (§4.1) — not addressed here |
 
 ## 13. Outcome/claims matrix
 
 | Result | Supports | Does not support |
 |---|---|---|
-| `Δ_marginal ≈ 0` and `Δ_seq ≈ 0`, strategies 1–4a similar `P(Y_decision=1)` | Per-node thresholds approximate this benchmark reasonably | Generalization beyond this construction-defined task |
+| `Δ_marginal ≈ 0` and `Δ_seq ≈ 0`, strategies 1, 2, 4a similar `P(Y_decision=1)` | Per-node thresholds approximate this benchmark reasonably | Generalization beyond this construction-defined task |
 | `Δ_marginal < 0` (Lin-et-al.-corrected) | Cascading failure, motivating a workflow-level policy | That any strategy in §7 fixes it |
-| 3 or 4a beats 2 on `P(Y_decision=1)`/frontier at matched/disclosed cost | Primitive-aware/abstention-aware beats naive confidence, on this benchmark/evaluation set | External validity (§12); that deployable triggers (§8) transfer beyond their disclosed scope |
+| 4a beats 2 on `P(Y_decision=1)` (primary McNemar test, α = 0.05) | `F`-composition plus deployable escalation triggers (repeat instability; a primitive-specific `choice`-confidence ≥ 0.90 trigger) beats naive confidence-product composition, on this benchmark/evaluation set | External validity (§12); that the triggers transfer beyond their disclosed scope (they are pre-specified exploratory rules, §8); **that primitive-aware *composition* as such helps**, since 4a's composition step is `F`, and only its triggers are primitive-specific |
+| 4a vs. 2 not significant | No evidence at this N that these deployable triggers improve on naive confidence composition, for MDE = 0.05 | That no escalation rule helps, or that effects smaller than 0.05 are absent |
+| Strategy 3 ≡ Strategy 1 (descriptive) | That the specified primitive-aware arm is empty under this trigger configuration (§7.3) | Anything about primitive-aware composition's value. This is a statement about the protocol, not about the primitives |
 | No strategy beats 1 | Confidence-like signals may not add value here | Confidence signals are worthless in general |
 | 4b's ceiling ≫ 4a | The diagnostic-only signal is workflow-relevant *if it could be made deployable* | That 4a (the real policy) captures that value — it structurally cannot, by design |
 | High instability/abstention rates | `score`/`noul`'s representation-validity gaps are workflow-relevant | The deployable triggers are well-calibrated in general |
 
-## 14. Power analysis — procedure specified, number pending §16.5 (Revision 7 — discordance estimand made explicit)
+## 14. Power analysis — binding sizing (Revision 10)
+
+**Binding, Revision 10 — the procedure below is binding; the `N = 733`
+it produces is PROVISIONAL.** That figure was computed from `d` measured
+on hand-written content, and the main run will use templated content
+(see the Revision 10 audit addendum). `N` will be recomputed by this
+same procedure from `d_template`, the second calibration pilot's
+estimate. Everything else in this block stays frozen.
+
+```
+Primary comparison: ONE - Strategy 2 vs. Strategy 4a (§11). Strategy
+  2 vs. 3 is no longer a primary comparison (§7.3, Revision 10
+  changelog): structural equivalence of Strategy 3 to Strategy 1, not
+  a pilot result.
+Paired outcome: DISCORDANT iff Y_decision(2, i) != Y_decision(4a, i).
+Test: McNemar's exact test, alpha = 0.05 two-sided, power = 0.80.
+  One primary comparison, so no multiplicity correction applies (the
+  two-comparison design in Revisions 7-9 never specified one - a
+  latent gap, now moot).
+Sizing input: d_hat(2v4a) = 7/30 = 0.2333 (b=2, c=5), from the executed
+  calibration pilot, measured under exactly the Strategy 2 (threshold
+  0.5) and 4a (cross-node rule = none) definitions the main run uses
+  (§7.2, §7.4a).
+MDE = 0.05 (§16.5, cost-matrix-derived design target - unchanged).
+n_required(2v4a) = ceil(7.8489 * 0.2333 / 0.0025) = 733
+N_final = 733 evaluation instances - all of them evaluation (no policy-
+  development split, §8). Superseded: N_final = 942 (Revision 9), which
+  was set by the now-dropped 2v3 comparison.
+Implied main-run budget: 733 x 3 nodes x 3 repeats = 6,597 calls.
+Record: research/results/workflow_step2_power_analysis_rev10.json
+  (supersedes workflow_step2_power_analysis.json, which is preserved
+  unmodified as the Revision 9 record).
+```
+
+**Superseded record (Revisions 7–9), kept for provenance, not binding:**
 
 ```
 Primary comparisons: TWO, computed and sized SEPARATELY, never pooled:
@@ -755,10 +938,10 @@ plumbing run was never executed (confirmed by direct repository search).
 now supplies exactly two named quantities (`d_hat(2v3)`, `d_hat(2v4a)`),
 never a single pooled number.
 
-**No sample size is fixed by this document** — only the test, the MDE,
-the two named comparisons, the floor convention, and the mechanism for
-obtaining the two missing inputs (§16.5's calibration pilot, not yet
-authorized).
+*(End of superseded Revisions 7–9 record. The binding sizing is the
+Revision 10 block at the top of this section: `N_final = 733`, one
+primary comparison. The 733-instance manifest does not yet exist, and no
+Step 2 call is authorized by this document.)*
 
 ## 15. Explicit non-goals and scope restrictions
 
@@ -870,6 +1053,14 @@ c_3*=2 (blocking):
    Every remaining `c_3*=2` row (`c_2*∈{0,1}`) resolves to `escalate`,
    never `accept` ✓.
 
+**Revision 10 note:** for the main run and the second calibration
+pilot, the sentence content comes from the deterministic template
+grammar in `workflow_template_grammar_spec.md`, which is pending its own
+independent audit. The rules below still bind (content-blind IDs, seeded
+assignment, zero reuse against every prior manifest), but that spec
+makes "reuse" more precise. The first pilot's 90 hand-written sentences
+were authored under the original rules below.
+
 **Content-authoring rules for the actual sentence pool (specification
 only — authoring itself is manifest-generation's job, per the agreed
 pipeline, not this freeze)**: content-blind opaque sentence IDs (never
@@ -905,6 +1096,32 @@ Specified in full in §16.2 above (the two fixed sentence templates) —
 not restated separately.
 
 ### 16.5 Power analysis — frozen procedure, one disclosed gap remaining
+
+**Revision 10 status (binding):**
+
+- **First calibration pilot: completed.** 30 instances of hand-written
+  content, 270/270 calls, 0 retries or deviations; committed at
+  `5c16f4c`.
+- **Its sizing result:** `d(2v4a) = 7/30` (`b=2, c=5`). Under the single
+  primary comparison (§14), that gave `N = 733` for the hand-written-
+  content design.
+- **N is provisional again, only because the evaluation content
+  generator is changing** from hand-written sentences to the
+  deterministic template grammar (Revision 10 audit addendum). No Step 2
+  outcome exists or has been observed.
+- **Second calibration pilot: planned, not run, not authorized.** It
+  will use 30 templated instances (270 calls), be generated only after
+  the grammar is frozen and independently audited, and follow the same
+  prohibited-use list and separate-artifact rules as the first pilot
+  (both reproduced below). It measures `d_template` for sizing only and
+  cannot be used to judge or revise the grammar.
+
+**Superseded record (Revisions 4–9), kept for provenance, not binding.**
+Where the text below says the pilot "has not been run", or refers to
+"Strategy 3 or 4a" or a two-comparison design, it describes the state
+before Revision 10. The MDE derivation, the prohibited-use list and the
+separate-artifact rule in it **remain binding**, and apply equally to the
+second pilot.
 
 **Minimum detectable effect, derived from §16.1's cost matrix (not
 guessed)**: a disclosed threshold of **0.05** (5 percentage points)
@@ -978,13 +1195,37 @@ response files, its own results file, and its own hash-lock — mirroring
 retroactively relabeled as part of the main Step 2 evaluation manifest,
 even after both exist.
 
-**This pilot has not been run, is not authorized by this document, and
-is a separate, small, explicit go/no-go decision** — distinct from, and
-prior to, authorizing Step 2's full evaluation run.
+~~**This pilot has not been run, is not authorized by this document, and
+is a separate, small, explicit go/no-go decision**~~ *(superseded: the
+first pilot ran, per the Revision 10 status above)*. The principle still
+binds, and now applies to the second, templated pilot: each calibration
+pilot is a separate, small, explicit go/no-go decision, distinct from
+and prior to authorizing Step 2's full evaluation run.
 
-### 16.6 Policy-development/evaluation split
+*(End of superseded Revisions 4–9 record for §16.5.)*
 
-**30% policy-development / 70% evaluation**, a disclosed, standard
+### 16.6 Policy-development/evaluation split — REMOVED (Revision 10)
+
+**Binding, Revision 10: no split. All `N_final = 733` instances are
+evaluation instances.** There is nothing left to fit: every threshold and
+weight is fixed before Step 2 data exists (§8's data-separation block).
+
+**Why this does not violate the pilot's prohibited-use list (§16.5),
+stated because that list explicitly forbids using the pilot to "change
+the policy-development/evaluation split ratio"**: none of the pilot's
+*outputs* (`b`, `c`, `d`, any `Y_decision`, any action) drove this
+change. It follows from two things that don't depend on pilot outcomes.
+(1) The structural finding that Strategy 3 ≡ Strategy 1, which the
+protocol text alone establishes. (2) The requirement that the main run
+use the *definitions* the pilot was built with — Strategy 2 threshold
+`0.5` and cross-node rule *none*. Both were fixed before the pilot ran,
+and were fixed so that `d(2v4a)` would describe the comparison it sizes.
+Once Strategy 2's threshold is pinned, the split has no remaining
+purpose. Whether this reasoning is sound is for the independent
+Revision 10 audit to judge; it is disclosed here so the audit doesn't
+have to go looking for it.
+
+**Superseded (Revisions 4–9), kept for provenance**: **30% policy-development / 70% evaluation**, a disclosed, standard
 round-number convention (not tuned on any data) — applied to whatever
 total evaluation-population size §16.5's calibration pilot ultimately
 yields. If the calibration pilot itself is never run or the resulting
@@ -993,11 +1234,14 @@ deployable trigger (§8) is reported as exploratory-only, per §8's own
 fallback rule — restated here as the binding default if 16.5 is not
 completed before a manifest is built.
 
-**Status**: items 16.1–16.4 and 16.6 are fully frozen — no further
-methodological decision remains in them. Item 16.5's *procedure* is
-frozen; its *number* requires the disclosed 30-instance calibration
-pilot, not yet authorized. **No manifest exists yet, and no evaluation-
-run API call is authorized by this document.**
+**Status (Revision 10)**: 16.1, 16.3, 16.4 and 16.6 are frozen. 16.2's
+task, `F` and adapter are frozen; its sentence *content* now comes from
+the template grammar, which is pending audit. 16.5's procedure is
+frozen; its number (`N = 733`) is provisional until the second, templated
+calibration pilot measures `d_template`. **No evaluation manifest exists,
+and no Step 2 call is authorized by this document.** *(Superseded wording,
+Revisions 4–9: "Item 16.5's number requires the disclosed 30-instance
+calibration pilot, not yet authorized.")*
 
 ## 17. "No degrees of freedom remain" audit (Revision 4, new)
 
@@ -1007,7 +1251,8 @@ variants) in this document was checked. Result:
 
 | Term found | Location | Status |
 |---|---|---|
-| "threshold" (Strategy 2's `conf_product` cutoff) | §7.2 | Pinned: fixed on the policy-development set, never the evaluation set — value itself is a §16.6-scoped deliverable, not a live free parameter |
+| "threshold" (Strategy 2's `conf_product` cutoff) | §7.2 | Pinned (Revision 10): `0.5`, the value the calibration pilot used, fixed before it ran. No longer fit on a policy-development set (removed, §16.6) |
+| "threshold" (4a's `choice`-confidence trigger) | §7.4a, §8 | Pinned: `0.90`, the Step 0B subgroup boundary, a prior finding. Cross-node rule pinned as *none* (Revision 10) |
 | "weight"/`w_choice`/`w_noul`/`w_score` | §7.3 | Pinned: `w_choice=1.0`, `w_noul=0.5`, `w_score∈{1.0,0.0}` — all named constants, fixed before any Step 2 data, none tuned |
 | "threshold-selection procedure" | §9 | Descriptive reporting requirement (states what must be *disclosed* about a already-fixed threshold), not an open choice |
 | "choose"/"chosen" (ordering, cost severity, MDE) | §16.1, §16.3, §16.5 | Each is a disclosed, rationale-attached constant, fixed in this revision — not left open, not tuned post-hoc |
@@ -1016,12 +1261,14 @@ variants) in this document was checked. Result:
 | "depending on results"/"post hoc" | §7.2, §9, §14 | Every instance is a **prohibition** ("no post-hoc tuning," "no post-hoc threshold selection"), not a permission |
 
 **One item flagged by this audit and already disclosed, not newly
-found**: §16.5's calibration-pilot discordance rate is data that does
-not exist yet — correctly a gap requiring a small, separately-authorized
-pilot, not a free parameter smuggled into the strategy-comparison logic
-itself. It cannot affect any strategy's action rule (§7) or any
-threshold used in the actual evaluation (§8, §9) — it only sizes the
-evaluation set.
+found (Revision 10 status)**: the discordance rate that sizes the
+evaluation set. The first pilot measured it on hand-written content
+(`7/30`). Because the main run will use templated content, the value
+that will actually size N is `d_template`, from a second pilot not yet
+run. Either way it is a sizing input, not a free parameter: it cannot
+affect any strategy's action rule (§7) or any threshold used in the
+evaluation (§8, §9). *(Superseded wording, Revisions 4–9: "data that
+does not exist yet".)*
 
 **Audit conclusion**: no other free parameter remains. Per review's own
 stated rule, **changing this protocol's methodology after observing any
@@ -1029,6 +1276,8 @@ Jev output — from the calibration pilot or otherwise — is a violation,
 not an improvement**, and is not authorized by anything in this
 document.
 
-**No manifest exists yet, and no evaluation-run API call is authorized
-by this document. The 30-instance calibration pilot (§16.5) remains a
-separate, explicit, not-yet-requested go/no-go decision.**
+**No evaluation manifest exists, and no Step 2 call is authorized by
+this document. The first calibration pilot has run (`5c16f4c`). The
+second, templated calibration pilot (§16.5) is a separate, explicit go/
+no-go decision, not yet requested, and is gated on the template
+grammar's independent audit.**

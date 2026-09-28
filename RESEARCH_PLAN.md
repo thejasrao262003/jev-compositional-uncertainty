@@ -1,3 +1,12 @@
+> **Current status (2026-09-28):** the `choice`/`noul` characterization
+> and both `score` studies are complete. The first workflow calibration
+> pilot has run (270 calls). The Step 2 protocol is at Revision 10, with
+> one primary comparison (2 vs 4a) and a provisional N. The template
+> grammar is drafted, with one open decision. No Step 2 evaluation call
+> has been made. The updates below run **oldest first**; the latest is
+> "Where things stand (2026-09-28)", just before the session-1 plan.
+> For a short overview, see `README.md`.
+
 **Update (post collaborator review):** the sections below reflect the
 original session-1 state. A collaborator review then (1) approved Step 0A/
 0B/Step 1 of the pilot but not treating a 50-instance run as scientific
@@ -900,8 +909,124 @@ review: any workflow-relevance follow-up should separately distinguish
 correspondence, neither of which this study touches.
 
 All artifacts (protocol, manifest, hash-locks, builder/runner scripts,
-raw/parsed responses, execution manifest) currently untracked — not yet
-committed.
+raw/parsed responses, execution manifest) were committed at `def7da7`.
+
+**Update (pivot to workflow-level composition — Step 2 protocol,
+Revisions 1–9, 2026-09-22/27, no Step 2 calls):** the `score` sub-track
+was closed at its bounded findings and kept as motivating evidence.
+Work moved to the paper's actual question: how a multi-step workflow
+should combine, or decline to combine, uncertainty signals from
+heterogeneous primitives. This is Step 2 of
+`pilot_experiment_specification.md`, specified in
+`research/methodology/workflow_uncertainty_composition_protocol.md`,
+and it builds on `compositional_reliability_baseline.md`'s `Δ` and
+`conf_product` statistics. The protocol went through nine review-driven
+revisions before any evaluation manifest existed:
+
+- **Rev 1–2**: a fixed `K=3` chain (`choice → noul → score`) with a
+  frozen workflow outcome contract. `Y_decision` counts escalated
+  instances, so escalating everything can't look reliable. `Y_resolved`
+  (coverage) is reported separately. `Δ` has one fixed population.
+  Marginal and sequential baselines are both defined. Every strategy
+  gets an information budget and a replication unit, and the cost model
+  separates action, measurement, human and latency costs.
+- **Rev 3 — a real leak caught.** The `score` escalation trigger relied
+  on each item's *true construction class*, which no deployed system
+  could observe. Triggers were split into deployable ones and
+  diagnostic-only ones. Strategy 4 became 4a, the real policy, and 4b, an
+  oracle ceiling that is never compared as a policy. Target coherence
+  was formalized as `a* = F(c_1*, c_2*, c_3*)`, with required properties.
+- **Rev 4–5 — §16 frozen.** This fixed the cost matrix, the task
+  generator and the `F` table, the ordering, the adapter, and the power
+  procedure. A "no degrees of freedom" audit followed. Three locks were
+  written into the document: the cost matrix is only a post-hoc score,
+  `F` is independent of strategy outputs, and there is an exhaustive list
+  of what the calibration pilot must never be used for.
+- **Rev 6 — three defects found by implementing, not reviewing.**
+  `F`'s code diverged from its own table on `(unclear, blocking)`, and the
+  protocol's prose verification was wrong at the same cell. §7.3's
+  "weighted majority vote" was undefined, because `choice`'s decision
+  has no counterpart in `F`'s input space. A random schedule could
+  exceed a sentence pool's capacity, and did.
+- **Rev 7** made the discordance estimand explicit: which comparisons,
+  never pooled, `Y_decision` disagreement only, and a `1/30` floor
+  applied only at sizing time. **Rev 8** named α = 0.05 and power = 0.80,
+  which had never been frozen. **Rev 9** confirmed that the `(d, MDE)`
+  sample-size formula is valid without the directional `b`/`c` counts,
+  and withdrew a claim that `942` was "conservative".
+
+**Update (first calibration pilot EXECUTED — 270 live calls,
+2026-09-27):** 30 instances with fresh hand-written content (90
+sentences, zero overlap with any prior manifest), run as a sequential
+3-node chain in which node 2's and node 3's inputs depend on the live
+upstream decisions. 270/270 calls, HTTP 200, 0 retries, 0 deviations.
+Discordance: `2 vs 3` = 9/30 (`b=1, c=8`), `2 vs 4a` = 7/30 (`b=2,
+c=5`). Resulting sizing: `N_final = max(942, 733) = 942`, about 8,478
+calls. Committed as a checkpoint at `5c16f4c`.
+
+**Update (Revision 10 — design correction B(ii), 2026-09-27/28, no
+Step 2 calls):** reading the protocol against the pilot showed that
+Strategy 3 was **structurally identical to Strategy 1**. §7.3 suppresses
+`score` only when a *deployable* presentation-risk trigger fires, and
+§8 defines none. So the binding `2 vs 3` comparison was really
+`2 vs 1`. The sequence was protocol inspection → structural equivalence
+→ design correction, not pilot result → reduce N. The pilot's `1 vs 3 =
+0/30` is consistent with this but was not the reason. What changed:
+
+- `2 vs 4a` became the **sole primary comparison**, giving N = 733
+  (6,597 calls). A multiplicity gap from Revisions 7–9, two primary
+  comparisons with no correction, was disclosed and is now moot.
+  Strategy 3 was demoted to a descriptive arm that appears in no claim.
+- Strategy 2's threshold was pinned at `0.5`, and 4a's cross-node rule as
+  *none*: exactly the definitions `d(2v4a)` was measured under. This
+  reverses the pilot's own pre-run description of `0.5` as
+  "provisional", and the reversal is recorded in §7.2.
+- The policy-development split was removed, since nothing is left to
+  fit. §16.6 argues why this doesn't breach the pilot's prohibited-use
+  list.
+- Mechanical audits of the Revision 10 text and code found no leftover
+  2-vs-3 or multiplicity language, and nothing fit from evaluation data.
+- The sizing was recomputed from the 270 raw responses and written to
+  `workflow_step2_power_analysis_rev10.json`. The Revision 9 file is
+  kept unmodified.
+
+**Update (content generator changes, so N is provisional again —
+template grammar drafted, 2026-09-28, no API calls):** the no-reuse
+rule needs about 2,199 unique evidence sentences for the main run.
+The independent audit chose a **deterministic template grammar**, plus a
+**second 270-call calibration pilot on templated content**, since
+`d = 7/30` was measured on hand-written text and may not carry over.
+Stale text in Revision 10 (§16.5, §16.6, §17 and the header) was
+updated, and the old wording kept, marked as superseded. The grammar
+(`workflow_template_grammar_spec.md` and
+`build_workflow_template_grammar.py`) expands a finite, fully listed
+vocabulary into 4,128 sentences, with pilot and main keys reserved
+separately. All eight gating audits pass after fixes:
+- 3 real cross-node cue leaks: "ad-hoc **query** tool", "footer
+  **link** text", and "query **latency**".
+- 1 severity leak: "**crash** reports" inside a customer-impact
+  sentence.
+- A plural-matching bug in the audit itself.
+- A subject–verb agreement bug, and a workaround that didn't fit its
+  feature. The checks passed both; only reading the output caught them.
+
+**Open decision: how to define reuse.** Many vocabulary fillers are
+synonyms. At the proposition level, two impact pools have only 32
+distinct propositions and the blocking pool only 160, against 256
+needed at N ≈ 738. Repeated propositions would correlate instances and
+reduce effective power. The recommendation is to make proposition-level
+uniqueness a gating check and enlarge the content vocabularies. A
+proposed balanced allocation rule, `N_eval = 18·ceil(n_required/18)`,
+also awaits sign-off.
+
+**Where things stand (2026-09-28).** No evaluation manifest exists. No
+Step 2 call has been made or authorized. The second pilot is not
+authorized, and is gated on freezing the grammar and on an independent
+grammar audit. Everything since `5c16f4c` is uncommitted: Revision 10,
+the sizing record, the grammar, this log, and a new `README.md`. Next:
+decide the reuse definition → revise the vocabulary → freeze and audit
+the grammar → second calibration pilot → recompute N → build the
+manifest → preflight → explicit Step 2 authorization.
 
 # Research plan — session 1 (Phase 0 + Phase 1)
 

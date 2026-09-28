@@ -1,0 +1,461 @@
+{
+  "A1_capacity": {
+    "routing:network": {
+      "main_reserve": 657,
+      "needed_at_N_MAX": 630
+    },
+    "routing:database": {
+      "main_reserve": 657,
+      "needed_at_N_MAX": 630
+    },
+    "impact:0": {
+      "main_reserve": 438,
+      "needed_at_N_MAX": 420
+    },
+    "impact:1": {
+      "main_reserve": 438,
+      "needed_at_N_MAX": 420
+    },
+    "impact:unclear": {
+      "main_reserve": 438,
+      "needed_at_N_MAX": 420
+    },
+    "severity:0": {
+      "main_reserve": 470,
+      "needed_at_N_MAX": 420
+    },
+    "severity:1": {
+      "main_reserve": 470,
+      "needed_at_N_MAX": 420
+    },
+    "severity:2": {
+      "main_reserve": 470,
+      "needed_at_N_MAX": 420
+    }
+  },
+  "A2_exact_uniqueness": {
+    "units": 4128,
+    "normalized_duplicates": 0,
+    "prior_corpus_size": 142,
+    "overlap_with_prior": 0
+  },
+  "A3_A4": {
+    "semantic_keys_unique_within_pool_value": true,
+    "pilot2_main_key_overlap": 0,
+    "pilot2_main_text_overlap": 0
+  },
+  "A5_routing_cue_audit": "clean",
+  "A6_impact_severity_cue_audit": {
+    "impact_units_with_severity_cues": 0,
+    "examples": []
+  },
+  "A7_distribution": {
+    "routing:network:pilot2": {
+      "n": 15,
+      "frame_counts": {
+        "0": 5,
+        "1": 5,
+        "2": 5
+      },
+      "slot_min_max": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ]
+      ]
+    },
+    "routing:network:main": {
+      "n": 657,
+      "frame_counts": {
+        "0": 219,
+        "1": 219,
+        "2": 219
+      },
+      "slot_min_max": [
+        [
+          53,
+          56
+        ],
+        [
+          80,
+          83
+        ],
+        [
+          90,
+          96
+        ]
+      ]
+    },
+    "routing:database:pilot2": {
+      "n": 15,
+      "frame_counts": {
+        "0": 5,
+        "1": 5,
+        "2": 5
+      },
+      "slot_min_max": [
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    "routing:database:main": {
+      "n": 657,
+      "frame_counts": {
+        "0": 219,
+        "1": 219,
+        "2": 219
+      },
+      "slot_min_max": [
+        [
+          52,
+          56
+        ],
+        [
+          80,
+          84
+        ],
+        [
+          92,
+          96
+        ]
+      ]
+    },
+    "impact:0:pilot2": {
+      "n": 10,
+      "frame_counts": {
+        "0": 4,
+        "1": 3,
+        "2": 3
+      },
+      "slot_min_max": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    "impact:0:main": {
+      "n": 438,
+      "frame_counts": {
+        "0": 146,
+        "1": 146,
+        "2": 146
+      },
+      "slot_min_max": [
+        [
+          53,
+          56
+        ],
+        [
+          61,
+          64
+        ],
+        [
+          52,
+          56
+        ]
+      ]
+    },
+    "impact:1:pilot2": {
+      "n": 10,
+      "frame_counts": {
+        "0": 4,
+        "1": 3,
+        "2": 3
+      },
+      "slot_min_max": [
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    "impact:1:main": {
+      "n": 438,
+      "frame_counts": {
+        "0": 146,
+        "1": 146,
+        "2": 146
+      },
+      "slot_min_max": [
+        [
+          60,
+          64
+        ],
+        [
+          53,
+          56
+        ],
+        [
+          52,
+          56
+        ]
+      ]
+    },
+    "impact:unclear:pilot2": {
+      "n": 10,
+      "frame_counts": {
+        "0": 4,
+        "1": 3,
+        "2": 3
+      },
+      "slot_min_max": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    "impact:unclear:main": {
+      "n": 438,
+      "frame_counts": {
+        "0": 146,
+        "1": 146,
+        "2": 146
+      },
+      "slot_min_max": [
+        [
+          53,
+          56
+        ],
+        [
+          61,
+          64
+        ],
+        [
+          54,
+          56
+        ]
+      ]
+    },
+    "severity:0:pilot2": {
+      "n": 10,
+      "frame_counts": {
+        "0": 4,
+        "1": 3,
+        "2": 3
+      },
+      "slot_min_max": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    "severity:0:main": {
+      "n": 470,
+      "frame_counts": {
+        "0": 157,
+        "1": 157,
+        "2": 156
+      },
+      "slot_min_max": [
+        [
+          38,
+          40
+        ],
+        [
+          58,
+          60
+        ],
+        [
+          93,
+          95
+        ]
+      ]
+    },
+    "severity:1:pilot2": {
+      "n": 10,
+      "frame_counts": {
+        "0": 4,
+        "1": 3,
+        "2": 3
+      },
+      "slot_min_max": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    "severity:1:main": {
+      "n": 470,
+      "frame_counts": {
+        "0": 157,
+        "1": 157,
+        "2": 156
+      },
+      "slot_min_max": [
+        [
+          38,
+          40
+        ],
+        [
+          57,
+          60
+        ],
+        [
+          91,
+          95
+        ]
+      ]
+    },
+    "severity:2:pilot2": {
+      "n": 10,
+      "frame_counts": {
+        "0": 4,
+        "1": 3,
+        "2": 3
+      },
+      "slot_min_max": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    "severity:2:main": {
+      "n": 470,
+      "frame_counts": {
+        "0": 157,
+        "1": 157,
+        "2": 156
+      },
+      "slot_min_max": [
+        [
+          45,
+          48
+        ],
+        [
+          56,
+          60
+        ],
+        [
+          77,
+          79
+        ]
+      ]
+    }
+  },
+  "A8_label_provenance": "labels (pool, value) are set by the expansion loop before rendering; no code path reads a label back out of rendered text",
+  "failures": [],
+  "passed": true,
+  "A9_proposition_capacity_informational": {
+    "routing:network": {
+      "filler_keys": 672,
+      "proposition_keys": 576,
+      "needed_at_k41(N=738)": 384,
+      "needed_at_k70(N=1260)": 645
+    },
+    "routing:database": {
+      "filler_keys": 672,
+      "proposition_keys": 576,
+      "needed_at_k41(N=738)": 384,
+      "needed_at_k70(N=1260)": 645
+    },
+    "impact:0": {
+      "filler_keys": 448,
+      "proposition_keys": 32,
+      "needed_at_k41(N=738)": 256,
+      "needed_at_k70(N=1260)": 430
+    },
+    "impact:1": {
+      "filler_keys": 448,
+      "proposition_keys": 448,
+      "needed_at_k41(N=738)": 256,
+      "needed_at_k70(N=1260)": 430
+    },
+    "impact:unclear": {
+      "filler_keys": 448,
+      "proposition_keys": 32,
+      "needed_at_k41(N=738)": 256,
+      "needed_at_k70(N=1260)": 430
+    },
+    "severity:0": {
+      "filler_keys": 480,
+      "proposition_keys": 360,
+      "needed_at_k41(N=738)": 256,
+      "needed_at_k70(N=1260)": 430
+    },
+    "severity:1": {
+      "filler_keys": 480,
+      "proposition_keys": 480,
+      "needed_at_k41(N=738)": 256,
+      "needed_at_k70(N=1260)": 430
+    },
+    "severity:2": {
+      "filler_keys": 480,
+      "proposition_keys": 160,
+      "needed_at_k41(N=738)": 256,
+      "needed_at_k70(N=1260)": 430
+    }
+  },
+  "units_sha256": "e320618eeb57b29a2af7d7a013b5deccf96d6498e185d63a78b8c02be61434a9",
+  "generator_sha256": "09b5d73422833baca7e90b03f5c27b3bc3df17a2682bb89b17464ec43444b3e9"
+}
