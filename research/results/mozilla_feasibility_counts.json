@@ -1,0 +1,78 @@
+{
+  "generated_utc": "2026-10-03T19:07:39.827814+00:00",
+  "source": "https://bugzilla.mozilla.org/rest",
+  "filters": {
+    "type": "defect",
+    "resolution": "FIXED",
+    "created_from": "2021-01-01"
+  },
+  "groups": {
+    "network": [
+      "Core :: Networking",
+      "Core :: Networking: HTTP",
+      "Core :: Networking: DNS",
+      "Core :: Networking: Cookies"
+    ],
+    "storage": [
+      "Core :: Storage: IndexedDB",
+      "Core :: SQLite and Embedded Database Bindings",
+      "Core :: Storage: Quota Manager",
+      "Core :: Storage: localStorage & sessionStorage",
+      "Core :: Storage: Cache API"
+    ]
+  },
+  "counts_by_severity": {
+    "network": {
+      "S1": 7,
+      "S2": 160,
+      "S3": 738,
+      "S4": 301
+    },
+    "storage": {
+      "S1": 0,
+      "S2": 55,
+      "S3": 162,
+      "S4": 60
+    }
+  },
+  "crash_keyword_counts_by_severity": {
+    "network": {
+      "S1": 3,
+      "S2": 84,
+      "S3": 90,
+      "S4": 12
+    },
+    "storage": {
+      "S1": 0,
+      "S2": 20,
+      "S3": 25,
+      "S4": 2
+    }
+  },
+  "regression_keyword_counts_by_severity": {
+    "network": {
+      "S1": 6,
+      "S2": 72,
+      "S3": 152,
+      "S4": 115
+    },
+    "storage": {
+      "S1": 0,
+      "S2": 25,
+      "S3": 45,
+      "S4": 24
+    }
+  },
+  "description_chars_sample": {
+    "network": {
+      "n": 24,
+      "median": 1273.5,
+      "max": 19154
+    },
+    "storage": {
+      "n": 24,
+      "median": 2022.5,
+      "max": 37379
+    }
+  }
+}
