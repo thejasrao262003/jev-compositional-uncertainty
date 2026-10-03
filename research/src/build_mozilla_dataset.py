@@ -51,6 +51,11 @@ CELL_SEVERITIES = {2: ["S1", "S2"], 1: ["S3"], 0: ["S4"]}
 
 FUZZING_MARKERS = ["found while fuzzing", "fuzzfetch", "grizzly", "--enable-fuzzing",
                    "fuzzing-team", "oss-fuzz", "fuzzilli"]
+# Auto-filed CI test failures. Their severity reflects a flaky test's
+# priority, not user impact (S4 there is not "cosmetic").
+INTERMITTENT_KEYWORDS = {"intermittent-failure", "intermittent-testcase"}
+INTERMITTENT_PREFIXES = ("intermittent", "perma ", "permanent")
+INTERMITTENT_MARKERS = ["**filed by:**"]
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "data" / "mozilla"
@@ -95,7 +100,7 @@ def candidates(group, severities):
 # ---------------------------------------------------------------------------
 
 URL_RE = re.compile(r"https?://\S+|www\.\S+")
-EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+(\.[\w-]+)+")
+EMAIL_RE = re.compile(r"[\w.+-]+\s?(@|\[at\]|\(at\))\s?[\w-]+(\.[\w-]+)+", re.I)
 FENCE_RE = re.compile(r"```.*?(```|$)", re.S)
 STACK_RE = re.compile(r"^\s*(#?\d+\s+\S+\s*(0x[0-9a-f]+|!|::|\.dll|\.so)|at\s+\S+\(.*\)|\S+\.(cpp|h|rs|js):\d+)",
                       re.I)
@@ -134,6 +139,11 @@ def severity_retriaged(bug_id):
     return False
 
 
+def is_intermittent(bug):
+    return (bool(INTERMITTENT_KEYWORDS & set(bug["keywords"]))
+            or bug["summary"].strip().lower().startswith(INTERMITTENT_PREFIXES))
+
+
 def first_comment(bug_id):
     return get(f"bug/{bug_id}/comment")["bugs"][str(bug_id)]["comments"][0]["text"]
 
@@ -146,7 +156,8 @@ def build():
         for level in (2, 1, 0):
             pool = candidates(group, CELL_SEVERITIES[level])
             rng.shuffle(pool)
-            stats = {"eligible_before_exclusions": len(pool), "excluded_fuzzing": 0,
+            stats = {"eligible_before_exclusions": len(pool), "excluded_intermittent": 0,
+                     "excluded_fuzzing": 0,
                      "excluded_too_short": 0, "excluded_severity_retriaged": 0,
                      "excluded_duplicate": 0, "inspected": 0, "selected": 0}
             for bug in pool:
@@ -156,7 +167,13 @@ def build():
                 if bug["id"] in seen:
                     stats["excluded_duplicate"] += 1
                     continue
+                if is_intermittent(bug):
+                    stats["excluded_intermittent"] += 1
+                    continue
                 raw = first_comment(bug["id"])
+                if any(m in raw.lower() for m in INTERMITTENT_MARKERS):
+                    stats["excluded_intermittent"] += 1
+                    continue
                 if any(m in raw.lower() for m in FUZZING_MARKERS):
                     stats["excluded_fuzzing"] += 1
                     continue
@@ -211,8 +228,12 @@ def main():
         "target_per_cell": TARGET_PER_CELL,
         "cleaning": {"max_chars": MAX_CHARS, "min_body_chars": MIN_CHARS,
                      "removed": ["fenced code blocks", "stack-frame lines", "user-agent lines",
-                                 "attachment lines", "URLs -> [link]", "emails -> [email]"],
+                                 "attachment lines", "URLs -> [link]",
+                                 "emails, incl. 'name [at] host' -> [email]"],
                      "fuzzing_markers": FUZZING_MARKERS},
+        "intermittent_exclusion": {"keywords": sorted(INTERMITTENT_KEYWORDS),
+                                   "summary_prefixes": list(INTERMITTENT_PREFIXES),
+                                   "description_markers": INTERMITTENT_MARKERS},
         "cells": cells,
         "n_records": len(records),
         "label_balance": {

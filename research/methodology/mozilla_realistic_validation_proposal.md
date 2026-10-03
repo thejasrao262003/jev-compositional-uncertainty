@@ -22,7 +22,7 @@ They are independent: either can be approved without the other.
 
 | Part | What it does | What it touches | Jev calls |
 |---|---|---|---|
-| **A. Realistic validation study** | Runs the same 3-node chain on real, human-labeled Firefox bug reports | New, separate artifacts only. Nothing frozen changes | 2,110 (211 bugs as built), only after approval |
+| **A. Realistic validation study** | Runs the same 3-node chain on real, human-labeled Firefox bug reports | New, separate artifacts only. Nothing frozen changes | 2,020 (202 bugs as built), only after approval |
 | **B. Vocabulary source for the template grammar** | Uses Mozilla bug summaries as a provenance-tracked source for the grammar's short content vocabularies (grammar spec §5, Option A) | Input to the open §5 decision. Grammar is not frozen, so nothing frozen changes | 0 |
 
 Part A fills a gap the project has already named: the research plan
@@ -135,6 +135,12 @@ labels are excluded rather than mapped), severity ∈ {S1, S2, S3, S4}.
 | storage | 0 | 55 | 162 | 60 |
 
 **Exclusions, fixed before sampling and before any Jev output exists:**
+0. Auto-filed CI test failures: keyword `intermittent-failure` or
+   `intermittent-testcase`, a summary starting "Intermittent", "Perma"
+   or "Permanent", or a description with the Treeherder "**Filed by:**"
+   header. Their severity is a flaky test's priority, not user impact:
+   S4 on these means "low-priority test failure", not "cosmetic".
+   (Added after inspecting the first build; see §2.6a.)
 1. Bugs filed by fuzzing (reporter is a known fuzzing account, or the
    description contains the fuzzing harness boilerplate). Their
    severity reflects security triage of an assertion, not user impact.
@@ -174,7 +180,7 @@ is the frozen artifact, not the query.
 |---|---:|
 | Primary: 240 bugs × 3 nodes × 3 repeats | 2,160 |
 | Label-wording check: 240 bugs × 1 `score` call with Mozilla's verbatim S-definitions as criteria (§2.5) | 240 |
-| **Total** (at the 240-bug target; 2,110 at the 211 bugs as built, §2.6a) | **2,400** |
+| **Total** (at the 240-bug target; 2,020 at the 202 bugs as built, §2.6a) | **2,400** |
 
 From the 524 project calls to date, mean input is 380 tokens per call.
 Bug inputs are longer: about 650 tokens per call is assumed, so about
@@ -220,46 +226,56 @@ verified against the console), that's under $0.10. At the observed
 5. **Node 2's question differs** from the constructed chain's
    (regression vs. customer-facing), so `F`'s action semantics differ
    too.
-6. **Not powered.** About 211–240 bugs gives roughly ±0.10 Wilson half-width on a
+6. **Not powered.** About 200–240 bugs gives roughly ±0.10 Wilson half-width on a
    per-level proportion at n ≈ 80. That's enough to see whether the S4
    lean recurs, not to compare strategies.
 
 ### 2.6a The built dataset (2026-10-04)
 
 Built by `build_mozilla_dataset.py` (seed
-`mozilla-realistic-validation-v1`). **211 bugs, not 240.** Two storage
+`mozilla-realistic-validation-v1`). **202 bugs, not 240.** Two storage
 cells fell short. Per §2.3's rule, they took every eligible bug and
 were not topped up.
 
-| Cell | Eligible | Fuzzing | Too short | Re-triaged | **Selected** | Shortfall |
-|---|---:|---:|---:|---:|---:|---:|
-| network, level 2 (S1+S2) | 167 | 1 | 6 | 9 | **40** | 0 |
-| network, level 1 (S3) | 738 | 3 | 7 | 1 | **40** | 0 |
-| network, level 0 (S4) | 301 | 0 | 31 | 1 | **40** | 0 |
-| storage, level 2 (S1+S2) | 55 | 12 | 8 | 7 | **28** | 12 |
-| storage, level 1 (S3) | 162 | 1 | 15 | 1 | **40** | 0 |
-| storage, level 0 (S4) | 60 | 0 | 37 | 0 | **23** | 17 |
+| Cell | Eligible | Intermittent | Fuzzing | Too short | Re-triaged | **Selected** | Shortfall |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| network, level 2 (S1+S2) | 167 | 0 | 1 | 6 | 9 | **40** | 0 |
+| network, level 1 (S3) | 738 | 2 | 3 | 6 | 1 | **40** | 0 |
+| network, level 0 (S4) | 301 | 55 | 0 | 9 | 2 | **40** | 0 |
+| storage, level 2 (S1+S2) | 55 | 4 | 12 | 4 | 7 | **28** | 12 |
+| storage, level 1 (S3) | 162 | 4 | 1 | 11 | 1 | **40** | 0 |
+| storage, level 0 (S4) | 60 | 44 | 0 | 2 | 0 | **14** | 26 |
 
 Exclusion counts cover only the bugs inspected before a cell filled
 (the shuffle stops at 40).
 
+**Build history, disclosed.** The first build (211 bugs) had no
+intermittent exclusion. Reading its output showed that auto-filed CI
+test failures made up 23 of its 63 S4 bugs. Those would have corrupted
+RQ-A1, which is about the S4 row. Exclusion 0 was added and the dataset
+rebuilt. The same pass found 22 email addresses written as
+`name [at] host`, which the email scrub missed; that is fixed too. This
+happened before any Jev call, by reading the data, not from any result.
+
 Observations for review:
-- **S4 bugs are often one-liners.** "Too short" removed 31 of 72
-  inspected network S4 bugs and 37 of 60 storage S4 bugs. The surviving
-  S4 sample is biased toward S4 bugs with longer descriptions.
-- **Storage's serious bugs are mostly fuzzing finds**: 12 of 55
+- **Most S4 bugs in these components are CI noise.** Intermittent
+  failures were 55 of 106 inspected network S4 bugs and 44 of 60
+  storage S4 bugs. Real, human-reported S4 storage bugs are scarce
+  (14), so the storage S4 cell is small. RQ-A1 should be read mainly
+  from the network S4 cell (40).
+- **Storage's serious bugs include many fuzzing finds**: 12 of 55
   excluded on that ground.
 - **The text sometimes states the label outright.** 19 descriptions
   contain "regress", and 12 of those carry the `regression` keyword. One
   (bug 2024666) discusses its own severity. These are left in: this is
   what real input looks like. The analysis should report agreement with
   and without them.
-- Labels: 70 of 211 are regressions, 43 are crash-tagged, and 54 were
+- Labels: 52 of 202 are regressions, 43 are crash-tagged, and 54 were
   created in the most recent 12 months.
-- Cleaned text: 151–2,000 characters, median about 510. No URLs or
-  email addresses remain (checked).
+- Cleaned text: 151–2,000 characters, median 553. No URLs, email
+  addresses or intermittent-failure reports remain (checked).
 
-At 211 bugs the call count is 211 × 9 + 211 = **2,110**, not 2,400.
+At 202 bugs the call count is 202 × 9 + 202 = **2,020**, not 2,400.
 
 ### 2.7 Artifacts (all new; nothing existing is modified)
 
@@ -278,7 +294,7 @@ research/results/mozilla_validation_report.md
 Same discipline as the rest of the repo: the manifest is built and
 hash-locked → runner self-tests → dry-run preflight with
 `requests.post` patched to raise → explicit approval → live run behind
-`--live --confirm-2110-mozilla-calls` (the count for the built 211-bug
+`--live --confirm-2020-mozilla-calls` (the count for the built 202-bug
 dataset, §2.6a).
 
 ## 3. Part B — Mozilla as a vocabulary source for the grammar
@@ -370,6 +386,6 @@ already calls for.
    changes).
 2. Write `run_mozilla_validation.py` by adapting the first pilot's
    runner. Self-tests and a dry-run preflight follow.
-3. Ask for explicit live authorization for the 2,110 calls.
+3. Ask for explicit live authorization for the 2,020 calls.
 4. In parallel: Part B curation → grammar audits → feed into the §5
    decision.

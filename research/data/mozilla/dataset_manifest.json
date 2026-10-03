@@ -1,7 +1,7 @@
 {
   "status": "built for review; no Jev call made",
   "proposal": "research/methodology/mozilla_realistic_validation_proposal.md",
-  "built_utc": "2026-10-03T19:29:18.370669+00:00",
+  "built_utc": "2026-10-03T19:48:02.448648+00:00",
   "source": "https://bugzilla.mozilla.org/rest",
   "filters": {
     "type": "defect",
@@ -40,7 +40,7 @@
       "user-agent lines",
       "attachment lines",
       "URLs -> [link]",
-      "emails -> [email]"
+      "emails, incl. 'name [at] host' -> [email]"
     ],
     "fuzzing_markers": [
       "found while fuzzing",
@@ -52,9 +52,24 @@
       "fuzzilli"
     ]
   },
+  "intermittent_exclusion": {
+    "keywords": [
+      "intermittent-failure",
+      "intermittent-testcase"
+    ],
+    "summary_prefixes": [
+      "intermittent",
+      "perma ",
+      "permanent"
+    ],
+    "description_markers": [
+      "**filed by:**"
+    ]
+  },
   "cells": {
     "network:level2": {
       "eligible_before_exclusions": 167,
+      "excluded_intermittent": 0,
       "excluded_fuzzing": 1,
       "excluded_too_short": 6,
       "excluded_severity_retriaged": 9,
@@ -65,28 +80,31 @@
     },
     "network:level1": {
       "eligible_before_exclusions": 738,
+      "excluded_intermittent": 2,
       "excluded_fuzzing": 3,
-      "excluded_too_short": 7,
+      "excluded_too_short": 6,
       "excluded_severity_retriaged": 1,
       "excluded_duplicate": 0,
-      "inspected": 51,
+      "inspected": 52,
       "selected": 40,
       "shortfall": 0
     },
     "network:level0": {
       "eligible_before_exclusions": 301,
+      "excluded_intermittent": 55,
       "excluded_fuzzing": 0,
-      "excluded_too_short": 31,
-      "excluded_severity_retriaged": 1,
+      "excluded_too_short": 9,
+      "excluded_severity_retriaged": 2,
       "excluded_duplicate": 0,
-      "inspected": 72,
+      "inspected": 106,
       "selected": 40,
       "shortfall": 0
     },
     "storage:level2": {
       "eligible_before_exclusions": 55,
+      "excluded_intermittent": 4,
       "excluded_fuzzing": 12,
-      "excluded_too_short": 8,
+      "excluded_too_short": 4,
       "excluded_severity_retriaged": 7,
       "excluded_duplicate": 0,
       "inspected": 55,
@@ -95,8 +113,9 @@
     },
     "storage:level1": {
       "eligible_before_exclusions": 162,
+      "excluded_intermittent": 4,
       "excluded_fuzzing": 1,
-      "excluded_too_short": 15,
+      "excluded_too_short": 11,
       "excluded_severity_retriaged": 1,
       "excluded_duplicate": 0,
       "inspected": 57,
@@ -105,22 +124,23 @@
     },
     "storage:level0": {
       "eligible_before_exclusions": 60,
+      "excluded_intermittent": 44,
       "excluded_fuzzing": 0,
-      "excluded_too_short": 37,
+      "excluded_too_short": 2,
       "excluded_severity_retriaged": 0,
       "excluded_duplicate": 0,
       "inspected": 60,
-      "selected": 23,
-      "shortfall": 17
+      "selected": 14,
+      "shortfall": 26
     }
   },
-  "n_records": 211,
+  "n_records": 202,
   "label_balance": {
-    "regression": 70,
+    "regression": 52,
     "crash": 43,
     "recent_12_months": 54
   },
-  "builder_script_sha256": "eacba98cb5e155b17636d152c32bc60c4da31b1067bfa50a9e31b47ed436b09d",
-  "dataset_sha256": "557c4c85dfbe04e741eec8509f397cdf681c10dbec5ef3edd2f9f00e37e9c2a7",
+  "builder_script_sha256": "64d71a61f1e169ba179fd5e3976f1751e610a89090b455b21cfaf50526c3d913",
+  "dataset_sha256": "3959b693f6a4a516929e70ab2f6461658fa7e347d78c4d7c178b9be1941274d4",
   "note": "Snapshot of live Bugzilla data: a rebuild can differ if bugs are edited, re-triaged or newly fixed. dataset.jsonl plus its hash is the frozen artifact, not the query."
 }
