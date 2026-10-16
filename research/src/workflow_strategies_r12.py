@@ -116,6 +116,48 @@ def h2_sign_flip_test(x: dict, y: dict, a_star: dict,
             "p_two_sided": (1 + extreme) / (1 + n_draws)}
 
 
+def h2_cluster_sign_flip_test(x: dict, y: dict, a_star: dict, cluster: dict,
+                              n_draws: int = N_RANDOMIZATIONS, seed: int = SEED) -> dict:
+    """H2, primary form since grammar Draft 4 (protocol Revision 12.1):
+    instances sharing a cluster (the incident's service S) are not
+    independent, so signs are flipped per CLUSTER on the cluster-summed
+    cost differences. Two-sided; p = (1 + #extreme) / (1 + n_draws)."""
+    sums: dict = {}
+    for i in x:
+        sums[cluster[i]] = sums.get(cluster[i], 0) + cost(x[i], a_star[i]) - cost(y[i], a_star[i])
+    obs = sum(sums.values())
+    nz = [v for v in sums.values() if v != 0]
+    rng = random.Random(seed)
+    extreme = sum(abs(sum(v if rng.random() < 0.5 else -v for v in nz)) >= abs(obs) - 1e-9
+                  for _ in range(n_draws))
+    return {"total_difference": obs, "per_instance_difference": obs / len(x), "n_clusters": len(sums),
+            "n_nonzero_clusters": len(nz), "p_two_sided": (1 + extreme) / (1 + n_draws)}
+
+
+def h1_cluster_bootstrap_ci(base: dict, hybrid: dict, a_star: dict, cluster: dict,
+                            n_draws: int = 2000, seed: int = SEED) -> list[float]:
+    """95% percentile interval for H1's per-instance difference (hybrid minus
+    the exact random-override expectation), resampling CLUSTERS. Reported
+    with H1's randomization p-value, which is conditional on the evaluated set."""
+    cand = [i for i in base if base[i] != "escalate"]
+    k = n_overrides(len(base), len(cand))
+    gain = {i: cost("escalate", a_star[i]) - cost(base[i], a_star[i]) for i in cand}
+    d = {i: (cost(hybrid[i], a_star[i]) - cost(base[i], a_star[i]))
+            - ((k / len(cand)) * gain[i] if i in gain else 0.0) for i in base}
+    groups: dict = {}
+    for i in base:
+        groups.setdefault(cluster[i], []).append(d[i])
+    keys = sorted(groups, key=str)
+    rng = random.Random(seed)
+    stats = []
+    for _ in range(n_draws):
+        draw = [groups[keys[rng.randrange(len(keys))]] for _ in keys]
+        n = sum(len(g) for g in draw)
+        stats.append(sum(sum(g) for g in draw) / n)
+    stats.sort()
+    return [stats[int(0.025 * n_draws)], stats[int(0.975 * n_draws) - 1]]
+
+
 def holm(pvals: dict, alpha: float = 0.05) -> dict:
     """Holm-Bonferroni step-down. Returns {name: reject?}."""
     order = sorted(pvals, key=pvals.get)
@@ -162,6 +204,17 @@ def run_selftest() -> None:
     h5 = strategy_5h(base, inst)
     assert h5 is not None and sum(a == "escalate" for a in h5.values()) == 2
     assert n_required_cost(1.0, 0.45) == math.ceil(((2.241402728 + 0.8416212336) / 0.45) ** 2)
+    # cluster sign-flip: one cluster per instance reproduces the instance test's
+    # statistic; identical arms give p = 1; a duplicated cluster is one unit.
+    solo = {i: i for i in ids}
+    a = h2_cluster_sign_flip_test(h5, h, a_star, solo, n_draws=500)
+    b = h2_sign_flip_test(h5, h, a_star, n_draws=500)
+    assert a["total_difference"] == b["total_difference"] and a["n_clusters"] == 20
+    assert h2_cluster_sign_flip_test(h, h, a_star, solo, n_draws=200)["p_two_sided"] == 1.0
+    pair = {i: i // 2 for i in ids}
+    assert h2_cluster_sign_flip_test(h5, h, a_star, pair, n_draws=200)["n_clusters"] == 10
+    lo, hi = h1_cluster_bootstrap_ci(base, h, a_star, pair, n_draws=400)
+    assert lo <= hi
     print("workflow_strategies_r12 selftest: all passed")
 
 

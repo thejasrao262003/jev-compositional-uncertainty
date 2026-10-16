@@ -1,4 +1,164 @@
-# Workflow Template Grammar — Specification (Draft 3, for independent audit)
+# Workflow Template Grammar — Specification (Draft 4, for human review and freeze)
+
+**Status: Draft 4, 2026-10-16, a freeze candidate.** All 13 audits pass.
+Freezing still needs two things:
+- a human pass over the 54-item composed sample (§D7);
+- independent sign-off.
+
+No unit is assigned to any instance, and no API call has been made.
+- Generator: `research/src/build_workflow_template_grammar.py`
+  (seed `workflow-template-grammar-v4`).
+- Units (3,103): `research/data/characterization/workflow_template_grammar_units.json`.
+- Audit: `research/results/workflow_template_grammar_audit.json`.
+
+**Why Draft 4.** An independent review of Draft 3
+(`research/results/grammar_draft3_independent_review.md`) returned "not
+ready":
+- **C1:** capacity rested on paraphrase splits that are too fine;
+- **C2:** 75% of blocking sentences didn't deny a workaround;
+- **C3:** the three sentences described three unrelated subjects, so
+  the impact label wasn't entailed for the incident;
+- **M5:** labels were recoverable from punctuation alone (100%).
+
+Two decisions on 2026-10-16 shaped the response: redesign rather than
+patch, and lower `N_MAX` to 720.
+
+## D1. Design: one incident, one service
+
+Every instance describes **one incident about one named service `S`**.
+`S` belongs to the impact pool: the impact sentence makes the
+customer-facing claim about `S`. Routing and severity units are templates
+with an `{S}` slot, filled at instance assembly. An example, composed from
+real units:
+
+> Monitoring for the online course player shows an approximately tenfold
+> increase in packet loss on its NAT gateway over the past hour. According
+> to the architecture team, long-standing customers are reporting problems
+> with the online course player through social-media posts. Since the last
+> release of the online course player, page layout rendering produces
+> unusable output every time; there is no workaround of any kind.
+
+| Pool : value | Unit content | Services `S` |
+|---|---|---|
+| routing : network / database | `S`'s component · metric · magnitude/shape | — |
+| impact : 1 | customer segment reporting problems with `S` (channel = nuisance) | 34 customer-facing |
+| impact : 0 | `S` is internal (2 classes: internal use; internal infrastructure) | 131 internal |
+| impact : unclear | `S`'s exposure is unknown (4 classes: unmapped, enablement unknown, evidence gone, disputed) | 66 audience-neutral shared services |
+| severity : 0 / 1 / 2 | element · defect · context; feature · failure · workaround; function · failure · no-workaround scope | — |
+
+The service names carry their own audience signal, which is *consistent*
+with the label by construction. Shared-service names must be
+audience-neutral (A10b).
+
+## D2. Value-neutral surface (review M5)
+
+- **One frame set per pool**, used by every value:
+  - severity: "In `S`, …", "Since the last release of `S`, …", "The
+    incident report for `S` says that …";
+  - impact: frames begin with the attribution.
+- **Severity uses "; " as its only connective,** for every level:
+  - cosmetic: "…; nothing else is affected";
+  - degraded: "…; retrying the action succeeds";
+  - blocking: "…; no workaround exists".
+- **A13 enforces this:** no two-word opening that appears in only one
+  value, and identical connectives across severity values.
+- **Measured shortcuts:**
+  - the reviewer's punctuation rule recovers severity 46% of the time
+    (was 100%);
+  - the best length-only rule gets about 50% (impact was 73%), against
+    33% chance.
+- **Inherent, disclosed:** the impact claim states its label in words
+  ("it is unclear whether…"), so a content-keyword rule recovers it.
+  The evidence has to say it.
+
+## D3. Blocking always denies a workaround (review C2)
+
+Every scope filler states "no workaround exists" or "there is no
+workaround of any kind". Classes add one distinct fact on top: not by
+hand, not by retrying, not by rolling back. 300/300 blocking units deny a
+workaround.
+
+## D4. Proposition classes, merged conservatively (review C1)
+
+| Pool | Merges adopted in Draft 4 |
+|---|---|
+| routing | packet loss = retransmitted packets; connection resets = dropped connections; query execution time = slow queries; sharp spike dropped (severity cue) |
+| impact:0 | 5 claims → 2 classes (internal use; internal-only infrastructure) |
+| impact:unclear | 6 claims → 4 classes (unmapped consumers merged with "not known") |
+| severity:2 | no service = errors on every attempt (one class); unusable output (output-producing functions only) |
+
+**Capacity at `N_MAX = 720`** (main reserve vs. need): routing 453 / 411
+vs 360; impact 252 / 256 / 252 vs 240; severity 638 / 461 / 290 vs 240.
+
+**Pilot vs. main:** for impact pools, the pilot reserves whole
+*services*, so 0 pilot services reappear in the main run. Other pools
+are disjoint by proposition and text. Their subjects, such as UI
+elements and functions, do recur (disclosed).
+
+## D5. Fit rules and cue lexicons
+
+- **Fit rules,** applied at build time:
+  - workaround fits failure; failure fits feature;
+  - text defects only on text-bearing elements;
+  - unusable output only for output-producing functions;
+  - **new:** routing metric fits component. DNS has no link flaps,
+    replication lag only on replicated stores, and so on.
+- **A11 is now labelled a coverage check (review M6).** Whether the fit
+  tables are *right* is part of the human pass (§D7).
+- **Cue lexicons:**
+  - `_contains` matches inflections ("fail" now matches "failures";
+    review M4);
+  - the routing lexicon adds request, respond, route, path and others
+    (M3);
+  - severity cues now include urgent, escalation, surge, spike, burst,
+    fallback (M1);
+  - the audience lexicon now includes mobile, desktop app, team,
+    engineer and store (M2).
+- **Service names are audited too:** no routing or severity cue in any
+  name, because `S` appears in all three sentences.
+
+## D6. Inference consequences (protocol Revision 12.1)
+
+- **Ceiling:** `N_MAX = 720`.
+- **H2:** the primary test is a sign-flip clustered by `S`.
+- **H1:** reported with a cluster-bootstrap interval.
+- **Sizing for H2:** uses cluster-summed SDs from the second pilot.
+
+## D7. Before freeze: human pass
+
+`research/data/characterization/grammar_d4_human_review_sheet.csv` has 54
+composed incidents, 3 per (c1, c2, c3) cell, in shuffled order. The
+answer key is kept separately in `grammar_d4_human_review_key.json`.
+
+**Who:** one person who hasn't seen the key (you or Tushar).
+
+**What they do:** label each incident's subsystem, customer-facing status
+and severity, and flag anything implausible.
+
+**Freeze rule (pre-set):**
+1. Any item where the human's label differs from the key is examined.
+2. A unit-level cause, meaning a filler or fit table, is fixed and the
+   audits are re-run.
+3. **The grammar freezes only when disagreement is at most 3 of 54 on
+   every label and no implausibility flag is left unresolved.**
+
+## D8. Still open after Draft 4 (disclosed)
+
+- **Plausibility is improved, not guaranteed.** Some `S` × feature
+  pairs are odd, e.g. a date-formatting library with a "dialog title".
+  The human pass will show how often this happens.
+- **Routing magnitudes may still push severity.** Magnitude class
+  should be balanced across c3 at manifest time; that is a manifest
+  requirement.
+- **Non-`S` subjects recur across instances.** UI elements, features,
+  functions and components each appear in many instances. Clustering
+  handles only `S`, the strongest shared factor.
+
+---
+
+# Earlier drafts — superseded record (Drafts 1–3), kept for provenance
+
+# Workflow Template Grammar — Specification (Draft 3 — SUPERSEDED by Draft 4 above)
 
 Status: **draft for audit, not frozen.** No sentence from this grammar has
 been assigned to any pilot or evaluation instance, and no API call has

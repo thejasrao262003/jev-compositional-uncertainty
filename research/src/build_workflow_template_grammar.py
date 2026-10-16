@@ -1,16 +1,18 @@
 """Deterministic template grammar for workflow-composition evaluation content.
 
-Spec: research/methodology/workflow_template_grammar_spec.md.
+Spec: research/methodology/workflow_template_grammar_spec.md (Draft 4).
 
-Expands a small, finite, fully listed vocabulary into evidence sentences
-and audits the expansion. Labels come from the structured variables that
-built each sentence (pool, value) and are never parsed back out of the
-text. No API calls, and no Jev involvement in any text.
+Draft 4 design: every instance is ONE incident about ONE named service S.
+The impact pool owns S (its claim is about S), and the routing and severity
+sentences are templates with an {S} slot filled at instance assembly. So the
+impact label is entailed for the very service whose infrastructure and
+feature the other two sentences describe (independent review, C3).
 
-This script EXPANDS and AUDITS the grammar only. It does not assign
-sentences to pilot or evaluation instances: it only fixes which semantic
-keys are reserved for the second calibration pilot and which for the
-main run.
+Expands a small, finite, fully listed vocabulary and audits the expansion.
+Labels come from the structured variables that built each unit (pool, value)
+and are never parsed back out of text. No API calls, and no Jev involvement.
+This script does not assign units to instances; it fixes which units are
+reserved for the second calibration pilot and which for the main run.
 """
 
 from __future__ import annotations
@@ -21,7 +23,7 @@ import json
 import random
 import re
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 SRC_DIR = Path(__file__).resolve().parent
@@ -35,205 +37,221 @@ DATA_DIR = REPO_ROOT / "research" / "data" / "characterization"
 RESULTS_DIR = REPO_ROOT / "research" / "results"
 THIS_FILE = Path(__file__).resolve()
 
-SEED = "workflow-template-grammar-v3"   # Draft 3; v1 = Draft 1, v2 = Draft 2
+SEED = "workflow-template-grammar-v4"   # v1-v3 = Drafts 1-3
 
-# Second calibration pilot uses pilot 1's 30-instance schedule
-# (18 cells once + 12 off-diagonal), so it needs these units per value.
+# Second calibration pilot: pilot 1's 30-instance schedule (18 cells once + 12 off-diagonal).
 PILOT2_QUOTA = {("routing", "network"): 15, ("routing", "database"): 15,
                 ("impact", "0"): 10, ("impact", "1"): 10, ("impact", "unclear"): 10,
                 ("severity", "0"): 10, ("severity", "1"): 10, ("severity", "2"): 10}
 
-# Capacity ceiling. Balanced allocation uses N_eval = 18k, needing 9k routing
-# units per c1 value and 6k units per c2 / c3 value.
-N_MAX = 1260          # k = 70; covers n_required up to d_template ~= 0.40
+# Capacity ceiling (Draft 4: lowered from 1,260 by decision of 2026-10-16).
+# Balanced allocation N_eval = 18k needs 9k routing units per c1 value and 6k
+# units per c2 / c3 value. If Revision 12 sizing needs more, the build stops.
+N_MAX = 720
 K_MAX = N_MAX // 18
 
-# ---------------------------------------------------------------------------
-# Vocabulary. Every list below is the complete vocabulary for its slot.
-# ---------------------------------------------------------------------------
+S = "{S}"   # the instance's service, owned by the impact pool
 
-CHANGE_NP = ["a roughly twofold increase", "a roughly threefold increase",
-             "an approximately tenfold increase", "a sharp spike", "a steady climb",
-             "an abrupt jump", "erratic fluctuations"]
-TIME = ["since this morning", "over the past hour", "since the last deploy",
-        "since about 02:00 UTC", "over the last thirty minutes", "since the maintenance window ended"]
-ROUTING_FRAMES = ["Alerts for {c} show {chg} in {m} {t}.",
-                  "Monitoring shows {chg} in {m} on {c} {t}.",
-                  "The on-call dashboard reports {chg} in {m} at {c} {t}."]
+# ===========================================================================
+# Vocabulary. Every list is the complete vocabulary for its slot.
+# ===========================================================================
 
+# --- impact pool: the service S and the claim about it ---------------------
+# S names must carry no routing or severity cue (they appear in all three
+# sentences). Customer-facing and internal names carry their own audience
+# signal, which is CONSISTENT with the label by construction; impact:unclear
+# names must be audience-neutral (A10b).
+S_CUSTOMER = ["the checkout service", "the storefront", "the customer portal", "the public website",
+              "the sign-up flow", "the shopping-cart service", "the customer billing portal", "the help center",
+              "the product search page", "the order-tracking page", "the customer mobile app", "the booking site",
+              "the video player", "the customer dashboard", "the loyalty rewards app", "the gift-card store",
+              "the customer messaging inbox", "the patient appointment scheduler", "the online course player",
+              "the recipe app", "the customer onboarding wizard", "the subscription management page",
+              "the returns portal", "the customer review pages", "the trip planner", "the photo sharing app",
+              "the customer support chat", "the client e-signature portal", "the restaurant reservation app",
+              "the event ticketing site", "the parcel tracking app", "the marketplace listing pages",
+              "the customer feedback form", "the hotel booking app"]
+S_INTERNAL = ["the nightly reconciliation job", "the internal cost dashboard", "the analytics team's reporting tool",
+              "the internal support-triage tool", "the legacy metrics exporter", "the CI build runner",
+              "the quarterly compliance report generator", "the internal wiki", "the employee onboarding portal",
+              "the expense-approval tool", "the hackathon voting app", "the office room-booking system",
+              "the engineering on-call scheduler", "the design-review tracker", "the payroll export script",
+              "the staff training portal", "the internal code-search tool", "the build-artifact packager",
+              "the license-compliance scanner", "the internal developer handbook site", "the team goals tracker",
+              "the vendor-invoice reconciliation script", "the developer sandbox environment",
+              "the internal feature-ideas board", "the hiring pipeline dashboard", "the IT hardware asset tracker",
+              "the internal survey tool", "the release-notes drafting tool", "the security-awareness quiz app",
+              "the finance forecasting model", "the HR question chatbot", "the laptop provisioning script",
+              "the test-fixture generator", "the performance-review tool", "the code-coverage reporter",
+              "the internal mailing-list digest", "the procurement form", "the dependency-update bot",
+              "the internal travel-booking tool", "the static-analysis pipeline", "the badge-access audit report",
+              "the UX research library", "the capacity-planning model", "the retention-policy checker",
+              "the internal icon library site", "the incident postmortem collection",
+              "the sales-commission calculator", "the employee directory", "the design-system playground",
+              "the legal-hold tracker", "the benchmark results site", "the translation-memory tool",
+              "the board-deck generator", "the brand-asset library", "the meeting-notes summarizer",
+              "the engineering blog drafts site", "the parking-permit tool", "the compliance training tracker",
+              "the bug-bash leaderboard", "the warehouse staff rota tool", "the grant-tracking tool",
+              "the patent-disclosure tracker", "the company podcast feed", "the facilities maintenance tracker",
+              "the mentoring-match tool", "the cafeteria menu site", "the hardware-loan tracker",
+              "the dev-environment image builder", "the architecture-diagram library",
+              "the interview-scheduling assistant",
+              "the internal holiday planner", "the office supplies form", "the internal job board",
+              "the staff newsletter builder", "the internal ideas portal", "the engineering metrics dashboard",
+              "the internal access-approval portal", "the internal style-guide site",
+              "the conference-room display app", "the staff shuttle schedule", "the internal recognition app",
+              "the security-review tracker", "the vendor contract tracker", "the internal audit checklist tool",
+              "the staff wellness portal", "the code-review reminder bot", "the internal tech-radar site",
+              "the internal floor-plan viewer", "the team retrospective board", "the expense-policy chatbot",
+              "the staff equipment form", "the internal release-train tracker",
+              "the incident drill scheduler", "the internal sprint-planning board", "the onboarding buddy matcher",
+              "the internal metrics catalog", "the staff phone directory", "the internal translation intake form",
+              "the legal intake form", "the brand-review tracker", "the training-video library",
+              "the hackathon project gallery", "the staff feedback survey", "the office temperature dashboard",
+              "the internal print monitor", "the staff timesheet tool", "the certificate-renewal reminder",
+              "the employee referral tracker", "the font-license register", "the staff badge photo tool",
+              "the interview question bank", "the market-research library", "the pricing-approval tool",
+              "the staff relocation planner", "the board-meeting minutes site", "the staff skills inventory",
+              "the budget-planning tool", "the cost-center mapping tool", "the internal procurement catalog",
+              "the staff learning-plan tool", "the recovery runbook site", "the design-critique scheduler",
+              "the internal desk-booking app", "the engineering ladder site", "the podcast-taping scheduler",
+              "the analytics sandbox", "the staff awards nomination form", "the open-source approval form",
+              "the internal quiz builder", "the staff carpool board", "the internal glossary site"]
+S_SHARED = ["the shared templating layer", "the message queue", "the shared auth library", "the feature-flag service",
+            "the image-processing worker pool", "the geo-lookup service", "the email-template service",
+            "the shared approval-rules service", "the slug-generation service", "the event fan-out service",
+            "the shared logging agent", "the PDF rendering service", "the shared configuration service",
+            "the A/B testing service", "the shared secrets manager", "the job scheduler", "the shared search service",
+            "the spam-filtering service", "the timezone-conversion library", "the localization service",
+            "the event-bus listener group", "the shared metrics library", "the audit-event emitter",
+            "the document-conversion worker pool", "the barcode generation service", "the shared retry library",
+            "the JSON serialization library", "the session signing service", "the analytics event collector",
+            "the email-validation library", "the device registry", "the content-moderation queue",
+            "the shared markdown renderer", "the license-key validation service", "the background-image optimizer",
+            "the date-formatting library", "the experiment-assignment service", "the partner-integration adapter",
+            "the shared spreadsheet parser", "the ranking-signals pipeline", "the message signature verifier",
+            "the plural-rules library", "the feature-usage tracker", "the image-moderation classifier",
+            "the phone-number formatter", "the PDF watermarking step", "the credential refresher",
+            "the font-subsetting service", "the map-tile renderer", "the profanity filter", "the sitemap generator",
+            "the identifier allocation service", "the calendar-availability service",
+            "the shared scheduling library", "the document-tagging worker", "the shared encryption helper",
+            "the shared image-cropping service", "the config-rollout service", "the shared health-check service",
+            "the feature-toggle sync job", "the text-normalization library", "the workflow engine",
+            "the shared rule evaluator", "the shared thumbnail service", "the shared webform builder",
+            "the color-palette service"]
+
+IMPACT_FRAMES = ["{W} reports that {claim}.", "According to {w}, {claim}.", "As {w} notes, {claim}."]  # all values; attribution first
+WHO = ["the owning team", "the on-call engineer", "the platform team", "the incident commander",
+       "the service catalog", "the architecture team"]
+
+IMPACT_YES_CLAIM = "{g} customers are reporting problems with {S} through {src}"
+SEGMENTS = ["enterprise", "free-tier", "EU-based", "self-serve", "paying", "newly signed-up", "long-standing", "APAC"]
+SOURCES = ["support tickets", "the public status page", "live chat", "in-app feedback", "social-media posts",
+           "emails to the help desk"]
+IMPACT_NO_CLAIMS = ["{S} is used only by internal teams, and no customer has any access to it",
+                    "no customer uses {S}, which exists only for the company's own teams",
+                    "{S} serves no customers and is used only for the company's internal work",
+                    "{S} runs entirely on internal-only infrastructure that customers never reach",
+                    "{S} is isolated from everything customers use and has no customer-facing dependents"]
+IMPACT_UNCLEAR_CLAIMS = [
+    "it has not been mapped which customer-facing services, if any, depend on {S}",
+    "the downstream consumers of {S} have not been fully mapped, so its customer exposure is unknown",
+    "it is not yet known which customers, if any, depend on {S}",
+    "it is unclear whether {S} is enabled for any customer segment",
+    "nobody can currently tell whether customers use {S}, because its usage reports are no longer kept",
+    "two teams disagree about whether {S} is part of any customer-facing workflow"]
+
+# --- routing pool: S's infrastructure ---------------------------------------
+ROUTING_FRAMES = ["Monitoring for {S} shows {chg} in {m} on its {c} {t}.",   # identical for network and database
+                  "Alerts for {S} report {chg} in {m} at its {c} {t}.",
+                  "{S_cap}'s on-call dashboard shows {chg} in {m} on its {c} {t}."]
+CHANGE_NP = ["a roughly twofold increase", "a roughly threefold increase", "an approximately tenfold increase",
+             "an abrupt jump", "a steady climb", "erratic fluctuations"]   # Draft 4: "a sharp spike" dropped (severity cue)
+TIME = ["since this morning", "over the past hour", "since the last deploy", "since about 02:00 UTC",
+        "over the last thirty minutes", "since the maintenance window ended"]
 ROUTING = {
     "network": {
-        "component": ["the edge load balancer", "the core switch in the primary data center",
-                      "the inter-region backbone link", "the VPN gateway between availability zones",
-                      "the private DNS resolvers", "the CDN edge nodes in the affected region",
-                      "the perimeter firewall", "the service-mesh sidecar proxies",
-                      "the NAT gateway for the private subnets", "the top-of-rack switches in row C",
-                      "the regional ingress routers", "the peering link to the upstream ISP",
-                      "the WAN link to the backup data center", "the anycast DNS edge"],
-        "metric": ["packet loss", "round-trip latency", "connection resets", "retransmitted packets",
-                   "dropped connections", "interface errors", "link flaps", "connection timeouts"],
+        "component": ["edge load balancer", "upstream DNS resolvers", "inter-region backbone link",
+                      "VPN gateway between availability zones", "CDN edge nodes", "perimeter firewall",
+                      "service-mesh sidecar proxies", "NAT gateway", "top-of-rack switches",
+                      "regional ingress routers", "peering link to the upstream ISP",
+                      "WAN link to the backup data center", "private DNS zone", "east-west network switches"],
+        "metric": ["packet loss", "retransmitted packets", "round-trip latency", "connection resets",
+                   "dropped connections", "interface discards", "link flaps", "connection timeouts"],
     },
     "database": {
-        # Draft 3: audience-coded names replaced (user-accounts, billing, orders,
-        # payments, loyalty-program) so routing sentences carry no customer cue.
-        "component": ["the primary database", "the read replicas", "the jobs database cluster",
-                      "the session-state table", "the reporting database", "the primary's connection pool",
-                      "the scheduling database", "the permissions database", "the inventory database",
-                      "the audit-log database", "the product-catalog database", "the general-ledger database",
-                      "the shipping database", "the configuration database"],
-        "metric": ["query execution time", "lock wait time", "replication lag", "deadlocks", "disk I/O wait",
-                   "connection-pool saturation", "slow queries", "transaction rollbacks"],
+        "component": ["primary database", "read replicas", "job-queue database", "state table",
+                      "reporting database", "database connection pool", "scheduling database",
+                      "permissions database", "audit-log database", "configuration database",
+                      "metadata database", "search-index database", "event-history database", "backup replica"],
+        "metric": ["query execution time", "slow queries", "lock wait time", "replication lag", "deadlocks",
+                   "disk I/O wait", "connection-pool saturation", "transaction rollbacks"],
     },
 }
+# Draft 4 routing fit (review, minor): metric classes a component can show.
+ROUTING_METRIC_EXCLUDED = {
+    ("network", "upstream DNS resolvers"): {"interface discards", "link flaps"},
+    ("network", "private DNS zone"): {"interface discards", "link flaps"},
+    ("network", "service-mesh sidecar proxies"): {"interface discards", "link flaps"},
+}
+REPLICATION_COMPONENTS = {"primary database", "read replicas", "backup replica"}
+POOL_SATURATION_COMPONENTS = {"database connection pool", "primary database"}
+CONNECTION_POOL_ONLY = {"query execution time", "slow queries", "connection-pool saturation"}
 
-IMPACT_YES = {
-    # Draft 3: every source is a singular noun phrase customers send, with no
-    # inner "from", so frames agree in number and never repeat "from".
-    "source": ["a surge of support tickets", "a wave of replies on the public status page",
-               "a wave of escalations through their account managers", "a wave of social-media posts",
-               "a burst of live-chat messages", "a surge of in-app feedback submissions",
-               "a burst of urgent pages via their own on-call teams"],
-    "segment": ["enterprise", "free-tier", "EU-based", "mobile-app", "self-serve", "healthcare",
-                "retail", "APAC"],
-    # Draft 3: every surface is a page or screen ("the issue on X" reads naturally);
-    # "the public API" and "file uploads" removed (network-leaning words).
-    "surface": ["the checkout page", "the login screen", "the main dashboard", "the developer portal",
-                "the billing pages", "the search page", "the notifications page", "the file manager"],
-    "frames": ["{G} customers have sent {s} about the issue on {f}.",
-               "Over the past hour, {g} customers have sent {s} about the issue on {f}.",
-               "Since this morning, {g} customers have been sending {s} about the issue on {f}."],
-}
-IMPACT_NO = {
-    "component": ["the nightly reconciliation job", "the internal cost dashboard", "the staging cluster",
-                  "the analytics team's ad-hoc reporting tool", "the internal support-triage tool",
-                  "the legacy metrics exporter", "the CI build runner", "the quarterly compliance report generator",
-                  "the internal wiki", "the employee onboarding portal", "the expense-approval tool",
-                  "the hackathon voting app", "the office room-booking system", "the engineering on-call scheduler",
-                  "the design-review tracker", "the payroll export script", "the staff training portal",
-                  "the internal code-search tool", "the build-artifact packager", "the license-compliance scanner",
-                  "the internal developer handbook site", "the team goals tracker",
-                  "the vendor-invoice reconciliation script", "the developer sandbox environment",
-                  "the internal feature-request board", "the hiring pipeline dashboard",
-                  "the IT hardware asset tracker", "the internal survey tool", "the release-notes drafting tool",
-                  "the security-awareness quiz app", "the finance forecasting model",
-                  "the HR question chatbot", "the laptop provisioning script", "the test-fixture generator",
-                  "the performance-review tool", "the code-coverage reporter", "the internal mailing-list digest",
-                  "the procurement request form", "the dependency-update bot", "the internal travel-booking tool",
-                  "the static-analysis pipeline", "the badge-access audit report", "the UX research library",
-                  "the capacity-planning model", "the retention-policy checker", "the internal icon library site",
-                  "the incident postmortem collection", "the sales-commission calculator", "the employee directory",
-                  "the design-system playground", "the legal-hold tracker", "the benchmark results site",
-                  "the translation-memory tool", "the board-deck generator", "the brand-asset library",
-                  "the meeting-notes summarizer", "the engineering blog drafts site", "the visitor sign-in kiosk",
-                  "the parking-permit tool", "the compliance training tracker", "the bug-bash leaderboard",
-                  "the warehouse staff rota tool", "the grant-tracking tool", "the patent-disclosure tracker",
-                  "the company podcast feed", "the facilities maintenance tracker", "the mentoring-match tool",
-                  "the cafeteria menu site", "the hardware-loan tracker", "the dev-environment image builder",
-                  "the architecture-diagram library", "the interview-scheduling assistant"],
-    "evidence": ["{c} is used only by internal teams", "no customer-facing service depends on {c}",
-                 "{c} serves no production customers", "{c} is isolated from the customer-serving cluster",
-                 "{c} only produces output that no customer ever sees",
-                 "{c} runs entirely on internal-only infrastructure",
-                 "{c} has no dependency path to any customer product",
-                 "{c} contains only synthetic test fixtures",
-                 "{c} is excluded from every customer-facing service-level agreement"],
-    "who": ["the owning team", "the platform team", "the on-call SRE", "the service catalog",
-            "the architecture review record", "the dependency map", "the team lead", "a recent access review"],
-    "frames": ["{W} confirms that {e}.", "According to {w}, {e}.", "{E}, as {w} has confirmed."],
-}
-IMPACT_UNCLEAR = {
-    "component": ["the shared templating layer", "the message queue", "the shared auth library",
-                  "the feature-flag service", "the image-processing worker pool", "the pricing-rules service",
-                  "the geo-lookup service", "the email-template service",
-                  "the shared approval-rules service", "the slug-generation service", "the event fan-out service",
-                  "the shared logging agent", "the PDF rendering service", "the currency-conversion service",
-                  "the address-validation service", "the shared configuration service", "the A/B testing service",
-                  "the recommendation engine", "the tax-calculation library", "the shared secrets manager",
-                  "the job scheduler", "the shared search service", "the spam-filtering service",
-                  "the timezone-conversion library", "the localization service", "the event-bus consumer group",
-                  "the shared metrics client library", "the audit-event emitter", "the document-conversion worker pool",
-                  "the barcode generation service", "the shared retry library", "the user-preferences service",
-                  "the fraud-scoring model", "the JSON serialization library", "the session signing service",
-                  "the analytics event collector", "the email-validation library", "the device registry",
-                  "the content-moderation queue", "the shared avatar service", "the coupon-validation service",
-                  "the delivery-estimate service", "the shared markdown renderer", "the license-key validation service",
-                  "the background-image optimizer", "the date-formatting library", "the experiment-assignment service",
-                  "the partner-integration adapter", "the shared spreadsheet parser", "the ranking-signals pipeline",
-                  "the profile-enrichment service", "the shared captcha service", "the message signature verifier",
-                  "the order-status poller", "the plural-rules library", "the feature-usage tracker",
-                  "the image-moderation classifier", "the phone-number formatter", "the shipping-rate calculator",
-                  "the referral-credit service", "the PDF watermarking step", "the loyalty-points service",
-                  "the credential refresher", "the receipt-generation service", "the font-subsetting service",
-                  "the map-tile renderer", "the profanity filter", "the subscription-entitlement checker",
-                  "the sitemap generator", "the identifier allocation service", "the price-history service",
-                  "the gift-card balance service", "the attachment virus scanner", "the calendar-availability service"],
-    "aspect": ["it has not been confirmed whether any customer-facing service depends on {c}",
-               "the downstream consumers of {c} have not been fully mapped",
-               "whether failures in {c} reach customers depends on a fallback whose status is unknown",
-               "the customer exposure of {c} has been undocumented since an ownership change",
-               "it is unclear whether {c} is enabled for any customer segment",
-               "the dependency graph covering {c} has not been updated since a large refactor, so its customer exposure is unknown",
-               "it is not yet known which customers, if any, depend on {c}",
-               "the usage history that would show whether customers use {c} has already been purged",
-               "two teams disagree about whether {c} is part of any customer-facing workflow"],
-    "who": ["the on-call engineer", "the owning team", "the platform team", "the SRE lead",
-            "the incident commander", "the service catalog", "the architecture team", "the support liaison"],
-    "frames": ["{W} reports that {a}.", "According to {w}, {a}.", "{A}, and {w} could not confirm either way."],
-}
-
-# Draft 3: severity sentences are AUDIENCE-NEUTRAL. They say nothing about who
-# is affected (no "users report", "a user noticed", "every user"), and their
-# subjects could belong to an internal tool or a customer product. Whether the
-# incident is customer-facing is stated only by the impact sentence (A10).
+# --- severity pool: S's feature and its state ------------------------------
+# One frame set for all three values, and "; " as the only connective, so no
+# frame, opening or punctuation mark identifies the level (review, M5).
+SEVERITY_FRAMES = ["In {S}, {body}.", "Since the last release of {S}, {body}.",
+                   "The incident report for {S} says that {body}."]
 SEV_COSMETIC = {
     "element": ["the settings tooltip", "the sidebar icon", "the footer copyright text", "the date picker label",
-                "the 'beta' badge", "the section divider", "the search placeholder text",
-                "the email header logo", "the print-view page title", "the avatar border",
-                "the primary button's hover shade", "the tour arrow",
-                # Draft 3 additions (text-bearing, then visual-only)
-                "the empty-state message", "the breadcrumb trail", "the settings tab label", "the toast message",
-                "the list column header", "the dialog title", "the help-panel heading",
+                "the 'beta' badge", "the section divider", "the search placeholder text", "the email header logo",
+                "the print-view page title", "the avatar border", "the primary button's hover shade",
+                "the tour arrow", "the empty-state message", "the breadcrumb trail", "the settings tab label",
+                "the toast message", "the list column header", "the dialog title", "the help-panel heading",
                 "the loading spinner", "the card shadow", "the progress bar", "the scrollbar"],
-    "defect": ["is misaligned by a few pixels", "renders in a slightly wrong color", "shows outdated wording",
-               "sits one pixel off its grid", "briefly flickers on load", "wraps awkwardly onto a second line",
-               "uses inconsistent capitalization", "is truncated with an ellipsis"],
+    "defect": ["is misaligned by a few pixels", "sits one pixel off its grid", "renders in a slightly wrong color",
+               "shows outdated wording", "briefly flickers on load", "wraps awkwardly onto a second line",
+               "is truncated with an ellipsis", "uses inconsistent capitalization"],
     "context": ["in Safari", "in dark mode", "at 125% browser zoom", "in the German locale",
-                "on narrow mobile screens", "in high-contrast mode"],
-    "frames": ["{E} {d} {x}.", "{X}, {e} {d}.", "A design review found that {e} {d} {x}."],
+                "in high-contrast mode", "at narrow window widths"],
+    "qualifier": "nothing else is affected",
 }
-SEV_DEGRADED = {
-    "feature": ["scheduled report exports", "bulk tag edits", "live dashboard widgets",
-                "inline edits on the settings page", "keyboard search shortcuts", "document autosaves",
-                "paginated list views", "scheduled email digests", "calendar syncs",
-                "image attachments", "saved search alerts", "spreadsheet imports", "image thumbnail previews",
-                "chart exports", "comment notifications", "file conversions",
-                "bulk file moves", "photo gallery syncs", "project board updates", "contact list imports",
-                "report schedule edits", "shared folder syncs", "task list refreshes", "batch image imports",
-                "zip downloads", "note syncs", "activity feed updates", "spreadsheet edits"],
-    "failure": ["fail intermittently", "fail on large inputs", "stall after a long session",
-                "drop recent changes occasionally", "update a few minutes late", "skip items now and then",
-                "fail on the first attempt", "stop updating after a while"],
-    "workaround": ["but retrying the action succeeds", "but a page refresh restores normal behavior",
-                   "but the same task still works through the desktop app",
-                   "but the previous version of the feature is still available",
-                   "but the task can still be run manually",
-                   "but splitting the work into smaller batches succeeds",
-                   "but saving manually first prevents any loss",
-                   "but reopening the page shows the current state"],
-    "frames": ["{F} {r}, {w}.", "Testing shows that {f} {r}, {w}.", "Since the last release, {f} {r}, {w}."],
-}
-# Draft 3: text defects (outdated wording, wrapping/truncation, capitalization;
-# defect classes 2, 4, 5) apply only to elements that carry text.
 COSMETIC_TEXT_ELEMENTS = {"the settings tooltip", "the footer copyright text", "the date picker label",
                           "the 'beta' badge", "the search placeholder text", "the print-view page title",
                           "the empty-state message", "the breadcrumb trail", "the settings tab label",
                           "the toast message", "the list column header", "the dialog title", "the help-panel heading"}
 COSMETIC_TEXT_DEFECT_CLASSES = {2, 4, 5}
 
-# Draft 3: which failure classes (SYN severity:1) a feature can plausibly show.
-# 0 intermittent and 6 first-attempt fit everything; 1 large inputs needs an
-# input; 2 stall needs a long-running view or sync; 3 losing changes needs
-# editing; 4 lateness and 5 skipping need a stream of items.
+SEV_DEGRADED = {
+    "feature": ["scheduled report exports", "bulk tag edits", "live dashboard widgets",
+                "inline edits on the settings page", "keyboard search shortcuts", "document autosaves",
+                "paginated list views", "scheduled email digests", "calendar syncs", "image attachments",
+                "saved search alerts", "spreadsheet imports", "image thumbnail previews", "chart exports",
+                "comment notifications", "file conversions", "bulk file moves", "photo gallery syncs",
+                "project board updates", "contact list imports", "report schedule edits", "shared folder syncs",
+                "task list refreshes", "batch image imports", "zip downloads", "note syncs",
+                "activity feed updates", "spreadsheet edits"],
+    "failure": ["fail intermittently", "fail on large inputs", "stall after a long session",
+                "stop updating after a while", "drop recent changes occasionally", "update a few minutes late",
+                "skip items now and then", "fail on the first attempt"],
+    "workaround": ["retrying the action succeeds", "a page refresh restores normal behavior",
+                   "the same task still works from another screen",
+                   "the previous version of the feature is still available", "the task can still be run by hand",
+                   "splitting the work into smaller batches succeeds", "saving by hand first prevents any loss",
+                   "reopening the page shows the current state"],
+}
+_ANY = {"the same task still works from another screen", "the previous version of the feature is still available"}
+WORKAROUND_FITS = {
+    0: _ANY | {"retrying the action succeeds", "a page refresh restores normal behavior",
+               "the task can still be run by hand"},
+    1: _ANY | {"splitting the work into smaller batches succeeds", "the task can still be run by hand"},
+    2: _ANY | {"a page refresh restores normal behavior", "reopening the page shows the current state"},
+    3: _ANY | {"saving by hand first prevents any loss"},
+    4: _ANY | {"reopening the page shows the current state"},
+    5: _ANY | {"retrying the action succeeds", "the task can still be run by hand"},
+    6: _ANY | {"retrying the action succeeds", "a page refresh restores normal behavior"},
+}
 FEATURE_FAILURE_FITS = {
     "scheduled report exports": {0, 1, 5, 6}, "bulk tag edits": {0, 1, 3, 5, 6},
     "live dashboard widgets": {0, 2, 4, 6}, "inline edits on the settings page": {0, 3, 6},
@@ -250,89 +268,61 @@ FEATURE_FAILURE_FITS = {
     "zip downloads": {0, 1, 6}, "note syncs": {0, 2, 3, 4, 5, 6},
     "activity feed updates": {0, 2, 4, 5, 6}, "spreadsheet edits": {0, 3, 6},
 }
-
-# Draft 3: "unusable/corrupted output" (failure class 2, SYN severity:2) applies
-# only to functions that produce output.
-BLOCKING_OUTPUT_FUNCTIONS = {"report generation", "report export", "PDF generation", "image resizing",
-                             "spreadsheet import", "file preview", "template rendering", "text extraction",
-                             "chart rendering", "file conversion", "document translation", "document search",
-                             "label printing", "thumbnail generation", "image compression", "audio transcription",
-                             "subtitle generation", "summary generation", "document merging", "screenshot capture",
-                             "export packaging", "page layout rendering"}
-
-# Draft 3: a degraded sentence is built only when its workaround actually
-# addresses its failure (keyed by failure class, SYN below). Without this, 15%
-# of level-1 sentences stated a "workaround" that didn't work around anything.
-WORKAROUND_FITS = {
-    0: {"but retrying the action succeeds", "but a page refresh restores normal behavior",
-        "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available", "but the task can still be run manually"},
-    1: {"but splitting the work into smaller batches succeeds", "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available", "but the task can still be run manually"},
-    2: {"but a page refresh restores normal behavior", "but reopening the page shows the current state",
-        "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available"},
-    3: {"but saving manually first prevents any loss", "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available"},
-    4: {"but reopening the page shows the current state", "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available"},
-    5: {"but retrying the action succeeds", "but the task can still be run manually",
-        "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available"},
-    6: {"but retrying the action succeeds", "but a page refresh restores normal behavior",
-        "but the same task still works through the desktop app",
-        "but the previous version of the feature is still available"},
-}
 SEV_BLOCKING = {
     "function": ["report generation", "scheduled job execution", "report export", "notification sending",
                  "file sharing", "document signing", "PDF generation", "image resizing", "calendar sync",
-                 "email delivery", "spreadsheet import", "file preview", "audit trail recording",
+                 "email delivery", "spreadsheet import", "file preview", "audit trail capture",
                  "the approval workflow", "form submission", "comment posting", "task assignment",
                  "template rendering", "attachment handling", "label printing", "text extraction",
                  "workflow automation", "event scheduling", "survey distribution", "chart rendering",
                  "dashboard refresh", "file conversion", "time tracking", "document translation",
                  "document search", "tag management", "bulk editing", "version history",
-                 "task reminder delivery", "permission management", "draft saving",
-                 "thumbnail generation", "image compression", "audio transcription", "subtitle generation",
-                 "summary generation", "document merging", "screenshot capture", "export packaging",
-                 "page layout rendering"],
-    "failure": ["has stopped working entirely", "is completely unavailable", "has halted with no progress",
-                "no longer responds at all", "is returning errors for every request",
-                "rejects every request it receives", "is failing on every attempt",
-                "fails immediately on every attempt", "produces unusable output on every run",
-                "returns corrupted results every time"],
-    "scope": ["and no workaround exists", "and there is no fallback path",
-              "and no alternative route is available", "and it cannot be completed manually either",
-              "and retrying does not help", "and the previous version cannot be restored either"],
-    "frames": ["{F} {r}, {s}.", "Right now {f} {r}, {s}.", "As of this morning, {f} {r}, {s}."],
+                 "task reminder delivery", "permission management", "draft saving", "thumbnail generation",
+                 "image compression", "audio transcription", "subtitle generation", "summary generation",
+                 "document merging", "screenshot capture", "export packaging", "page layout rendering",
+                 "invoice layout", "certificate generation", "form validation", "photo editing",
+                 "calendar export"],
+    # Draft 4 (review C1): "stopped" and "fails on every attempt" are one claim.
+    "failure": ["has stopped working entirely", "is completely unavailable", "fails on every attempt",
+                "has halted with no progress", "produces unusable output every time",
+                "produces garbled output every time"],
+    # Draft 4 (review C2): EVERY scope filler explicitly denies any workaround.
+    "scope": ["no workaround exists", "there is no workaround of any kind",
+              "no workaround exists, not even doing it by hand",
+              "no workaround exists, not even retrying",
+              "no workaround exists, not even rolling back to the previous version"],
 }
+BLOCKING_OUTPUT_FUNCTIONS = {"report generation", "report export", "PDF generation", "image resizing",
+                             "spreadsheet import", "file preview", "template rendering", "text extraction",
+                             "chart rendering", "file conversion", "document translation", "document search",
+                             "label printing", "thumbnail generation", "image compression", "audio transcription",
+                             "subtitle generation", "summary generation", "document merging", "screenshot capture",
+                             "export packaging", "page layout rendering", "invoice layout",
+                             "certificate generation", "calendar export"}
 
-# ---------------------------------------------------------------------------
-# Cue lexicons for the contamination audits.
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# Cue lexicons. _contains matches the stem plus inflections (review, M4).
+# ===========================================================================
 
 NETWORK_CUES = ["network", "latency", "packet", "dns", "router", "switch", "gateway", "firewall", "vpn",
                 "cdn", "tls", "tcp", "link", "proxy", "proxies", "load balancer", "isp", "subnet", "ingress",
-                "timeout", "peering", "backbone", "nat",
-                # Draft 3 additions: network-leaning words the Draft 2 review found outside routing
-                "region", "traffic", "endpoint", "request path", "webhook", "api", "url", "http", "upload",
-                "bandwidth", "throughput", "dispatcher"]
-DATABASE_CUES = ["database", "query", "queries", "replica", "replication", "lock", "deadlock",
-                 "transaction", "index", "table", "connection pool", "connection-pool", "disk i/o",
-                 "schema", "sql", "ledger",
-                 # Draft 3 additions: storage-leaning words the Draft 2 review found outside routing
-                 "cache", "caching", "csv", "storage", "records", "rows", "archive", "archiver", "repository",
-                 "logs", "data store"]
-# Draft 3 (A10): who-is-affected words. Allowed ONLY in impact sentences, which
-# alone carry c2*. A routing or severity sentence containing one would leak
-# customer-facing evidence into the noul node, which reads all three sentences.
-AUDIENCE_CUES = ["user", "customer", "client", "public", "people", "everyone", "visitor", "member",
-                 "subscriber", "consumer", "shopper", "buyer", "checkout", "cart", "login", "log in", "sign-in",
-                 "sign in", "sign-on", "password", "account", "billing", "payment", "invoice", "refund",
+                "timeout", "peering", "backbone", "nat", "region", "traffic", "endpoint", "webhook", "api",
+                "url", "http", "upload", "bandwidth", "throughput", "dispatcher", "request", "respond",
+                "route", "path", "socket", "wan", "mesh"]
+DATABASE_CUES = ["database", "query", "queries", "replica", "replication", "lock", "deadlock", "transaction",
+                 "index", "table", "connection pool", "connection-pool", "disk i/o", "schema", "sql", "ledger",
+                 "cache", "caching", "csv", "storage", "record", "rows", "archive", "repository", "logs",
+                 "data store", "corrupt", "purge"]
+SEVERITY_CUES = ["fail", "down", "broken", "outage", "unable", "error", "blocking", "workaround", "cosmetic",
+                 "pixel", "unavailable", "crash", "urgent", "escalat", "surge", "spike", "burst", "critical",
+                 "fallback", "halt", "stopped", "garbled", "unusable"]
+AUDIENCE_CUES = ["user", "customer", "client", "public", "people", "everyone", "visitor", "member", "subscriber",
+                 "consumer", "shopper", "buyer", "patient", "checkout", "cart", "login", "log in", "sign-in",
+                 "sign in", "sign-on", "sign-up", "password", "account", "billing", "payment", "refund",
                  "subscription", "order", "loyalty", "support", "admin", "staff", "employee", "internal",
-                 "mobile app", "two-factor", "profile", "onboarding"]
-SEVERITY_CUES = ["fail", "down", "broken", "outage", "unable", "error", "blocking", "workaround",
-                 "cosmetic", "pixel", "unavailable", "crash"]
+                 "mobile", "desktop app", "two-factor", "profile", "onboarding", "team", "engineer", "store",
+                 "marketplace", "booking", "reservation", "ticket", "parcel", "shipping", "product"]
+_SUFFIX = r"(?:e?s|ed|ing|ures?|ers?|ion|ions|ation|ations)?"
 
 
 def _cap(s: str) -> str:
@@ -340,289 +330,36 @@ def _cap(s: str) -> str:
 
 
 def _contains(text: str, cue: str) -> bool:
-    return re.search(r"(?<![a-z])" + re.escape(cue) + r"(?:e?s)?(?![a-z])", text.lower()) is not None
+    return re.search(r"(?<![a-z])" + re.escape(cue) + _SUFFIX + r"(?![a-z])", text.lower()) is not None
 
 
 def _norm(text: str) -> str:
-    return re.sub(r"\s+", " ", re.sub(r"[^\w\s]", "", text.lower())).strip()
+    return re.sub(r"\s+", " ", re.sub(r"[^\w\s{}]", "", text.lower())).strip()
 
 
-# ---------------------------------------------------------------------------
-# Expansion. Each (pool, value) yields a list of (semantic_key, n_frames, render_fn).
-# ---------------------------------------------------------------------------
-
-def _routing_keys(value: str):
-    v = ROUTING[value]
-    keys = list(itertools.product(v["component"], v["metric"], CHANGE_NP))
-
-    def render(key, i):
-        c, m, chg = key
-        frame = ROUTING_FRAMES[i % len(ROUTING_FRAMES)]
-        t = TIME[(i // len(ROUTING_FRAMES)) % len(TIME)]
-        return frame.format(C=_cap(c), c=c, chg=chg, m=m, t=t), {"frame": i % len(ROUTING_FRAMES), "time": t}
-    return keys, render
+def _mask_s(text: str) -> str:
+    return text.replace("{S_cap}", " ").replace("{S}", " ")
 
 
-def _impact_keys(value: str):
-    if value == "1":
-        v = IMPACT_YES
-        keys = list(itertools.product(v["source"], v["segment"], v["surface"]))
-
-        def render(key, i):
-            s, g, f = key
-            fr = v["frames"][i % 3]
-            return fr.format(s=s, S=_cap(s), g=g, G=_cap(g), f=f), {"frame": i % 3}
-        return keys, render
-    v = IMPACT_NO if value == "0" else IMPACT_UNCLEAR
-    slot = "evidence" if value == "0" else "aspect"
-    keys = list(itertools.product(v["component"], v[slot], v["who"]))
-
-    def render(key, i):
-        c, clause, w = key
-        body = clause.format(c=c)
-        fr = v["frames"][i % 3]
-        return fr.format(W=_cap(w), w=w, e=body, E=_cap(body), a=body, A=_cap(body)), {"frame": i % 3}
-    return keys, render
-
-
-def cosmetic_fits(k) -> bool:
-    return SYN[("severity:0", 1)][k[1]] not in COSMETIC_TEXT_DEFECT_CLASSES or k[0] in COSMETIC_TEXT_ELEMENTS
-
-
-def degraded_fits(k) -> bool:
-    cls = SYN[("severity:1", 1)][k[1]]
-    return cls in FEATURE_FAILURE_FITS[k[0]] and k[2] in WORKAROUND_FITS[cls]
-
-
-def blocking_fits(k) -> bool:
-    return SYN[("severity:2", 1)][k[1]] != 2 or k[0] in BLOCKING_OUTPUT_FUNCTIONS
-
-
-def _severity_keys(value: str):
-    if value == "0":
-        v = SEV_COSMETIC
-        keys = [k for k in itertools.product(v["element"], v["defect"], v["context"]) if cosmetic_fits(k)]
-
-        def render(key, i):
-            e, d, x = key
-            fr = v["frames"][i % 3]
-            return fr.format(E=_cap(e), e=e, d=d, x=x, X=_cap(x)), {"frame": i % 3}
-        return keys, render
-    v = SEV_DEGRADED if value == "1" else SEV_BLOCKING
-    a, b, c_ = ("feature", "failure", "workaround") if value == "1" else ("function", "failure", "scope")
-    keys = list(itertools.product(v[a], v[b], v[c_]))
-    keys = [k for k in keys if (degraded_fits(k) if value == "1" else blocking_fits(k))]
-
-    def render(key, i):
-        f, r, w = key
-        fr = v["frames"][i % 3]
-        return fr.format(F=_cap(f), f=f, r=r, w=w, s=w), {"frame": i % 3}
-    return keys, render
-
-
-POOLS = [("routing", "network", _routing_keys), ("routing", "database", _routing_keys),
-         ("impact", "0", _impact_keys), ("impact", "1", _impact_keys), ("impact", "unclear", _impact_keys),
-         ("severity", "0", _severity_keys), ("severity", "1", _severity_keys), ("severity", "2", _severity_keys)]
-
-
-def expand() -> list[dict]:
-    """Draft 2 (Option A): one unit per PROPOSITION. All filler keys are
-    expanded and shuffled with the fixed seed; the first key of each
-    proposition class is kept, so paraphrases are spread across different
-    propositions instead of restating one."""
-    check_signature_declarations()
-    units = []
-    for pool, value, builder in POOLS:
-        keys, render = builder(value)
-        shuffled = keys[:]
-        random.Random(f"{SEED}:{pool}:{value}").shuffle(shuffled)
-        seen, order = set(), []
-        for key in shuffled:
-            pk = _proposition_key_of(pool, value, key)
-            if pk not in seen:
-                seen.add(pk)
-                order.append(key)
-        quota = PILOT2_QUOTA[(pool, value)]
-        for partition, part_keys in (("pilot2", order[:quota]), ("main", order[quota:])):
-            for i, key in enumerate(part_keys):
-                text, surface = render(key, i)
-                units.append({"pool": pool, "value": value, "partition": partition,
-                              "semantic_key": list(key),
-                              "proposition_key": list(_proposition_key_of(pool, value, key)),
-                              "surface": surface, "text": text})
-    random.Random(f"{SEED}:ids").shuffle(units)
-    for n, u in enumerate(units, 1):
-        u["unit_id"] = f"g{n:05d}"          # content-blind: assigned after a global shuffle
-    return units
-
-
-# ---------------------------------------------------------------------------
-# Audits.
-# ---------------------------------------------------------------------------
-
-def audit(units: list[dict]) -> dict:
-    report, failures = {}, []
-
-    # A1 capacity: main reserve must cover N_MAX under balanced allocation.
-    need = {("routing", v): 9 * K_MAX for v in ("network", "database")}
-    need.update({("impact", v): 6 * K_MAX for v in ("0", "1", "unclear")})
-    need.update({("severity", v): 6 * K_MAX for v in ("0", "1", "2")})
-    cap = Counter((u["pool"], u["value"]) for u in units if u["partition"] == "main")
-    report["A1_capacity"] = {f"{p}:{v}": {"main_reserve": cap[(p, v)], "needed_at_N_MAX": need[(p, v)]}
-                             for (p, v) in need}
-    for k, n in need.items():
-        if cap[k] < n:
-            failures.append(f"A1 capacity: {k} has {cap[k]} < {n}")
-
-    # A2 exact-string uniqueness (normalized) across all units and against all prior project text.
-    norms = Counter(_norm(u["text"]) for u in units)
-    dups = [t for t, c in norms.items() if c > 1]
-    prior = set(score_bpb.L0_SENTENCES + score_bpb.L1_SENTENCES + score_bpb.L2_SENTENCES) \
-        | score_bpb.PRIOR_MANIFEST_SENTENCES \
-        | set(pilot1.ROUTING_NETWORK + pilot1.ROUTING_DATABASE + pilot1.IMPACT_YES + pilot1.IMPACT_NO
-              + pilot1.IMPACT_UNCLEAR + pilot1.SEVERITY_COSMETIC + pilot1.SEVERITY_DEGRADED
-              + pilot1.SEVERITY_BLOCKING)
-    prior_overlap = {_norm(p) for p in prior} & set(norms)
-    report["A2_exact_uniqueness"] = {"units": len(units), "normalized_duplicates": len(dups),
-                                     "prior_corpus_size": len(prior), "overlap_with_prior": len(prior_overlap)}
-    if dups:
-        failures.append(f"A2 {len(dups)} normalized duplicate texts")
-    if prior_overlap:
-        failures.append(f"A2 {len(prior_overlap)} texts overlap prior manifests")
-
-    # A3 PROPOSITION-key uniqueness within each (pool, value) - gating since
-    # Draft 2 (Option A) - and A4 pilot2/main disjointness at proposition level.
-    for (p, v) in PILOT2_QUOTA:
-        ks = [tuple(u["proposition_key"]) for u in units if (u["pool"], u["value"]) == (p, v)]
-        if len(ks) != len(set(ks)):
-            failures.append(f"A3 duplicate proposition keys in {p}:{v}")
-        if any(tuple(u["proposition_key"]) != _proposition_key_of(p, v, u["semantic_key"])
-               for u in units if (u["pool"], u["value"]) == (p, v)):
-            failures.append(f"A3 stored proposition key disagrees with recomputation in {p}:{v}")
-    pilot_keys = {(u["pool"], u["value"], tuple(u["proposition_key"])) for u in units if u["partition"] == "pilot2"}
-    main_keys = {(u["pool"], u["value"], tuple(u["proposition_key"])) for u in units if u["partition"] == "main"}
-    pilot_texts = {_norm(u["text"]) for u in units if u["partition"] == "pilot2"}
-    main_texts = {_norm(u["text"]) for u in units if u["partition"] == "main"}
-    report["A3_A4"] = {"proposition_keys_unique_within_pool_value": not any(f.startswith("A3") for f in failures),
-                       "pilot2_main_key_overlap": len(pilot_keys & main_keys),
-                       "pilot2_main_text_overlap": len(pilot_texts & main_texts)}
-    if pilot_keys & main_keys or pilot_texts & main_texts:
-        failures.append("A4 pilot2/main overlap")
-
-    # A5 routing-cue audit: routing sentences carry only their own class's cues;
-    # impact and severity sentences carry no routing cues at all.
-    a5 = Counter()
-    for u in units:
-        net = any(_contains(u["text"], c) for c in NETWORK_CUES)
-        db = any(_contains(u["text"], c) for c in DATABASE_CUES)
-        if u["pool"] == "routing":
-            ok = (net and not db) if u["value"] == "network" else (db and not net)
-            if not ok:
-                a5["routing_wrong_or_missing_cue"] += 1
-                failures.append(f"A5 routing cue: {u['unit_id']} {u['text']!r}")
-        elif net or db:
-            a5[f"{u['pool']}_contains_routing_cue"] += 1
-            failures.append(f"A5 leak: {u['unit_id']} ({u['pool']}) {u['text']!r}")
-    report["A5_routing_cue_audit"] = dict(a5) or "clean"
-
-    # A6 severity-cue audit: impact sentences must not assert functional severity.
-    leaks = [u for u in units if u["pool"] == "impact" and any(_contains(u["text"], c) for c in SEVERITY_CUES)]
-    report["A6_impact_severity_cue_audit"] = {"impact_units_with_severity_cues": len(leaks),
-                                              "examples": [u["text"] for u in leaks[:5]]}
-    for u in leaks:
-        failures.append(f"A6 severity cue in impact: {u['unit_id']} {u['text']!r}")
-
-    # A7 distribution: per (pool, value, partition) counts, frame balance, and slot-filler balance.
-    dist = {}
-    for (p, v) in PILOT2_QUOTA:
-        for part in ("pilot2", "main"):
-            us = [u for u in units if (u["pool"], u["value"], u["partition"]) == (p, v, part)]
-            frames = Counter(u["surface"]["frame"] for u in us)
-            slot_spread = []
-            for slot in range(3):
-                c = Counter(u["semantic_key"][slot] for u in us)
-                slot_spread.append([min(c.values()), max(c.values())])
-            dist[f"{p}:{v}:{part}"] = {"n": len(us), "frame_counts": dict(sorted(frames.items())),
-                                       "slot_min_max": slot_spread}
-    report["A7_distribution"] = dist
-
-    # A8 label provenance: every label is a generator variable, never parsed from text.
-    report["A8_label_provenance"] = ("labels (pool, value) are set by the expansion loop before rendering; "
-                                     "no code path reads a label back out of rendered text")
-
-    # A10 (Draft 3) audience neutrality: no who-is-affected word outside impact.
-    a10 = [u for u in units if u["pool"] != "impact" and any(_contains(u["text"], c) for c in AUDIENCE_CUES)]
-    report["A10_audience_cue_audit"] = {"non_impact_units_with_audience_cues": len(a10),
-                                        "examples": [u["text"] for u in a10[:5]]}
-    for u in a10:
-        failures.append(f"A10 audience cue outside impact: {u['unit_id']} {u['text']!r}")
-
-    # A11 (Draft 3) slot fit: cosmetic text defects only on text elements;
-    # degraded failures fit the feature and workarounds fit the failure;
-    # "unusable output" only for output-producing functions.
-    fit = {"0": cosmetic_fits, "1": degraded_fits, "2": blocking_fits}
-    a11 = [u for u in units if u["pool"] == "severity" and not fit[u["value"]](u["semantic_key"])]
-    tables_ok = (set(FEATURE_FAILURE_FITS) == set(SEV_DEGRADED["feature"])
-                 and COSMETIC_TEXT_ELEMENTS <= set(SEV_COSMETIC["element"])
-                 and BLOCKING_OUTPUT_FUNCTIONS <= set(SEV_BLOCKING["function"]))
-    report["A11_slot_fit"] = {"misfit_units": len(a11), "fit_tables_cover_vocabulary": tables_ok}
-    if not tables_ok:
-        failures.append("A11 fit tables do not match the vocabulary (fail closed)")
-    for u in a11:
-        failures.append(f"A11 slot misfit: {u['unit_id']} {u['text']!r}")
-
-    # A12 (Draft 3) surface form: singular subjects where frames use singular
-    # verbs, one "from" per impact:1 sentence, no doubled time reference.
-    a12 = []
-    singular_subject_pools = [IMPACT_NO["component"], IMPACT_UNCLEAR["component"], SEV_BLOCKING["function"]]
-    for lst in singular_subject_pools:
-        for c in lst:
-            if re.search(r"(?<!s)s$", c.split()[-1]) and c not in SINGULAR_EXCEPTIONS:
-                a12.append(f"plural-looking singular-slot subject {c!r}")
-    for u in units:
-        if (u["pool"], u["value"]) == ("impact", "1") and u["text"].count(" from ") > 1:
-            a12.append(f"double 'from': {u['text']!r}")
-        if len(re.findall(r"since (?:the|this|about)|as of this morning", u["text"].lower())) > 1:
-            a12.append(f"doubled time reference: {u['text']!r}")
-    report["A12_surface_form"] = {"problems": len(a12), "examples": a12[:5]}
-    failures.extend(f"A12 {x}" for x in a12)
-
-    report["failures"] = failures
-    report["passed"] = not failures
-    return report
-
-
-# Singular-slot subjects that end in "s" but are grammatically singular
-SINGULAR_EXCEPTIONS = {"the internal cost dashboard"}
-
-
-# ---------------------------------------------------------------------------
-# A9 (informational): proposition-level capacity. Label-paraphrase slots are
-# mapped to synonym classes; nuisance slots (frame, time, "who confirmed")
-# are dropped. Two units with the same proposition key say the same thing.
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# Proposition signatures (spec §5). Every slot is SYN, IDENTITY or NUISANCE;
+# an undeclared slot or unmapped filler stops the build.
+# ===========================================================================
 
 SYN = {
+    ("routing", 1): {"packet loss": 0, "retransmitted packets": 0, "round-trip latency": 1,
+                     "connection resets": 2, "dropped connections": 2, "interface discards": 3, "link flaps": 4,
+                     "connection timeouts": 5,
+                     "query execution time": 10, "slow queries": 10, "lock wait time": 11, "replication lag": 12,
+                     "deadlocks": 13, "disk I/O wait": 14, "connection-pool saturation": 15,
+                     "transaction rollbacks": 16},
     ("routing", 2): {"a roughly twofold increase": 0, "a roughly threefold increase": 1,
-                     "an approximately tenfold increase": 2, "a sharp spike": 3, "an abrupt jump": 3,
+                     "an approximately tenfold increase": 2, "an abrupt jump": 3,
                      "a steady climb": 4, "erratic fluctuations": 5},
-    ("impact:0", 1): {"{c} is used only by internal teams": 0, "no customer-facing service depends on {c}": 1,
-                      "{c} serves no production customers": 1, "{c} has no dependency path to any customer product": 1,
-                      "{c} is isolated from the customer-serving cluster": 2,
-                      "{c} runs entirely on internal-only infrastructure": 2,
-                      "{c} only produces output that no customer ever sees": 3,
-                      "{c} contains only synthetic test fixtures": 4,
-                      "{c} is excluded from every customer-facing service-level agreement": 5},
-    ("impact:unclear", 1): {
-        "it has not been confirmed whether any customer-facing service depends on {c}": 0,
-        "the downstream consumers of {c} have not been fully mapped": 0,
-        "it is not yet known which customers, if any, depend on {c}": 0,
-        "the dependency graph covering {c} has not been updated since a large refactor, so its customer exposure is unknown": 1,
-        "the customer exposure of {c} has been undocumented since an ownership change": 1,
-        "it is unclear whether {c} is enabled for any customer segment": 2,
-        "whether failures in {c} reach customers depends on a fallback whose status is unknown": 3,
-        "the usage history that would show whether customers use {c} has already been purged": 4,
-        "two teams disagree about whether {c} is part of any customer-facing workflow": 5},
+    ("impact:0", 1): {IMPACT_NO_CLAIMS[0]: 0, IMPACT_NO_CLAIMS[1]: 0, IMPACT_NO_CLAIMS[2]: 0,
+                      IMPACT_NO_CLAIMS[3]: 1, IMPACT_NO_CLAIMS[4]: 1},
+    ("impact:unclear", 1): {IMPACT_UNCLEAR_CLAIMS[0]: 0, IMPACT_UNCLEAR_CLAIMS[1]: 0, IMPACT_UNCLEAR_CLAIMS[2]: 0,
+                            IMPACT_UNCLEAR_CLAIMS[3]: 1, IMPACT_UNCLEAR_CLAIMS[4]: 2, IMPACT_UNCLEAR_CLAIMS[5]: 3},
     ("severity:0", 1): {"is misaligned by a few pixels": 0, "sits one pixel off its grid": 0,
                         "renders in a slightly wrong color": 1, "shows outdated wording": 2,
                         "briefly flickers on load": 3, "wraps awkwardly onto a second line": 4,
@@ -630,40 +367,28 @@ SYN = {
     ("severity:1", 1): {"fail intermittently": 0, "fail on large inputs": 1, "stall after a long session": 2,
                         "stop updating after a while": 2, "drop recent changes occasionally": 3,
                         "update a few minutes late": 4, "skip items now and then": 5, "fail on the first attempt": 6},
-    # Draft 3: grouped consistently with §5.2. Draft 2 split total failure into 4
-    # classes, one of them distinct only by a time phrase ("down since the last
-    # deploy"), which §5.2 itself calls non-content.
     ("severity:2", 1): {"has stopped working entirely": 0, "is completely unavailable": 0,
-                        "has halted with no progress": 0, "no longer responds at all": 0,      # no service
-                        "is returning errors for every request": 1, "rejects every request it receives": 1,
-                        "is failing on every attempt": 1, "fails immediately on every attempt": 1,  # every try errors
-                        "produces unusable output on every run": 2,
-                        "returns corrupted results every time": 2},                         # runs, output unusable
-    ("severity:2", 2): {"and no workaround exists": 0, "and there is no fallback path": 0,
-                        "and no alternative route is available": 0,
-                        "and it cannot be completed manually either": 1, "and retrying does not help": 2,
-                        "and the previous version cannot be restored either": 3},
+                        "fails on every attempt": 0, "has halted with no progress": 0,
+                        "produces unusable output every time": 1, "produces garbled output every time": 1},
+    ("severity:2", 2): {"no workaround exists": 0, "there is no workaround of any kind": 0,
+                        "no workaround exists, not even doing it by hand": 1,
+                        "no workaround exists, not even retrying": 2,
+                        "no workaround exists, not even rolling back to the previous version": 3},
 }
-NUISANCE_SLOTS = {"impact:0": {2}, "impact:unclear": {2}}   # "who confirmed" / "who could not confirm"
-
-# Draft 2 (Option A): the canonical proposition signature per pool. Every
-# semantic slot is declared exactly once: SYN (paraphrase classes, every
-# filler mapped), IDENTITY (each filler is its own proposition, reviewed as
-# such) or NUISANCE (dropped). Polarity and the label are fixed by
-# (pool, value). An undeclared slot or an unmapped filler stops the build:
-# ambiguity blocks, it is never resolved silently as "distinct".
+# Slot roles. impact:1's report channel is NUISANCE (not a different claim
+# about S); the "who" attribution is a surface slot everywhere.
+IDENTITY_SLOTS = {("routing", 0), ("impact:1", 0), ("impact:1", 1), ("impact:0", 0), ("impact:unclear", 0),
+                  ("severity:0", 0), ("severity:0", 2), ("severity:1", 0), ("severity:1", 2), ("severity:2", 0)}
+NUISANCE_SLOTS = {"impact:1": {2}}
 SIGNATURE = {  # documentation of each slot's role, in key order
-    "routing": ("subject: component", "predicate: metric", "magnitude/shape class"),
-    "impact:1": ("evidence channel", "affected customer segment", "subject: product surface"),
-    "impact:0": ("subject: component", "evidence class", "NUISANCE: who confirmed"),
-    "impact:unclear": ("subject: component", "unknown-aspect class", "NUISANCE: who could not confirm"),
-    "severity:0": ("subject: UI element", "defect class", "condition: display context"),
-    "severity:1": ("subject: feature", "failure-mode class", "workaround"),
-    "severity:2": ("subject: function", "failure class", "no-workaround scope class"),
+    "routing": ("S's component", "metric class", "magnitude/shape class"),
+    "impact:1": ("subject: S", "affected customer segment", "NUISANCE: report channel"),
+    "impact:0": ("subject: S", "claim class (internal use / internal infrastructure)"),
+    "impact:unclear": ("subject: S", "unknown-aspect class"),
+    "severity:0": ("UI element", "defect class", "condition: display context"),
+    "severity:1": ("feature", "failure-mode class", "workaround"),
+    "severity:2": ("function", "failure class", "no-workaround scope class"),
 }
-IDENTITY_SLOTS = {("routing", 0), ("routing", 1), ("impact:1", 0), ("impact:1", 1), ("impact:1", 2),
-                  ("impact:0", 0), ("impact:unclear", 0), ("severity:0", 0), ("severity:0", 2),
-                  ("severity:1", 0), ("severity:1", 2), ("severity:2", 0)}
 
 
 def _pv(pool: str, value: str) -> str:
@@ -689,63 +414,397 @@ def proposition_key(u: dict) -> tuple:
     return _proposition_key_of(u["pool"], u["value"], u["semantic_key"])
 
 
+# ===========================================================================
+# Fit predicates (combinations that make sense together).
+# ===========================================================================
+
+def routing_fits(value: str, k) -> bool:
+    c, m, _ = k
+    if m in ROUTING_METRIC_EXCLUDED.get((value, c), set()):
+        return False
+    if value == "database":
+        if m == "replication lag" and c not in REPLICATION_COMPONENTS:
+            return False
+        if m == "connection-pool saturation" and c not in POOL_SATURATION_COMPONENTS:
+            return False
+        if c == "database connection pool" and m not in CONNECTION_POOL_ONLY:
+            return False
+    return True
+
+
+def cosmetic_fits(k) -> bool:
+    return SYN[("severity:0", 1)][k[1]] not in COSMETIC_TEXT_DEFECT_CLASSES or k[0] in COSMETIC_TEXT_ELEMENTS
+
+
+def degraded_fits(k) -> bool:
+    cls = SYN[("severity:1", 1)][k[1]]
+    return cls in FEATURE_FAILURE_FITS[k[0]] and k[2] in WORKAROUND_FITS[cls]
+
+
+def blocking_fits(k) -> bool:
+    return SYN[("severity:2", 1)][k[1]] != 1 or k[0] in BLOCKING_OUTPUT_FUNCTIONS
+
+
+# ===========================================================================
+# Expansion. Each (pool, value) yields (keys, render, subject_of).
+# Rendered texts keep the literal {S} / {S_cap} placeholder.
+# ===========================================================================
+
+def _routing(value: str):
+    v = ROUTING[value]
+    keys = [k for k in itertools.product(v["component"], v["metric"], CHANGE_NP) if routing_fits(value, k)]
+
+    def render(key, i):
+        c, m, chg = key
+        t = TIME[(i // 3) % len(TIME)]
+        return ROUTING_FRAMES[i % 3].format(S=S, S_cap="{S_cap}", chg=chg, m=m, c=c, t=t), \
+            {"frame": i % 3, "time": t}
+    return keys, render, lambda k: k[0]
+
+
+def _impact_render(claim: str, i: int) -> tuple[str, dict]:
+    w = WHO[(i // 3) % len(WHO)]
+    return IMPACT_FRAMES[i % 3].format(W=_cap(w), w=w, claim=claim, Claim=_cap(claim)), {"frame": i % 3, "who": w}
+
+
+def _impact(value: str):
+    if value == "1":
+        keys = list(itertools.product(S_CUSTOMER, SEGMENTS, SOURCES))
+
+        def render(key, i):
+            s, g, src = key
+            return _impact_render(IMPACT_YES_CLAIM.format(g=g, S=s, src=src), i)
+        return keys, render, lambda k: k[0]
+    names, claims = (S_INTERNAL, IMPACT_NO_CLAIMS) if value == "0" else (S_SHARED, IMPACT_UNCLEAR_CLAIMS)
+    keys = list(itertools.product(names, claims))
+
+    def render(key, i):
+        s, claim = key
+        return _impact_render(claim.replace("{S}", s), i)
+    return keys, render, lambda k: k[0]
+
+
+def _severity(value: str):
+    if value == "0":
+        v = SEV_COSMETIC
+        keys = [k for k in itertools.product(v["element"], v["defect"], v["context"]) if cosmetic_fits(k)]
+
+        def body(k):
+            return f"{k[0]} {k[1]} {k[2]}; {v['qualifier']}"
+    elif value == "1":
+        v = SEV_DEGRADED
+        keys = [k for k in itertools.product(v["feature"], v["failure"], v["workaround"]) if degraded_fits(k)]
+
+        def body(k):
+            return f"{k[0]} {k[1]}; {k[2]}"
+    else:
+        v = SEV_BLOCKING
+        keys = [k for k in itertools.product(v["function"], v["failure"], v["scope"]) if blocking_fits(k)]
+
+        def body(k):
+            return f"{k[0]} {k[1]}; {k[2]}"
+
+    def render(key, i):
+        return SEVERITY_FRAMES[i % 3].format(S=S, body=body(key)), {"frame": i % 3}
+    return keys, render, lambda k: k[0]
+
+
+POOLS = [("routing", "network", _routing), ("routing", "database", _routing),
+         ("impact", "0", _impact), ("impact", "1", _impact), ("impact", "unclear", _impact),
+         ("severity", "0", _severity), ("severity", "1", _severity), ("severity", "2", _severity)]
+
+
 def check_signature_declarations() -> None:
-    """Fail closed: every slot declared once, every SYN filler mapped, no
-    filler mapped that the vocabulary doesn't contain."""
+    """Fail closed: every slot declared once; every SYN filler mapped; no stale entry."""
     for pool, value, builder in POOLS:
         pv = _pv(pool, value)
-        keys, _ = builder(value)
+        keys, _, _ = builder(value)
         for i in range(len(keys[0])):
             roles = [(pv, i) in SYN, (pv, i) in IDENTITY_SLOTS, i in NUISANCE_SLOTS.get(pv, set())]
             if sum(roles) != 1:
                 raise ValueError(f"slot {pv}[{i}] must be declared exactly once, got {roles}")
             if (pv, i) in SYN:
                 fillers = {k[i] for k in keys}
-                if fillers != set(SYN[(pv, i)]):
+                declared = set(SYN[(pv, i)])
+                if pool == "routing" and i == 1:   # one SYN map serves both routing values
+                    declared &= set(ROUTING[value]["metric"])
+                if fillers != declared:
                     raise ValueError(f"SYN map for {pv}[{i}] does not match vocabulary: "
-                                     f"unmapped {sorted(fillers - set(SYN[(pv, i)]))}, "
-                                     f"stale {sorted(set(SYN[(pv, i)]) - fillers)}")
+                                     f"unmapped {sorted(fillers - declared)}, stale {sorted(declared - fillers)}")
 
 
-def a9_proposition_capacity(units: list[dict], k_values=(41, 70)) -> dict:
-    res = {}
-    for (p, v), quota in PILOT2_QUOTA.items():
-        us = [u for u in units if (u["pool"], u["value"]) == (p, v)]
-        props = {proposition_key(u) for u in us}
-        per_k = 9 if p == "routing" else 6
-        res[f"{p}:{v}"] = {"filler_keys": len(us), "proposition_keys": len(props),
-                           **{f"needed_at_k{k}(N={18*k})": quota + per_k * k for k in k_values}}
-    return res
+def expand() -> list[dict]:
+    """One unit per PROPOSITION. Filler keys are shuffled with the fixed seed
+    and the first key of each proposition is kept. For impact pools the pilot
+    reserves whole SUBJECTS (S): every proposition about a pilot service is
+    withheld from the main run. Other pools partition by proposition."""
+    check_signature_declarations()
+    units = []
+    for pool, value, builder in POOLS:
+        keys, render, subject_of = builder(value)
+        shuffled = keys[:]
+        random.Random(f"{SEED}:{pool}:{value}").shuffle(shuffled)
+        seen, order = set(), []
+        for key in shuffled:
+            pk = _proposition_key_of(pool, value, key)
+            if pk not in seen:
+                seen.add(pk)
+                order.append(key)
+        quota = PILOT2_QUOTA[(pool, value)]
+        if pool == "impact":
+            by_subject = defaultdict(list)
+            for k in order:
+                by_subject[subject_of(k)].append(k)
+            pilot, pilot_subjects = [], set()
+            for k in order:                      # subjects in seeded order, each used fully
+                sj = subject_of(k)
+                if len(pilot) >= quota:
+                    break
+                if sj not in pilot_subjects:
+                    pilot_subjects.add(sj)
+                    pilot.extend(by_subject[sj][:quota - len(pilot)])
+            main = [k for k in order if subject_of(k) not in pilot_subjects]
+        else:
+            pilot, main = order[:quota], order[quota:]
+        for partition, part_keys in (("pilot2", pilot), ("main", main)):
+            for i, key in enumerate(part_keys):
+                text, surface = render(key, i)
+                units.append({"pool": pool, "value": value, "partition": partition,
+                              "semantic_key": list(key), "subject": subject_of(key),
+                              "proposition_key": list(_proposition_key_of(pool, value, key)),
+                              "surface": surface, "text": text})
+    random.Random(f"{SEED}:ids").shuffle(units)
+    for n, u in enumerate(units, 1):
+        u["unit_id"] = f"g{n:05d}"          # content-blind: assigned after a global shuffle
+    return units
+
+
+# ===========================================================================
+# Audits.
+# ===========================================================================
+
+PLURAL_OK = {"the customer review pages", "the marketplace listing pages"}
+
+
+def _plural_looking(name: str) -> bool:
+    last = name.split()[-1]
+    return bool(re.search(r"(?<!s)s$", last))
+
+
+def audit(units: list[dict]) -> dict:
+    report, failures = {}, []
+    by = defaultdict(list)
+    for u in units:
+        by[(u["pool"], u["value"])].append(u)
+    names = S_CUSTOMER + S_INTERNAL + S_SHARED
+
+    # A1 capacity: main reserve covers N_MAX under balanced allocation; pilot quota exact.
+    need = {("routing", v): 9 * K_MAX for v in ("network", "database")}
+    need.update({("impact", v): 6 * K_MAX for v in ("0", "1", "unclear")})
+    need.update({("severity", v): 6 * K_MAX for v in ("0", "1", "2")})
+    cap = Counter((u["pool"], u["value"]) for u in units if u["partition"] == "main")
+    pq = Counter((u["pool"], u["value"]) for u in units if u["partition"] == "pilot2")
+    report["A1_capacity"] = {f"{p}:{v}": {"main_reserve": cap[(p, v)], "needed_at_N_MAX": need[(p, v)],
+                                          "pilot2": pq[(p, v)]} for (p, v) in need}
+    for k, n in need.items():
+        if cap[k] < n:
+            failures.append(f"A1 capacity: {k} has {cap[k]} < {n}")
+        if pq[k] != PILOT2_QUOTA[k]:
+            failures.append(f"A1 pilot quota: {k} has {pq[k]} != {PILOT2_QUOTA[k]}")
+
+    # A2 exact-string uniqueness (normalized, placeholder kept) and vs prior project text.
+    norms = Counter(_norm(u["text"]) for u in units)
+    dups = [t for t, c in norms.items() if c > 1]
+    prior = set(score_bpb.L0_SENTENCES + score_bpb.L1_SENTENCES + score_bpb.L2_SENTENCES) \
+        | score_bpb.PRIOR_MANIFEST_SENTENCES \
+        | set(pilot1.ROUTING_NETWORK + pilot1.ROUTING_DATABASE + pilot1.IMPACT_YES + pilot1.IMPACT_NO
+              + pilot1.IMPACT_UNCLEAR + pilot1.SEVERITY_COSMETIC + pilot1.SEVERITY_DEGRADED
+              + pilot1.SEVERITY_BLOCKING)
+    prior_overlap = {_norm(p) for p in prior} & set(norms)
+    report["A2_exact_uniqueness"] = {"units": len(units), "normalized_duplicates": len(dups),
+                                     "prior_corpus_size": len(prior), "overlap_with_prior": len(prior_overlap)}
+    if dups:
+        failures.append(f"A2 {len(dups)} normalized duplicate texts")
+    if prior_overlap:
+        failures.append(f"A2 {len(prior_overlap)} texts overlap prior manifests")
+
+    # A3 proposition-key uniqueness within (pool, value); stored keys recompute.
+    for k, us in by.items():
+        ks = [tuple(u["proposition_key"]) for u in us]
+        if len(ks) != len(set(ks)):
+            failures.append(f"A3 duplicate proposition keys in {k}")
+        if any(tuple(u["proposition_key"]) != proposition_key(u) for u in us):
+            failures.append(f"A3 stored proposition key disagrees with recomputation in {k}")
+    # A4 pilot/main disjointness: propositions and texts everywhere; SUBJECTS in impact pools.
+    def keyset(part):
+        return {(u["pool"], u["value"], tuple(u["proposition_key"])) for u in units if u["partition"] == part}
+
+    def textset(part):
+        return {_norm(u["text"]) for u in units if u["partition"] == part}
+
+    def subjset(part):
+        return {(u["value"], u["subject"]) for u in units if u["partition"] == part and u["pool"] == "impact"}
+    report["A3_A4"] = {"pilot2_main_proposition_overlap": len(keyset("pilot2") & keyset("main")),
+                       "pilot2_main_text_overlap": len(textset("pilot2") & textset("main")),
+                       "pilot2_main_impact_subject_overlap": len(subjset("pilot2") & subjset("main"))}
+    if any(report["A3_A4"].values()):
+        failures.append(f"A4 pilot2/main overlap {report['A3_A4']}")
+    if len(set(names)) != len(names):
+        failures.append("A4 a service name is listed twice or in two impact values")
+
+    # A5 routing cues: routing units carry only their own class's cues; impact and
+    # severity units, and every service name, carry none.
+    a5 = Counter()
+    for u in units:
+        t = _mask_s(u["text"])
+        net = any(_contains(t, c) for c in NETWORK_CUES)
+        db = any(_contains(t, c) for c in DATABASE_CUES)
+        if u["pool"] == "routing":
+            if not ((net and not db) if u["value"] == "network" else (db and not net)):
+                a5["routing_wrong_or_missing_cue"] += 1
+                failures.append(f"A5 routing cue: {u['unit_id']} {u['text']!r}")
+        elif net or db:
+            a5[f"{u['pool']}_contains_routing_cue"] += 1
+            failures.append(f"A5 leak: {u['unit_id']} ({u['pool']}) {u['text']!r}")
+    for n in names:
+        if any(_contains(n, c) for c in NETWORK_CUES + DATABASE_CUES):
+            a5["service_name_with_routing_cue"] += 1
+            failures.append(f"A5 routing cue in service name {n!r}")
+    report["A5_routing_cue_audit"] = dict(a5) or "clean"
+
+    # A6 severity cues: none in impact or routing units, nor in any service name.
+    a6 = [u for u in units if u["pool"] != "severity"
+          and any(_contains(_mask_s(u["text"]), c) for c in SEVERITY_CUES)]
+    a6n = [n for n in names if any(_contains(n, c) for c in SEVERITY_CUES)]
+    report["A6_severity_cue_audit"] = {"non_severity_units_with_severity_cues": len(a6),
+                                       "service_names_with_severity_cues": a6n,
+                                       "examples": [u["text"] for u in a6[:5]]}
+    failures.extend(f"A6 severity cue outside severity: {u['unit_id']} {u['text']!r}" for u in a6)
+    failures.extend(f"A6 severity cue in service name {n!r}" for n in a6n)
+
+    # A7 distribution per (pool, value, partition).
+    dist = {}
+    for (p, v) in PILOT2_QUOTA:
+        for part in ("pilot2", "main"):
+            us = [u for u in by[(p, v)] if u["partition"] == part]
+            spread = []
+            for slot in range(len(us[0]["semantic_key"])):
+                c = Counter(u["semantic_key"][slot] for u in us)
+                spread.append([min(c.values()), max(c.values())])
+            dist[f"{p}:{v}:{part}"] = {"n": len(us),
+                                       "frame_counts": dict(sorted(Counter(u["surface"]["frame"] for u in us).items())),
+                                       "slot_min_max": spread, "distinct_subjects": len({u["subject"] for u in us})}
+    report["A7_distribution"] = dist
+
+    # A8 label provenance.
+    report["A8_label_provenance"] = ("labels (pool, value) are set by the expansion loop before rendering; "
+                                     "no code path reads a label back out of rendered text")
+
+    # A9 proposition-level capacity and subject counts (informational; A1 gates capacity).
+    report["A9_proposition_capacity"] = {
+        f"{p}:{v}": {"units": len(by[(p, v)]), "distinct_subjects": len({u["subject"] for u in by[(p, v)]}),
+                     "needed_at_N_MAX_plus_pilot": PILOT2_QUOTA[(p, v)] + (9 if p == "routing" else 6) * K_MAX}
+        for (p, v) in PILOT2_QUOTA}
+
+    # A10 audience neutrality: (a) no audience word in routing or severity text
+    # outside the {S} slot; (b) impact:unclear service names are audience-neutral.
+    a10 = [u for u in units if u["pool"] != "impact"
+           and any(_contains(_mask_s(u["text"]), c) for c in AUDIENCE_CUES)]
+    a10b = [n for n in S_SHARED if any(_contains(n, c) for c in AUDIENCE_CUES)]
+    report["A10_audience_cue_audit"] = {"non_impact_units_with_audience_cues": len(a10),
+                                        "shared_service_names_with_audience_cues": a10b,
+                                        "examples": [u["text"] for u in a10[:5]]}
+    failures.extend(f"A10 audience cue outside impact: {u['unit_id']} {u['text']!r}" for u in a10)
+    failures.extend(f"A10b audience cue in impact:unclear service name {n!r}" for n in a10b)
+
+    # A11 fit-table COVERAGE (Draft 4 relabel, review M6). The fit predicates
+    # filter keys at build time, so a misfit count here could only be 0. This
+    # checks that every table covers its vocabulary; whether the tables are
+    # RIGHT is checked by the human review of composed instances (spec §5.6).
+    tables_ok = (set(FEATURE_FAILURE_FITS) == set(SEV_DEGRADED["feature"])
+                 and COSMETIC_TEXT_ELEMENTS <= set(SEV_COSMETIC["element"])
+                 and BLOCKING_OUTPUT_FUNCTIONS <= set(SEV_BLOCKING["function"])
+                 and all(w <= set(SEV_DEGRADED["workaround"]) for w in WORKAROUND_FITS.values())
+                 and set(WORKAROUND_FITS) == set(SYN[("severity:1", 1)].values()))
+    report["A11_fit_table_coverage"] = {"fit_tables_cover_vocabulary": tables_ok}
+    if not tables_ok:
+        failures.append("A11 fit tables do not match the vocabulary (fail closed)")
+
+    # A12 surface form: singular subjects where singular verbs follow.
+    a12 = [f"plural-looking singular subject {n!r}"
+           for n in names + SEV_BLOCKING["function"] + SEV_COSMETIC["element"]
+           if _plural_looking(n) and n not in PLURAL_OK]
+    report["A12_surface_form"] = {"problems": len(a12), "examples": a12[:5]}
+    failures.extend(f"A12 {x}" for x in a12)
+
+    # A13 (Draft 4, review M5): no surface form identifies a value within a
+    # pool. No two-word opening ({S} masked) used >= 10 times in only one value,
+    # and the same connectives in every severity value.
+    a13 = []
+    for pool in ("routing", "impact", "severity"):
+        vals = [v for (p, v) in PILOT2_QUOTA if p == pool]
+        openers = {v: Counter(" ".join(_mask_s(u["text"]).split()[:2]) for u in by[(pool, v)]) for v in vals}
+        for v in vals:
+            for opener, n in openers[v].items():
+                if n >= 10 and all(opener not in openers[w] for w in vals if w != v):
+                    a13.append(f"{pool}:{v} opener {opener!r} ({n}) appears in no other value")
+    sev_vals = ("0", "1", "2")
+    conn = {v: {c for u in by[("severity", v)] for c in (" but ", ", and ", "; ") if c in u["text"]}
+            for v in sev_vals}
+    if len({frozenset(c) for c in conn.values()}) != 1:
+        a13.append(f"severity connectives differ by value: {conn}")
+    report["A13_value_neutral_surface"] = {"problems": len(a13), "examples": a13[:5]}
+    failures.extend(f"A13 {x}" for x in a13)
+
+    # Informational: how far LENGTH alone recovers the value (best two-cut rule).
+    leng = {}
+    for pool in ("impact", "severity"):
+        us = [u for (p, _), lst in by.items() if p == pool for u in lst]
+        vals = sorted({u["value"] for u in us})
+        ls = sorted({len(u["text"]) for u in us})
+        cuts = ls[::max(1, len(ls) // 60)]
+        best = 0.0
+        for a, b in itertools.combinations(cuts, 2):
+            for perm in itertools.permutations(vals):
+                acc = sum((perm[0] if len(u["text"]) < a else perm[1] if len(u["text"]) < b else perm[2])
+                          == u["value"] for u in us) / len(us)
+                best = max(best, acc)
+        leng[pool] = {"best_two_cut_length_rule_accuracy": round(best, 3), "chance": round(1 / 3, 3),
+                      "mean_length_by_value": {v: round(sum(len(u["text"]) for u in by[(pool, v)])
+                                                        / len(by[(pool, v)]), 1) for v in vals}}
+    report["length_cue_informational"] = leng
+
+    report["failures"] = failures
+    report["passed"] = not failures
+    return report
+
 
 def main() -> None:
     units = expand()
     report = audit(units)
     units_path = DATA_DIR / "workflow_template_grammar_units.json"
     units_path.write_text(json.dumps({
-        "status": "Grammar expansion only - not assigned to any pilot or evaluation instance.",
+        "status": "Grammar expansion only - not assigned to any pilot or evaluation instance. "
+                  "Texts keep the {S}/{S_cap} placeholder for the instance's service (the impact-pool subject).",
         "seed": SEED, "N_MAX": N_MAX, "pilot2_quota": {f"{p}:{v}": q for (p, v), q in PILOT2_QUOTA.items()},
         "generator_sha256": hashlib.sha256(THIS_FILE.read_bytes()).hexdigest(),
         "units": units}, indent=1))
-    report["A9_proposition_capacity"] = a9_proposition_capacity(units)  # gating via A1 since Draft 2
     report["units_sha256"] = hashlib.sha256(units_path.read_bytes()).hexdigest()
     report["generator_sha256"] = hashlib.sha256(THIS_FILE.read_bytes()).hexdigest()
     (RESULTS_DIR / "workflow_template_grammar_audit.json").write_text(json.dumps(report, indent=2))
 
     print(f"units: {len(units)}  ->  {units_path.relative_to(REPO_ROOT)}")
-    print("A1 capacity (main reserve / needed at N_MAX=1260):")
+    print(f"A1 capacity (main reserve / needed at N_MAX={N_MAX}):")
     for k, v in report["A1_capacity"].items():
-        print(f"   {k:18s} {v['main_reserve']:4d} / {v['needed_at_N_MAX']}")
-    print("A2", report["A2_exact_uniqueness"])
-    print("A3/A4", report["A3_A4"])
-    print("A5", report["A5_routing_cue_audit"])
-    print("A6", {k: v for k, v in report["A6_impact_severity_cue_audit"].items() if k != "examples"})
-    print("A9 proposition-level capacity  [units | proposition keys | needed N=738 | needed N=1260]:")
-    for k, v in report["A9_proposition_capacity"].items():
-        n738, n1260 = list(v.values())[2:]
-        flag = "" if v["proposition_keys"] >= n1260 else "   <-- short at N_MAX"
-        print(f"   {k:18s} {v['filler_keys']:4d} | {v['proposition_keys']:4d} | {n738:4d} | {n1260:4d}{flag}")
+        subj = report["A9_proposition_capacity"][k]["distinct_subjects"]
+        print(f"   {k:18s} {v['main_reserve']:4d} / {v['needed_at_N_MAX']}   pilot {v['pilot2']}   subjects {subj}")
+    for key in ("A2_exact_uniqueness", "A3_A4", "A5_routing_cue_audit", "A11_fit_table_coverage"):
+        print(key, report[key])
+    for key in ("A6_severity_cue_audit", "A10_audience_cue_audit", "A12_surface_form", "A13_value_neutral_surface"):
+        print(key, {k: v for k, v in report[key].items() if k != "examples"})
+    print("length cue (informational)", report["length_cue_informational"])
     print(f"\nFAILURES: {len(report['failures'])}")
-    for f in report["failures"][:25]:
+    for f in report["failures"][:30]:
         print("  -", f)
     print("\nPASSED" if report["passed"] else "\nNOT PASSED")
 

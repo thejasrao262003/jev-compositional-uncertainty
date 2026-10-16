@@ -1183,6 +1183,28 @@ All are fixed in Draft 3, with new fail-closed audits:
 length differs by label. **Next:** independent review → freeze → second
 pilot.
 
+**Update (independent review of Draft 3 → grammar Draft 4; protocol
+Revision 12.1; second dataset chosen — 2026-10-16):**
+- **The review.** An independent reviewer agent found Draft 3 not ready.
+  I verified its two key claims: severity was recoverable from
+  punctuation 1,567/1,567, and only 112/448 blocking sentences denied a
+  workaround.
+- **Draft 4 redesign** (decided: redesign; N_MAX 720):
+  - each instance is one incident about one service `S`;
+  - one frame set per pool, shared by every value;
+  - every blocking sentence denies a workaround;
+  - conservative proposition classes;
+  - routing fit rules, inflection-aware lexicons, service-name audits;
+  - impact pilot services are disjoint from the main run.
+- **Draft 4 results:** 3,103 units; all 13 audits pass. Shortcuts drop
+  to 46% (punctuation) and about 50% (length), against 33% chance.
+- **Revision 12.1:** N_MAX 720; H2 clustered by `S`; H1 gets a cluster
+  interval.
+- **Human pass:** a 54-item blinded sheet with a pre-set freeze rule
+  (≤ 3/54 disagreement per label).
+- **Second dataset:** Linux kernel Bugzilla (reporter-set labels),
+  feasibility recorded; replication being prepared without Jev calls.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

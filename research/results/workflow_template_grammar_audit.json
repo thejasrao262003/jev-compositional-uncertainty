@@ -1,52 +1,61 @@
 {
   "A1_capacity": {
     "routing:network": {
-      "main_reserve": 657,
-      "needed_at_N_MAX": 630
+      "main_reserve": 453,
+      "needed_at_N_MAX": 360,
+      "pilot2": 15
     },
     "routing:database": {
-      "main_reserve": 657,
-      "needed_at_N_MAX": 630
+      "main_reserve": 411,
+      "needed_at_N_MAX": 360,
+      "pilot2": 15
     },
     "impact:0": {
-      "main_reserve": 422,
-      "needed_at_N_MAX": 420
+      "main_reserve": 252,
+      "needed_at_N_MAX": 240,
+      "pilot2": 10
     },
     "impact:1": {
-      "main_reserve": 438,
-      "needed_at_N_MAX": 420
+      "main_reserve": 256,
+      "needed_at_N_MAX": 240,
+      "pilot2": 10
     },
     "impact:unclear": {
-      "main_reserve": 434,
-      "needed_at_N_MAX": 420
+      "main_reserve": 252,
+      "needed_at_N_MAX": 240,
+      "pilot2": 10
     },
     "severity:0": {
       "main_reserve": 638,
-      "needed_at_N_MAX": 420
+      "needed_at_N_MAX": 240,
+      "pilot2": 10
     },
     "severity:1": {
       "main_reserve": 461,
-      "needed_at_N_MAX": 420
+      "needed_at_N_MAX": 240,
+      "pilot2": 10
     },
     "severity:2": {
-      "main_reserve": 438,
-      "needed_at_N_MAX": 420
+      "main_reserve": 290,
+      "needed_at_N_MAX": 240,
+      "pilot2": 10
     }
   },
   "A2_exact_uniqueness": {
-    "units": 4235,
+    "units": 3103,
     "normalized_duplicates": 0,
     "prior_corpus_size": 142,
     "overlap_with_prior": 0
   },
   "A3_A4": {
-    "proposition_keys_unique_within_pool_value": true,
-    "pilot2_main_key_overlap": 0,
-    "pilot2_main_text_overlap": 0
+    "pilot2_main_proposition_overlap": 0,
+    "pilot2_main_text_overlap": 0,
+    "pilot2_main_impact_subject_overlap": 0
   },
   "A5_routing_cue_audit": "clean",
-  "A6_impact_severity_cue_audit": {
-    "impact_units_with_severity_cues": 0,
+  "A6_severity_cue_audit": {
+    "non_severity_units_with_severity_cues": 0,
+    "service_names_with_severity_cues": [],
     "examples": []
   },
   "A7_distribution": {
@@ -60,7 +69,7 @@
       "slot_min_max": [
         [
           1,
-          4
+          2
         ],
         [
           1,
@@ -68,31 +77,33 @@
         ],
         [
           1,
-          6
+          5
         ]
-      ]
+      ],
+      "distinct_subjects": 12
     },
     "routing:network:main": {
-      "n": 657,
+      "n": 453,
       "frame_counts": {
-        "0": 219,
-        "1": 219,
-        "2": 219
+        "0": 151,
+        "1": 151,
+        "2": 151
       },
       "slot_min_max": [
         [
-          44,
-          48
+          23,
+          36
         ],
         [
-          79,
-          84
+          34,
+          82
         ],
         [
-          46,
-          111
+          73,
+          77
         ]
-      ]
+      ],
+      "distinct_subjects": 14
     },
     "routing:database:pilot2": {
       "n": 15,
@@ -104,7 +115,7 @@
       "slot_min_max": [
         [
           1,
-          2
+          3
         ],
         [
           1,
@@ -112,31 +123,33 @@
         ],
         [
           1,
-          3
+          5
         ]
-      ]
+      ],
+      "distinct_subjects": 9
     },
     "routing:database:main": {
-      "n": 657,
+      "n": 411,
       "frame_counts": {
-        "0": 219,
-        "1": 219,
-        "2": 219
+        "0": 137,
+        "1": 137,
+        "2": 137
       },
       "slot_min_max": [
         [
-          46,
-          48
+          11,
+          40
         ],
         [
-          80,
-          84
+          11,
+          77
         ],
         [
-          52,
-          111
+          66,
+          70
         ]
-      ]
+      ],
+      "distinct_subjects": 14
     },
     "impact:0:pilot2": {
       "n": 10,
@@ -147,40 +160,34 @@
       },
       "slot_min_max": [
         [
-          1,
-          1
+          2,
+          2
         ],
         [
           1,
           3
-        ],
-        [
-          1,
-          4
         ]
-      ]
+      ],
+      "distinct_subjects": 5
     },
     "impact:0:main": {
-      "n": 422,
+      "n": 252,
       "frame_counts": {
-        "0": 141,
-        "1": 141,
-        "2": 140
+        "0": 84,
+        "1": 84,
+        "2": 84
       },
       "slot_min_max": [
         [
-          5,
-          6
+          2,
+          2
         ],
         [
-          19,
-          72
-        ],
-        [
-          42,
-          60
+          37,
+          63
         ]
-      ]
+      ],
+      "distinct_subjects": 126
     },
     "impact:1:pilot2": {
       "n": 10,
@@ -191,40 +198,42 @@
       },
       "slot_min_max": [
         [
+          2,
+          8
+        ],
+        [
           1,
           2
         ],
         [
           1,
           3
-        ],
-        [
-          1,
-          3
         ]
-      ]
+      ],
+      "distinct_subjects": 2
     },
     "impact:1:main": {
-      "n": 438,
+      "n": 256,
       "frame_counts": {
-        "0": 146,
-        "1": 146,
-        "2": 146
+        "0": 86,
+        "1": 85,
+        "2": 85
       },
       "slot_min_max": [
         [
-          62,
-          64
+          8,
+          8
         ],
         [
-          53,
-          56
+          32,
+          32
         ],
         [
-          53,
-          56
+          37,
+          50
         ]
-      ]
+      ],
+      "distinct_subjects": 32
     },
     "impact:unclear:pilot2": {
       "n": 10,
@@ -235,40 +244,34 @@
       },
       "slot_min_max": [
         [
-          1,
-          2
-        ],
-        [
-          1,
-          3
+          2,
+          4
         ],
         [
           1,
           3
         ]
-      ]
+      ],
+      "distinct_subjects": 3
     },
     "impact:unclear:main": {
-      "n": 434,
+      "n": 252,
       "frame_counts": {
-        "0": 145,
-        "1": 145,
-        "2": 144
+        "0": 84,
+        "1": 84,
+        "2": 84
       },
       "slot_min_max": [
         [
           4,
-          6
+          4
         ],
         [
-          19,
-          74
-        ],
-        [
-          44,
+          16,
           63
         ]
-      ]
+      ],
+      "distinct_subjects": 63
     },
     "severity:0:pilot2": {
       "n": 10,
@@ -280,17 +283,18 @@
       "slot_min_max": [
         [
           1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
           2
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
-          3
         ]
-      ]
+      ],
+      "distinct_subjects": 7
     },
     "severity:0:main": {
       "n": 638,
@@ -305,14 +309,15 @@
           36
         ],
         [
-          35,
-          137
+          37,
+          138
         ],
         [
-          105,
+          106,
           107
         ]
-      ]
+      ],
+      "distinct_subjects": 23
     },
     "severity:1:pilot2": {
       "n": 10,
@@ -328,13 +333,14 @@
         ],
         [
           1,
-          4
+          3
         ],
         [
           1,
           3
         ]
-      ]
+      ],
+      "distinct_subjects": 9
     },
     "severity:1:main": {
       "n": 461,
@@ -349,14 +355,15 @@
           23
         ],
         [
-          19,
-          136
+          16,
+          137
         ],
         [
-          9,
-          115
+          8,
+          116
         ]
-      ]
+      ],
+      "distinct_subjects": 28
     },
     "severity:2:pilot2": {
       "n": 10,
@@ -368,106 +375,124 @@
       "slot_min_max": [
         [
           1,
-          2
+          1
         ],
         [
           1,
-          3
+          5
         ],
         [
           1,
-          3
+          4
         ]
-      ]
+      ],
+      "distinct_subjects": 10
     },
     "severity:2:main": {
-      "n": 438,
+      "n": 290,
       "frame_counts": {
-        "0": 146,
-        "1": 146,
-        "2": 146
+        "0": 97,
+        "1": 97,
+        "2": 96
       },
       "slot_min_max": [
         [
-          7,
-          12
+          3,
+          8
         ],
         [
-          39,
+          45,
           54
         ],
         [
-          29,
-          112
+          34,
+          74
         ]
-      ]
+      ],
+      "distinct_subjects": 50
     }
   },
   "A8_label_provenance": "labels (pool, value) are set by the expansion loop before rendering; no code path reads a label back out of rendered text",
+  "A9_proposition_capacity": {
+    "routing:network": {
+      "units": 468,
+      "distinct_subjects": 14,
+      "needed_at_N_MAX_plus_pilot": 375
+    },
+    "routing:database": {
+      "units": 426,
+      "distinct_subjects": 14,
+      "needed_at_N_MAX_plus_pilot": 375
+    },
+    "impact:0": {
+      "units": 262,
+      "distinct_subjects": 131,
+      "needed_at_N_MAX_plus_pilot": 250
+    },
+    "impact:1": {
+      "units": 266,
+      "distinct_subjects": 34,
+      "needed_at_N_MAX_plus_pilot": 250
+    },
+    "impact:unclear": {
+      "units": 262,
+      "distinct_subjects": 66,
+      "needed_at_N_MAX_plus_pilot": 250
+    },
+    "severity:0": {
+      "units": 648,
+      "distinct_subjects": 23,
+      "needed_at_N_MAX_plus_pilot": 250
+    },
+    "severity:1": {
+      "units": 471,
+      "distinct_subjects": 28,
+      "needed_at_N_MAX_plus_pilot": 250
+    },
+    "severity:2": {
+      "units": 300,
+      "distinct_subjects": 50,
+      "needed_at_N_MAX_plus_pilot": 250
+    }
+  },
   "A10_audience_cue_audit": {
     "non_impact_units_with_audience_cues": 0,
+    "shared_service_names_with_audience_cues": [],
     "examples": []
   },
-  "A11_slot_fit": {
-    "misfit_units": 0,
+  "A11_fit_table_coverage": {
     "fit_tables_cover_vocabulary": true
   },
   "A12_surface_form": {
     "problems": 0,
     "examples": []
   },
-  "failures": [],
-  "passed": true,
-  "A9_proposition_capacity": {
-    "routing:network": {
-      "filler_keys": 672,
-      "proposition_keys": 672,
-      "needed_at_k41(N=738)": 384,
-      "needed_at_k70(N=1260)": 645
+  "A13_value_neutral_surface": {
+    "problems": 0,
+    "examples": []
+  },
+  "length_cue_informational": {
+    "impact": {
+      "best_two_cut_length_rule_accuracy": 0.496,
+      "chance": 0.333,
+      "mean_length_by_value": {
+        "0": 133.1,
+        "1": 130.3,
+        "unclear": 135.5
+      }
     },
-    "routing:database": {
-      "filler_keys": 672,
-      "proposition_keys": 672,
-      "needed_at_k41(N=738)": 384,
-      "needed_at_k70(N=1260)": 645
-    },
-    "impact:0": {
-      "filler_keys": 432,
-      "proposition_keys": 432,
-      "needed_at_k41(N=738)": 256,
-      "needed_at_k70(N=1260)": 430
-    },
-    "impact:1": {
-      "filler_keys": 448,
-      "proposition_keys": 448,
-      "needed_at_k41(N=738)": 256,
-      "needed_at_k70(N=1260)": 430
-    },
-    "impact:unclear": {
-      "filler_keys": 444,
-      "proposition_keys": 444,
-      "needed_at_k41(N=738)": 256,
-      "needed_at_k70(N=1260)": 430
-    },
-    "severity:0": {
-      "filler_keys": 648,
-      "proposition_keys": 648,
-      "needed_at_k41(N=738)": 256,
-      "needed_at_k70(N=1260)": 430
-    },
-    "severity:1": {
-      "filler_keys": 471,
-      "proposition_keys": 471,
-      "needed_at_k41(N=738)": 256,
-      "needed_at_k70(N=1260)": 430
-    },
-    "severity:2": {
-      "filler_keys": 448,
-      "proposition_keys": 448,
-      "needed_at_k41(N=738)": 256,
-      "needed_at_k70(N=1260)": 430
+    "severity": {
+      "best_two_cut_length_rule_accuracy": 0.502,
+      "chance": 0.333,
+      "mean_length_by_value": {
+        "0": 120.9,
+        "1": 113.6,
+        "2": 119.5
+      }
     }
   },
-  "units_sha256": "f356f6ee4c6f39df8ec4dbd847afab239edf58010542635d3a8c8c63077c70fb",
-  "generator_sha256": "2f19bf00ae60ab7cb9ad9de8906d4eda4e3f0ab92a5cdd742f8ddc8e01eadc87"
+  "failures": [],
+  "passed": true,
+  "units_sha256": "b5f6dcd120ff678c88f5d1e4a1dd50f73ca4f93c592f5a254fb10ad951e096d9",
+  "generator_sha256": "707a190c3b5598c396ed14ec9bcd4a39082c698959229352e609547b61cba10e"
 }

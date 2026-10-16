@@ -20,6 +20,44 @@ measured under strategy definitions Revision 11 replaced. The second
 calibration pilot re-measures the disagreement rate under the Revision 11
 definitions.
 
+## Revision 12.1 — amendments that follow from grammar Draft 4 (2026-10-16)
+
+Made before any Step 2 or second-pilot data exists. Each follows from the
+independent review of grammar Draft 3
+(`research/results/grammar_draft3_independent_review.md`) and from
+decisions taken on 2026-10-16.
+
+1. **Content ceiling: `N_MAX = 720`** (k = 40 per cell; was 1,260).
+   Revision 12 sizing still governs N. If `N_final > 720`, the build
+   stops for a decision, and the vocabulary is not expanded after the
+   pilot.
+2. **One service per instance.** Each instance describes one incident
+   about one service `S`, which belongs to the impact pool. All three
+   evidence sentences are about `S` (grammar spec, Draft 4).
+3. **H2's primary test is clustered by `S`.**
+   - Instances that share a service are correlated, so H2's sign-flip
+     randomization flips per `S` cluster on cluster-summed cost
+     differences (`h2_cluster_sign_flip_test`).
+   - The instance-level test is reported as a secondary result.
+4. **H1 gets a cluster interval.** H1's randomization test is
+   conditional on the evaluated set and is unchanged. It is now reported
+   with a 95% cluster-bootstrap interval over `S`
+   (`h1_cluster_bootstrap_ci`), so the sampling uncertainty from shared
+   services is visible.
+5. **Sizing for H2** uses the SD of *cluster-summed* differences per
+   instance, from the second pilot. Floor and stop rules are as in §14.
+6. **Disclosed scope limit (review M5).** On templated content the
+   impact label is recoverable from the claim's own words (100% by a
+   keyword rule), because the evidence must state it. The severity
+   punctuation cue was removed (100% → 46%). Length-only rules recover
+   about 50% against 33% chance.
+
+   So the second pilot's disagreement rates measure Jev on clean,
+   explicit evidence. The Mozilla and kernel studies are the
+   real-text counterparts.
+
+Code: `research/src/workflow_strategies_r12.py` (self-test extended).
+
 ## Changelog from Revision 11 — the composition question asked on top of the decisions (Revision 12)
 
 Adopted 2026-10-16. Sources:
