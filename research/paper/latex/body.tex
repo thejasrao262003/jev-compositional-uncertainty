@@ -245,7 +245,7 @@ predicting the node's own agreement with the reference label, with 95\% bootstra
 
 \end{widetable}
 
-\Cref{tab:char} shows three incompatible profiles. \choice{}'s confidence
+\Cref{tab:char} and \cref{fig:reliability} show three incompatible profiles. \choice{}'s confidence
 is almost always near 1.0. It still discriminates, because the rare
 low-confidence answers are where its errors are. The high-confidence
 error subgroup found on deliberately ambiguous constructed items does not
@@ -257,31 +257,74 @@ so it gives no warning of the systematic bias in \cref{sec:real}. Any
 composition rule that multiplies or averages these numbers inherits this
 mix.
 
+\begin{widefigure}
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 1, horizontal sep=0.75cm},
+  width=0.27\linewidth, height=4.0cm, xmin=0, xmax=1, ymin=0, ymax=1.05,
+  xtick={0,0.5,1}, ytick={0,0.5,1}, grid=major, grid style={gray!20},
+  xlabel={\scriptsize confidence}, title style={font=\small},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}]
+\nextgroupplot[title={Mozilla \choice{}}, ylabel={\scriptsize agreement}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[blue, thick, mark=*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=north west}] table[x=conf, y=acc, meta=n] {fig_rel_mozilla_choice.dat};
+\nextgroupplot[title={Mozilla \noul{}}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[orange, thick, mark=square*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=south}] table[x=conf, y=acc, meta=n] {fig_rel_mozilla_noul.dat};
+\nextgroupplot[title={Kernel \choice{}}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[blue, thick, mark=*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=north west}] table[x=conf, y=acc, meta=n] {fig_rel_kernel_choice.dat};
+\nextgroupplot[title={Kernel \noul{}}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[orange, thick, mark=square*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=south}] table[x=conf, y=acc, meta=n] {fig_rel_kernel_noul.dat};
+\end{groupplot}
+\end{tikzpicture}
+\caption{Reliability diagrams (five equal-width confidence bins, bins with
+$n \geq 5$; the label is $n$; dashed line: perfect calibration). \choice{}
+puts nearly all bugs in its top bin, and that bin is accurate. \noul{}'s
+confidence-like value $2|\bar p - 0.5|$ sits far \emph{below} its agreement
+(underconfidence), and agreement does not rise with it.}
+\label{fig:reliability}
+\end{widefigure}
+
+
 %======================================================================
 \section{Fixed thresholds lose their selectivity on real text}
 \label{sec:transfer}
 %======================================================================
 
-\begin{widetable}
+\begin{colfigure}
 \centering
-\caption{Selectivity of the two fixed-threshold rules, measured on the
-rules' own input signals.}
-\label{tab:transfer}
+\begin{tikzpicture}
+\begin{axis}[ybar, bar width=7pt, width=0.9\linewidth, height=4.6cm,
+  symbolic x coords={Pilot,Mozilla,Kernel}, xtick=data, ymin=0, ymax=110,
+  ylabel={\% of instances}, enlarge x limits=0.25, ytick={0,25,50,75,100},
+  grid=major, grid style={gray!20}, tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.5,1.02)}, anchor=south, legend columns=3, draw=none},
+  nodes near coords, nodes near coords style={font=\tiny, rotate=90, anchor=west},
+  point meta=y, every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0}]
+\addplot[fill=blue!55] table[x=set, y=trigger] {fig_transfer.dat};
+\addplot[fill=orange!70] table[x=set, y=cut] {fig_transfer.dat};
+\addplot[fill=gray!45] table[x=set, y=target] {fig_transfer.dat};
+\legend{\choice{} $\geq$0.90 fires, 0.5 cut escalates, target share}
+\end{axis}
+\end{tikzpicture}
+\caption{Selectivity of the two fixed-threshold rules, set on constructed
+data and measured on each rule's own input signals. The trigger fires on
+85--96\% of instances everywhere. The product cut is near its target on
+the constructed pilot and far above it on real text.}
+\label{fig:transfer}
+\end{colfigure}
 
-\small
-\begin{tabular}{lccc}
-\toprule
-Rule (set on constructed data) & Pilot & Mozilla & Kernel \\
-\midrule
-Escalate if \choice{} conf.\ $\geq 0.90$: fired & 27/30 & 85\% & 96\% \\
-Accept iff conf.\ product $\geq 0.5$: escalated & 73\% & 88\% & 78\% \\
-\quad target escalation share & 67\% & 41\% & 42\% \\
-\bottomrule
-\end{tabular}
-
-\end{widetable}
-
-The rules in \cref{tab:transfer} fail in two different ways. The \choice{}
+The rules in \cref{fig:transfer} fail in two different ways. On real
+text the trigger fired on 85\% (Mozilla) and 96\% (kernel) of bugs, and
+the product cut escalated 88\% and 78\% against targets of 41\% and 42\%
+(constructed pilot: 27/30 fired; 73\% escalated against 67\%). The \choice{}
 trigger is non-selective \emph{everywhere}, because \choice{} confidence
 is saturated: that is a design failure, visible only once measured. The
 product cut is \emph{distribution-sensitive}. It was near its target on
@@ -342,7 +385,7 @@ bugs explicitly marked ``not a regression'' (33/100) as on bugs with the
 field unset (30/94). So unset labels do not explain it, and on bugs with
 a set field \noul{} beats its baseline (110/146 vs.\ 100/146).
 
-\para{Severity compression} \Cref{tab:sev} shows the row-normalized
+\para{Severity compression} \Cref{fig:sev} shows the row-normalized
 confusion of \score{}. On both trackers, most minor bugs are rated
 higher than their label: 79\% [0.67, 0.88] on Mozilla and 75\%
 [0.65, 0.83] on the kernel. A large share of serious bugs are rated lower:
@@ -357,27 +400,31 @@ process, not against every shared factor. The pattern matches
 central-tendency bias reported for LLM raters in other domains
 \citep{zhang2026centraltendency}.
 
-\begin{widetable}
+\begin{colfigure}
 \centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=0.35cm, y descriptions at=edge left},
+  width=0.5\linewidth, height=4.2cm, view={0}{90}, enlargelimits=false, axis on top,
+  colormap={sev}{rgb255=(255,255,255) rgb255=(107,174,214) rgb255=(33,113,181)},
+  point meta min=0, point meta max=0.8,
+  xtick={0,1,2}, ytick={0,1,2}, y dir=reverse,
+  yticklabels={minor,normal,serious}, xticklabels={0,1,2},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}, title style={font=\small},
+  xlabel={\score{} output},
+  nodes near coords={\pgfmathprintnumber[fixed,fixed zerofill,precision=2]{\pgfplotspointmeta}},
+  nodes near coords style={font=\scriptsize, anchor=center}]
+\nextgroupplot[title={Mozilla (triage)}, ylabel={true level}]
+\addplot[matrix plot*, mesh/cols=3, point meta=explicit] table[meta=v] {fig_heat_mozilla.dat};
+\nextgroupplot[title={Kernel (reporter)}]
+\addplot[matrix plot*, mesh/cols=3, point meta=explicit] table[meta=v] {fig_heat_kernel.dat};
+\end{groupplot}
+\end{tikzpicture}
 \caption{Row-normalized confusion of \score{} against reference severity
-(repeat-unstable outputs excluded). Mass concentrates on the middle
-level.}
-\label{tab:sev}
-
-\small
-\begin{tabular}{l ccc c ccc}
-\toprule
- & \multicolumn{3}{c}{Mozilla: \score{} output} & & \multicolumn{3}{c}{Kernel: \score{} output} \\
-\cmidrule(lr){2-4}\cmidrule(lr){6-8}
-True level & 0 & 1 & 2 & & 0 & 1 & 2 \\
-\midrule
-0 (minor)   & \textbf{0.21} & 0.66 & 0.13 & & \textbf{0.25} & 0.68 & 0.08 \\
-1 (normal)  & 0.09 & \textbf{0.72} & 0.19 & & 0.06 & \textbf{0.65} & 0.29 \\
-2 (serious) & 0.01 & 0.41 & \textbf{0.57} & & 0.01 & 0.55 & \textbf{0.44} \\
-\bottomrule
-\end{tabular}
-
-\end{widetable}
+(repeat-unstable outputs excluded). On both trackers the middle column
+absorbs mass from both extremes: minor bugs are rated up, serious bugs
+down.}
+\label{fig:sev}
+\end{colfigure}
 
 %======================================================================
 \section{Composition (exploratory)}
@@ -416,9 +463,32 @@ different prediction targets, which should not be conflated:
   confidence rank those where $F$'s action is wrong first? AUROC 0.54
   [0.45, 0.63] on Mozilla and 0.47 [0.40, 0.54] on the kernel.
 \end{itemize}
-Every interval covers 0.5. The data show no evidence that composed
+Every interval covers 0.5 (\cref{fig:forest}). The data show no evidence that composed
 confidence ranks either target better than chance, but they cannot rule
 out a modest signal (AUROC up to about 0.6). 
+
+\begin{colfigure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.78\linewidth, height=5.0cm, xmin=0.25, xmax=1.05, ymin=0.4, ymax=5.6,
+  ytick={1,2,3,4,5}, yticklabels={(B) any error, (A) missed serious, \score{} own, \noul{} own, \choice{} own},
+  xlabel={AUROC (95\% bootstrap interval)}, grid=major, grid style={gray!20},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.98,0.02)}, anchor=south east}]
+\draw[dashed, gray] (axis cs:0.5,0.4) -- (axis cs:0.5,5.6);
+\addplot[blue, only marks, mark=*, error bars/.cd, x dir=both, x explicit]
+  table[x=x, y=y, x error minus=lo, x error plus=hi] {fig_forest_mozilla.dat};
+\addplot[orange, only marks, mark=square*, error bars/.cd, x dir=both, x explicit]
+  table[x=x, y=y, x error minus=lo, x error plus=hi] {fig_forest_kernel.dat};
+\legend{Mozilla, Kernel}
+\end{axis}
+\end{tikzpicture}
+\caption{Every AUROC in the paper with its interval; dashed line: chance.
+Only \choice{}'s confidence discriminates its own errors. Composed
+confidence is at chance for both escalation targets, (A) and (B).}
+\label{fig:forest}
+\end{colfigure}
+
 
 \para{Budgeted overrides, scored by cost} At a fixed budget of
 $k = \lceil 0.1n \rceil$ overrides ($k = 21$ on Mozilla, 24 on the kernel),

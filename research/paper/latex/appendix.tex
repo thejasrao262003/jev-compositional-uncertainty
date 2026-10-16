@@ -1,10 +1,10 @@
-% Shared appendix (included by main.tex, ieee.tex, springer.tex)
-\appendix
+% Shared appendix (included by main.tex, ieee.tex, springer.tex).
+% Each wrapper starts the appendix itself (\appendix, or \appendices in IEEEtran).
 %======================================================================
 \section{Action rule and cost matrix}
 %======================================================================
 
-\begin{widetable}
+\begin{coltable}
 \centering
 \caption{The action rule $F(c_2, c_3)$. \emph{Unclear} is checked first.}
 \label{tab:F}
@@ -16,31 +16,31 @@ $c_2$ \textbackslash{} $c_3$ & 0 & 1 & 2 \\
 \midrule
 1 (yes)    & accept & defer  & escalate \\
 0 (no)     & accept & accept & escalate \\
-unclear    & request evidence & request evidence & request evidence \\
+unclear    & \multicolumn{3}{c}{request evidence (any $c_3$)} \\
 \bottomrule
 \end{tabular}
 
-\end{widetable}
+\end{coltable}
 
-\begin{widetable}
+\begin{coltable}
 \centering
 \caption{Frozen cost matrix $\mathrm{cost}(a, \astar)$. One unit of human
-cost is added per escalation.}
+cost is added per escalation. ``req.\ ev.'' = request evidence.}
 \label{tab:cost}
 
 \small
 \begin{tabular}{lcccc}
 \toprule
-action \textbackslash{} target & accept & escalate & request evidence & defer \\
+action \textbackslash{} target & accept & escalate & req.\ ev. & defer \\
 \midrule
 accept           & 0 & 10 & 6 & 8 \\
 escalate         & 1 & 0  & 1 & 1 \\
-request evidence & 1 & 1  & 0 & 1 \\
+req.\ ev. & 1 & 1  & 0 & 1 \\
 defer            & 1 & 1  & 1 & 0 \\
 \bottomrule
 \end{tabular}
 
-\end{widetable}
+\end{coltable}
 
 %======================================================================
 \section{Reproducibility}

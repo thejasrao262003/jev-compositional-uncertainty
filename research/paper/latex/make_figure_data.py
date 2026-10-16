@@ -38,3 +38,80 @@ override("kernel")
 lean("mozilla", "mozilla_validation_execution_manifest.json", "score_confusion")
 lean("kernel", "kernel_validation_execution_manifest.json", "score_confusion")
 print("wrote", sorted(p.name for p in HERE.glob("fig_*.dat")))
+
+
+# ---------------------------------------------------------------------------
+# Additional figures (added for the IEEE version; used by all versions).
+# ---------------------------------------------------------------------------
+import sys as _sys
+_sys.path.insert(0, str(HERE))
+import paper_statistics as ps  # noqa: E402
+
+BIN_EDGES = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0001]
+
+
+def reliability(name):
+    per = ps.load(name)
+    sig = ps.node_signals(per, list(per))
+    for node in ("choice", "noul"):
+        conf, ok = sig[node]
+        with open(HERE / f"fig_rel_{name}_{node}.dat", "w") as f:
+            f.write("conf acc n\n")
+            for lo, hi in zip(BIN_EDGES, BIN_EDGES[1:]):
+                idx = [i for i, c in enumerate(conf) if lo <= c < hi]
+                if len(idx) >= 5:
+                    f.write(f"{sum(conf[i] for i in idx) / len(idx):.3f} "
+                            f"{sum(ok[i] for i in idx) / len(idx):.3f} {len(idx)}\n")
+
+
+def heatmap(name, manifest):
+    a = json.loads((RES / manifest).read_text())
+    conf = a.get("analysis", a)["subsets"]["all"]["score_confusion"]
+    with open(HERE / f"fig_heat_{name}.dat", "w") as f:
+        f.write("x y v\n")
+        for t in ("0", "1", "2"):
+            row = conf[t]
+            tot = sum(v for k, v in row.items() if k != "unstable")
+            for p in ("0", "1", "2"):
+                f.write(f"{p} {t} {row.get(p, 0) / tot:.2f}\n")
+            f.write("\n")
+
+
+def transfer():
+    def sel(m):
+        a = json.loads((RES / m).read_text())
+        return a.get("analysis", a)["selectivity"]
+    mz, kn = sel("mozilla_validation_execution_manifest.json"), sel("kernel_validation_execution_manifest.json")
+    # Constructed pilot values from threshold_transfer_finding.md (27/30 fired; 73% escalated; target 6/9).
+    rows = [("Pilot", 100 * 27 / 30, 73, 100 * 6 / 9),
+            ("Mozilla", 100 * mz["rev10_choice_conf_ge_0.90_trigger"], 100 * mz["rev10_strategy2_escalation_rate"], 100 * mz["rev11_strategy2_q"]),
+            ("Kernel", 100 * kn["rev10_choice_conf_ge_0.90_trigger"], 100 * kn["rev10_strategy2_escalation_rate"], 100 * kn["rev11_strategy2_q"])]
+    with open(HERE / "fig_transfer.dat", "w") as f:
+        f.write("set trigger cut target\n")
+        for r in rows:
+            f.write(f"{r[0]} {r[1]:.1f} {r[2]:.1f} {r[3]:.1f}\n")
+
+
+def forest():
+    st = json.loads((HERE / "paper_statistics.json").read_text())
+    items = [("choice", lambda d: st[d]["auroc_own"]["choice"]),
+             ("noul", lambda d: st[d]["auroc_own"]["noul"]),
+             ("score", lambda d: st[d]["auroc_own"]["score"]),
+             ("compA", lambda d: st[d]["composition"]["auroc_missed_serious"]),
+             ("compB", lambda d: st[d]["composition"]["auroc_S1_wrong"])]
+    for d, off in (("mozilla", 0.15), ("kernel", -0.15)):
+        with open(HERE / f"fig_forest_{d}.dat", "w") as f:
+            f.write("x y lo hi\n")
+            for k, (_, get) in enumerate(items):
+                v = get(d)
+                y = len(items) - k + off
+                f.write(f"{v['point']} {y:.2f} {v['point'] - v['ci95'][0]:.3f} {v['ci95'][1] - v['point']:.3f}\n")
+
+
+reliability("mozilla")
+reliability("kernel")
+heatmap("mozilla", "mozilla_validation_execution_manifest.json")
+heatmap("kernel", "kernel_validation_execution_manifest.json")
+transfer()
+forest()
+print("wrote additional figure data")

@@ -9,6 +9,8 @@
 \newcommand{\citep}[1]{\cite{#1}}
 % Two columns: wide floats span both columns.
 \newcommand{\para}[1]{\par\smallskip\noindent\textit{#1.}\ }
+\newenvironment{colfigure}{\begin{figure}[t]}{\end{figure}}
+\newenvironment{coltable}{\begin{table}[t]}{\end{table}}
 \newenvironment{widefigure}{\begin{figure*}[t]}{\end{figure*}}
 \newenvironment{widetable}{\begin{table*}[t]}{\end{table*}}
 
@@ -31,8 +33,8 @@ uncertainty quantification, calibration, structured outputs, decision workflows,
 selective prediction, escalation, LLM evaluation, bug triage
 \end{IEEEkeywords}
 \input{body}
+\appendices
+\input{appendix}
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-\appendix
-\input{appendix}
 \end{document}
