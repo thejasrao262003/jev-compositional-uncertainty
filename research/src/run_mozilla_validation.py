@@ -38,6 +38,7 @@ from run_workflow_calibration_pilot import (  # noqa: E402  (frozen pilot code, 
 )
 from stage1_h1h2b_analysis import wilson_interval  # noqa: E402
 from workflow_strategies_r11 import prevalence_q, selectivity, strategy_2_r11, strategy_4a_r11  # noqa: E402
+from workflow_strategy5_proposal import strategy_5  # noqa: E402  (PROPOSED, Revision 12)
 
 REPO_ROOT = SRC_DIR.parent.parent
 MOZ_DIR = REPO_ROOT / "research" / "data" / "mozilla"
@@ -359,6 +360,11 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
     s2 = strategy_2_r11([(i, p["red"]["choice"], p["red"]["noul"], p["red"]["score"]) for i, p in per.items()], q)
     for i, p in per.items():
         p["actions"]["2"] = s2[i]
+    # Strategy 5 (PROPOSED for Revision 12): same q, same action space,
+    # per-primitive rank normalization instead of the raw product.
+    s5 = strategy_5([(i, p["red"]["choice"], p["red"]["noul"], p["red"]["score"]) for i, p in per.items()], q)
+    for i, p in per.items():
+        p["actions"]["5"] = s5["actions"][i] if s5["actions"] is not None else None
 
     def summarize(ids: list[int]) -> dict:
         P = [per[i] for i in ids]
@@ -403,11 +409,16 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
             out[f"{arm}_P_jev_above_mozilla_by_true_level"] = lean
         # strategies (descriptive; a* comes from F applied to Mozilla labels, not externally validated)
         out["strategies"] = {}
-        for s in ("1", "2", "4a", "2_rev10", "4a_rev10"):
+        for s in ("1", "2", "4a", "5", "2_rev10", "4a_rev10"):
+            if any(p["actions"][s] is None for p in P):
+                out["strategies"][s] = "NOT COMPUTABLE (no admissible signal)"
+                continue
             y = [p["actions"][s] == p["a_star"] for p in P]
             resolved = [p["actions"][s] not in ("escalate", "defer") for p in P]
             out["strategies"][s] = {"P_Y_decision": _rate(sum(y), len(y)), "coverage": _rate(sum(resolved), len(P))}
-        for s in ("1", "4a"):
+        for s in ("1", "4a", "5"):
+            if any(p["actions"][s] is None for p in P):
+                continue
             t = Counter()
             for p in P:
                 y2 = p["actions"]["2"] == p["a_star"]
@@ -438,7 +449,9 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
                 for p in per.values()]),
            "rev10_strategy2_escalation_rate": selectivity([p["actions"]["2_rev10"] == "escalate" for p in per.values()]),
            "rev11_strategy2_escalation_rate": selectivity([p["actions"]["2"] == "escalate" for p in per.values()]),
-           "rev11_strategy2_q": q}
+           "rev11_strategy2_q": q,
+           "strategy5_admissible_signals": s5["admissible"],
+           "strategy5_excluded_signals": s5["excluded"]}
     result = {"data_quality": quality, "selectivity": sel, "subsets": {}, "cells": {}}
     for name, f in SUBSETS.items():
         result["subsets"][name] = summarize([b["bug_id"] for b in bugs if f(b)])
@@ -599,8 +612,21 @@ def run_selftest() -> None:
     assert strategy_4a_abstention_aware(ch, reduce_noul_cell([_noul(0.1)] * 3), calm, False, False) == "escalate"
     print("  PASS: Rev 11 Strategy 2 escalates exactly ceil(q*n), order-independent, ties by id; "
           "Rev 11 4a has no confidence trigger (Rev 10 escalated the same case)")
+    # Strategy 5 (proposed): saturated signal excluded; ranks combine; same q
+    from workflow_strategy5_proposal import admissible, rank_percentiles
+    assert not admissible([0.0] * 6 + [0.3, 0.5]) and admissible([0.1, 0.2, 0.3, 0.3])
+    assert rank_percentiles([5, 1, 3]) == [1.0, 0.0, 0.5] and rank_percentiles([2, 2]) == [0.5, 0.5]
+    sat = reduce_choice_or_score_cell([_choice("network", 1.0)] * 3)   # choice tied at 1.0 everywhere
+    inst5 = [(f"b{i}", sat, reduce_noul_cell([_noul(nv)] * 3), reduce_choice_or_score_cell([_score(0, sc)] * 3))
+             for i, (nv, sc) in enumerate(((0.95, 0.9), (0.9, 0.8), (0.7, 0.7), (0.6, 0.6), (0.55, 0.55)))]
+    r5 = strategy_5(inst5, 0.4)
+    assert r5["excluded"] == ["choice"] and r5["admissible"] == ["noul", "score"], r5
+    assert [r5["actions"][f"b{i}"] for i in range(5)] == ["accept"] * 3 + ["escalate"] * 2, r5["actions"]
+    assert strategy_5([(f"b{i}", sat, inst5[0][2], inst5[0][3]) for i in range(4)], 0.5)["actions"] is None
+    print("  PASS: Strategy 5 excludes the saturated signal, ranks the rest, escalates ceil(q*n); "
+          "NOT COMPUTABLE when nothing is admissible (never a silent fallback)")
     for fn in (strategy_1_decision_only, strategy_2_naive_confidence, strategy_4a_abstention_aware,
-               strategy_2_r11, strategy_4a_r11):
+               strategy_2_r11, strategy_4a_r11, strategy_5):
         assert not ({"a_star", "label", "bug"} & set(inspect.signature(fn).parameters)), fn.__name__
     print("  PASS: a* = F(regression, level); no strategy sees a label")
 
