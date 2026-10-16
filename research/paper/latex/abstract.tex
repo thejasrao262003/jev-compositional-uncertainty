@@ -1,0 +1,36 @@
+% Shared abstract (included by main.tex, ieee.tex, springer.tex)
+Structured-output decision APIs return well-typed answers together with
+numeric confidence, and it is tempting to treat those numbers as
+interchangeable probabilities that can be composed across the steps of a
+workflow. We examine that practice for Jev, TypeSafe's structured
+decision model, and its three decision primitives: a categorical
+\choice{}, a binary \noul{} and an ordinal \score{}. TypeSafe documents
+Jev's confidence as a summary of the output distribution rather than a
+calibrated estimate of accuracy. We measure what that distinction means
+once the primitives are composed. The primitives are chained into a three-step triage
+workflow (route, assess, rate severity). We evaluate on controlled
+constructed items, on 202 Mozilla bugs labeled by triage and on 240 Linux
+kernel bugs labeled by their reporters, using 4{,}584 API calls in the main
+real-data runs. Three findings hold on both trackers.
+First, the primitives' confidence signals have distinct failure modes.
+\choice{} confidence is saturated (85--96\% of real bugs at $\geq 0.90$)
+yet discriminative (AUROC 0.90 [0.83, 0.96] and 0.98 [0.95, 1.00]).
+\noul{}'s confidence-like value is uninformative (AUROC 0.53
+[0.42, 0.65] and 0.41 [0.32, 0.50]). \score{}'s confidence is flat across
+true severity levels.
+Second, fixed confidence thresholds designed on constructed data lose
+their intended selectivity on real text: a cut that escalated 73\% of
+constructed items (target 67\%) escalated 88\% and 78\% of real bugs
+(targets 41--42\%).
+Third, \score{} compresses severity toward the middle level, consistent
+with central-tendency bias reported for LLM raters in other domains, and
+its confidence gives no indication of it.
+In exploratory analyses, the composition rules we tested did not
+consistently identify which cases to escalate: ranking escalations by
+composed confidence did no better than random selection on either
+tracker (one borderline worse-than-random estimate did not replicate), and
+the intervals cannot exclude a modest signal. We
+also show that a natural comparison of confidence-based against
+decision-based composition is confounded when the target action is
+itself a function of the decisions. The corrected comparison is
+pre-registered for a controlled follow-up that has not yet been run.

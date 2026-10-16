@@ -1,0 +1,38 @@
+% IEEE conference version (IEEEtran, two-column). Build: tectonic ieee.tex
+% Shared content: abstract.tex, body.tex, appendix.tex, macros.tex, references.bib
+\documentclass[conference]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\input{macros}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise]{cleveref}
+\newcommand{\citep}[1]{\cite{#1}}
+% Two columns: wide floats span both columns.
+\newcommand{\para}[1]{\par\smallskip\noindent\textit{#1.}\ }
+\newenvironment{widefigure}{\begin{figure*}[t]}{\end{figure*}}
+\newenvironment{widetable}{\begin{table*}[t]}{\end{table*}}
+
+\title{Jev's Structured Outputs Do Not Imply Compatible Uncertainty:\\
+An Empirical Study of Confidence Signals in a Multi-Step Decision Workflow}
+% For double-blind review, replace the author block with \author{Anonymous Authors}.
+\author{\IEEEauthorblockN{Thejas P Rao}
+\IEEEauthorblockA{\texttt{thejasrao262003@gmail.com}}
+\and
+\IEEEauthorblockN{Tushar M}
+\IEEEauthorblockA{\texttt{tusharm3040@gmail.com}}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+\begin{IEEEkeywords}
+uncertainty quantification, calibration, structured outputs, decision workflows,
+selective prediction, escalation, LLM evaluation, bug triage
+\end{IEEEkeywords}
+\input{body}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\appendix
+\input{appendix}
+\end{document}

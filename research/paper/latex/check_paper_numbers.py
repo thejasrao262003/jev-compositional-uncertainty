@@ -11,7 +11,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 RES = HERE.parents[1] / "results"
-tex = re.sub(r"\s+", " ", (HERE / "main.tex").read_text())
+# shared content used by main.tex, ieee.tex and springer.tex
+tex = re.sub(r"\s+", " ", " ".join((HERE / f).read_text() for f in ("abstract.tex", "body.tex", "appendix.tex")))
 st = json.loads((HERE / "paper_statistics.json").read_text())
 
 

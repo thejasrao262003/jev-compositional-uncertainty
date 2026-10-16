@@ -1,0 +1,55 @@
+% Shared appendix (included by main.tex, ieee.tex, springer.tex)
+\appendix
+%======================================================================
+\section{Action rule and cost matrix}
+%======================================================================
+
+\begin{widetable}
+\centering
+\caption{The action rule $F(c_2, c_3)$. \emph{Unclear} is checked first.}
+\label{tab:F}
+
+\small
+\begin{tabular}{lccc}
+\toprule
+$c_2$ \textbackslash{} $c_3$ & 0 & 1 & 2 \\
+\midrule
+1 (yes)    & accept & defer  & escalate \\
+0 (no)     & accept & accept & escalate \\
+unclear    & request evidence & request evidence & request evidence \\
+\bottomrule
+\end{tabular}
+
+\end{widetable}
+
+\begin{widetable}
+\centering
+\caption{Frozen cost matrix $\mathrm{cost}(a, \astar)$. One unit of human
+cost is added per escalation.}
+\label{tab:cost}
+
+\small
+\begin{tabular}{lcccc}
+\toprule
+action \textbackslash{} target & accept & escalate & request evidence & defer \\
+\midrule
+accept           & 0 & 10 & 6 & 8 \\
+escalate         & 1 & 0  & 1 & 1 \\
+request evidence & 1 & 1  & 0 & 1 \\
+defer            & 1 & 1  & 1 & 0 \\
+\bottomrule
+\end{tabular}
+
+\end{widetable}
+
+%======================================================================
+\section{Reproducibility}
+%======================================================================
+
+All calls used \texttt{jev-1.13.0}. Real-data calls: Mozilla 2{,}424
+(including a label-wording arm) plus a 252-call smoke test; kernel
+2{,}160 plus a 216-call smoke test. All returned HTTP 200 and parsed.
+Every dataset, raw response, execution manifest and analysis is
+hash-locked in the accompanying repository, as are the pre-registration
+documents and their revision history. The figure data in this paper are
+generated from committed result files by \texttt{make\_figure\_data.py}.
