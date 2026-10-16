@@ -64,7 +64,9 @@ recorded hashes still hold. Fixes:
    - **Description-length sample:** it was a convenience sample (the
      API's first 8 bugs per severity), not a random one.
 8. **Built since Revision 1:** `research/src/run_mozilla_validation.py`,
-   with 9 self-tests and a dry-run preflight, both passing (§2.7).
+   with 10 self-tests and a dry-run preflight, both passing (§2.7).
+   Probing it with failed calls, unstable nodes and partial data found
+   four defects, now fixed and covered by tests (§2.2, §2.5, §2.7).
 
 "524 project calls" (§2.4) was **correct**: 524 calls have token usage
 recorded, with a mean of 380 input tokens. The review's first pass
@@ -152,6 +154,10 @@ implements it:
 - **Node 3 input:** text + `"\n\nRouting determination: {d1}. Regression
   assessment: {regression | not a regression}."` The pilot's wording
   was "Customer impact assessment".
+- **An upstream node with no modal decision is shown as
+  `undetermined`.** The pilot's adapter printed Python's `None` here,
+  and showed a failed `noul` node as "not a regression"; that is fixed
+  for this study (Revision 2, found by probing the code).
 
 | Node | Question (same wording as pilot unless noted) | Label source |
 |---|---|---|
@@ -297,7 +303,10 @@ All of the following is implemented in `run_mozilla_validation.py`
   intervals. Called "agreement with Mozilla triage," never "accuracy."
 - **`score`:** the full 3×3 confusion matrix (true level × modal Jev
   level, with an `unstable` column), and **P(Jev level > Mozilla
-  level)** per true level. RQ-A1 is answered by the S4 row.
+  level)** per true level, estimated over **stable** decisions, with the
+  unstable count reported alongside. An unstable node is neither above
+  nor below the label, so it is not counted as "not above". RQ-A1 is
+  answered by the S4 row.
 - **Label-wording arm (specified in Revision 2):**
   - **Criteria order:** Mozilla's verbatim definitions are passed **S4,
     S3, S2, S1** as indices 0–3. `score`'s index 0 is the least severe
@@ -324,6 +333,12 @@ All of the following is implemented in `run_mozilla_validation.py`
   externally validated).
 - **Repeat instability:** rate per node. For `noul`, the mean spread of
   its 3 raw values.
+- **Data quality** (Revision 2): failed calls per arm, and bugs whose
+  calls all failed per arm. If every `noul` call for a bug fails, the
+  frozen Strategy 1 passes an undefined decision to `F`, which reads it
+  as "not a regression". This is the edge case disclosed in Revision 10.
+  It is not patched, because that code is frozen, but its occurrences
+  are counted and reported.
 - **Reporting order:** per-cell figures (6 cells) lead. The sample is
   balanced at 40 per cell while S3 dominates in reality, so pooled
   figures describe this design, not real-world rates.
@@ -446,7 +461,7 @@ hash-locked → runner self-tests → dry-run preflight with
 `--live --confirm-2424-mozilla-calls` (the count for the built 202-bug
 dataset, §2.6a).
 
-**Readiness (Revision 2).** `run_mozilla_validation.py` passes 9
+**Readiness (Revision 2).** `run_mozilla_validation.py` passes 10
 self-tests:
 - tampering with the dataset is caught;
 - a changed frozen dependency blocks the run (the pilot runner,
@@ -460,6 +475,11 @@ self-tests:
   detects an injected upward lean;
 - `a* = F(regression, level)`, and no strategy sees a label;
 - the subset sizes are as listed;
+- four defects found by probing the code stay fixed: the adapter's
+  `None` wording, silent analysis of partial data, unstable decisions
+  counted as "not above" in the upward lean, and failed nodes going
+  uncounted;
+- the live path refuses to overwrite existing raw responses;
 - the preflight makes zero network calls.
 
 The dry-run preflight passes: 202 bugs, 2,424 planned calls, all hashes
@@ -553,7 +573,7 @@ already calls for.
    check cleaning quality and the cell shortfalls in
    `dataset_manifest.json`, then freeze it (or rebuild it if the design
    changes).
-2. ~~Write `run_mozilla_validation.py`~~ Done in Revision 2. 9
+2. ~~Write `run_mozilla_validation.py`~~ Done in Revision 2. 10
    self-tests and the dry-run preflight pass.
 3. Explicit live authorization for the **2,424** calls (D1). Then:
    `python research/src/run_mozilla_validation.py --mode live --live

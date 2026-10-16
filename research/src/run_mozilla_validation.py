@@ -98,12 +98,16 @@ WORDING_Q = {"severity": {"type": "score", "instructions": "How severe is this i
 def node_state(text: str, node: str, d1: str | None, d2: int | None) -> str:
     """The adapter (proposal §2.2): each node's input is the bug text plus
     the upstream modal decisions, in a fixed template."""
+    # An upstream node with no modal decision is shown as "undetermined",
+    # never as Python's "None", and a failed noul node is never silently
+    # shown as "not a regression".
+    route = d1 if d1 is not None else "undetermined"
     if node == "choice":
         return text
     if node == "noul":
-        return f"{text}\n\nRouting determination: {d1}."
-    reg = "regression" if d2 == 1 else "not a regression"
-    return f"{text}\n\nRouting determination: {d1}. Regression assessment: {reg}."
+        return f"{text}\n\nRouting determination: {route}."
+    reg = {1: "regression", 0: "not a regression"}.get(d2, "undetermined")
+    return f"{text}\n\nRouting determination: {route}. Regression assessment: {reg}."
 
 
 def collapse_wording_call(call: dict) -> dict:
@@ -220,6 +224,9 @@ def preflight() -> dict:
 def run_live(bugs: list[dict]) -> list[dict]:
     from jev_client import ClientConfig, JevClient  # imported only on the live path
 
+    if RAW_OUT.exists():
+        raise PreflightError(f"{RAW_OUT.name} already exists; refusing to overwrite collected data or "
+                             f"re-spend calls. Move it aside deliberately to re-run.")
     client = JevClient(config=ClientConfig())
     rows, n = [], 0
     with RAW_OUT.open("w", encoding="utf-8") as f:
@@ -294,7 +301,22 @@ def _bands(items: list[tuple[float, bool]]) -> dict:
             "band_ge_0.90": row(hi, ">=0.90")}
 
 
+def check_complete(bugs: list[dict], rows: list[dict]) -> None:
+    """Refuse to analyze partial data: every bug needs exactly REPEATS
+    calls per arm. A crash mid-run must not silently shrink the data."""
+    have = Counter((r["bug_id"], r["arm"]) for r in rows)
+    want = {(b["bug_id"], arm): REPEATS for b in bugs for arm in ("choice", "noul", "score", "wording")}
+    if have != Counter(want):
+        missing = [k for k in want if have[k] != REPEATS][:5]
+        raise PreflightError(f"incomplete or extra raw data, e.g. {missing}; refusing to analyze")
+
+
+def _ok(call: dict) -> bool:
+    return call.get("http_status") == 200 and bool(call.get("parsed_response"))
+
+
 def analyze(bugs: list[dict], rows: list[dict]) -> dict:
+    check_complete(bugs, rows)
     by = defaultdict(lambda: defaultdict(list))
     for r in rows:
         by[r["bug_id"]][r["arm"]].append(r)
@@ -340,11 +362,14 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
             for p in P:
                 d = p["red"][arm]["modal_decision"]
                 conf[p["bug"]["level"]]["unstable" if d is None else int(d)] += 1
+            # Upward lean is estimated over STABLE decisions (an unstable
+            # node is neither above nor below); the unstable count is
+            # reported next to it, never folded in as "not above".
             lean = {}
             for t in (0, 1, 2):
-                n_t = sum(conf[t].values())
+                stable_n = sum(v for k, v in conf[t].items() if k != "unstable")
                 up = sum(v for k, v in conf[t].items() if k != "unstable" and k > t)
-                lean[t] = _rate(up, n_t)
+                lean[t] = {**_rate(up, stable_n), "unstable": conf[t]["unstable"]}
             agree = sum(conf[t][t] for t in (0, 1, 2))
             out[f"{arm}_confusion"] = {t: dict(conf[t]) for t in conf}
             out[f"{arm}_agreement"] = _rate(agree, len(P))
@@ -368,7 +393,18 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
         out["noul_repeat_spread_mean"] = sum(spreads) / len(spreads) if spreads else None
         return out
 
-    result = {"subsets": {}, "cells": {}}
+    # Data quality. The frozen Strategy 1 passes an undefined noul decision
+    # into F, which then reads it as "not a regression" (a disclosed
+    # Revision 10 edge case, not patched here because the code is frozen).
+    # Count how often that case occurs so it is visible, not silent.
+    quality = {"failed_calls_by_arm": {arm: sum(1 for r in rows if r["arm"] == arm and not _ok(r))
+                                       for arm in ("choice", "noul", "score", "wording")},
+               "bugs_with_all_calls_failed_by_arm": {
+                   arm: sum(1 for b in bugs if not any(_ok(c) for c in by[b["bug_id"]][arm]))
+                   for arm in ("choice", "noul", "score", "wording")},
+               "bugs_where_strategy1_saw_undefined_noul": sum(
+                   1 for p in per.values() if p["red"]["noul"]["decision"] is None)}
+    result = {"data_quality": quality, "subsets": {}, "cells": {}}
     for name, f in SUBSETS.items():
         result["subsets"][name] = summarize([b["bug_id"] for b in bugs if f(b)])
     for g in ("network", "storage"):
@@ -519,6 +555,49 @@ def run_selftest() -> None:
     sizes = {k: sum(f(b) for b in bugs) for k, f in SUBSETS.items()}
     assert sizes["all"] == EXPECTED_N and all(v > 0 for v in sizes.values()), sizes
     print(f"  PASS: subset sizes {sizes}")
+
+    # 9. probe-found defects stay fixed
+    #  9a. an undetermined upstream node is never shown as "None" or as "not a regression"
+    assert node_state("T", "noul", None, None) == "T\n\nRouting determination: undetermined."
+    assert node_state("T", "score", None, None) == \
+        "T\n\nRouting determination: undetermined. Regression assessment: undetermined."
+    #  9b. partial raw data is refused, not silently analyzed
+    one = [b for b in bugs[:1]]
+    full = _synthetic_rows(one)
+    try:
+        analyze(one, full[:-1])
+        raise AssertionError("analyze accepted a missing call")
+    except PreflightError:
+        pass
+    #  9c. upward lean excludes unstable decisions instead of counting them as "not above"
+    b0 = dict(one[0], level=0)
+    rows = []
+    for r, lvl in zip((1, 2, 3), (0, 1, 2)):
+        rows += [{"bug_id": b0["bug_id"], "arm": "choice", "repeat": r, **_choice(b0["group"])},
+                 {"bug_id": b0["bug_id"], "arm": "noul", "repeat": r, **_noul(0.1)},
+                 {"bug_id": b0["bug_id"], "arm": "score", "repeat": r, **_score(lvl)},
+                 {"bug_id": b0["bug_id"], "arm": "wording", "repeat": r, **_score(0, n_levels=4)}]
+    lean = analyze([b0], rows)["subsets"]["all"]["score_P_jev_above_mozilla_by_true_level"][0]
+    assert lean["n"] == 0 and lean["unstable"] == 1 and lean["rate"] is None, lean
+    #  9d. a node whose calls all failed is counted in data_quality
+    dead = [dict(r, http_status=500, parsed_response=None) if r["arm"] == "noul" else r for r in full]
+    q = analyze(one, dead)["data_quality"]
+    assert q["bugs_with_all_calls_failed_by_arm"]["noul"] == 1 and q["bugs_where_strategy1_saw_undefined_noul"] == 1, q
+    #  9e. the live path refuses to overwrite existing raw data
+    import tempfile
+    global RAW_OUT
+    saved_raw = RAW_OUT
+    with tempfile.NamedTemporaryFile() as tmp:
+        RAW_OUT = Path(tmp.name)
+        try:
+            run_live([])
+            raise AssertionError("run_live would overwrite existing raw data")
+        except PreflightError:
+            pass
+        finally:
+            RAW_OUT = saved_raw
+    print("  PASS: 'undetermined' adapter wording; partial data refused; lean excludes unstable; "
+          "all-failed nodes counted; existing raw data never overwritten")
 
     # 8. dry-run never touches the network
     import requests
