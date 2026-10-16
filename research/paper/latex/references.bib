@@ -1,6 +1,8 @@
 % Built from research/literature/literature_matrix.csv. Entries whose authors
 % the literature pass could not verify are omitted rather than guessed.
-% Re-verify every entry against its arXiv/venue page before submission.
+% 2026-10-16: every arXiv entry's title and authors checked against its abstract page;
+% venue entries (ICLR, NeurIPS, NAACL, IJCAI, TPAMI) checked against proceedings records.
+% Classical pre-2010 entries other than Kittler were not re-checked.
 
 @techreport{platt1999probabilistic,
   author      = {Platt, John C.},
@@ -45,11 +47,9 @@
   year      = {2019}
 }
 
-% TODO before submission: matrix title is the arXiv one (snippet-level); the NeurIPS
-% version may carry a different title. Confirm.
 @inproceedings{madras2018predict,
   author    = {Madras, David and Pitassi, Toniann and Zemel, Richard},
-  title     = {Predict Responsibly: Increasing Fairness via Learning to Defer},
+  title     = {Predict Responsibly: Improving Fairness and Accuracy by Learning to Defer},
   booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
   year      = {2018}
 }
@@ -69,41 +69,42 @@
 }
 
 @article{zhang2025modular,
-  author  = {Zhang, W. and Amin, S. and Perakis, G.},
+  author  = {Zhang, William and Amin, Saurabh and Perakis, Georgia},
   title   = {Decomposition-Based Modular Conformal Prediction for Two-Stage Modeling},
   journal = {arXiv preprint arXiv:2510.04406},
   year    = {2025}
 }
 
 @article{kotte2026pasc,
-  author  = {Kotte, V.},
+  author  = {Kotte, Varun},
   title   = {{PASC}: Pipeline-Aware Conformal Prediction with Joint Coverage Guarantees for Multi-Stage {NLP} and {LLM} Pipelines},
   journal = {arXiv preprint arXiv:2605.18812},
   year    = {2026}
 }
 
 @article{zellinger2025early,
-  author  = {Zellinger, M. J. and Liu, R. and Thomson, M.},
+  author  = {Zellinger, Michael J. and Liu, Rex and Thomson, Matt},
   title   = {Cost-Saving {LLM} Cascades with Early Abstention},
   journal = {arXiv preprint arXiv:2502.09054},
   year    = {2025}
 }
 
 @article{bouchard2026escalation,
-  author  = {Bouchard, D.},
-  title   = {Is Escalation Worth It? {A} Decision-Theoretic Characterization of {LLM} Cascades},
+  author  = {Bouchard, Dylan},
+  title   = {Is Escalation Worth It? {O}n the Depth of {LLM} Cascades},
+  note    = {v2; v1 was titled ``Is Escalation Worth It? A Decision-Theoretic Characterization of LLM Cascades''},
   journal = {arXiv preprint arXiv:2605.06350},
   year    = {2026}
 }
 
 @article{dou2026conformalcascade,
-  author  = {Dou, Y. and Lian, S. and Li, S.},
+  author  = {Dou, Yifan and Lian, Shikan and Li, Shibo},
   title   = {Conformal Cascade: Distribution-Free Accuracy Guarantees for Multi-Tier {LLM} Inference},
   journal = {arXiv preprint arXiv:2607.25018},
   year    = {2026}
 }
 
-% TODO before submission: author list recalled, not verified by the literature pass.
+% Verified: arXiv 2407.18370 and ICLR 2025 proceedings.
 @inproceedings{jung2025trust,
   author    = {Jung, Jaehun and Brahman, Faeze and Choi, Yejin},
   title     = {Trust or Escalate: {LLM} Judges with Provable Guarantees for Human Agreement},
@@ -112,7 +113,7 @@
 }
 
 @article{rabanser2025gatekeeper,
-  author  = {Rabanser, S. and Rauschmayr, N. and Kulshrestha, A. and Poklukar, P. and Jitkrittum, W. and Augenstein, S. and Wang, C. and Tombari, F.},
+  author  = {Rabanser, Stephan and Rauschmayr, Nathalie and Kulshrestha, Achin and Poklukar, Petra and Jitkrittum, Wittawat and Augenstein, Sean and Wang, Congchao and Tombari, Federico},
   title   = {Gatekeeper: Improving Model Cascades Through Confidence Tuning},
   journal = {arXiv preprint arXiv:2502.19335},
   year    = {2025}
@@ -121,33 +122,34 @@
 @inproceedings{geng2024survey,
   author    = {Geng, Jiahui and Cai, Fengyu and Wang, Yuxia and Koeppl, Heinz and Nakov, Preslav and Gurevych, Iryna},
   title     = {A Survey of Confidence Estimation and Calibration in Large Language Models},
-  booktitle = {Proceedings of NAACL},
+  booktitle = {Proceedings of NAACL (Volume 1: Long Papers)},
+  pages     = {6577--6595},
   year      = {2024}
 }
 
 @article{lin2026uqagents,
-  author  = {Lin, M. and Lan, Q. and Guan, S. and Jing, W. and Fan, J. and Gregg, D. and Botterweck, G.},
+  author  = {Lin, Moule and Lan, Qizhen and Guan, Shuhao and Jing, Weipeng and Fan, Jiexin and Gregg, David and Botterweck, Goetz},
   title   = {Uncertainty Quantification for {LLM} Agents: A Taxonomy, an Evaluation Protocol, and an Empirical Study},
   journal = {arXiv preprint arXiv:2609.07395},
   year    = {2026}
 }
 
 @article{duan2025uprop,
-  author  = {Duan, J. and Diffenderfer, J. and Madireddy, S. and Chen, T. and Kailkhura, B. and Xu, K.},
+  author  = {Duan, Jinhao and Diffenderfer, James and Madireddy, Sandeep and Chen, Tianlong and Kailkhura, Bhavya and Xu, Kaidi},
   title   = {{UProp}: Investigating the Uncertainty Propagation of {LLMs} in Multi-Step Agentic Decision-Making},
   journal = {arXiv preprint arXiv:2506.17419},
   year    = {2025}
 }
 
 @article{zhang2026agentic,
-  author  = {Zhang, J. and Xiong, C. and Wu, C.-S.},
+  author  = {Zhang, Jiaxin and Xiong, Caiming and Wu, Chien-Sheng},
   title   = {Agentic Confidence Calibration},
   journal = {arXiv preprint arXiv:2601.15778},
   year    = {2026}
 }
 
 @article{chowdhury2019error,
-  author  = {Chowdhury, A. and Magdon-Ismail, M. and Yener, B.},
+  author  = {Chowdhury, Aritra and Magdon-Ismail, Malik and Yener, B{\"u}lent},
   title   = {Quantifying Contribution and Propagation of Error from Computational Steps, Algorithms and Hyperparameter Choices in Image Classification Pipelines},
   journal = {arXiv preprint arXiv:1903.00405},
   year    = {2019}
@@ -198,12 +200,13 @@
   year    = {2024}
 }
 
-% Classical reference, cited from memory; confirm volume/pages before submission.
+% Verified bibliographic record (DOI 10.1109/34.667881).
 @article{kittler1998combining,
   author  = {Kittler, Josef and Hatef, Mohamad and Duin, Robert P. W. and Matas, Jiri},
   title   = {On Combining Classifiers},
   journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
   volume  = {20},
   number  = {3},
+  pages   = {226--239},
   year    = {1998}
 }

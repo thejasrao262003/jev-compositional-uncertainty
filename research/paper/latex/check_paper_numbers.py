@@ -62,8 +62,19 @@ cm, ck = st["mozilla"]["composition"], st["kernel"]["composition"]
 need("moz S1-S2 discordant", f"{cm['S1_minus_S2']['discordant_S1_only']} vs.\\ {cm['S1_minus_S2']['discordant_S2_only']} discordant")
 need("ker S1-S2 discordant", f"{ck['S1_minus_S2']['discordant_S1_only']} vs.\\ {ck['S1_minus_S2']['discordant_S2_only']} discordant")
 need("moz S1-S2 CI", f"0.17 {ci2(cm['S1_minus_S2']['ci95'])}")
-need("moz H1 totals", f"{cm['h1_per_bug_cost_diff_vs_random']['totals'][0]} vs.\\ {round(cm['h1_per_bug_cost_diff_vs_random']['totals'][1])}")
-need("ker H1 totals", f"{ck['h1_per_bug_cost_diff_vs_random']['totals'][0]} vs.\\ {round(ck['h1_per_bug_cost_diff_vs_random']['totals'][1])}")
+need("moz H1 totals", f"$T = {cm['h1_per_bug_cost_diff_vs_random']['totals'][0]}$ against $\\mu = {cm['h1_per_bug_cost_diff_vs_random']['totals'][1]}$")
+need("ker H1 totals", f"$T = {ck['h1_per_bug_cost_diff_vs_random']['totals'][0]}$ against $\\mu = {ck['h1_per_bug_cost_diff_vs_random']['totals'][1]}$")
+# Budgeted-override cost analysis (Section 7)
+for d, c_ in (("mozilla", cm), ("kernel", ck)):
+    h = c_["h1_per_bug_cost_diff_vs_random"]
+    lo, hi = h["ci95"]
+    sign = "+" if h["point"] > 0 else "-"
+    need(f"{d} H1 per-bug diff + CI", (f"$+{h['point']:.2f}$" if h["point"] > 0 else f"$-{abs(h['point']):.2f}$")
+         + f" [${lo:.2f}$, {hi:.2f}]")
+    need(f"{d} H1 randomization p", f"$p = {h['randomization_p']:.2f}$")
+    need(f"{d} H1 k", f"{h['k']}")
+need("moz H1 null range", f"range {cm['h1_per_bug_cost_diff_vs_random']['null_total_cost_2.5_97.5'][0]}--{cm['h1_per_bug_cost_diff_vs_random']['null_total_cost_2.5_97.5'][1]}")
+need("moz H1 share positive", f"{round(100 * cm['h1_per_bug_cost_diff_vs_random']['share_of_resamples_positive'])}\\% of resamples are positive")
 # Threshold transfer (Table 2)
 sel_m = json.loads((RES / "mozilla_validation_execution_manifest.json").read_text())
 sel_m = sel_m.get("analysis", sel_m)["selectivity"]

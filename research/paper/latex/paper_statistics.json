@@ -58,6 +58,12 @@
           0.245
         ],
         "randomization_p": 0.0498,
+        "share_of_resamples_positive": 0.97,
+        "null_total_cost_2.5_97.5": [
+          323,
+          388
+        ],
+        "k": 21,
         "totals": [
           390,
           357.2
@@ -124,6 +130,12 @@
           0.061
         ],
         "randomization_p": 0.1768,
+        "share_of_resamples_positive": 0.18,
+        "null_total_cost_2.5_97.5": [
+          326,
+          385
+        ],
+        "k": 24,
         "totals": [
           338,
           358.6

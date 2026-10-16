@@ -63,8 +63,9 @@ with central-tendency bias reported for LLM raters in other domains, and
 its confidence gives no indication of it.
 In exploratory analyses, the composition rules we tested did not
 consistently identify which cases to escalate: ranking escalations by
-composed confidence was indistinguishable from random selection on both
-trackers, although the intervals cannot exclude a modest signal. We
+composed confidence did no better than random selection on either
+tracker (one borderline worse-than-random estimate did not replicate), and
+the intervals cannot exclude a modest signal. We
 also show that a natural comparison of confidence-based against
 decision-based composition is confounded when the target action is
 itself a function of the decisions. The corrected comparison is
@@ -134,16 +135,17 @@ human--AI teams \citep{babbar2022predsets} address \emph{one} decision.
 \citep{angelopoulos2021gentle} and conformal risk control
 \citep{angelopoulos2024crc} give distribution-free guarantees. Composition
 across stages has been studied for two stages \citep{zhang2025modular}
-and for multi-stage NLP pipelines, where independently calibrated
-per-stage coverage compounds multiplicatively \citep{kotte2026pasc}.
+and for multi-stage NLP and LLM pipelines, where errors compound across
+stages and independently calibrated stages lack a joint coverage
+guarantee \citep{kotte2026pasc}.
 Error propagation through pipeline steps has also been quantified
 \citep{chowdhury2019error}. Classical reliability theory composes
 component reliabilities \citep{barlow1965reliability}.
 
 \paragraph{Cascades and escalation.} Cascades route a \emph{single} query
 through model tiers. Prior work studies early abstention
-\citep{zellinger2025early}, decision-theoretic escalation
-\citep{bouchard2026escalation}, conformal cascades
+\citep{zellinger2025early}, the optimal depth and deferral thresholds of
+cascades \citep{bouchard2026escalation}, conformal cascades
 \citep{dou2026conformalcascade}, confidence tuning \citep{rabanser2025gatekeeper}
 and judges with escalation guarantees \citep{jung2025trust}.
 
@@ -154,10 +156,10 @@ assumes conditional independence and comparable probability scales, and
 these are precisely the assumptions our strategy S2 makes implicitly. At
 the system level, a recent taxonomy argues that uncertainty in LLM
 applications must be studied across the whole compound system, as it
-propagates between model calls, workflow stages and human processes
-\citep{xia2026propagation}. Cost-sensitive deferral to multiple experts
-under workload limits \citep{alves2024defer} formalizes the budgeted
-escalation setting our follow-up uses.
+propagates within models, across system components and through
+socio-technical processes \citep{xia2026propagation}. Cost-sensitive
+deferral to multiple experts under workload limits \citep{alves2024defer}
+is closely related to the budgeted escalation setting our follow-up uses.
 
 \paragraph{Ordinal outputs and central tendency.} LLM raters have been
 reported to compress ordinal scores toward the middle of the scale, for
@@ -168,9 +170,10 @@ Our severity result is consistent with this literature. What we add is
 that it appears in bug triage, against two labeling processes, and that
 the primitive's own confidence gives no sign of it.
 
-\paragraph{Agents and trajectories.} Closest to us, step-level
-calibration has been shown not to imply trajectory-level calibration for
-LLM agents \citep{lin2026uqagents}. Related work calibrates agent
+\paragraph{Agents and trajectories.} Closest to us, a counterexample
+shows that step-level calibration need not imply trajectory-level
+calibration for LLM agents, and step errors are empirically coupled along
+trajectories \citep{lin2026uqagents}. Related work calibrates agent
 trajectories \citep{zhang2026agentic} and studies uncertainty propagation
 in multi-step agentic decisions \citep{duan2025uprop}.
 
@@ -465,13 +468,34 @@ different prediction targets, which should not be conflated:
 \end{itemize}
 Every interval covers 0.5. The data show no evidence that composed
 confidence ranks either target better than chance, but they cannot rule
-out a modest signal (AUROC up to about 0.6). At a fixed 10\% budget
-scored by cost, the per-bug cost difference of confidence-ranked
-overrides relative to random is $+0.16$ [$-0.01$, 0.25] on Mozilla
-(totals 390 vs.\ 357; randomization $p = 0.05$) and $-0.09$
-[$-0.23$, 0.06] on the kernel (338 vs.\ 359; $p = 0.18$). The point
-estimates have opposite signs and both intervals cover zero, so neither
-tracker gives reliable evidence in either direction.
+out a modest signal (AUROC up to about 0.6). 
+
+\paragraph{Budgeted overrides, scored by cost.} At a fixed budget of
+$k = \lceil 0.1n \rceil$ overrides ($k = 21$ on Mozilla, 24 on the kernel),
+let $T$ be the total cost of the confidence-ranked overrides and $\mu$ the
+exact expected total under $k$ overrides drawn uniformly from the same
+candidates. Two analyses answer two different questions.
+\begin{itemize}
+  \item \textbf{Randomization test, conditional on the evaluated bugs.}
+  This asks whether the ranking selected worse or better overrides than
+  random selection \emph{on these bugs}. The statistic is $|T - \mu|$.
+  The null distribution comes from 10{,}000 random $k$-subsets of the
+  candidates, and the test is two-sided.
+  \item \textbf{Bootstrap over bugs.} This asks how stable the per-bug
+  difference $(T - \mu)/n$ is under resampling of the bugs, with rankings
+  and $\mu$ recomputed in each resample.
+\end{itemize}
+On Mozilla, $T = 390$ against $\mu = 357.2$. The observed value sits at
+the edge of the null distribution (2.5--97.5\% range 323--388), so
+$p = 0.05$. The per-bug difference is $+0.16$ [$-0.01$, 0.24], and 97\% of
+resamples are positive. That is borderline evidence that the product
+ranking chose \emph{worse} overrides than random on Mozilla. On the
+kernel, $T = 338$ against $\mu = 358.6$ ($p = 0.18$), a per-bug difference
+of $-0.09$ [$-0.23$, 0.06]: inconclusive, and in the opposite direction.
+These analyses are exploratory and uncorrected for multiplicity. We read
+them as no consistent benefit from confidence-ranked overrides, with one
+borderline harmful estimate that did not replicate, and not as an
+established harm.
 
 \begin{figure}[t]
 \centering

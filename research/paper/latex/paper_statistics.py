@@ -146,6 +146,13 @@ def analyse(dataset: str) -> dict:
     base_o = {i: per[i]["s1"] for i in ids}
     a_o = {i: per[i]["a_star"] for i in ids}
     h1 = h1_randomization_test(base_o, strategy_2h(base_o, inst(per, ids)), a_o)
+    # randomization null-distribution range, same procedure as the test
+    cand_o = sorted((i for i in base_o if base_o[i] != "escalate"), key=str)
+    k_o = n_overrides(len(base_o), len(cand_o))
+    gain_o = {i: cost("escalate", a_o[i]) - cost(base_o[i], a_o[i]) for i in cand_o}
+    bt_o = sum(cost(base_o[i], a_o[i]) for i in base_o)
+    rnull = random.Random(f"{SEED}:{dataset}:null")
+    null = sorted(bt_o + sum(gain_o[i] for i in rnull.sample(cand_o, k_o)) for _ in range(10_000))
     out["composition"] = {
         "S1_minus_S2": {"point": round(d_point, 3), "ci95": ci(boot_d),
                         "discordant_S1_only": b1, "discordant_S2_only": b2,
@@ -156,6 +163,8 @@ def analyse(dataset: str) -> dict:
                            "target": "S1's action differs from a*"},
         "h1_per_bug_cost_diff_vs_random": {"point": round(point_c["h1_diff"], 3), "ci95": ci(boot_h),
                                            "randomization_p": round(h1["p_two_sided"], 4),
+                                           "share_of_resamples_positive": round(sum(x > 0 for x in boot_h) / len(boot_h), 3),
+                                           "null_total_cost_2.5_97.5": [null[250], null[9749]], "k": k_o,
                                            "totals": [h1["hybrid_total_cost"], round(h1["random_expected_total_cost"], 1)]},
     }
     out["_boot_d"] = boot_d
