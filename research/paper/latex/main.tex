@@ -21,17 +21,19 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise]{cleveref}
 
+\setlength{\emergencystretch}{1em}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\choice}{\texttt{choice}}
 \newcommand{\noul}{\texttt{noul}}
 \newcommand{\score}{\texttt{score}}
 \newcommand{\astar}{a^{*}}
 
-\title{Structured Outputs Do Not Imply Compatible Uncertainty:\\
+\title{Jev's Structured Outputs Do Not Imply Compatible Uncertainty:\\
 An Empirical Study of Confidence Signals in a Multi-Step Decision Workflow}
 
-% Anonymous for review. Contributors: see repository history.
-\author{Anonymous Authors}
+% For a double-blind venue, replace this block with \author{Anonymous Authors}.
+\author{Thejas P Rao\\ \texttt{thejasrao262003@gmail.com}
+  \and Tushar M\\ \texttt{tusharm3040@gmail.com}}
 \date{}
 
 \begin{document}
@@ -41,9 +43,12 @@ An Empirical Study of Confidence Signals in a Multi-Step Decision Workflow}
 Structured-output decision APIs return well-typed answers together with
 numeric confidence, and it is tempting to treat those numbers as
 interchangeable probabilities that can be composed across the steps of a
-workflow. We examine that practice for the three decision primitives of
-one commercial API: a categorical \choice{}, a binary \noul{} and an
-ordinal \score{}. The primitives are chained into a three-step triage
+workflow. We examine that practice for Jev, TypeSafe's structured
+decision model, and its three decision primitives: a categorical
+\choice{}, a binary \noul{} and an ordinal \score{}. TypeSafe documents
+Jev's confidence as a summary of the output distribution rather than a
+calibrated estimate of accuracy. We measure what that distinction means
+once the primitives are composed. The primitives are chained into a three-step triage
 workflow (route, assess, rate severity). We evaluate on controlled
 constructed items, on 202 Mozilla bugs labeled by triage and on 240 Linux
 kernel bugs labeled by their reporters, using 4{,}584 API calls in the main
@@ -85,12 +90,25 @@ workflow-level signal that says when to hand a case to a human.
 We ask a narrower and more testable question. \emph{When a workflow
 chains heterogeneous decision primitives, can it rely on their
 uncertainty signals, and how should it combine them?} Heterogeneity
-matters because the API we study exposes three primitives whose
-uncertainty is \emph{structurally} different. \choice{} returns a
+matters because Jev exposes three primitives whose uncertainty is
+\emph{structurally} different. \choice{} returns a
 distribution over labels plus a scalar confidence. \score{} returns an
 ordinal distribution plus a scalar confidence. \noul{} returns a single
 probability with no separate confidence field. Treating these numbers as
 one kind of quantity is a modeling assumption, and this paper tests it.
+
+\paragraph{What TypeSafe documents.} TypeSafe's documentation describes
+Jev's \texttt{confidence} for \choice{} and \score{} as a number that
+``collapses'' the output distribution into a value between 0 and 1. It
+is 1 when all probability is on one outcome and 0 when probability is
+spread evenly. The documentation calls this ``one reasonable way to
+summarize a distribution, not the only one'', and advises setting
+thresholds from one's own data \citep{typesafe2026confidence}. For
+\noul{}, it returns ``a single probability'' with ``no separate
+\texttt{confidence}''. Our results are therefore not a test of a
+calibration claim. They are a measurement of how these documented
+concentration statistics behave as escalation signals when Jev's
+primitives are chained, which the documentation leaves open.
 
 \paragraph{Contributions.}
 \begin{enumerate}
@@ -113,7 +131,7 @@ one kind of quantity is a modeling assumption, and this paper tests it.
 \end{enumerate}
 
 \paragraph{Non-claims.} We make no claim about general calibration, other
-APIs or model versions, domains beyond software bug triage, or real-world
+Jev versions or other APIs, domains beyond software bug triage, or real-world
 operational benefit.
 
 %======================================================================
@@ -181,7 +199,7 @@ in multi-step agentic decisions \citep{duan2025uprop}.
 decisions, cascades of the \emph{same} decision, agent trajectories, and
 system-level propagation in general. Our contribution is narrower and
 empirical. We measure how the uncertainty signals of three
-\emph{structurally different} primitives of one API behave inside one
+\emph{structurally different} primitives of Jev behave inside one
 workflow against real labels, and whether simple composition rules over
 them identify escalation candidates. We are not aware of prior work with
 this specific design. Our literature search was web-based and did not
@@ -193,8 +211,9 @@ research, so we make no stronger priority claim.
 \label{sec:setting}
 %======================================================================
 
-\paragraph{Primitives and repeats.} All runs use model version
-\texttt{jev-1.13.0}. Each node is called three times, and the three
+\paragraph{Jev and repeats.} All calls go to the TypeSafe API with model
+\texttt{jev-latest}, which resolved to \texttt{jev-1.13.0} in every one of
+our calls. Each node is called three times, and the three
 answers are reduced to one decision. For \choice{} and \score{} we take
 the modal decision with a tie tolerance of 0.02; a node with no
 two-of-three majority is \emph{repeat-unstable}. For \noul{} we threshold
@@ -402,7 +421,7 @@ higher than their label: 79\% [0.67, 0.88] on Mozilla and 75\%
 severity definitions in place of ours, serious bugs improve but normal
 bugs are pushed up, and agreement moves only from 0.53 to 0.56. The
 criteria matter, but the compression persists. The two trackers differ
-in project, bug population and labeling process. They share the API,
+in project, bug population and labeling process. They share Jev,
 the prompts, our sampling design and, plausibly, training-data exposure,
 so the replication speaks against an artifact of one \emph{labeling}
 process, not against every shared factor. The pattern matches
@@ -565,8 +584,9 @@ selectivity on pilot inputs, before freezing any escalation policy.
 %======================================================================
 
 \begin{itemize}
-  \item \textbf{Generality.} We study one API at one model version, in one
-  domain.
+  \item \textbf{Generality.} We study one model (Jev, version 1.13.0) in
+  one domain. Later Jev versions, or other structured-output APIs, may
+  behave differently.
   \item \textbf{References are not truth.} Mozilla's triage sample
   excludes re-triaged bugs, which biases agreement upward. Kernel labels
   are reporters' claims, and the kernel's middle level is a default value.
@@ -606,10 +626,10 @@ the follow-up.
 \section{Conclusion}
 %======================================================================
 
-Structured outputs make uncertainty \emph{look} uniform: every primitive
-returns a number between 0 and 1. In the evaluated workflow, the
-confidence values of three heterogeneous primitives showed distinct
-failure modes. One was saturated but informative, one was uninformative,
+Structured outputs make uncertainty \emph{look} uniform: every Jev
+primitive returns a number between 0 and 1. In the evaluated workflow,
+the confidence values of Jev's three heterogeneous primitives showed
+distinct failure modes. One was saturated but informative, one was uninformative,
 and one was flat while its decisions were systematically biased. Fixed
 thresholds on them did not keep their selectivity across content
 distributions, and the composition rules we tested did not consistently

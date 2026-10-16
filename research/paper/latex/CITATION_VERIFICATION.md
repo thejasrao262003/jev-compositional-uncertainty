@@ -26,6 +26,7 @@ remain unverified.
 | geng2024survey | Survey of LLM confidence estimation and calibration | ACL Anthology 2024.naacl-long.366 | Consistent; pages added |
 | babbar2022predsets | Prediction sets in human–AI teams | Abstract (IJCAI 2022 per arXiv comment) | Consistent |
 | madras2018predict | Learning to defer | NeurIPS 2018 proceedings | Consistent. Title is the NeurIPS one ("Improving Fairness and Accuracy …") |
+| typesafe2026confidence | Jev's `confidence` summarizes the output distribution (1 = all mass on one outcome, 0 = even); "one reasonable way to summarize a distribution, not the only one"; set thresholds on your own data; `noul` returns a single probability with no separate confidence | docs.typesafe.ai/confidence, fetched 2026-10-16 | Consistent. The page doesn't use the name "Jev"; the model name `jev-*` comes from the TypeSafe API (`jev-latest` → `jev-1.13.0`) |
 | angelopoulos2021gentle, angelopoulos2024crc | Conformal prediction; conformal risk control | Literature-matrix abstract fetches | Not re-checked this pass |
 | platt1999probabilistic, guo2017calibration, naeini2015bbq, elyaniv2010selective, geifman2017selective, geifman2019selectivenet, barlow1965reliability | Standard background | Literature matrix | Not re-checked this pass (classical, widely cited) |
 
