@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{cite}
 \input{macros}
+\usepackage{float}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise]{cleveref}
 \newcommand{\citep}[1]{\cite{#1}}
@@ -11,6 +12,8 @@
 \newcommand{\para}[1]{\par\smallskip\noindent\textit{#1.}\ }
 \newenvironment{colfigure}{\begin{figure}[t]}{\end{figure}}
 \newenvironment{coltable}{\begin{table}[t]}{\end{table}}
+% Appendix tables print exactly where written (no floating into the references).
+\newenvironment{apptable}{\begin{table}[H]}{\end{table}}
 \newenvironment{widefigure}{\begin{figure*}[t]}{\end{figure*}}
 \newenvironment{widetable}{\begin{table*}[t]}{\end{table*}}
 
