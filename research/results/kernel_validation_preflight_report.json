@@ -1,0 +1,109 @@
+{
+  "status": "dry-run; no Jev call made",
+  "inputs": {
+    "dataset.jsonl": {
+      "sha256": "3ee3f5a87511849a49a14fb2bd0282db85beeca0d149d622e7594fecb38e5a4f",
+      "match": true
+    },
+    "build_kernel_dataset.py": {
+      "sha256": "2fa27d22385f67a442b2e1bf3a354152e135cb7f90f6f0d1ada997a1075e5dc3",
+      "match": true
+    },
+    "dependencies": {
+      "run_workflow_calibration_pilot.py": {
+        "sha256": "ff080cbff22b0071aed95ec8cc39e89c74a942999fa33ddfc2b1ffb85e14db12",
+        "match": true
+      },
+      "build_workflow_calibration_pilot_manifest.py": {
+        "sha256": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de",
+        "match": true
+      },
+      "stage1_h1h2b_analysis.py": {
+        "sha256": "6d6b5ef36d32033b0319326bcd104662fc864ff31c05f781f12d84c778a48faa",
+        "match": true
+      },
+      "run_mozilla_validation.py": {
+        "sha256": "c34a26610ba96326d69b41d7596b1cc6ac4832c3ff4637149a902669fcaceb70",
+        "match": true
+      },
+      "build_mozilla_dataset.py": {
+        "sha256": "64d71a61f1e169ba179fd5e3976f1751e610a89090b455b21cfaf50526c3d913",
+        "match": true
+      },
+      "workflow_strategies_r11.py": {
+        "sha256": "e0f81ed17355e0433f9f45b1f427fc3aa76422e2a9e872f9f6054cdf6fc87dff",
+        "match": true
+      },
+      "workflow_strategy5_proposal.py": {
+        "sha256": "7d4a16452b94cab1659aa910bf09187469c3cc9c85454cad98b37b1d1359edba",
+        "match": true
+      },
+      "analyze_stage1.py": {
+        "sha256": "4f13e31f43cf5e62c906242ac4616dfd8773496d2d134f74f0dd82874332d10b",
+        "match": true
+      },
+      "build_score_phase_b_manifest.py": {
+        "sha256": "9fd4e489cde48b8b8751c8e636541d45241708013a8c842ee7a496c0854e9873",
+        "match": true
+      }
+    }
+  },
+  "n_bugs": 240,
+  "cells": {
+    "network:level2": 40,
+    "network:level1": 40,
+    "network:level0": 40,
+    "storage:level2": 40,
+    "storage:level1": 40,
+    "storage:level0": 40
+  },
+  "arms": [
+    "choice",
+    "noul",
+    "score"
+  ],
+  "planned_calls": 2160,
+  "calls_per_bug": 9,
+  "live_confirm_flag": "--confirm-2160-kernel-calls",
+  "smoke_test": {
+    "bugs": 24,
+    "calls": 216,
+    "confirm_flag": "--confirm-216-kernel-smoke-calls"
+  },
+  "subset_sizes": {
+    "all": 240,
+    "no_routing_cue": 191,
+    "no_routing_cue_extended": 26,
+    "no_regression_wording": 227,
+    "recent_since_2018": 35
+  },
+  "questions": {
+    "choice": {
+      "routing": {
+        "type": "choice",
+        "instructions": "Which subsystem is most likely responsible for this incident?",
+        "criteria": {
+          "network": "Issues with connectivity, latency, routing, DNS, or packet loss between systems",
+          "storage": "Issues with local data storage: databases, IndexedDB, quota, caches, or persistence"
+        }
+      }
+    },
+    "noul": {
+      "regression": {
+        "type": "noul",
+        "instructions": "Is this bug a regression (something that used to work and broke)?"
+      }
+    },
+    "score": {
+      "severity": {
+        "type": "score",
+        "instructions": "How severe is this incident?",
+        "criteria": [
+          "Cosmetic; no impact to functionality",
+          "Broken or degraded feature, but a workaround exists",
+          "Blocking issue; no workaround exists"
+        ]
+      }
+    }
+  }
+}

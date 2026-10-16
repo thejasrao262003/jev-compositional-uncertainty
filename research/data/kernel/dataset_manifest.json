@@ -1,0 +1,195 @@
+{
+  "status": "built for review; no Jev call made",
+  "proposal": "research/methodology/kernel_replication_proposal.md",
+  "replicates": "research/methodology/mozilla_realistic_validation_proposal.md",
+  "built_utc": "2026-10-16T14:26:51.440904+00:00",
+  "fetch": {
+    "cache_used": true,
+    "cache_location": "scratchpad directory outside the repository (not committed)",
+    "cache_hits": 500,
+    "network_fetches": 0,
+    "earliest_fetch_utc": "2026-10-16T14:04:07.210304+00:00",
+    "latest_fetch_utc": "2026-10-16T14:26:32.921702+00:00"
+  },
+  "source": "https://bugzilla.kernel.org/rest",
+  "filters": {
+    "resolution": [
+      "CODE_FIX",
+      "PATCH_ALREADY_AVAILABLE"
+    ],
+    "created_from": null,
+    "severity_excluded": [
+      "enhancement"
+    ],
+    "groups": {
+      "network": [
+        "Networking :: (all components)",
+        "Drivers :: Network, network-wireless, network-wireless-intel"
+      ],
+      "storage": [
+        "IO/Storage :: (all components)",
+        "File System :: ext4, btrfs, XFS"
+      ]
+    },
+    "excluded_as_ambiguous": [
+      "File System :: NFS",
+      "File System :: NFSD"
+    ]
+  },
+  "severity_to_level": {
+    "blocking": 2,
+    "high": 2,
+    "normal": 1,
+    "low": 0
+  },
+  "severity_label_source": "reporter-set (kernel Bugzilla has no triage step for severity)",
+  "regression_label": "cf_regression == 'Yes' -> 1, else ('No' or '---') -> 0",
+  "seed": "kernel-replication-v1",
+  "target_per_cell": 40,
+  "cleaning": {
+    "function": "build_mozilla_dataset.clean (imported, unchanged)",
+    "max_chars": 2000,
+    "min_body_chars": 100,
+    "truncation_rule": "cut at 2,000 characters, at the last '. ', '.\\n' or blank line if it falls after character 1,000, else a hard cut",
+    "privacy_pre_step": [
+      "kernel trailer lines (Signed-off-by:, Reported-by:, Cc:, From:, ...) dropped",
+      "reporter/assignee display names -> [name] (names held in memory only, never written)",
+      "any residual token containing '@' -> [email]"
+    ],
+    "removed": [
+      "fenced code blocks",
+      "stack-frame lines (Mozilla regex)",
+      "user-agent lines",
+      "attachment lines",
+      "URLs -> [link]",
+      "emails, incl. 'name [at] host' -> [email]"
+    ],
+    "fuzzing_markers": [
+      "found while fuzzing",
+      "fuzzfetch",
+      "grizzly",
+      "--enable-fuzzing",
+      "fuzzing-team",
+      "oss-fuzz",
+      "fuzzilli",
+      "syzkaller",
+      "syzbot"
+    ]
+  },
+  "severity_retriage_exclusion": "severity changed away from one of ['blocking', 'enhancement', 'high', 'low']",
+  "intermittent_exclusion": {
+    "summary_prefixes": [
+      "intermittent",
+      "perma ",
+      "permanent"
+    ],
+    "description_markers": [
+      "**filed by:**"
+    ]
+  },
+  "cells": {
+    "network:level2": {
+      "eligible_before_exclusions": 512,
+      "excluded_intermittent": 0,
+      "excluded_fuzzing": 0,
+      "excluded_too_short": 1,
+      "excluded_severity_retriaged": 0,
+      "excluded_duplicate": 0,
+      "inspected": 41,
+      "selected": 40,
+      "shortfall": 0
+    },
+    "network:level1": {
+      "eligible_before_exclusions": 1617,
+      "excluded_intermittent": 0,
+      "excluded_fuzzing": 0,
+      "excluded_too_short": 2,
+      "excluded_severity_retriaged": 0,
+      "excluded_duplicate": 0,
+      "inspected": 42,
+      "selected": 40,
+      "shortfall": 0
+    },
+    "network:level0": {
+      "eligible_before_exclusions": 99,
+      "excluded_intermittent": 0,
+      "excluded_fuzzing": 0,
+      "excluded_too_short": 2,
+      "excluded_severity_retriaged": 0,
+      "excluded_duplicate": 0,
+      "inspected": 42,
+      "selected": 40,
+      "shortfall": 0
+    },
+    "storage:level2": {
+      "eligible_before_exclusions": 338,
+      "excluded_intermittent": 0,
+      "excluded_fuzzing": 0,
+      "excluded_too_short": 0,
+      "excluded_severity_retriaged": 0,
+      "excluded_duplicate": 0,
+      "inspected": 40,
+      "selected": 40,
+      "shortfall": 0
+    },
+    "storage:level1": {
+      "eligible_before_exclusions": 1092,
+      "excluded_intermittent": 1,
+      "excluded_fuzzing": 0,
+      "excluded_too_short": 0,
+      "excluded_severity_retriaged": 0,
+      "excluded_duplicate": 0,
+      "inspected": 41,
+      "selected": 40,
+      "shortfall": 0
+    },
+    "storage:level0": {
+      "eligible_before_exclusions": 56,
+      "excluded_intermittent": 0,
+      "excluded_fuzzing": 0,
+      "excluded_too_short": 0,
+      "excluded_severity_retriaged": 0,
+      "excluded_duplicate": 0,
+      "inspected": 40,
+      "selected": 40,
+      "shortfall": 0
+    }
+  },
+  "n_records": 240,
+  "label_balance": {
+    "regression": 46,
+    "recent_since_2018": 35,
+    "severity_changed_after_filing": 15
+  },
+  "truncation": {
+    "truncated": 97,
+    "by_kind": {
+      "none": 143,
+      "sentence_or_paragraph_boundary": 48,
+      "hard_cut": 49
+    },
+    "cleaned_chars_before_truncation": {
+      "median": 1482.5,
+      "max": 54595
+    },
+    "final_chars": {
+      "min": 170,
+      "median": 1310.5,
+      "max": 2000
+    },
+    "log_line_share": {
+      "median": 0.0,
+      "bugs_with_share_ge_0.5": 41
+    }
+  },
+  "privacy": {
+    "trailer_lines_dropped": 7,
+    "name_occurrences_scrubbed": 85,
+    "bugs_with_name_scrubbed": 22,
+    "residual_at_sign_removed": 52
+  },
+  "mozilla_builder_sha256": "64d71a61f1e169ba179fd5e3976f1751e610a89090b455b21cfaf50526c3d913",
+  "builder_script_sha256": "2fa27d22385f67a442b2e1bf3a354152e135cb7f90f6f0d1ada997a1075e5dc3",
+  "dataset_sha256": "3ee3f5a87511849a49a14fb2bd0282db85beeca0d149d622e7594fecb38e5a4f",
+  "note": "Snapshot of live Bugzilla data: a rebuild can differ if bugs are edited or newly fixed. dataset.jsonl plus its hash is the frozen artifact, not the query."
+}

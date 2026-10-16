@@ -1,0 +1,159 @@
+{
+  "generated_utc": "2026-10-16T12:42:48.660213+00:00",
+  "source": "https://bugzilla.kernel.org/rest",
+  "status": "counts only; no Jev call made",
+  "filters": {
+    "resolution": [
+      "CODE_FIX",
+      "PATCH_ALREADY_AVAILABLE"
+    ],
+    "created_from": null,
+    "recent_from": "2018-01-01"
+  },
+  "groups": {
+    "network": [
+      "Networking :: (all components)",
+      "Drivers :: Network, network-wireless, network-wireless-intel"
+    ],
+    "storage": [
+      "IO/Storage :: (all components)",
+      "File System :: ext4, btrfs, XFS"
+    ]
+  },
+  "severity_to_level": {
+    "blocking": 2,
+    "high": 2,
+    "normal": 1,
+    "low": 0
+  },
+  "counts_by_severity": {
+    "network": {
+      "low": 99,
+      "normal": 1617,
+      "high": 383,
+      "blocking": 129,
+      "enhancement": 15
+    },
+    "storage": {
+      "normal": 1092,
+      "blocking": 85,
+      "low": 56,
+      "high": 253,
+      "enhancement": 11
+    }
+  },
+  "counts_by_level": {
+    "network": {
+      "level2": 512,
+      "level1": 1617,
+      "level0": 99
+    },
+    "storage": {
+      "level2": 338,
+      "level1": 1092,
+      "level0": 56
+    }
+  },
+  "cf_regression_values": {
+    "network": {
+      "---": 679,
+      "Yes": 581,
+      "No": 983
+    },
+    "storage": {
+      "---": 480,
+      "No": 681,
+      "Yes": 336
+    }
+  },
+  "regression_yes_by_level": {
+    "network": {
+      "level2": 123,
+      "level1": 444,
+      "level0": 13
+    },
+    "storage": {
+      "level2": 76,
+      "level1": 257,
+      "level0": 3
+    }
+  },
+  "recent_since_2018_by_level": {
+    "network": {
+      "level2": 116,
+      "level1": 308,
+      "level0": 7
+    },
+    "storage": {
+      "level2": 50,
+      "level1": 187,
+      "level0": 7
+    }
+  },
+  "recent_since_2018_regression_yes_by_level": {
+    "network": {
+      "level2": 34,
+      "level1": 57,
+      "level0": 0
+    },
+    "storage": {
+      "level2": 24,
+      "level1": 17,
+      "level0": 1
+    }
+  },
+  "components": {
+    "network": {
+      "Drivers :: Network": 618,
+      "Networking :: Other": 317,
+      "Networking :: IPV4": 172,
+      "Networking :: IPV6": 86,
+      "Networking :: Netfilter/Iptables": 89,
+      "Drivers :: network-wireless": 637,
+      "Networking :: Wireless": 224,
+      "Drivers :: network-wireless-intel": 100
+    },
+    "storage": {
+      "IO/Storage :: IDE": 151,
+      "IO/Storage :: Other": 82,
+      "IO/Storage :: SCSI": 106,
+      "IO/Storage :: Block Layer": 134,
+      "IO/Storage :: DIO": 3,
+      "IO/Storage :: LVM2/DM": 43,
+      "IO/Storage :: MD": 81,
+      "IO/Storage :: AIO": 10,
+      "File System :: XFS": 93,
+      "IO/Storage :: Serial ATA": 285,
+      "IO/Storage :: File Locking": 2,
+      "File System :: ext4": 156,
+      "File System :: btrfs": 335,
+      "IO/Storage :: NVMe": 16
+    }
+  },
+  "description_sample": {
+    "network": {
+      "n": 24,
+      "median_chars": 873.0,
+      "max_chars": 7258,
+      "share_over_2000_chars": 0.208,
+      "median_log_line_share": 0.0
+    },
+    "storage": {
+      "n": 24,
+      "median_chars": 1166.5,
+      "max_chars": 57542,
+      "share_over_2000_chars": 0.375,
+      "median_log_line_share": 0.0
+    }
+  },
+  "severity_history_sample": {
+    "network": {
+      "n": 24,
+      "severity_changed_after_filing": 0
+    },
+    "storage": {
+      "n": 24,
+      "severity_changed_after_filing": 1
+    }
+  }
+}
