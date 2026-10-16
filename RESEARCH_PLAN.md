@@ -1,13 +1,14 @@
 > **Current status (2026-10-16):** the `choice`/`noul` characterization
 > and both `score` studies are complete. The first workflow calibration
-> pilot has run (270 calls). Tushar's Mozilla real-data study is reviewed
-> and ready to run; its 10% smoke test (252 calls) found that Revision
-> 10's confidence thresholds didn't carry over from synthetic to real
-> text, which led to **Revision 11** of the Step 2 protocol. N is void
-> until the second calibration pilot. No Step 2 evaluation call has been
-> made. The updates below run **oldest first**; the latest is
-> "Update (Revision 11 …)", just before the session-1 plan. For a short
-> overview, see `README.md`.
+> pilot has run (270 calls). Tushar's Mozilla real-data study has run in
+> full (2,424 calls); see `research/results/mozilla_validation_results.md`.
+> Its smoke test led to **Revision 11**, and **Revision 12** (Strategy 5)
+> is proposed, awaiting a decision. The paper's findings are pulled
+> together in `research/results/findings_synthesis.md`. N is void until
+> the second calibration pilot. No Step 2 evaluation call has been made.
+> The updates below run **oldest first**; the latest is "Update (Mozilla
+> full run …)", just before the session-1 plan. For a short overview,
+> see `README.md`.
 
 **Update (post collaborator review):** the sections below reflect the
 original session-1 state. A collaborator review then (1) approved Step 0A/
@@ -1074,6 +1075,32 @@ review commits, the smoke test and Revision 11 are local on
 - settle the grammar's reuse definition;
 - run the second calibration pilot under Revision 11, which re-measures
   `d` → recompute N.
+
+**Update (Mozilla full run; Revision 12 proposed — 2026-10-16):**
+- **Run.** 2,424/2,424 calls, all parsed, `jev-1.13.0` throughout.
+- **Per node, agreement with Mozilla's triage:**
+  - `choice` 0.89 (cue-free texts 0.84);
+  - `noul` 0.80 (always "no" scores 0.74);
+  - `score` 0.53. It compresses toward the middle: 79% of S4 bugs are
+    rated higher, 43% of S1/S2 lower.
+- **Confidence:** `choice` is saturated but accurate at the top; the
+  Stage 1 high-confidence error subgroup doesn't recur. `noul`'s
+  confidence is uninformative.
+- **Strategies (descriptive):**
+  - decision composition 0.65, confidence product 0.48 (disagreements
+    60 vs 27);
+  - Strategy 5 0.47;
+  - the Revision 10 thresholds 0.37–0.40, confirming the threshold
+    transfer finding.
+- **Revision 12** proposes Strategy 5 and leading the paper with the
+  findings. It was committed before these results were examined. The
+  addendum records that Strategy 5 ≈ Strategy 2 on Mozilla, explicitly
+  non-decisive.
+- **Next, needs a decision:**
+  - adopt Revision 12 or not;
+  - grammar reuse definition → freeze and audit → second pilot →
+    recompute N;
+  - push/merge `mozilla-proposal`.
 
 # Research plan — session 1 (Phase 0 + Phase 1)
 

@@ -95,3 +95,28 @@ respects Tushar's proposal §4.
 Adopt Revision 12 (Strategy 5 added, two primary comparisons with Holm
 correction, the paper led by C)? If yes, it is folded into the protocol
 before the grammar freeze and the second calibration pilot.
+
+## 7. Addendum after the full Mozilla run (2026-10-16) — not decisive
+
+Added after the run. The text above is unchanged from commit `7c15bd7`.
+
+On Mozilla (descriptive, n = 202):
+- Strategy 5 scored 94/202 = 0.47 and Strategy 2 scored 97/202 = 0.48.
+- Their disagreements split 17 (5 right) vs 20 (2 right).
+- The admissibility rule excluded `choice`, as expected from its
+  saturation, so Strategy 5 ranked on `noul` and `score`.
+- `noul`'s confidence turned out to be uninformative on this data:
+  agreement is flat across bands.
+
+**This must not decide adoption.** Under Tushar's proposal §4, Mozilla
+outcomes set no Step 2 design choice. Changing the recommendation
+because Strategy 5 did no better here would be exactly the post-hoc
+tuning the protocol forbids.
+
+It is still disclosed because it lowers the prior that 2 vs 5 will
+show a difference. The likely Step 2 outcome for 2 vs 5 is therefore a
+non-significant result. N is sized for an MDE of 0.05, so a true
+difference below that would most likely be missed. The paper should be
+ready to report that null honestly. The
+recommendation in §1 stands as written. Adopt or reject is the
+reviewer's decision.
