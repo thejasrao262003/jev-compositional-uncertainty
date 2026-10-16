@@ -24,6 +24,28 @@ is an empirical characterization of how uncertainty representations and
 composition rules behave on controlled and real data, plus a method for
 catching failure modes before a workflow is evaluated.
 
+## Replication on a second tracker (2026-10-16)
+
+The Linux kernel Bugzilla replication: 240 bugs, reporter-set labels,
+2,160 calls, all clean (`kernel_validation_results.md`).
+
+**Replicates:**
+- **F1:** `choice` saturated but discriminative (AUROC 0.98); `noul`
+  uninformative (AUROC 0.41); `score` flat across levels.
+- **F2:** the trigger fired on 96%; the 0.5 cut escalated 78% vs a
+  target of 42%.
+- **F3, more strongly:** minor bugs rated higher 0.75; serious rated
+  lower 0.56.
+- **The restated F4:** composed confidence was at chance for choosing
+  overrides (AUROC 0.50–0.51), and the sign of 2h vs random flipped
+  between trackers, which is consistent with no information.
+
+**Doesn't replicate:** the strength of "decisions beat confidences"
+(Mozilla p = 0.0005; kernel p = 0.20; recent kernel bugs reverse it).
+
+**New:** `noul`'s error direction is dataset-dependent. It misses
+regressions on Mozilla and over-flags them on the kernel.
+
 ## F1. The three primitives behave incompatibly as uncertainty signals
 
 | Primitive | Synthetic (Stages 0–1, pilot) | Real data (Mozilla, n = 202) |

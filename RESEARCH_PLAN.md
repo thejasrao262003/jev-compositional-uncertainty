@@ -1205,6 +1205,21 @@ Revision 12.1; second dataset chosen — 2026-10-16):**
 - **Second dataset:** Linux kernel Bugzilla (reporter-set labels),
   feasibility recorded; replication being prepared without Jev calls.
 
+**Update (kernel replication run — 2026-10-16):**
+- **The run:** smoke test (216 calls) and full run (2,160 calls) on 240
+  Linux kernel bugs with reporter-set labels; all clean, `jev-1.13.0`.
+- **Replicates:**
+  - `choice` 0.975, saturated, AUROC 0.98;
+  - `score` compression (0.75 of minor bugs rated higher, 0.56 of
+    serious rated lower);
+  - the threshold-transfer failure (96% / 78%);
+  - composed confidence at chance for overrides.
+- **Doesn't replicate:** the strength of 4a > 2 (p = 0.20).
+- **New:** `noul` over-flags regressions (63 false alarms vs 3 misses),
+  which leaves it below the always-no baseline. The pre-registered K3
+  subset shows unset labels aren't the cause.
+- **Paper draft v0.2** has the kernel results filled in.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

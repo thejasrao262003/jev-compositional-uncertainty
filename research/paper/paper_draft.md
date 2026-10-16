@@ -1,9 +1,8 @@
 # Structured Outputs Do Not Imply Compatible Uncertainty: An Empirical Study of Confidence Signals in a Multi-Step Decision Workflow
 
-*Working draft v0.1, 2026-10-16. Target: workshop paper or preprint
+*Working draft v0.2, 2026-10-16 (kernel results filled in). Target: workshop paper or preprint
 (option A in the session log). Every number is taken from a committed
-result file, cited in brackets as [file]. `TBD-K` marks kernel
-replication results to fill in after the full run. Citation keys refer to
+result file, cited in brackets as [file]. Citation keys refer to
 `research/literature/literature_matrix.csv`; all must be re-verified
 before submission (the literature pass was web-search only).*
 
@@ -22,23 +21,27 @@ that practice on a commercial API's three decision primitives:
 The primitives are chained into a three-step triage workflow (route →
 assess → rate severity). Data comes from three sources: controlled
 constructed items, 202 human-triaged Mozilla bugs, and 240 reporter-labeled
-Linux kernel bugs (`TBD-K`). Four findings:
+Linux kernel bugs. Four findings, each replicated on both trackers:
 
 1. **The primitives' uncertainty signals behave incompatibly.**
-   - `choice` confidence is saturated (85% of real bugs at ≥ 0.90) but
-     discriminative (AUROC 0.90).
-   - `noul`'s confidence-like value is uninformative (AUROC 0.53) and
-     underconfident.
+   - `choice` confidence is saturated (85–96% of real bugs at ≥ 0.90)
+     but discriminative (AUROC 0.90 and 0.98).
+   - `noul`'s confidence-like value is uninformative (AUROC 0.53 and
+     0.41).
    - `score`'s confidence is flat across true levels.
 2. **Fixed confidence thresholds tuned on constructed data lost their
    intended selectivity on real text.** A cut that escalated 73% of
-   constructed items (target 67%) escalated 88% of real bugs (target
-   41%).
-3. **`score` compresses real severity toward the middle.** It rates 79%
-   of minor bugs higher than triage and 43% of serious bugs lower.
+   constructed items (target 67%) escalated 88% and 78% of real bugs
+   (targets 41–42%).
+3. **`score` compresses real severity toward the middle,** against both
+   triage and reporter labels. It rates 75–79% of minor bugs higher and
+   43–56% of serious bugs lower.
 4. **Composed confidence added nothing beyond the decisions**
    (exploratory). Escalating the least-confident cases on top of
-   decision composition never beat random escalation of the same size.
+   decision composition performed at chance on both trackers (override
+   AUROC 0.49–0.51). The apparent advantage of decision composition over
+   confidence composition did not replicate in strength (exact p = 0.0005
+   vs. 0.20).
 
 We also report a methodological lesson: a natural "confidence vs.
 decisions" comparison is confounded when the target action is defined by
@@ -169,8 +172,13 @@ costs 6–10, any other mismatch 1, plus 1 per escalation for the human.
 
 [mozilla_validation_results.md; mozilla_exploratory_analysis.md E4]
 
-**Kernel replication:** `TBD-K`. The smoke test (n = 24) showed `choice`
-at confidence 1.0 on 24/24 bugs [kernel_smoketest_execution_manifest.json].
+**Kernel replication (n = 240, reporter labels)**
+[kernel_validation_results.md]:
+- **`choice`:** 230/240 at ≥ 0.90, agreeing 0.99; AUROC 0.98; ECE 0.02.
+- **`noul`:** AUROC 0.41; agreement non-monotonic across bands; ECE 0.36.
+- **`score`:** confidence 0.65 / 0.62 / 0.61 across true levels.
+
+All three patterns replicate.
 
 **Reading.** On these primitives, a number labeled "confidence" ranges
 from discriminative-but-saturated to uninformative. Whatever composition
@@ -182,8 +190,8 @@ rule is used, it inherits that mix.
 
 | Rule (designed on constructed data) | Constructed pilot | Mozilla (202) | Kernel |
 |---|---|---|---|
-| Escalate if `choice` confidence ≥ 0.90 | fires 27/30 | 85% | smoke 24/24; `TBD-K` |
-| Accept iff confidence product ≥ 0.5 | escalates 73% (target 67%) | 88% (target 41%) | smoke 92%; `TBD-K` |
+| Escalate if `choice` confidence ≥ 0.90 | fires 27/30 | 85% | 96% |
+| Accept iff confidence product ≥ 0.5 | escalates 73% (target 67%) | 88% (target 41%) | 78% (target 42%) |
 
 [threshold_transfer_finding.md]
 
@@ -205,7 +213,7 @@ it was set on. Constructed data was too clean to reveal this.
 - **Mozilla:** 202 fixed Firefox networking and storage bugs, labeled by
   triage (S1–S4).
 - **Linux kernel:** 240 fixed networking and storage bugs, labeled by
-  the reporter (`TBD-K`).
+  the reporter.
 
 Both trackers' keyword-free subsets are reported.
 
@@ -213,16 +221,16 @@ Both trackers' keyword-free subsets are reported.
 
 | Node | Mozilla | Trivial baseline | Kernel |
 |---|---|---|---|
-| `choice` | 0.89 [0.83, 0.92] | 0.59 | `TBD-K` (smoke 24/24) |
-| `noul` | 0.80 [0.74, 0.85] | 0.74 | `TBD-K` (smoke 15/24) |
-| `score` | 0.53 [0.46, 0.60] | 0.40 | `TBD-K` (smoke 9/24) |
+| `choice` | 0.89 [0.83, 0.92] | 0.59 | 0.975 [0.95, 0.99] (baseline 0.50) |
+| `noul` | 0.80 [0.74, 0.85] | 0.74 | 0.725 [0.67, 0.78] (baseline 0.81; over-flags 63 vs 3 misses) |
+| `score` | 0.53 [0.46, 0.60] | 0.40 | 0.44 [0.38, 0.50] (baseline 0.33) |
 
 **Severity compression (`score`):**
 
 | True level | Mozilla: rated higher | Mozilla: rated lower | Kernel |
 |---|---|---|---|
-| minor | 42/53 = 0.79 [0.67, 0.88] | — | `TBD-K` (smoke 7/8) |
-| serious | — | 29/68 = 0.43 | `TBD-K` (smoke 5/8) |
+| minor | 42/53 = 0.79 [0.67, 0.88] | — | rated higher 60/80 = 0.75 [0.65, 0.83] |
+| serious | — | 29/68 = 0.43 | rated lower 45/80 = 0.56 |
 
 **Wording.** With Mozilla's own severity definitions, serious bugs
 improve but normal bugs are pushed up (overall 0.56). The criteria matter,
@@ -234,7 +242,7 @@ be an artifact of one labeling process.
 
 ---
 
-## 7. Composition (exploratory, Mozilla; kernel `TBD-K`)
+## 7. Composition (exploratory, both trackers)
 
 **7.1 The naive comparison is confounded.**
 - S1/S4a beat S2: 0.65 vs 0.48, discordant pairs 60 vs 27, exact p =
@@ -258,9 +266,18 @@ decisions?**
 confidence (`choice`, AUROC 0.90) belongs to the one node `F` doesn't
 use. The informative signal never reaches the action.
 
-**Kernel:** `TBD-K`. In the smoke test the naive strategy ranking reversed
-(S2 12/24, S5 14/24 vs S1 9/24). At n = 24 this is noise-level, but it is
-reported whichever way the full run goes.
+**Kernel replication** [kernel_validation_results.md §E]:
+- **The override curve tracks random at every `k`.** AUROC 0.50–0.51.
+- **Error flagging is at or below chance.** AUROC 0.47–0.53.
+- **At the 10% budget,** product-ranked overrides cost 338 vs 358.6 for
+  random (p = 0.18). That is the opposite sign to Mozilla. Both are
+  consistent with no information.
+- **The naive comparison weakens:** 4a vs 2 is 66 vs 51 (p = 0.20), and
+  the recent-bug subset reverses it.
+
+**The finding that holds on both trackers** is the restated one:
+composed confidence carries about no information about which cases to
+escalate. The stronger "decisions beat confidences" claim does not.
 
 **Status.** Everything in §7 is post hoc and hypothesis-generating. The
 confirmatory test is pre-registered (§10).
@@ -320,14 +337,14 @@ as the answer to the composition question.
 - B. Strategy definitions and code pointers.
 - C. Dataset construction for both trackers (filters, cells, truncation,
   privacy scrubbing).
-- D. Mozilla per-cell tables; kernel per-cell tables (`TBD-K`).
+- D. Mozilla per-cell tables; kernel per-cell tables.
 - E. Protocol revision log (summary of 12 revisions).
 - F. Reproducibility: hashes, model version, call counts (Mozilla 2,424;
   kernel 2,160 + 216 smoke).
 
 ## Open items before submission
 
-- [ ] Fill in `TBD-K` from the kernel full run.
+- [x] Fill in kernel results (v0.2).
 - [ ] Verify every citation, and search classical reliability and HCI
   escalation work.
 - [ ] Confirm that TypeSafe's terms allow publishing a benchmark of Jev.

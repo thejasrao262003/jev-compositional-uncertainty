@@ -52,9 +52,20 @@ def auroc(scores: list[float], positives: list[bool]) -> float | None:
     return wins / (len(pos) * len(neg))
 
 
-def main() -> None:
-    bugs = load_dataset()
-    rows = [json.loads(line) for line in open(RAW_OUT)]
+def main(dataset: str = "mozilla") -> None:
+    """--dataset kernel runs the same exploratory analysis on the kernel
+    replication. The kernel has no wording arm; a shadow copy of the score
+    calls stands in only so the shared reducer runs (never used below)."""
+    global OUT_JSON
+    if dataset == "kernel":
+        import run_kernel_validation as kv
+        bugs = kv.load_dataset()
+        rows = [json.loads(line) for line in open(kv.RAW_OUT)]
+        rows += [dict(r, arm="wording") for r in rows if r["arm"] == "score"]
+        OUT_JSON = RESULTS_DIR / "kernel_exploratory_analysis.json"
+    else:
+        bugs = load_dataset()
+        rows = [json.loads(line) for line in open(RAW_OUT)]
     check_complete(bugs, rows)
     by = defaultdict(lambda: defaultdict(list))
     for r in rows:
@@ -159,7 +170,8 @@ def main() -> None:
             if not sel(b):
                 continue
             keys = [f"severity={b['severity']}", f"group={b['group']}", f"regression={b['regression']}",
-                    f"crash={b['crash']}", f"recent={b['recent_12_months']}",
+                    f"crash={b.get('crash', 'n/a')}",
+                    f"recent={b.get('recent_12_months', b.get('recent_since_2018'))}",
                     "length=" + ("short<400" if len(b["text"]) < 400 else "long>=400")]
             for key in keys:
                 grp[key][1] += 1
@@ -196,4 +208,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main("kernel" if "--dataset" in sys.argv and sys.argv[sys.argv.index("--dataset") + 1] == "kernel" else "mozilla")

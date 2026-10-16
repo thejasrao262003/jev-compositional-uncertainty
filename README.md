@@ -34,6 +34,7 @@ ways of composing these signals across a three-step chain.
 | Workflow composition, first calibration pilot | Run: 270 calls, 0 deviations (`5c16f4c`) |
 | Workflow composition, template grammar | Draft 4 (after an independent review found Draft 3 not ready): one incident about one service per instance, value-neutral frames, every blocking sentence denies a workaround, N_MAX = 720. All 13 audits pass. Awaiting a 54-item human pass before freeze |
 | Mozilla real-data validation (Tushar) | Full run complete: 2,424 calls, all clean; see `research/results/mozilla_validation_results.md` |
+| Linux kernel replication | Full run complete: 2,160 calls, all clean. F1–F3 and the restated F4 replicate; the strength of "decisions beat confidences" does not. See `research/results/kernel_validation_results.md` |
 | Findings synthesis | `research/results/findings_synthesis.md` (revision 2, after review); exploratory follow-up: `research/results/mozilla_exploratory_analysis.md` |
 | Step 2 protocol | **Revision 12 adopted:** primary tests H1 (confidence overrides vs random) and H2 (per-primitive vs raw product) on cost |
 | Threshold transfer finding → Revision 11 | Fixed thresholds didn't carry over from synthetic to real text; see `research/results/threshold_transfer_finding.md` |
