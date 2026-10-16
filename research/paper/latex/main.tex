@@ -1,6 +1,6 @@
 % Structured Outputs Do Not Imply Compatible Uncertainty
 % Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
-% (or: latexmk -pdf main). Figure data: python3 make_figure_data.py
+% (or: latexmk -pdf main; or: tectonic main.tex). Figure data: python3 make_figure_data.py
 \documentclass[11pt]{article}
 
 \usepackage[margin=1in]{geometry}
@@ -19,7 +19,7 @@
 \usepgfplotslibrary{groupplots}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage[hidelinks]{hyperref}
-\usepackage{cleveref}
+\usepackage[capitalise]{cleveref}
 
 \newcommand{\choice}{\texttt{choice}}
 \newcommand{\noul}{\texttt{noul}}
@@ -176,7 +176,7 @@ evidence plus the upstream decisions, appended by a fixed adapter
 
 \begin{figure}[t]
 \centering
-\begin{tikzpicture}[node distance=1.6cm, every node/.style={font=\small},
+\begin{tikzpicture}[node distance=1.45cm, every node/.style={font=\small},
   box/.style={draw, rounded corners, minimum width=2.6cm, minimum height=0.9cm, align=center},
   arr/.style={-{Stealth[length=2mm]}, thick}]
 \node[box, fill=blue!6] (ev) {evidence $x$};
@@ -185,8 +185,8 @@ evidence plus the upstream decisions, appended by a fixed adapter
 \node[box, right=of n] (s) {\score{}\\ severity $c_3$};
 \node[box, below=1.0cm of n, fill=orange!8] (f) {$a = F(c_2, c_3)$};
 \draw[arr] (ev) -- (c);
-\draw[arr] (c) -- node[above]{\scriptsize $x{+}c_1$} (n);
-\draw[arr] (n) -- node[above]{\scriptsize $x{+}c_1{+}c_2$} (s);
+\draw[arr] (c) -- node[above=2pt]{\tiny $x{+}c_1$} (n);
+\draw[arr] (n) -- node[above=2pt]{\tiny $x{+}c_1{+}c_2$} (s);
 \draw[arr] (n) -- (f);
 \draw[arr] (s) |- (f);
 \end{tikzpicture}
@@ -393,7 +393,7 @@ comparison weakens to 66 vs.\ 51 ($p = 0.20$), and among bugs filed since
 2018 ($n = 35$) it reverses.
 
 \paragraph{The fair question.} Does confidence add anything \emph{beyond}
-the decisions? Starting from $F(\text{decisions})$, we also escalate the
+the decisions? Starting from the decision-based action $F$, we also escalate the
 $k$ least-confident candidates that $F$ did not escalate, for every $k$,
 and compare with the exact expectation under random selection
 (\cref{fig:override}). On both trackers, the confidence-ranked curves
@@ -424,8 +424,11 @@ from a signal carrying no information.
 \end{groupplot}
 \end{tikzpicture}
 \caption{Adding confidence-ranked escalations on top of decision
-composition. At $k = 0$ the curve is S1. Neither ranking improves on random
-selection of the same number of cases on either tracker.}
+composition. At $k = 0$ the curve is S1. Neither ranking consistently
+improves on random selection of the same number of cases: deviations are
+a few points at most and change sign between rankings and trackers. For
+example, per-primitive ranks run slightly above random on Mozilla for
+$k \approx 15$--$35$, and the confidence product runs below.}
 \label{fig:override}
 \end{figure}
 
@@ -446,11 +449,11 @@ action, and the two signals that do reach it are close to uninformative.
 \toprule
 Defect & Detected by & When \\
 \midrule
-A ``primitive-aware'' arm structurally identical to the baseline & inspecting the action rule & before evaluation \\
-A trigger firing on $\approx$90\% of inputs & selectivity on input signals only & before evaluation \\
-A threshold sensitive to the data distribution & smoke test vs.\ pilot & before the full run \\
-Four silent runner defects (e.g.\ the literal ``None'' shown to the model; partial data analyzed) & adversarial probing & before the live run \\
-The confidence-vs-decisions confound & post-hoc review & after the Mozilla result \\
+A ``primitive-aware'' arm structurally identical to the baseline & inspecting the action rule & before evaluation \\ \addlinespace
+A trigger firing on $\approx$90\% of inputs & selectivity on input signals only & before evaluation \\ \addlinespace
+A threshold sensitive to the data distribution & smoke test vs.\ pilot & before the full run \\ \addlinespace
+Four silent runner defects (e.g.\ the literal ``None'' shown to the model; partial data analyzed) & adversarial probing & before the live run \\ \addlinespace
+The confidence-vs-decisions confound & post-hoc review & after the Mozilla result \\ \addlinespace
 Template content whose labels were recoverable from punctuation alone (100\%) and whose sentences leaked cross-label cues & independent reviewer & before the controlled study \\
 \bottomrule
 \end{tabularx}
