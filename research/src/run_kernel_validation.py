@@ -130,6 +130,15 @@ SUBSETS = {
     "no_routing_cue_extended": lambda b: not (moz.has_routing_cue(b) or has_kernel_routing_cue(b)),
     "no_regression_wording": lambda b: not moz.REGRESSION_WORD_RE.search(b["text"]),
     "recent_since_2018": lambda b: bool(b["recent_since_2018"]),
+    # Proposal Revision 1 (2026-10-16), pre-registered before any Jev call;
+    # all descriptive, none replaces "all" as primary:
+    "regression_field_set": lambda b: b["cf_regression"] in ("Yes", "No"),           # K3
+    "hard_cut": lambda b: b["truncation"] == "hard_cut",                              # K6
+    "not_hard_cut": lambda b: b["truncation"] != "hard_cut",                          # K6
+    "log_dominated": lambda b: b["log_line_share"] >= 0.5,                            # K6
+    "not_log_dominated": lambda b: b["log_line_share"] < 0.5,                         # K6
+    "severity_changed_after_filing": lambda b: bool(b["severity_changed_after_filing"]),
+    "severity_as_filed": lambda b: not b["severity_changed_after_filing"],
 }
 
 # Record fields allowed in dataset.jsonl. Anything else (e.g. a reporter or

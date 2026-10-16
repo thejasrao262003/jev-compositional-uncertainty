@@ -1,6 +1,6 @@
 # Linux Kernel Bugzilla Replication — Proposal for Review
 
-Status: **proposal for review; no Jev call made.** The dataset, its
+Status: **Revision 1 (decisions K1–K6 fixed); no Jev call made.** The dataset, its
 builder, the feasibility counts, the runner, its self-tests and the
 dry-run preflight are done (§8). The **2,160** live calls (and the
 216-call smoke test that would come first) still need explicit,
@@ -15,6 +15,36 @@ Replicates: `research/methodology/mozilla_realistic_validation_proposal.md`
 As with Mozilla, the dataset is built before approval so it can be
 inspected alongside this proposal. If the design changes in review, the
 dataset is rebuilt; nothing has been run against it.
+
+## Revision 1 — decisions K1–K6 (2026-10-16), fixed before any Jev call
+
+Decided on the recommendations recorded in the session log. All of the
+following are **pre-registered descriptive subsets**. None replaces `all`
+as the primary population. They are coded in `run_kernel_validation.py`
+`SUBSETS` and shown in the dry-run's `subset_sizes`.
+
+| # | Decision | Implementation |
+|---|---|---|
+| K1 | Approved as staged: **smoke test first** (24 bugs, 216 calls), the full run (2,160) separately | Each live step still needs its own explicit authorization. Not yet given. |
+| K2 | Wording arm dropped (§4) | Unchanged |
+| K3 | `cf_regression = ---` stays coded 0 | **New subset `regression_field_set`** (Yes/No only, n = 146; 94/240 = 39% unset) |
+| K4 | `no_routing_cue_extended` kept as secondary | n = 26: descriptive only, too small for any per-cell reading |
+| K5 | Cleaned text stays in git **while the repository is private** (it is: not publicly resolvable on GitHub) | If the repo is ever made public, replace the text with bug IDs + `text_sha256` before publishing. The builder regenerates the text. Same rule proposed for Mozilla D4. |
+| K6 | Truncation rule unchanged; no log-stripping arm | **New subsets `hard_cut` (49) / `not_hard_cut` (191) and `log_dominated` (log share ≥ 0.5, 41) / `not_log_dominated` (199)** |
+
+**Also pre-registered:**
+- **Severity changes:** `severity_changed_after_filing` (15) /
+  `severity_as_filed` (225). Those 15 labels may be a maintainer's rather
+  than the reporter's.
+- **Routing question:** the storage criterion's browser-oriented wording
+  ("IndexedDB, quota") is kept unchanged so the comparison with Mozilla
+  holds. It is a disclosed loose fit for disk and filesystem bugs.
+- **Memorization:** `recent_since_2018` (n = 35) is reported
+  descriptively. It is too small to rule memorization out, and is
+  stated as such.
+
+Self-test (11/11) and dry-run pass with these subsets. No Jev call has
+been made.
 
 ## 1. Purpose
 

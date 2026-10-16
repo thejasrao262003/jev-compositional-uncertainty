@@ -75,7 +75,14 @@
     "no_routing_cue": 191,
     "no_routing_cue_extended": 26,
     "no_regression_wording": 227,
-    "recent_since_2018": 35
+    "recent_since_2018": 35,
+    "regression_field_set": 146,
+    "hard_cut": 49,
+    "not_hard_cut": 191,
+    "log_dominated": 41,
+    "not_log_dominated": 199,
+    "severity_changed_after_filing": 15,
+    "severity_as_filed": 225
   },
   "questions": {
     "choice": {
