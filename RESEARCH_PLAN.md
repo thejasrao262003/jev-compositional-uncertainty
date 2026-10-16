@@ -1162,6 +1162,27 @@ chance.
 3. Second-pilot manifest, then preflight.
 4. Authorization for its 270 calls.
 
+**Update (grammar Draft 3 after a full review — 2026-10-16):** the
+review of Draft 2 found:
+1. **An audience leak (critical).** Severity and routing sentences said
+   who was affected ("Users report…", checkout/login subjects), which
+   contradicted `c2*` for the `noul` node. The first pilot had it too,
+   now disclosed in the protocol.
+2. **A Draft 2 capacity overclaim.** Blocking severity was 216–324
+   propositions under its own rule, not 432.
+3. **Routing cues missed** because the word list was narrow.
+4. **Misfit combinations:** workarounds, features, text defects.
+5. **Grammar slips.**
+
+All are fixed in Draft 3, with new fail-closed audits:
+- A10, audience neutrality;
+- A11, slot fit;
+- A12, surface form.
+
+4,235 units; all pools cover N = 1,260. Disclosed, not fixed:
+length differs by label. **Next:** independent review → freeze → second
+pilot.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

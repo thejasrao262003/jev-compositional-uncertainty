@@ -1,4 +1,4 @@
-# Workflow Template Grammar — Specification (Draft 2, for independent audit)
+# Workflow Template Grammar — Specification (Draft 3, for independent audit)
 
 Status: **draft for audit, not frozen.** No sentence from this grammar has
 been assigned to any pilot or evaluation instance, and no API call has
@@ -6,9 +6,63 @@ been made. This spec replaces hand-written content for the second
 calibration pilot and the Step 2 main run
 (`workflow_uncertainty_composition_protocol.md`, Revision 10 audit
 addendum). The executable form is `research/src/build_workflow_template_
-grammar.py`. Its full expansion (4,128 units) is in `research/data/
+grammar.py`. Its full expansion (4,235 units, Draft 3) is in `research/data/
 characterization/workflow_template_grammar_units.json`, and its audit
 results are in `research/results/workflow_template_grammar_audit.json`.
+
+**Draft 3 (2026-10-16): fixes from a full review of Draft 2.** All
+audits pass, including three new ones: 4,235 units, with every pool
+covering `N_MAX = 1,260` at the proposition level.
+
+1. **Audience leak, the critical fix.** Every node reads all three
+   sentences. Draft 2's severity sentences said who was affected:
+   "Users report that…" (151), "A user noticed that…" (143), "…for every
+   user" (55), plus customer-coded subjects such as checkout, login,
+   billing and shopping cart. Some routing names did too: user-accounts
+   and billing databases, and "internal DNS resolvers". So in impact:0
+   and impact:unclear instances the evidence contradicted `c2*`,
+   especially in the level-1 cells, where `c2*` decides accept vs.
+   defer.
+   - **Fix:** routing and severity sentences are now audience-neutral.
+     Only impact sentences say whether customers are affected.
+   - **New audit A10** fails the build on any of about 40 audience
+     words outside the impact pool.
+2. **Capacity overclaim, corrected.** Draft 2 split total blocking
+   failure into 4 classes, one of them distinct only by a time phrase.
+   §5.2 calls that non-content, so under the spec's own rule Draft 2 had
+   216–324 propositions, not the 432 it reported.
+   - **Fix:** regrouped into 3 consistent classes: no service; every
+     attempt errors; runs but the output is unusable. Functions were
+     added to restore capacity.
+3. **Routing-cue lexicon widened.** A5 now also covers region, traffic,
+   endpoint, request path, webhook, API, URL, HTTP, upload and
+   dispatcher (network), and cache, CSV, storage, records, archive,
+   repository and logs (database). It caught 12 impact sentences, plus
+   108 "region" mentions in blocking sentences. All fixed.
+4. **Slot fit, new audit A11.** Combinations are now built only when
+   they make sense together:
+   - a workaround must address its failure (Draft 2 had at least 70
+     misfits, such as "fail on large inputs, but a page refresh
+     restores normal behavior");
+   - a failure mode must fit its feature;
+   - text defects apply only to elements that carry text;
+   - "unusable output" applies only to functions that produce output.
+5. **Surface form, new audit A12.** Fixed: plural subjects with
+   singular verbs (13), "There has been escalations" (49), a doubled
+   "from" (128), "the issue on" + a non-page surface (168), and doubled
+   time references.
+6. **Disclosed, not fixed:**
+   - **Length differs by label.** Means: cosmetic 79 chars, degraded
+     107, blocking 98; impact:0 108, impact:1 122, unclear 142. A model
+     could use length as a shallow cue. Allocation balance doesn't
+     remove it.
+   - **Plausibility is improved, not guaranteed.** Some combinations
+     are still stilted.
+
+The audience leak was **also present in the first pilot's hand-written
+sentences** (for example, "The billing service is rejecting all payment
+methods" paired with not-customer-facing impact). It is disclosed in the
+protocol.
 
 **Draft 2 (2026-10-16): §5 is settled. Option A, proposition-level
 uniqueness, is adopted and gating.**
@@ -19,7 +73,7 @@ uniqueness, is adopted and gating.**
 - All audits pass: 3,987 units.
 
 The grammar is a **freeze candidate**. It is frozen only after
-independent review (Tushar) of this spec, the generator, and
+independent review of this spec, the generator, and
 `workflow_template_grammar_audit.json`.
 
 *Draft 1 status line (superseded):* "One item is not ready to freeze:
@@ -103,7 +157,7 @@ of the severity sentence. This isn't eliminated, but the magnitude
 classes are balanced by construction across instances (§6), so the
 effect falls equally on all severity levels.
 
-## 5. Definition of reuse — **SETTLED: Option A, proposition-level (Draft 2)**
+## 5. Definition of reuse — **SETTLED: Option A, proposition-level (Draft 2; classes regrouped in Draft 3)**
 
 ### 5.1 The rule
 
@@ -147,6 +201,7 @@ Merges include:
 | Time phrase ("since the last deploy" vs "over the past hour") | Non-content. It changes neither label nor subject/predicate, so it is a surface slot |
 | Who confirmed / who could not confirm | Non-content (nuisance). Attribution isn't a different claim (rejects Option B) |
 | Same vocabulary, different claim | Not reuse. Classes are defined on slot meaning, not shared words |
+| Fillers differing only by a time phrase ("has been down since the last deploy" vs "has stopped working") | Same class. Time phrases are non-content (Draft 3 regrouping) |
 | A filler whose class is unclear | **Blocks the build** until it is declared (§5.3) |
 
 ### 5.3 Fail-closed enforcement
@@ -161,10 +216,10 @@ undeclared slot, a filler missing from its SYN map, or a stale map
 entry. Both failure modes were probed and both block.
 
 **Expansion.** All filler keys are shuffled with the fixed seed
-(`workflow-template-grammar-v2`). The first key of each proposition is
+(`workflow-template-grammar-v3` since Draft 3). The first key of each proposition is
 kept, so paraphrases are spread across different propositions.
 
-### 5.4 Capacity after the vocabulary expansion
+### 5.4 Capacity (Draft 3)
 
 | Pool : value | Proposition keys (= units) | Needed at N = 1,260 (pilot quota + 6k or 9k) |
 |---|---:|---:|
@@ -172,22 +227,23 @@ kept, so paraphrases are spread across different propositions.
 | impact : 0 | 432 | 430 |
 | impact : 1 | 448 | 430 |
 | impact : unclear | 444 | 430 |
-| severity : 0 | 432 | 430 |
-| severity : 1 | 455 | 430 |
-| severity : 2 | 432 | 430 |
+| severity : 0 | 648 | 430 |
+| severity : 1 | 471 | 430 |
+| severity : 2 | 448 | 430 |
 
-**Vocabulary added:**
-- 2 routing components per class;
-- 64 internal-tool components (impact:0) and 66 shared-service
-  components (impact:unclear), plus 2 genuinely distinct evidence and
-  unknown-aspect classes in each;
-- 1 display context;
-- 1 degraded feature;
-- 17 blocking functions.
+**Blocking classes (Draft 3):**
+- failure: {no service}, {every attempt errors}, {runs, output
+  unusable; output-producing functions only};
+- scope: {no workaround / fallback / alternative}, {can't be done
+  manually}, {retrying doesn't help}, {previous version can't be
+  restored}.
 
-Same provenance as §2: written by the implementing assistant, never by
-Jev. The leakage audits (A5, A6) pass on every new phrase, and the two
-impact pools share no component.
+Capacity comes from 45 audience-neutral functions, 28 degraded features
+(each with a failure-fit set) and 23 cosmetic elements (13 of them
+text-bearing).
+
+*Draft 2 table (superseded, and overstated for severity:2; see the
+Draft 3 changelog):* 672 / 432 / 448 / 444 / 432 / 455 / 432.
 
 ### 5.5 Required at manifest time (not testable here)
 
@@ -328,7 +384,7 @@ so it is part of the manifest audit, not this one.
 
 ## What this draft does not authorize
 
-It doesn't freeze the grammar (Draft 2 awaits independent review), assign any unit to an
+It doesn't freeze the grammar (Draft 3 awaits independent review), assign any unit to an
 instance, build a pilot or evaluation manifest, or authorize any API
 call. **Next:**
 1. Independent review of Draft 2.

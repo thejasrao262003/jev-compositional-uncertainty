@@ -21,20 +21,20 @@
       "needed_at_N_MAX": 420
     },
     "severity:0": {
-      "main_reserve": 422,
+      "main_reserve": 638,
       "needed_at_N_MAX": 420
     },
     "severity:1": {
-      "main_reserve": 445,
+      "main_reserve": 461,
       "needed_at_N_MAX": 420
     },
     "severity:2": {
-      "main_reserve": 422,
+      "main_reserve": 438,
       "needed_at_N_MAX": 420
     }
   },
   "A2_exact_uniqueness": {
-    "units": 3987,
+    "units": 4235,
     "normalized_duplicates": 0,
     "prior_corpus_size": 142,
     "overlap_with_prior": 0
@@ -64,11 +64,11 @@
         ],
         [
           1,
-          4
+          5
         ],
         [
           1,
-          4
+          6
         ]
       ]
     },
@@ -85,12 +85,12 @@
           48
         ],
         [
-          80,
+          79,
           84
         ],
         [
-          53,
-          112
+          46,
+          111
         ]
       ]
     },
@@ -104,15 +104,15 @@
       "slot_min_max": [
         [
           1,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
           3
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          1,
-          4
         ]
       ]
     },
@@ -125,7 +125,7 @@
       },
       "slot_min_max": [
         [
-          45,
+          46,
           48
         ],
         [
@@ -133,7 +133,7 @@
           84
         ],
         [
-          54,
+          52,
           111
         ]
       ]
@@ -152,7 +152,7 @@
         ],
         [
           1,
-          4
+          3
         ],
         [
           1,
@@ -173,12 +173,12 @@
           6
         ],
         [
-          21,
+          19,
           72
         ],
         [
-          44,
-          65
+          42,
+          60
         ]
       ]
     },
@@ -196,7 +196,7 @@
         ],
         [
           1,
-          5
+          3
         ],
         [
           1,
@@ -217,7 +217,7 @@
           64
         ],
         [
-          51,
+          53,
           56
         ],
         [
@@ -261,11 +261,11 @@
           6
         ],
         [
-          16,
+          19,
           74
         ],
         [
-          50,
+          44,
           63
         ]
       ]
@@ -280,7 +280,7 @@
       "slot_min_max": [
         [
           1,
-          3
+          2
         ],
         [
           1,
@@ -293,24 +293,24 @@
       ]
     },
     "severity:0:main": {
-      "n": 422,
+      "n": 638,
       "frame_counts": {
-        "0": 141,
-        "1": 141,
-        "2": 140
+        "0": 213,
+        "1": 213,
+        "2": 212
       },
       "slot_min_max": [
         [
-          33,
+          17,
           36
         ],
         [
-          32,
-          72
+          35,
+          137
         ],
         [
-          69,
-          72
+          105,
+          107
         ]
       ]
     },
@@ -324,37 +324,37 @@
       "slot_min_max": [
         [
           1,
-          1
-        ],
-        [
-          1,
           2
         ],
         [
-          2,
+          1,
+          4
+        ],
+        [
+          1,
           3
         ]
       ]
     },
     "severity:1:main": {
-      "n": 445,
+      "n": 461,
       "frame_counts": {
-        "0": 149,
-        "1": 148,
-        "2": 148
+        "0": 154,
+        "1": 154,
+        "2": 153
       },
       "slot_min_max": [
         [
-          34,
-          35
+          9,
+          23
         ],
         [
-          31,
-          65
+          19,
+          136
         ],
         [
-          88,
-          91
+          9,
+          115
         ]
       ]
     },
@@ -381,29 +381,41 @@
       ]
     },
     "severity:2:main": {
-      "n": 422,
+      "n": 438,
       "frame_counts": {
-        "0": 141,
-        "1": 141,
-        "2": 140
+        "0": 146,
+        "1": 146,
+        "2": 146
       },
       "slot_min_max": [
         [
-          14,
-          16
+          7,
+          12
         ],
         [
-          30,
-          106
+          39,
+          54
         ],
         [
-          26,
-          107
+          29,
+          112
         ]
       ]
     }
   },
   "A8_label_provenance": "labels (pool, value) are set by the expansion loop before rendering; no code path reads a label back out of rendered text",
+  "A10_audience_cue_audit": {
+    "non_impact_units_with_audience_cues": 0,
+    "examples": []
+  },
+  "A11_slot_fit": {
+    "misfit_units": 0,
+    "fit_tables_cover_vocabulary": true
+  },
+  "A12_surface_form": {
+    "problems": 0,
+    "examples": []
+  },
   "failures": [],
   "passed": true,
   "A9_proposition_capacity": {
@@ -438,24 +450,24 @@
       "needed_at_k70(N=1260)": 430
     },
     "severity:0": {
-      "filler_keys": 432,
-      "proposition_keys": 432,
+      "filler_keys": 648,
+      "proposition_keys": 648,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     },
     "severity:1": {
-      "filler_keys": 455,
-      "proposition_keys": 455,
+      "filler_keys": 471,
+      "proposition_keys": 471,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     },
     "severity:2": {
-      "filler_keys": 432,
-      "proposition_keys": 432,
+      "filler_keys": 448,
+      "proposition_keys": 448,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     }
   },
-  "units_sha256": "04f00563b1cba7aadf126d69b88232a7f03a7de2c5183b064d0db051c061b1bd",
-  "generator_sha256": "b18b8ffe29201bc1c2f605039562eb5f55a893ecf9bf4ca94301773651e6594c"
+  "units_sha256": "f356f6ee4c6f39df8ec4dbd847afab239edf58010542635d3a8c8c63077c70fb",
+  "generator_sha256": "2f19bf00ae60ab7cb9ad9de8906d4eda4e3f0ab92a5cdd742f8ddc8e01eadc87"
 }

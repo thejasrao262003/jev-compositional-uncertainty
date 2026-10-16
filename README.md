@@ -32,7 +32,7 @@ ways of composing these signals across a three-step chain.
 | What `score` measures: validation study | Complete (`18e000b`) |
 | `score` sensitivity to sentence order | Complete (`def7da7`) |
 | Workflow composition, first calibration pilot | Run: 270 calls, 0 deviations (`5c16f4c`) |
-| Workflow composition, template grammar | Draft 2: proposition-level reuse rule adopted (fail-closed), all audits pass at N = 1,260; awaiting independent review before freeze |
+| Workflow composition, template grammar | Draft 3: proposition-level reuse rule (fail-closed); audience-neutral routing and severity sentences; slot-fit and surface-form audits. All 12 audits pass at N = 1,260. Awaiting independent review before freeze |
 | Mozilla real-data validation (Tushar) | Full run complete: 2,424 calls, all clean; see `research/results/mozilla_validation_results.md` |
 | Findings synthesis | `research/results/findings_synthesis.md` (revision 2, after review); exploratory follow-up: `research/results/mozilla_exploratory_analysis.md` |
 | Step 2 protocol | **Revision 12 adopted:** primary tests H1 (confidence overrides vs random) and H2 (per-primitive vs raw product) on cost |

@@ -90,6 +90,21 @@ a null or negative H1 is a live outcome.
 - **N is still void.** It is recomputed from the second pilot's
   per-instance cost-difference SDs (§14).
 
+**Revision 12 disclosure: an audience leak in the first pilot's
+content (2026-10-16).**
+- **What leaked:** each node reads all three evidence sentences.
+  Several of the first pilot's hand-written severity sentences signal
+  customer impact on their own (e.g. "The billing service is rejecting
+  all payment methods"), including in instances whose `c2*` is
+  not-customer-facing.
+- **What it affects:** the pilot's `noul` agreement, and through `F`
+  its target actions in the level-1 cells. So its measured disagreement
+  rate partly reflects contradictory evidence. It sets no current
+  constant: N = 733 is already void, and Revision 12 re-sizes from the
+  second pilot.
+- **The fix:** the template grammar's Draft 3 makes routing and
+  severity sentences audience-neutral and enforces it (audit A10).
+
 ## Changelog from Revision 10 — thresholds that did not transfer (Revision 11)
 
 Full account, with every number: `research/results/threshold_transfer_finding.md`.
