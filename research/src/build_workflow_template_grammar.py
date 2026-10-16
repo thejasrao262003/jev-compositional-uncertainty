@@ -35,7 +35,7 @@ DATA_DIR = REPO_ROOT / "research" / "data" / "characterization"
 RESULTS_DIR = REPO_ROOT / "research" / "results"
 THIS_FILE = Path(__file__).resolve()
 
-SEED = "workflow-template-grammar-v1"
+SEED = "workflow-template-grammar-v2"   # Draft 2 (Option A); v1 was Draft 1
 
 # Second calibration pilot uses pilot 1's 30-instance schedule
 # (18 cells once + 12 off-diagonal), so it needs these units per value.
@@ -68,7 +68,8 @@ ROUTING = {
                       "the internal DNS resolvers", "the CDN edge nodes in the affected region",
                       "the perimeter firewall", "the service-mesh sidecar proxies",
                       "the NAT gateway for the private subnets", "the top-of-rack switches in row C",
-                      "the regional ingress routers", "the peering link to the upstream ISP"],
+                      "the regional ingress routers", "the peering link to the upstream ISP",
+                      "the WAN link to the backup data center", "the anycast DNS edge"],
         "metric": ["packet loss", "round-trip latency", "connection resets", "retransmitted packets",
                    "dropped connections", "interface errors", "link flaps", "connection timeouts"],
     },
@@ -76,7 +77,8 @@ ROUTING = {
         "component": ["the primary database", "the read replicas", "the orders database cluster",
                       "the session-state table", "the reporting database", "the primary's connection pool",
                       "the billing database", "the user-accounts database", "the inventory database",
-                      "the audit-log database", "the product-catalog database", "the payments ledger database"],
+                      "the audit-log database", "the product-catalog database", "the payments ledger database",
+                      "the shipping database", "the loyalty-program database"],
         "metric": ["query execution time", "lock wait time", "replication lag", "deadlocks", "disk I/O wait",
                    "connection-pool saturation", "slow queries", "transaction rollbacks"],
     },
@@ -98,11 +100,38 @@ IMPACT_YES = {
 IMPACT_NO = {
     "component": ["the nightly reconciliation job", "the internal cost dashboard", "the staging cluster",
                   "the analytics team's ad-hoc reporting tool", "the internal support-triage tool",
-                  "the legacy metrics exporter", "the CI build cache", "the quarterly compliance report generator"],
+                  "the legacy metrics exporter", "the CI build cache", "the quarterly compliance report generator",
+                  # Draft 2 (Option A) additions
+                  "the internal wiki", "the employee onboarding portal", "the expense-approval tool",
+                  "the hackathon voting app", "the office room-booking system", "the engineering on-call scheduler",
+                  "the design-review tracker", "the payroll export script", "the staff training portal",
+                  "the internal code-search tool", "the build-artifact archiver", "the license-compliance scanner",
+                  "the internal developer handbook site", "the team goals tracker",
+                  "the vendor-invoice reconciliation script", "the developer sandbox environment",
+                  "the internal feature-request board", "the hiring pipeline dashboard",
+                  "the IT hardware asset tracker", "the internal survey tool", "the release-notes drafting tool",
+                  "the security-awareness quiz app", "the finance forecasting model",
+                  "the HR question chatbot", "the laptop provisioning scripts", "the test-data generator",
+                  "the performance-review tool", "the code-coverage reporter", "the internal mailing-list archive",
+                  "the procurement request form", "the dependency-update bot", "the internal travel-booking tool",
+                  "the static-analysis pipeline", "the badge-access audit report", "the UX research repository",
+                  "the capacity-planning model", "the data-retention policy checker", "the internal icon library site",
+                  "the incident postmortem archive", "the sales-commission calculator", "the employee directory",
+                  "the design-system playground", "the legal-hold tracker", "the benchmark results archive",
+                  "the translation-memory tool", "the board-deck generator", "the brand-asset library",
+                  "the meeting-notes summarizer", "the engineering blog drafts site", "the visitor sign-in kiosk",
+                  "the parking-permit tool", "the compliance training tracker", "the bug-bash leaderboard",
+                  "the warehouse staff rota tool", "the grant-tracking tool", "the patent-disclosure tracker",
+                  "the company podcast archive", "the facilities maintenance tracker", "the mentoring-match tool",
+                  "the cafeteria menu site", "the hardware-loan tracker", "the dev-environment image builder",
+                  "the architecture-diagram repository", "the interview-scheduling assistant"],
     "evidence": ["{c} is used only by internal teams", "no customer-facing endpoint depends on {c}",
                  "{c} serves no production customer traffic", "{c} is isolated from the customer-serving cluster",
                  "{c} only produces output that no customer ever sees",
-                 "{c} runs entirely on internal-only infrastructure", "{c} has no path to customer traffic"],
+                 "{c} runs entirely on internal-only infrastructure", "{c} has no path to customer traffic",
+                 # Draft 2 (Option A): two distinct evidence propositions
+                 "{c} holds only synthetic test data",
+                 "{c} is excluded from every customer-facing service-level agreement"],
     "who": ["the owning team", "the platform team", "the on-call SRE", "the service catalog",
             "the architecture review record", "the dependency map", "the team lead", "a recent access review"],
     "frames": ["{W} confirms that {e}.", "According to {w}, {e}.", "{E}, as {w} has confirmed."],
@@ -110,14 +139,40 @@ IMPACT_NO = {
 IMPACT_UNCLEAR = {
     "component": ["the shared caching layer", "the message queue", "the shared auth library",
                   "the feature-flag service", "the image-processing workers", "the pricing-rules service",
-                  "the geo-lookup service", "the email-template service"],
+                  "the geo-lookup service", "the email-template service",
+                  # Draft 2 (Option A) additions
+                  "the shared rate-limiting service", "the URL-shortening service", "the webhook dispatcher",
+                  "the shared logging agent", "the PDF rendering service", "the currency-conversion service",
+                  "the address-validation service", "the shared configuration service", "the A/B testing service",
+                  "the recommendation engine", "the tax-calculation library", "the shared secrets manager",
+                  "the job scheduler", "the shared search service", "the spam-filtering service",
+                  "the timezone-conversion library", "the localization service", "the event-bus consumer group",
+                  "the shared metrics client library", "the audit-event emitter", "the document-conversion workers",
+                  "the barcode generation service", "the shared retry library", "the user-preferences service",
+                  "the fraud-scoring model", "the JSON serialization library", "the session-token signing service",
+                  "the analytics event collector", "the email-validation library", "the push-token registry",
+                  "the content-moderation queue", "the shared avatar service", "the coupon-validation service",
+                  "the delivery-estimate service", "the shared markdown renderer", "the license-key validation service",
+                  "the background-image optimizer", "the date-formatting library", "the experiment-assignment service",
+                  "the partner-integration adapter", "the shared CSV parser", "the ranking-signals pipeline",
+                  "the profile-enrichment service", "the shared captcha service", "the webhook signature verifier",
+                  "the order-status poller", "the plural-rules library", "the feature-usage tracker",
+                  "the image-moderation classifier", "the phone-number formatter", "the shipping-rate calculator",
+                  "the referral-credit service", "the PDF watermarking step", "the loyalty-points service",
+                  "the OAuth token refresher", "the receipt-generation service", "the font-subsetting service",
+                  "the map-tile renderer", "the profanity filter", "the subscription-entitlement checker",
+                  "the sitemap generator", "the identifier allocation service", "the price-history service",
+                  "the gift-card balance service", "the upload virus scanner", "the calendar-availability service"],
     "aspect": ["it has not been confirmed whether any customer-facing service depends on {c}",
                "the downstream consumers of {c} have not been fully mapped",
                "whether failures in {c} reach customers depends on a fallback whose status is unknown",
                "the customer exposure of {c} has been undocumented since an ownership change",
                "it is unclear whether {c} is enabled for any customer segment",
                "the dependency graph covering {c} has not been updated since a large refactor",
-               "it is not yet known which customers, if any, depend on {c}"],
+               "it is not yet known which customers, if any, depend on {c}",
+               # Draft 2 (Option A): two distinct unknown-aspect propositions
+               "the access logs that would show whether customers use {c} have already expired",
+               "two teams disagree about whether {c} sits on any customer request path"],
     "who": ["the on-call engineer", "the owning team", "the platform team", "the SRE lead",
             "the incident commander", "the service catalog", "the architecture team", "the support liaison"],
     "frames": ["{W} reports that {a}.", "According to {w}, {a}.", "{A}, and {w} could not confirm either way."],
@@ -132,14 +187,14 @@ SEV_COSMETIC = {
                "sits one pixel off its grid", "briefly flickers on load", "wraps awkwardly onto a second line",
                "uses inconsistent capitalization", "is truncated with an ellipsis"],
     "context": ["in Safari", "in dark mode", "at 125% browser zoom", "in the German locale",
-                "on narrow mobile screens"],
+                "on narrow mobile screens", "in high-contrast mode"],
     "frames": ["{E} {d} {x}.", "{X}, {e} {d}.", "A user noticed that {e} {d} {x}."],
 }
 SEV_DEGRADED = {
     "feature": ["scheduled report exports", "bulk user invites", "live dashboard widgets",
                 "inline edits on the settings page", "keyboard search shortcuts", "document autosaves",
                 "paginated API requests", "SMS two-factor codes", "mobile calendar syncs",
-                "profile photo uploads", "saved search alerts", "CSV imports"],
+                "profile photo uploads", "saved search alerts", "CSV imports", "image thumbnail previews"],
     "failure": ["fail intermittently", "fail on large inputs", "stall after a long session",
                 "drop recent changes occasionally", "update a few minutes late", "skip items now and then",
                 "fail on the first attempt", "stop updating after a while"],
@@ -152,7 +207,13 @@ SEV_DEGRADED = {
 SEV_BLOCKING = {
     "function": ["the checkout flow", "user login", "the billing service", "new account provisioning",
                  "report generation", "notification sending", "the mobile app", "scheduled job execution",
-                 "data export", "password reset"],
+                 "data export", "password reset",
+                 # Draft 2 (Option A) additions
+                 "order fulfillment", "invoice delivery", "two-factor sign-in", "the admin console",
+                 "file sharing", "in-app messaging", "subscription renewal", "refund processing",
+                 "single sign-on", "team invitations", "the shopping cart", "video playback",
+                 "document signing", "appointment booking", "webhook delivery", "account deletion",
+                 "the support chat widget"],
     "failure": ["has stopped working entirely", "is returning errors for every request",
                 "is failing on every attempt", "has been down since the last deploy",
                 "is completely unavailable", "rejects every request it receives",
@@ -254,17 +315,30 @@ POOLS = [("routing", "network", _routing_keys), ("routing", "database", _routing
 
 
 def expand() -> list[dict]:
+    """Draft 2 (Option A): one unit per PROPOSITION. All filler keys are
+    expanded and shuffled with the fixed seed; the first key of each
+    proposition class is kept, so paraphrases are spread across different
+    propositions instead of restating one."""
+    check_signature_declarations()
     units = []
     for pool, value, builder in POOLS:
         keys, render = builder(value)
-        order = keys[:]
-        random.Random(f"{SEED}:{pool}:{value}").shuffle(order)
+        shuffled = keys[:]
+        random.Random(f"{SEED}:{pool}:{value}").shuffle(shuffled)
+        seen, order = set(), []
+        for key in shuffled:
+            pk = _proposition_key_of(pool, value, key)
+            if pk not in seen:
+                seen.add(pk)
+                order.append(key)
         quota = PILOT2_QUOTA[(pool, value)]
         for partition, part_keys in (("pilot2", order[:quota]), ("main", order[quota:])):
             for i, key in enumerate(part_keys):
                 text, surface = render(key, i)
                 units.append({"pool": pool, "value": value, "partition": partition,
-                              "semantic_key": list(key), "surface": surface, "text": text})
+                              "semantic_key": list(key),
+                              "proposition_key": list(_proposition_key_of(pool, value, key)),
+                              "surface": surface, "text": text})
     random.Random(f"{SEED}:ids").shuffle(units)
     for n, u in enumerate(units, 1):
         u["unit_id"] = f"g{n:05d}"          # content-blind: assigned after a global shuffle
@@ -305,16 +379,20 @@ def audit(units: list[dict]) -> dict:
     if prior_overlap:
         failures.append(f"A2 {len(prior_overlap)} texts overlap prior manifests")
 
-    # A3 semantic-key uniqueness within each (pool, value), and A4 pilot2/main disjointness.
+    # A3 PROPOSITION-key uniqueness within each (pool, value) - gating since
+    # Draft 2 (Option A) - and A4 pilot2/main disjointness at proposition level.
     for (p, v) in PILOT2_QUOTA:
-        ks = [tuple(u["semantic_key"]) for u in units if (u["pool"], u["value"]) == (p, v)]
+        ks = [tuple(u["proposition_key"]) for u in units if (u["pool"], u["value"]) == (p, v)]
         if len(ks) != len(set(ks)):
-            failures.append(f"A3 duplicate semantic keys in {p}:{v}")
-    pilot_keys = {(u["pool"], u["value"], tuple(u["semantic_key"])) for u in units if u["partition"] == "pilot2"}
-    main_keys = {(u["pool"], u["value"], tuple(u["semantic_key"])) for u in units if u["partition"] == "main"}
+            failures.append(f"A3 duplicate proposition keys in {p}:{v}")
+        if any(tuple(u["proposition_key"]) != _proposition_key_of(p, v, u["semantic_key"])
+               for u in units if (u["pool"], u["value"]) == (p, v)):
+            failures.append(f"A3 stored proposition key disagrees with recomputation in {p}:{v}")
+    pilot_keys = {(u["pool"], u["value"], tuple(u["proposition_key"])) for u in units if u["partition"] == "pilot2"}
+    main_keys = {(u["pool"], u["value"], tuple(u["proposition_key"])) for u in units if u["partition"] == "main"}
     pilot_texts = {_norm(u["text"]) for u in units if u["partition"] == "pilot2"}
     main_texts = {_norm(u["text"]) for u in units if u["partition"] == "main"}
-    report["A3_A4"] = {"semantic_keys_unique_within_pool_value": not any(f.startswith("A3") for f in failures),
+    report["A3_A4"] = {"proposition_keys_unique_within_pool_value": not any(f.startswith("A3") for f in failures),
                        "pilot2_main_key_overlap": len(pilot_keys & main_keys),
                        "pilot2_main_text_overlap": len(pilot_texts & main_texts)}
     if pilot_keys & main_keys or pilot_texts & main_texts:
@@ -380,7 +458,9 @@ SYN = {
                       "{c} serves no production customer traffic": 1, "{c} has no path to customer traffic": 1,
                       "{c} is isolated from the customer-serving cluster": 2,
                       "{c} runs entirely on internal-only infrastructure": 2,
-                      "{c} only produces output that no customer ever sees": 3},
+                      "{c} only produces output that no customer ever sees": 3,
+                      "{c} holds only synthetic test data": 4,
+                      "{c} is excluded from every customer-facing service-level agreement": 5},
     ("impact:unclear", 1): {
         "it has not been confirmed whether any customer-facing service depends on {c}": 0,
         "the downstream consumers of {c} have not been fully mapped": 0,
@@ -388,11 +468,16 @@ SYN = {
         "the dependency graph covering {c} has not been updated since a large refactor": 1,
         "the customer exposure of {c} has been undocumented since an ownership change": 1,
         "it is unclear whether {c} is enabled for any customer segment": 2,
-        "whether failures in {c} reach customers depends on a fallback whose status is unknown": 3},
+        "whether failures in {c} reach customers depends on a fallback whose status is unknown": 3,
+        "the access logs that would show whether customers use {c} have already expired": 4,
+        "two teams disagree about whether {c} sits on any customer request path": 5},
     ("severity:0", 1): {"is misaligned by a few pixels": 0, "sits one pixel off its grid": 0,
                         "renders in a slightly wrong color": 1, "shows outdated wording": 2,
                         "briefly flickers on load": 3, "wraps awkwardly onto a second line": 4,
                         "is truncated with an ellipsis": 4, "uses inconsistent capitalization": 5},
+    ("severity:1", 1): {"fail intermittently": 0, "fail on large inputs": 1, "stall after a long session": 2,
+                        "stop updating after a while": 2, "drop recent changes occasionally": 3,
+                        "update a few minutes late": 4, "skip items now and then": 5, "fail on the first attempt": 6},
     ("severity:2", 1): {"has stopped working entirely": 0, "is completely unavailable": 0,
                         "has halted with no progress": 0, "is returning errors for every request": 1,
                         "rejects every request it receives": 1, "is failing on every attempt": 2,
@@ -404,15 +489,65 @@ SYN = {
 }
 NUISANCE_SLOTS = {"impact:0": {2}, "impact:unclear": {2}}   # "who confirmed" / "who could not confirm"
 
+# Draft 2 (Option A): the canonical proposition signature per pool. Every
+# semantic slot is declared exactly once: SYN (paraphrase classes, every
+# filler mapped), IDENTITY (each filler is its own proposition, reviewed as
+# such) or NUISANCE (dropped). Polarity and the label are fixed by
+# (pool, value). An undeclared slot or an unmapped filler stops the build:
+# ambiguity blocks, it is never resolved silently as "distinct".
+SIGNATURE = {  # documentation of each slot's role, in key order
+    "routing": ("subject: component", "predicate: metric", "magnitude/shape class"),
+    "impact:1": ("evidence channel", "affected customer segment", "subject: product surface"),
+    "impact:0": ("subject: component", "evidence class", "NUISANCE: who confirmed"),
+    "impact:unclear": ("subject: component", "unknown-aspect class", "NUISANCE: who could not confirm"),
+    "severity:0": ("subject: UI element", "defect class", "condition: display context"),
+    "severity:1": ("subject: feature", "failure-mode class", "workaround"),
+    "severity:2": ("subject: function", "failure class", "no-workaround scope class"),
+}
+IDENTITY_SLOTS = {("routing", 0), ("routing", 1), ("impact:1", 0), ("impact:1", 1), ("impact:1", 2),
+                  ("impact:0", 0), ("impact:unclear", 0), ("severity:0", 0), ("severity:0", 2),
+                  ("severity:1", 0), ("severity:1", 2), ("severity:2", 0)}
 
-def proposition_key(u: dict) -> tuple:
-    pv = u["pool"] if u["pool"] == "routing" else f"{u['pool']}:{u['value']}"
+
+def _pv(pool: str, value: str) -> str:
+    return pool if pool == "routing" else f"{pool}:{value}"
+
+
+def _proposition_key_of(pool: str, value: str, key) -> tuple:
+    pv = _pv(pool, value)
     out = []
-    for i, filler in enumerate(u["semantic_key"]):
+    for i, filler in enumerate(key):
         if i in NUISANCE_SLOTS.get(pv, set()):
             continue
-        out.append(SYN.get((pv, i), {}).get(filler, filler))
+        if (pv, i) in SYN:
+            out.append(f"class{SYN[(pv, i)][filler]}")   # KeyError = unmapped filler = fail closed
+        elif (pv, i) in IDENTITY_SLOTS:
+            out.append(filler)
+        else:
+            raise ValueError(f"undeclared signature slot {pv}[{i}]")
     return tuple(out)
+
+
+def proposition_key(u: dict) -> tuple:
+    return _proposition_key_of(u["pool"], u["value"], u["semantic_key"])
+
+
+def check_signature_declarations() -> None:
+    """Fail closed: every slot declared once, every SYN filler mapped, no
+    filler mapped that the vocabulary doesn't contain."""
+    for pool, value, builder in POOLS:
+        pv = _pv(pool, value)
+        keys, _ = builder(value)
+        for i in range(len(keys[0])):
+            roles = [(pv, i) in SYN, (pv, i) in IDENTITY_SLOTS, i in NUISANCE_SLOTS.get(pv, set())]
+            if sum(roles) != 1:
+                raise ValueError(f"slot {pv}[{i}] must be declared exactly once, got {roles}")
+            if (pv, i) in SYN:
+                fillers = {k[i] for k in keys}
+                if fillers != set(SYN[(pv, i)]):
+                    raise ValueError(f"SYN map for {pv}[{i}] does not match vocabulary: "
+                                     f"unmapped {sorted(fillers - set(SYN[(pv, i)]))}, "
+                                     f"stale {sorted(set(SYN[(pv, i)]) - fillers)}")
 
 
 def a9_proposition_capacity(units: list[dict], k_values=(41, 70)) -> dict:
@@ -434,7 +569,7 @@ def main() -> None:
         "seed": SEED, "N_MAX": N_MAX, "pilot2_quota": {f"{p}:{v}": q for (p, v), q in PILOT2_QUOTA.items()},
         "generator_sha256": hashlib.sha256(THIS_FILE.read_bytes()).hexdigest(),
         "units": units}, indent=1))
-    report["A9_proposition_capacity_informational"] = a9_proposition_capacity(units)
+    report["A9_proposition_capacity"] = a9_proposition_capacity(units)  # gating via A1 since Draft 2
     report["units_sha256"] = hashlib.sha256(units_path.read_bytes()).hexdigest()
     report["generator_sha256"] = hashlib.sha256(THIS_FILE.read_bytes()).hexdigest()
     (RESULTS_DIR / "workflow_template_grammar_audit.json").write_text(json.dumps(report, indent=2))
@@ -447,10 +582,10 @@ def main() -> None:
     print("A3/A4", report["A3_A4"])
     print("A5", report["A5_routing_cue_audit"])
     print("A6", {k: v for k, v in report["A6_impact_severity_cue_audit"].items() if k != "examples"})
-    print("A9 (informational) proposition-level capacity  [filler keys | proposition keys | needed N=738 | needed N=1260]:")
-    for k, v in report["A9_proposition_capacity_informational"].items():
+    print("A9 proposition-level capacity  [units | proposition keys | needed N=738 | needed N=1260]:")
+    for k, v in report["A9_proposition_capacity"].items():
         n738, n1260 = list(v.values())[2:]
-        flag = "" if v["proposition_keys"] >= n738 else "   <-- short even at N=738"
+        flag = "" if v["proposition_keys"] >= n1260 else "   <-- short at N_MAX"
         print(f"   {k:18s} {v['filler_keys']:4d} | {v['proposition_keys']:4d} | {n738:4d} | {n1260:4d}{flag}")
     print(f"\nFAILURES: {len(report['failures'])}")
     for f in report["failures"][:25]:

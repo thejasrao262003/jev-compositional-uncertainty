@@ -1143,6 +1143,25 @@ chance.
 - grammar reuse definition → freeze and audit → second pilot (measures
   `sigma_H1`, `sigma_H2`) → N → manifest → authorization.
 
+**Update (grammar Draft 2: reuse definition settled — 2026-10-16):**
+- **Option A adopted:** two sentences reuse a proposition when they
+  state the same atomic claim (subject, predicate, arguments,
+  conditions, polarity), whatever the wording.
+- **Enforcement:** the canonical signature is declared per pool. The
+  generator emits one sentence per proposition and **fails closed** on
+  undeclared slots or unmapped fillers. Both were probed.
+- **Vocabulary:** expanded so that every pool covers N = 1,260 at the
+  proposition level. 3,987 units; A1–A6 and A9 pass.
+- **Specified for manifest time:** a whole-plan proposition audit, and
+  a blocked-randomization sensitivity analysis for residual
+  subject-sharing.
+
+**Next:**
+1. Tushar reviews Draft 2.
+2. Freeze.
+3. Second-pilot manifest, then preflight.
+4. Authorization for its 270 calls.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

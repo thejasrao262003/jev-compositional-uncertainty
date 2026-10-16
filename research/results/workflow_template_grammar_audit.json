@@ -9,7 +9,7 @@
       "needed_at_N_MAX": 630
     },
     "impact:0": {
-      "main_reserve": 438,
+      "main_reserve": 422,
       "needed_at_N_MAX": 420
     },
     "impact:1": {
@@ -17,30 +17,30 @@
       "needed_at_N_MAX": 420
     },
     "impact:unclear": {
-      "main_reserve": 438,
+      "main_reserve": 434,
       "needed_at_N_MAX": 420
     },
     "severity:0": {
-      "main_reserve": 470,
+      "main_reserve": 422,
       "needed_at_N_MAX": 420
     },
     "severity:1": {
-      "main_reserve": 470,
+      "main_reserve": 445,
       "needed_at_N_MAX": 420
     },
     "severity:2": {
-      "main_reserve": 470,
+      "main_reserve": 422,
       "needed_at_N_MAX": 420
     }
   },
   "A2_exact_uniqueness": {
-    "units": 4128,
+    "units": 3987,
     "normalized_duplicates": 0,
     "prior_corpus_size": 142,
     "overlap_with_prior": 0
   },
   "A3_A4": {
-    "semantic_keys_unique_within_pool_value": true,
+    "proposition_keys_unique_within_pool_value": true,
     "pilot2_main_key_overlap": 0,
     "pilot2_main_text_overlap": 0
   },
@@ -60,7 +60,7 @@
       "slot_min_max": [
         [
           1,
-          3
+          4
         ],
         [
           1,
@@ -68,7 +68,7 @@
         ],
         [
           1,
-          6
+          4
         ]
       ]
     },
@@ -81,16 +81,16 @@
       },
       "slot_min_max": [
         [
-          53,
-          56
+          44,
+          48
         ],
         [
           80,
-          83
+          84
         ],
         [
-          90,
-          96
+          53,
+          112
         ]
       ]
     },
@@ -104,7 +104,7 @@
       "slot_min_max": [
         [
           1,
-          4
+          3
         ],
         [
           1,
@@ -125,16 +125,16 @@
       },
       "slot_min_max": [
         [
-          52,
-          56
+          45,
+          48
         ],
         [
           80,
           84
         ],
         [
-          92,
-          96
+          54,
+          111
         ]
       ]
     },
@@ -148,11 +148,11 @@
       "slot_min_max": [
         [
           1,
-          3
+          1
         ],
         [
-          2,
-          3
+          1,
+          4
         ],
         [
           1,
@@ -161,24 +161,24 @@
       ]
     },
     "impact:0:main": {
-      "n": 438,
+      "n": 422,
       "frame_counts": {
-        "0": 146,
-        "1": 146,
-        "2": 146
+        "0": 141,
+        "1": 141,
+        "2": 140
       },
       "slot_min_max": [
         [
-          53,
-          56
+          5,
+          6
         ],
         [
-          61,
-          64
+          21,
+          72
         ],
         [
-          52,
-          56
+          44,
+          65
         ]
       ]
     },
@@ -192,15 +192,15 @@
       "slot_min_max": [
         [
           1,
-          4
+          2
+        ],
+        [
+          1,
+          5
         ],
         [
           1,
           3
-        ],
-        [
-          1,
-          4
         ]
       ]
     },
@@ -213,15 +213,15 @@
       },
       "slot_min_max": [
         [
-          60,
+          62,
           64
         ],
         [
-          53,
+          51,
           56
         ],
         [
-          52,
+          53,
           56
         ]
       ]
@@ -236,37 +236,37 @@
       "slot_min_max": [
         [
           1,
-          3
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
           2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
         ]
       ]
     },
     "impact:unclear:main": {
-      "n": 438,
+      "n": 434,
       "frame_counts": {
-        "0": 146,
-        "1": 146,
-        "2": 146
+        "0": 145,
+        "1": 145,
+        "2": 144
       },
       "slot_min_max": [
         [
-          53,
-          56
+          4,
+          6
         ],
         [
-          61,
-          64
+          16,
+          74
         ],
         [
-          54,
-          56
+          50,
+          63
         ]
       ]
     },
@@ -280,11 +280,11 @@
       "slot_min_max": [
         [
           1,
-          2
+          3
         ],
         [
           1,
-          2
+          3
         ],
         [
           1,
@@ -293,24 +293,24 @@
       ]
     },
     "severity:0:main": {
-      "n": 470,
+      "n": 422,
       "frame_counts": {
-        "0": 157,
-        "1": 157,
-        "2": 156
+        "0": 141,
+        "1": 141,
+        "2": 140
       },
       "slot_min_max": [
         [
-          38,
-          40
+          33,
+          36
         ],
         [
-          58,
-          60
+          32,
+          72
         ],
         [
-          93,
-          95
+          69,
+          72
         ]
       ]
     },
@@ -324,37 +324,37 @@
       "slot_min_max": [
         [
           1,
+          1
+        ],
+        [
+          1,
           2
         ],
         [
-          1,
+          2,
           3
-        ],
-        [
-          1,
-          5
         ]
       ]
     },
     "severity:1:main": {
-      "n": 470,
+      "n": 445,
       "frame_counts": {
-        "0": 157,
-        "1": 157,
-        "2": 156
+        "0": 149,
+        "1": 148,
+        "2": 148
       },
       "slot_min_max": [
         [
-          38,
-          40
+          34,
+          35
         ],
         [
-          57,
-          60
+          31,
+          65
         ],
         [
-          91,
-          95
+          88,
+          91
         ]
       ]
     },
@@ -368,11 +368,11 @@
       "slot_min_max": [
         [
           1,
-          3
+          2
         ],
         [
           1,
-          4
+          3
         ],
         [
           1,
@@ -381,24 +381,24 @@
       ]
     },
     "severity:2:main": {
-      "n": 470,
+      "n": 422,
       "frame_counts": {
-        "0": 157,
-        "1": 157,
-        "2": 156
+        "0": 141,
+        "1": 141,
+        "2": 140
       },
       "slot_min_max": [
         [
-          45,
-          48
+          14,
+          16
         ],
         [
-          56,
-          60
+          30,
+          106
         ],
         [
-          77,
-          79
+          26,
+          107
         ]
       ]
     }
@@ -406,22 +406,22 @@
   "A8_label_provenance": "labels (pool, value) are set by the expansion loop before rendering; no code path reads a label back out of rendered text",
   "failures": [],
   "passed": true,
-  "A9_proposition_capacity_informational": {
+  "A9_proposition_capacity": {
     "routing:network": {
       "filler_keys": 672,
-      "proposition_keys": 576,
+      "proposition_keys": 672,
       "needed_at_k41(N=738)": 384,
       "needed_at_k70(N=1260)": 645
     },
     "routing:database": {
       "filler_keys": 672,
-      "proposition_keys": 576,
+      "proposition_keys": 672,
       "needed_at_k41(N=738)": 384,
       "needed_at_k70(N=1260)": 645
     },
     "impact:0": {
-      "filler_keys": 448,
-      "proposition_keys": 32,
+      "filler_keys": 432,
+      "proposition_keys": 432,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     },
@@ -432,30 +432,30 @@
       "needed_at_k70(N=1260)": 430
     },
     "impact:unclear": {
-      "filler_keys": 448,
-      "proposition_keys": 32,
+      "filler_keys": 444,
+      "proposition_keys": 444,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     },
     "severity:0": {
-      "filler_keys": 480,
-      "proposition_keys": 360,
+      "filler_keys": 432,
+      "proposition_keys": 432,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     },
     "severity:1": {
-      "filler_keys": 480,
-      "proposition_keys": 480,
+      "filler_keys": 455,
+      "proposition_keys": 455,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     },
     "severity:2": {
-      "filler_keys": 480,
-      "proposition_keys": 160,
+      "filler_keys": 432,
+      "proposition_keys": 432,
       "needed_at_k41(N=738)": 256,
       "needed_at_k70(N=1260)": 430
     }
   },
-  "units_sha256": "e320618eeb57b29a2af7d7a013b5deccf96d6498e185d63a78b8c02be61434a9",
-  "generator_sha256": "09b5d73422833baca7e90b03f5c27b3bc3df17a2682bb89b17464ec43444b3e9"
+  "units_sha256": "04f00563b1cba7aadf126d69b88232a7f03a7de2c5183b064d0db051c061b1bd",
+  "generator_sha256": "b18b8ffe29201bc1c2f605039562eb5f55a893ecf9bf4ca94301773651e6594c"
 }

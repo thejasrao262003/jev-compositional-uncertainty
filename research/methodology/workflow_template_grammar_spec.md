@@ -1,4 +1,4 @@
-# Workflow Template Grammar — Specification (Draft 1, for independent audit)
+# Workflow Template Grammar — Specification (Draft 2, for independent audit)
 
 Status: **draft for audit, not frozen.** No sentence from this grammar has
 been assigned to any pilot or evaluation instance, and no API call has
@@ -10,11 +10,21 @@ grammar.py`. Its full expansion (4,128 units) is in `research/data/
 characterization/workflow_template_grammar_units.json`, and its audit
 results are in `research/results/workflow_template_grammar_audit.json`.
 
-**One item is not ready to freeze: §5, the definition of reuse.** Under
-the definition the generator currently enforces, every check passes.
-Under a stricter, proposition-level definition, which is the concern
-audit item 5 raised, three of the eight pools can't supply even
-`N = 738`. §5 sets out the numbers and the options.
+**Draft 2 (2026-10-16): §5 is settled. Option A, proposition-level
+uniqueness, is adopted and gating.**
+- The generator now emits one sentence per proposition and fails closed
+  on any undeclared signature slot or unmapped filler.
+- The vocabulary was expanded so every pool covers `N_MAX = 1,260` at
+  the proposition level.
+- All audits pass: 3,987 units.
+
+The grammar is a **freeze candidate**. It is frozen only after
+independent review (Tushar) of this spec, the generator, and
+`workflow_template_grammar_audit.json`.
+
+*Draft 1 status line (superseded):* "One item is not ready to freeze:
+§5, the definition of reuse … three of the eight pools can't supply
+even `N = 738`."
 
 ## 1. Grammar dimensions
 
@@ -93,7 +103,110 @@ of the severity sentence. This isn't eliminated, but the magnitude
 classes are balanced by construction across instances (§6), so the
 effect falls equally on all severity levels.
 
-## 5. Definition of reuse — **OPEN DECISION**
+## 5. Definition of reuse — **SETTLED: Option A, proposition-level (Draft 2)**
+
+### 5.1 The rule
+
+Two sentences **reuse a proposition** when they state the same atomic
+claim: the same subject, predicate, arguments and conditions, with the
+same polarity, even in different words. Sharing words or a template
+frame doesn't count as reuse. Only sharing a proposition does, and
+within a pool and value no proposition may appear twice.
+
+In this grammar the claim is the tuple of a unit's **content slots**,
+after paraphrases are merged into classes. Polarity and label are fixed
+by `(pool, value)`, so a proposition is identified by `(pool, value,
+signature)`. Propositions in different pools are distinct by
+construction.
+
+| Pool : value | Canonical signature (key order) | Dropped as non-content |
+|---|---|---|
+| routing | component (subject) · metric (predicate) · magnitude/shape class | frame, time phrase |
+| impact : 1 | evidence channel · customer segment · product surface (subject) | frame |
+| impact : 0 | component (subject) · evidence class | frame, who confirmed |
+| impact : unclear | component (subject) · unknown-aspect class | frame, who could not confirm |
+| severity : 0 | UI element (subject) · defect class · display context (condition) | frame |
+| severity : 1 | feature (subject) · failure-mode class · workaround | frame |
+| severity : 2 | function (subject) · failure class · no-workaround scope class | frame |
+
+The paraphrase classes are listed verbatim in the generator's `SYN`.
+Merges include:
+- "a sharp spike" = "an abrupt jump";
+- "is misaligned by a few pixels" = "sits one pixel off its grid";
+- "stall after a long session" = "stop updating after a while";
+- the three "no workaround" phrasings.
+
+### 5.2 Edge cases, decided
+
+| Case | Decision |
+|---|---|
+| Same claim, different wording | Reuse. One class |
+| Opposite polarity | Not reuse. It can't occur within a pool, because the label fixes polarity |
+| Different subject (component, function, element) | Not reuse |
+| Same subject and predicate, different condition (e.g. display context) | Not reuse. The condition is a signature slot |
+| Time phrase ("since the last deploy" vs "over the past hour") | Non-content. It changes neither label nor subject/predicate, so it is a surface slot |
+| Who confirmed / who could not confirm | Non-content (nuisance). Attribution isn't a different claim (rejects Option B) |
+| Same vocabulary, different claim | Not reuse. Classes are defined on slot meaning, not shared words |
+| A filler whose class is unclear | **Blocks the build** until it is declared (§5.3) |
+
+### 5.3 Fail-closed enforcement
+
+Every slot of every pool is declared exactly once:
+- **SYN:** paraphrase classes, with every filler mapped;
+- **IDENTITY:** each filler is its own proposition, reviewed as such;
+- **NUISANCE:** dropped.
+
+`check_signature_declarations()` stops expansion on any of: an
+undeclared slot, a filler missing from its SYN map, or a stale map
+entry. Both failure modes were probed and both block.
+
+**Expansion.** All filler keys are shuffled with the fixed seed
+(`workflow-template-grammar-v2`). The first key of each proposition is
+kept, so paraphrases are spread across different propositions.
+
+### 5.4 Capacity after the vocabulary expansion
+
+| Pool : value | Proposition keys (= units) | Needed at N = 1,260 (pilot quota + 6k or 9k) |
+|---|---:|---:|
+| routing : network / database | 672 / 672 | 645 |
+| impact : 0 | 432 | 430 |
+| impact : 1 | 448 | 430 |
+| impact : unclear | 444 | 430 |
+| severity : 0 | 432 | 430 |
+| severity : 1 | 455 | 430 |
+| severity : 2 | 432 | 430 |
+
+**Vocabulary added:**
+- 2 routing components per class;
+- 64 internal-tool components (impact:0) and 66 shared-service
+  components (impact:unclear), plus 2 genuinely distinct evidence and
+  unknown-aspect classes in each;
+- 1 display context;
+- 1 degraded feature;
+- 17 blocking functions.
+
+Same provenance as §2: written by the implementing assistant, never by
+Jev. The leakage audits (A5, A6) pass on every new phrase, and the two
+impact pools share no component.
+
+### 5.5 Required at manifest time (not testable here)
+
+1. **Whole-plan audit:** across the complete evaluation manifest and
+   the second pilot, no `(pool, value, proposition key)` is used twice
+   and none is shared between pilot and main. The build stops on
+   violation.
+2. **Residual correlation, disclosed:** distinct propositions still
+   share subjects. For example, one impact:0 component appears with 6
+   evidence classes. The Step 2 analysis must report H1/H2 again as a
+   pre-specified **sensitivity analysis**, with randomization blocked
+   by the severity subject and the impact component. Pre-specified
+   rule: if a conclusion changes, that is reported, and the primary
+   result stands as computed.
+3. **Ceiling:** if Revision 12's sizing gives `N_eval > 1,260`, the
+   build stops for a decision. The vocabulary isn't expanded after the
+   pilot.
+
+### Draft 1 record (superseded): the open decision as it was posed
 
 What the generator currently enforces:
 - **Exact-string uniqueness:** normalized for case, punctuation and
@@ -147,6 +260,8 @@ buys the power §14 claims.
 
 ## 6. Balanced allocation — exact integer rule (proposed; changes how §14's N is rounded)
 
+*Revision 12 note:* `n_required` now comes from §14's cost-based sizing (`max(n(H1), n(H2))`), not from `d`. The rounding rule and the ceiling below apply unchanged.
+
 **Proposed rule:** `N_eval = 18 · ceil(n_required / 18)`, which puts
 exactly `N_eval / 18` instances in each of the 18 `(c_1*, c_2*, c_3*)`
 cells. `N_eval` is never below `n_required`: at `d = 7/30`, `n_required =
@@ -190,6 +305,8 @@ See §2. Prohibited, and not used anywhere.
 
 ## 10. Distributional audit (A7)
 
+*Draft 2:* the table below is the Draft 1 record. The current per-pool counts, frame balance and slot spread are in `workflow_template_grammar_audit.json` (A7), regenerated for Draft 2.
+
 Main-reserve counts per pool and value, frame balance, and the spread
 of each slot filler's counts:
 
@@ -211,8 +328,11 @@ so it is part of the manifest audit, not this one.
 
 ## What this draft does not authorize
 
-It doesn't freeze the grammar (§5 is open), assign any unit to an
+It doesn't freeze the grammar (Draft 2 awaits independent review), assign any unit to an
 instance, build a pilot or evaluation manifest, or authorize any API
-call. After the §5 decision: revise the vocabulary if needed, then
-re-run all audits, freeze, audit independently, and only then decide
-whether to run the second pilot.
+call. **Next:**
+1. Independent review of Draft 2.
+2. Freeze, hash-locking the generator and the units file.
+3. Build the second-pilot manifest with the §5.5 whole-plan audit.
+4. Preflight.
+5. Explicit authorization for its 270 calls.
