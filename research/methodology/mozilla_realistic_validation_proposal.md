@@ -17,6 +17,38 @@ in review, the dataset is rebuilt; nothing has been run against it.
 
 Proposed by: Tushar (tushar.m@mobisy.com). Reviewer: Thejas.
 
+## Revision 3 — smoke test and the threshold change (2026-10-16)
+
+**Smoke test run, with approval.** The first 10% of each cell (21 bugs,
+252 calls; `--smoke-test`) went through the full pipeline: 252/252 calls
+HTTP 200, 0 retries, 0 parse failures, `jev-1.13.0` throughout, and a
+hand recount from the raw responses matched the analysis. It also
+measured the run time: about 0.57 s per call, so roughly 25 minutes for
+the full run. This was a pipeline check, not study results. The
+artifacts are separate: `mozilla_smoketest_*`.
+
+**What the smoke test exposed.** Strategies 2 and 4a escalated 19/21 and
+20/21 bugs. Diagnosed from input signals only: 4a's `choice ≥ 0.90`
+trigger fires on 90% of inputs, because `choice` confidence is saturated
+at 1.0, and Strategy 2's fixed 0.5 cut escalates 90% of real bugs where
+it escalated 73% of synthetic ones. The same saturation is in the
+synthetic pilot. This led to **Revision 11 of the main protocol**:
+- Strategy 2 escalates a fixed rate `q`, the lowest-`conf_product`
+  instances.
+- 4a's `choice` trigger is removed.
+
+Full account, with synthetic vs. real numbers:
+`research/results/threshold_transfer_finding.md`.
+
+**For this study.** RQ-A3 reports the Revision 11 strategies. The
+Revision 10 versions are kept alongside (`2_rev10`, `4a_rev10`) so the
+change is visible. For Mozilla, `q` is the label base rate of target
+actions that aren't "accept" (83/202 for the full run; 8/21 in the smoke
+test). That uses the labels' marginal only, and is disclosed as such.
+Strategy 2 ranks once across all analyzed bugs, never within a subset.
+The runner reports each confidence rule's firing rate under
+`selectivity`.
+
 ## Revision 2 — review fixes (2026-10-16)
 
 Review checked the proposal against the code, the dataset and the
@@ -128,8 +160,12 @@ only on constructed items:
   trigger rests on it. *On real text, is `choice` agreement lower in
   the ≥ 0.90 band than the confidence suggests?*
 - **RQ-A3 (strategies).** *How do Strategies 1, 2 and 4a behave on real
-  inputs?* Their decision rules are the Revision 10 rules, unchanged
-  (the runner imports the frozen pilot code). Their inputs differ:
+  inputs?* **Revision 3: Strategies 2 and 4a use the Revision 11
+  definitions** (`workflow_strategies_r11.py`). The Revision 10 versions
+  are reported alongside for comparison. Strategy 1 is the frozen pilot
+  code, unchanged. The rest of this paragraph is the Revision 2 text:
+  their decision rules were the Revision 10 rules
+  (the runner imported the frozen pilot code). Their inputs differ:
   `choice`'s `database` criterion becomes `storage`, `noul` asks about
   regressions, and 4a's `≥ 0.90` trigger was set on the old `choice`
   wording. Reported descriptively. This study is **not** powered for,

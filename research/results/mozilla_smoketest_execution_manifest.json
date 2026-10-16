@@ -41,6 +41,12 @@
       },
       "bugs_where_strategy1_saw_undefined_noul": 0
     },
+    "selectivity": {
+      "rev10_choice_conf_ge_0.90_trigger": 0.9047619047619048,
+      "rev10_strategy2_escalation_rate": 0.9047619047619048,
+      "rev11_strategy2_escalation_rate": 0.38095238095238093,
+      "rev11_strategy2_q": 0.38095238095238093
+    },
     "subsets": {
       "all": {
         "n": 21,
@@ -342,6 +348,46 @@
               ]
             },
             "coverage": {
+              "k": 13,
+              "n": 21,
+              "rate": 0.6190476190476191,
+              "wilson95": [
+                0.40878295815501514,
+                0.7924923220201749
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 14,
+              "n": 21,
+              "rate": 0.6666666666666666,
+              "wilson95": [
+                0.45373075657210293,
+                0.8280546356731631
+              ]
+            },
+            "coverage": {
+              "k": 12,
+              "n": 21,
+              "rate": 0.5714285714285714,
+              "wilson95": [
+                0.3654621629703244,
+                0.7553030051347894
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
+              "k": 7,
+              "n": 21,
+              "rate": 0.3333333333333333,
+              "wilson95": [
+                0.17194536432683688,
+                0.5462692434278971
+              ]
+            },
+            "coverage": {
               "k": 2,
               "n": 21,
               "rate": 0.09523809523809523,
@@ -351,7 +397,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 7,
               "n": 21,
@@ -372,16 +418,16 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_right/1_wrong": 4,
-            "2_wrong/1_wrong": 3,
-            "2_wrong/1_right": 11,
-            "2_right/1_right": 3
+            "2_wrong/1_wrong": 6,
+            "2_right/1_wrong": 1,
+            "2_right/1_right": 6,
+            "2_wrong/1_right": 8
           },
           "discordance_2_vs_4a": {
-            "2_right/4a_right": 5,
-            "2_wrong/4a_right": 2,
-            "2_right/4a_wrong": 2,
-            "2_wrong/4a_wrong": 12
+            "2_wrong/4a_wrong": 6,
+            "2_right/4a_wrong": 1,
+            "2_right/4a_right": 6,
+            "2_wrong/4a_right": 8
           }
         },
         "repeat_unstable_rate": {
@@ -705,6 +751,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 3,
+              "n": 8,
+              "rate": 0.375,
+              "wilson95": [
+                0.13684175946152105,
+                0.6942621454161981
+              ]
+            },
+            "coverage": {
+              "k": 4,
+              "n": 8,
+              "rate": 0.5,
+              "wilson95": [
+                0.21521252682444186,
+                0.7847874731755582
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 6,
+              "n": 8,
+              "rate": 0.75,
+              "wilson95": [
+                0.40926987910258916,
+                0.9285223111419724
+              ]
+            },
+            "coverage": {
+              "k": 4,
+              "n": 8,
+              "rate": 0.5,
+              "wilson95": [
+                0.21521252682444186,
+                0.7847874731755582
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 2,
               "n": 8,
               "rate": 0.25,
@@ -723,7 +809,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 2,
               "n": 8,
@@ -744,16 +830,14 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_right/1_wrong": 1,
-            "2_wrong/1_right": 5,
-            "2_wrong/1_wrong": 1,
-            "2_right/1_right": 1
+            "2_wrong/1_wrong": 2,
+            "2_wrong/1_right": 3,
+            "2_right/1_right": 3
           },
           "discordance_2_vs_4a": {
-            "2_right/4a_wrong": 1,
-            "2_wrong/4a_right": 1,
-            "2_wrong/4a_wrong": 5,
-            "2_right/4a_right": 1
+            "2_wrong/4a_wrong": 2,
+            "2_wrong/4a_right": 3,
+            "2_right/4a_right": 3
           }
         },
         "repeat_unstable_rate": {
@@ -1075,6 +1159,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 6,
+              "n": 18,
+              "rate": 0.3333333333333333,
+              "wilson95": [
+                0.1627855436366286,
+                0.5625093065574964
+              ]
+            },
+            "coverage": {
+              "k": 10,
+              "n": 18,
+              "rate": 0.5555555555555556,
+              "wilson95": [
+                0.3371606942825164,
+                0.7544076889861088
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 12,
+              "n": 18,
+              "rate": 0.6666666666666666,
+              "wilson95": [
+                0.4374906934425036,
+                0.8372144563633714
+              ]
+            },
+            "coverage": {
+              "k": 12,
+              "n": 18,
+              "rate": 0.6666666666666666,
+              "wilson95": [
+                0.4374906934425036,
+                0.8372144563633714
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 5,
               "n": 18,
               "rate": 0.2777777777777778,
@@ -1093,7 +1217,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 6,
               "n": 18,
@@ -1114,16 +1238,14 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_right/1_wrong": 3,
-            "2_wrong/1_wrong": 3,
-            "2_wrong/1_right": 10,
-            "2_right/1_right": 2
+            "2_wrong/1_wrong": 6,
+            "2_right/1_right": 6,
+            "2_wrong/1_right": 6
           },
           "discordance_2_vs_4a": {
-            "2_right/4a_right": 4,
-            "2_wrong/4a_right": 2,
-            "2_right/4a_wrong": 1,
-            "2_wrong/4a_wrong": 11
+            "2_wrong/4a_wrong": 6,
+            "2_right/4a_right": 6,
+            "2_wrong/4a_right": 6
           }
         },
         "repeat_unstable_rate": {
@@ -1447,6 +1569,46 @@
               ]
             },
             "coverage": {
+              "k": 6,
+              "n": 8,
+              "rate": 0.75,
+              "wilson95": [
+                0.40926987910258916,
+                0.9285223111419724
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 4,
+              "n": 8,
+              "rate": 0.5,
+              "wilson95": [
+                0.21521252682444186,
+                0.7847874731755582
+              ]
+            },
+            "coverage": {
+              "k": 4,
+              "n": 8,
+              "rate": 0.5,
+              "wilson95": [
+                0.21521252682444186,
+                0.7847874731755582
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
+              "k": 3,
+              "n": 8,
+              "rate": 0.375,
+              "wilson95": [
+                0.13684175946152105,
+                0.6942621454161981
+              ]
+            },
+            "coverage": {
               "k": 2,
               "n": 8,
               "rate": 0.25,
@@ -1456,7 +1618,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 3,
               "n": 8,
@@ -1477,16 +1639,16 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_right/1_wrong": 2,
-            "2_wrong/1_wrong": 2,
-            "2_wrong/1_right": 3,
-            "2_right/1_right": 1
+            "2_wrong/1_wrong": 3,
+            "2_right/1_wrong": 1,
+            "2_right/1_right": 2,
+            "2_wrong/1_right": 2
           },
           "discordance_2_vs_4a": {
-            "2_right/4a_right": 2,
-            "2_wrong/4a_right": 1,
+            "2_wrong/4a_wrong": 3,
             "2_right/4a_wrong": 1,
-            "2_wrong/4a_wrong": 4
+            "2_right/4a_right": 2,
+            "2_wrong/4a_right": 2
           }
         },
         "repeat_unstable_rate": {
@@ -1779,6 +1941,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 0,
+              "n": 4,
+              "rate": 0.0,
+              "wilson95": [
+                0.0,
+                0.48990002040399916
+              ]
+            },
+            "coverage": {
+              "k": 4,
+              "n": 4,
+              "rate": 1.0,
+              "wilson95": [
+                0.5100999795960008,
+                1.0
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 0,
+              "n": 4,
+              "rate": 0.0,
+              "wilson95": [
+                0.0,
+                0.48990002040399916
+              ]
+            },
+            "coverage": {
+              "k": 2,
+              "n": 4,
+              "rate": 0.5,
+              "wilson95": [
+                0.15003570882017148,
+                0.8499642911798285
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 3,
               "n": 4,
               "rate": 0.75,
@@ -1797,7 +1999,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 3,
               "n": 4,
@@ -1818,13 +2020,10 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_right/1_wrong": 3,
-            "2_wrong/1_wrong": 1
+            "2_wrong/1_wrong": 4
           },
           "discordance_2_vs_4a": {
-            "2_right/4a_right": 2,
-            "2_wrong/4a_right": 1,
-            "2_right/4a_wrong": 1
+            "2_wrong/4a_wrong": 4
           }
         },
         "repeat_unstable_rate": {
@@ -2115,6 +2314,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 2,
+              "n": 4,
+              "rate": 0.5,
+              "wilson95": [
+                0.15003570882017148,
+                0.8499642911798285
+              ]
+            },
+            "coverage": {
+              "k": 2,
+              "n": 4,
+              "rate": 0.5,
+              "wilson95": [
+                0.15003570882017148,
+                0.8499642911798285
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 2,
+              "n": 4,
+              "rate": 0.5,
+              "wilson95": [
+                0.15003570882017148,
+                0.8499642911798285
+              ]
+            },
+            "coverage": {
+              "k": 2,
+              "n": 4,
+              "rate": 0.5,
+              "wilson95": [
+                0.15003570882017148,
+                0.8499642911798285
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 1,
               "n": 4,
               "rate": 0.25,
@@ -2133,7 +2372,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 0,
               "n": 4,
@@ -2155,12 +2394,15 @@
           },
           "discordance_2_vs_1": {
             "2_right/1_wrong": 1,
-            "2_wrong/1_right": 2,
-            "2_wrong/1_wrong": 1
+            "2_right/1_right": 1,
+            "2_wrong/1_wrong": 1,
+            "2_wrong/1_right": 1
           },
           "discordance_2_vs_4a": {
             "2_right/4a_wrong": 1,
-            "2_wrong/4a_wrong": 3
+            "2_right/4a_right": 1,
+            "2_wrong/4a_wrong": 1,
+            "2_wrong/4a_right": 1
           }
         },
         "repeat_unstable_rate": {
@@ -2453,6 +2695,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 1,
+              "n": 4,
+              "rate": 0.25,
+              "wilson95": [
+                0.045586062644636216,
+                0.6993639475573634
+              ]
+            },
+            "coverage": {
+              "k": 1,
+              "n": 4,
+              "rate": 0.25,
+              "wilson95": [
+                0.045586062644636216,
+                0.6993639475573634
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 3,
+              "n": 4,
+              "rate": 0.75,
+              "wilson95": [
+                0.3006360524426366,
+                0.9544139373553637
+              ]
+            },
+            "coverage": {
+              "k": 3,
+              "n": 4,
+              "rate": 0.75,
+              "wilson95": [
+                0.3006360524426366,
+                0.9544139373553637
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 0,
               "n": 4,
               "rate": 0.0,
@@ -2471,7 +2753,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 1,
               "n": 4,
@@ -2492,12 +2774,14 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_wrong/1_right": 3,
+            "2_wrong/1_right": 2,
+            "2_right/1_right": 1,
             "2_wrong/1_wrong": 1
           },
           "discordance_2_vs_4a": {
-            "2_wrong/4a_right": 1,
-            "2_wrong/4a_wrong": 3
+            "2_wrong/4a_right": 2,
+            "2_right/4a_right": 1,
+            "2_wrong/4a_wrong": 1
           }
         },
         "repeat_unstable_rate": {
@@ -2778,21 +3062,21 @@
           },
           "2": {
             "P_Y_decision": {
-              "k": 3,
+              "k": 1,
               "n": 3,
-              "rate": 1.0,
+              "rate": 0.3333333333333333,
               "wilson95": [
-                0.43849391955098227,
-                1.0
+                0.0614903152761605,
+                0.7923450448735121
               ]
             },
             "coverage": {
-              "k": 0,
+              "k": 2,
               "n": 3,
-              "rate": 0.0,
+              "rate": 0.6666666666666666,
               "wilson95": [
-                0.0,
-                0.5615060804490177
+                0.2076549551264879,
+                0.9385096847238394
               ]
             }
           },
@@ -2816,11 +3100,53 @@
               ]
             }
           },
+          "2_rev10": {
+            "P_Y_decision": {
+              "k": 3,
+              "n": 3,
+              "rate": 1.0,
+              "wilson95": [
+                0.43849391955098227,
+                1.0
+              ]
+            },
+            "coverage": {
+              "k": 0,
+              "n": 3,
+              "rate": 0.0,
+              "wilson95": [
+                0.0,
+                0.5615060804490177
+              ]
+            }
+          },
+          "4a_rev10": {
+            "P_Y_decision": {
+              "k": 3,
+              "n": 3,
+              "rate": 1.0,
+              "wilson95": [
+                0.43849391955098227,
+                1.0
+              ]
+            },
+            "coverage": {
+              "k": 0,
+              "n": 3,
+              "rate": 0.0,
+              "wilson95": [
+                0.0,
+                0.5615060804490177
+              ]
+            }
+          },
           "discordance_2_vs_1": {
-            "2_right/1_right": 3
+            "2_wrong/1_right": 2,
+            "2_right/1_right": 1
           },
           "discordance_2_vs_4a": {
-            "2_right/4a_right": 3
+            "2_wrong/4a_right": 2,
+            "2_right/4a_right": 1
           }
         },
         "repeat_unstable_rate": {
@@ -3114,6 +3440,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 1,
+              "n": 4,
+              "rate": 0.25,
+              "wilson95": [
+                0.045586062644636216,
+                0.6993639475573634
+              ]
+            },
+            "coverage": {
+              "k": 2,
+              "n": 4,
+              "rate": 0.5,
+              "wilson95": [
+                0.15003570882017148,
+                0.8499642911798285
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 4,
+              "n": 4,
+              "rate": 1.0,
+              "wilson95": [
+                0.5100999795960008,
+                1.0
+              ]
+            },
+            "coverage": {
+              "k": 3,
+              "n": 4,
+              "rate": 0.75,
+              "wilson95": [
+                0.3006360524426366,
+                0.9544139373553637
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 0,
               "n": 4,
               "rate": 0.0,
@@ -3132,7 +3498,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 0,
               "n": 4,
@@ -3153,10 +3519,12 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_wrong/1_right": 4
+            "2_wrong/1_right": 3,
+            "2_right/1_right": 1
           },
           "discordance_2_vs_4a": {
-            "2_wrong/4a_wrong": 4
+            "2_wrong/4a_right": 3,
+            "2_right/4a_right": 1
           }
         },
         "repeat_unstable_rate": {
@@ -3433,6 +3801,46 @@
           },
           "2": {
             "P_Y_decision": {
+              "k": 2,
+              "n": 2,
+              "rate": 1.0,
+              "wilson95": [
+                0.34237195288961925,
+                1.0
+              ]
+            },
+            "coverage": {
+              "k": 2,
+              "n": 2,
+              "rate": 1.0,
+              "wilson95": [
+                0.34237195288961925,
+                1.0
+              ]
+            }
+          },
+          "4a": {
+            "P_Y_decision": {
+              "k": 2,
+              "n": 2,
+              "rate": 1.0,
+              "wilson95": [
+                0.34237195288961925,
+                1.0
+              ]
+            },
+            "coverage": {
+              "k": 2,
+              "n": 2,
+              "rate": 1.0,
+              "wilson95": [
+                0.34237195288961925,
+                1.0
+              ]
+            }
+          },
+          "2_rev10": {
+            "P_Y_decision": {
               "k": 0,
               "n": 2,
               "rate": 0.0,
@@ -3451,7 +3859,7 @@
               ]
             }
           },
-          "4a": {
+          "4a_rev10": {
             "P_Y_decision": {
               "k": 0,
               "n": 2,
@@ -3472,10 +3880,10 @@
             }
           },
           "discordance_2_vs_1": {
-            "2_wrong/1_right": 2
+            "2_right/1_right": 2
           },
           "discordance_2_vs_4a": {
-            "2_wrong/4a_wrong": 2
+            "2_right/4a_right": 2
           }
         },
         "repeat_unstable_rate": {

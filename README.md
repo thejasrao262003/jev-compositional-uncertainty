@@ -33,7 +33,9 @@ ways of composing these signals across a three-step chain.
 | `score` sensitivity to sentence order | Complete (`def7da7`) |
 | Workflow composition, first calibration pilot | Run: 270 calls, 0 deviations (`5c16f4c`) |
 | Workflow composition, template grammar | Drafted and audited; one open decision (how to define sentence reuse) |
-| Main Step 2 evaluation | **Not built, not run.** Sample size is provisional |
+| Mozilla real-data validation (Tushar) | Reviewed, 10% smoke test run (252 calls); full run awaiting approval |
+| Threshold transfer finding → Revision 11 | Fixed thresholds didn't carry over from synthetic to real text; see `research/results/threshold_transfer_finding.md` |
+| Main Step 2 evaluation | **Not built, not run.** Sample size void until the second calibration pilot |
 
 ## How the work is done
 

@@ -37,6 +37,7 @@ from run_workflow_calibration_pilot import (  # noqa: E402  (frozen pilot code, 
     strategy_4a_abstention_aware,
 )
 from stage1_h1h2b_analysis import wilson_interval  # noqa: E402
+from workflow_strategies_r11 import prevalence_q, selectivity, strategy_2_r11, strategy_4a_r11  # noqa: E402
 
 REPO_ROOT = SRC_DIR.parent.parent
 MOZ_DIR = REPO_ROOT / "research" / "data" / "mozilla"
@@ -342,12 +343,22 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
         a_star = F(b["regression"], b["level"])
         actions = {
             "1": strategy_1_decision_only(red["choice"]["modal_decision"], red["noul"], red["score"]),
-            "2": strategy_2_naive_confidence(red["choice"], red["noul"], red["score"]),
-            "4a": strategy_4a_abstention_aware(red["choice"], red["noul"], red["score"],
-                                               score_presentation_risk_active=False,
-                                               cross_node_disagreement=False),
+            "4a": strategy_4a_r11(red["choice"], red["noul"], red["score"]),       # Revision 11
+            # Revision 10 definitions, kept for the record and the comparison (superseded):
+            "2_rev10": strategy_2_naive_confidence(red["choice"], red["noul"], red["score"]),
+            "4a_rev10": strategy_4a_abstention_aware(red["choice"], red["noul"], red["score"],
+                                                     score_presentation_risk_active=False,
+                                                     cross_node_disagreement=False),
         }
         per[b["bug_id"]] = {"bug": b, "red": red, "a_star": a_star, "actions": actions}
+
+    # Revision 11 Strategy 2 ranks across the WHOLE evaluated set, once (never
+    # re-ranked within a subset or cell). q = share of a* != accept, from
+    # the label marginal only.
+    q = prevalence_q([p["a_star"] for p in per.values()])
+    s2 = strategy_2_r11([(i, p["red"]["choice"], p["red"]["noul"], p["red"]["score"]) for i, p in per.items()], q)
+    for i, p in per.items():
+        p["actions"]["2"] = s2[i]
 
     def summarize(ids: list[int]) -> dict:
         P = [per[i] for i in ids]
@@ -392,7 +403,7 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
             out[f"{arm}_P_jev_above_mozilla_by_true_level"] = lean
         # strategies (descriptive; a* comes from F applied to Mozilla labels, not externally validated)
         out["strategies"] = {}
-        for s in ("1", "2", "4a"):
+        for s in ("1", "2", "4a", "2_rev10", "4a_rev10"):
             y = [p["actions"][s] == p["a_star"] for p in P]
             resolved = [p["actions"][s] not in ("escalate", "defer") for p in P]
             out["strategies"][s] = {"P_Y_decision": _rate(sum(y), len(y)), "coverage": _rate(sum(resolved), len(P))}
@@ -420,7 +431,15 @@ def analyze(bugs: list[dict], rows: list[dict]) -> dict:
                    for arm in ("choice", "noul", "score", "wording")},
                "bugs_where_strategy1_saw_undefined_noul": sum(
                    1 for p in per.values() if p["red"]["noul"]["decision"] is None)}
-    result = {"data_quality": quality, "subsets": {}, "cells": {}}
+    # Selectivity of each confidence rule on THIS input set (inputs only, no
+    # labels): the share of instances on which the rule escalates.
+    sel = {"rev10_choice_conf_ge_0.90_trigger": selectivity(
+               [p["red"]["choice"]["mean_confidence"] is not None and p["red"]["choice"]["mean_confidence"] >= 0.90
+                for p in per.values()]),
+           "rev10_strategy2_escalation_rate": selectivity([p["actions"]["2_rev10"] == "escalate" for p in per.values()]),
+           "rev11_strategy2_escalation_rate": selectivity([p["actions"]["2"] == "escalate" for p in per.values()]),
+           "rev11_strategy2_q": q}
+    result = {"data_quality": quality, "selectivity": sel, "subsets": {}, "cells": {}}
     for name, f in SUBSETS.items():
         result["subsets"][name] = summarize([b["bug_id"] for b in bugs if f(b)])
     for g in ("network", "storage"):
@@ -563,7 +582,25 @@ def run_selftest() -> None:
     # 6. a* is F applied to labels; strategies take no label argument
     import inspect
     assert F(1, 1) == "defer" and F(0, 1) == "accept" and F(1, 2) == "escalate" and F(0, 0) == "accept"
-    for fn in (strategy_1_decision_only, strategy_2_naive_confidence, strategy_4a_abstention_aware):
+    # Revision 11 rules
+    ch = reduce_choice_or_score_cell([_choice("network", 1.0)] * 3)
+    insts = []
+    for i, nv in enumerate((0.95, 0.9, 0.6, 0.55, 0.5)):   # conf_product falls as noul nears 0.5
+        insts.append((f"b{i}", ch, reduce_noul_cell([_noul(nv)] * 3), reduce_choice_or_score_cell([_score(0)] * 3)))
+    out = strategy_2_r11(insts, 0.4)                          # ceil(0.4 * 5) = 2 escalations
+    assert [out[f"b{i}"] for i in range(5)] == ["accept", "accept", "accept", "escalate", "escalate"], out
+    assert strategy_2_r11(list(reversed(insts)), 0.4) == out  # order-independent
+    tie = [("x", ch, insts[0][2], insts[0][3]), ("a", ch, insts[0][2], insts[0][3])]
+    assert strategy_2_r11(tie, 0.5) == {"a": "escalate", "x": "accept"}  # ties broken by id
+    assert prevalence_q(["accept", "defer", "escalate", "accept"]) == 0.5
+    # 4a no longer escalates merely because choice is confident
+    calm = reduce_choice_or_score_cell([_score(0)] * 3)
+    assert strategy_4a_r11(ch, reduce_noul_cell([_noul(0.1)] * 3), calm) == "accept"
+    assert strategy_4a_abstention_aware(ch, reduce_noul_cell([_noul(0.1)] * 3), calm, False, False) == "escalate"
+    print("  PASS: Rev 11 Strategy 2 escalates exactly ceil(q*n), order-independent, ties by id; "
+          "Rev 11 4a has no confidence trigger (Rev 10 escalated the same case)")
+    for fn in (strategy_1_decision_only, strategy_2_naive_confidence, strategy_4a_abstention_aware,
+               strategy_2_r11, strategy_4a_r11):
         assert not ({"a_star", "label", "bug"} & set(inspect.signature(fn).parameters)), fn.__name__
     print("  PASS: a* = F(regression, level); no strategy sees a label")
 

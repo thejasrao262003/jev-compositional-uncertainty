@@ -1,4 +1,4 @@
-# Workflow Uncertainty Composition Protocol — Step 2, Specified (Revision 10)
+# Workflow Uncertainty Composition Protocol — Step 2, Specified (Revision 11)
 
 Status (Revision 10): **no Step 2 evaluation manifest exists and no
 Step 2 call has been made or authorized.** The first calibration pilot
@@ -12,8 +12,66 @@ deterministic template grammar (`workflow_template_grammar_spec.md`) →
 independent grammar audit → a second 270-call calibration pilot on
 templated content → `d_template` → recompute `N` → freeze `N` → build
 the evaluation manifest → manifest audit and preflight → explicit Step 2
-authorization. **`N = 733` is provisional** (§14); see the Revision 10
-audit addendum below.
+authorization. **`N = 733` is void as of Revision 11** (§14): it was
+measured under strategy definitions Revision 11 replaced. The second
+calibration pilot re-measures the disagreement rate under the Revision 11
+definitions.
+
+## Changelog from Revision 10 — thresholds that did not transfer (Revision 11)
+
+Full account, with every number: `research/results/threshold_transfer_finding.md`.
+
+**What was found.** A 10% smoke test of the Mozilla real-data study (21
+bugs, 252 calls) showed Strategies 2 and 4a escalating almost every
+case. The first calibration pilot showed the same, milder and unnoticed,
+because it was only used to estimate a disagreement rate. Diagnosed from
+the strategies' **input signals only**, never labels or results:
+- **4a's `choice ≥ 0.90` trigger fired on 90% of inputs in both
+  datasets** (27/30 synthetic, 19/21 real). `choice` confidence is
+  saturated, with a median of exactly 1.0 on both and only 4 distinct
+  values on real text, so no cut-off on it can select a minority.
+- **Strategy 2's fixed `conf_product ≥ 0.5` cut escalated 73% of
+  synthetic instances** (close to the 67% a perfect accept/escalate
+  policy would) **but 90% of real ones** (against 38%). Real text pulls
+  `noul` toward the middle, which pulls the product down. A fixed cut in
+  confidence units carries one content distribution's scale with it.
+- **So Revision 10's only main comparison set two escalate-almost-
+  always policies against each other.** On the smoke test both scored
+  7/21, the share of bugs whose correct action is "escalate".
+
+**What changed:**
+- **Strategy 2** (§7.2) now escalates exactly `⌈q·n⌉` instances with the
+  lowest `conf_product`. `q` is the share of target actions that aren't
+  "accept": 6/9 by construction for this design, never fit to model
+  output.
+- **4a** (§7.4a) loses the `choice` trigger. It escalates on repeat
+  instability, otherwise returns `F`.
+
+Implemented in `research/src/workflow_strategies_r11.py`. The frozen
+Revision 10 functions stay unchanged in `run_workflow_calibration_pilot.py`
+as the record of what the first pilot ran.
+
+**Why this isn't post-hoc tuning.** Neither change was chosen by
+comparing strategy results, and neither was iterated. The trigger is
+removed because of saturation alone, which needs no labels to show.
+`q` comes from the design. The rank-based rule doesn't depend on the
+confidence scale, which is what changed between synthetic and real
+text.
+
+**What it costs:**
+1. **4a is no longer primitive-aware.** It is `F` plus repeat-
+   instability escalation, almost the same as Strategy 1 (instability
+   is rare: 2/30 and 0/21). The main comparison now tests **naive
+   confidence composition at a matched escalation rate against decision-
+   based composition** (§13).
+2. **`N = 733` is void** (§14).
+3. **Strategy 2 is batch-relative.** It ranks within the evaluated set.
+
+The first calibration pilot's prohibited-use list is respected: the
+change comes from the signals' saturation and transfer behavior, not
+from the pilot's disagreement counts or outcomes. Whether that
+distinction holds up is for review to judge; it is disclosed here so
+review doesn't have to go looking for it.
 
 ## Revision 10 audit addendum — content generator changes, so N is provisional again
 
@@ -569,7 +627,14 @@ Feature contract: primitive identities, node positions, native
 ```
 conf_i = confidence (choice, score) or 2*|noul-0.5| (noul).
 conf_product = Π conf_i
-π_2: accept if conf_product >= 0.5, else escalate.
+π_2 (REVISION 11, binding): escalate exactly ceil(q * n) instances with
+  the lowest conf_product in the evaluated set (undefined conf_product
+  ranks lowest; ties broken by instance id); accept the rest.
+  q = share of target actions != accept = 6/9 for this design (by
+  construction from F and the balanced schedule; never fit to output).
+  Code: workflow_strategies_r11.strategy_2_r11.
+π_2 (Revision 10, SUPERSEDED - kept as the record of the first pilot):
+  accept if conf_product >= 0.5, else escalate.
   Threshold FROZEN at 0.5 (Revision 10) - the exact value the
   calibration pilot used when it measured d(2v4a), fixed before that
   pilot ran. No longer fit on a policy-development set (removed, §8).
@@ -662,8 +727,15 @@ the constant list.
 ### 7.4a Strategy 4a — Abstention-aware composition (deployable; the sole primary comparator, Revision 10)
 
 ```
-π_4a, stated exactly as the calibration pilot implemented it (Revision
-10 - the main run must match this, since d(2v4a) was measured under it):
+π_4a (REVISION 11, binding):
+  1. if the choice node OR the score node is repeat_unstable -> ESCALATE
+  2. else -> F(noul decision, score decision), ESCALATE on undefined input.
+  The choice-confidence trigger is REMOVED: choice confidence is
+  saturated (median 1.0 on synthetic and real text) and the >= 0.90
+  trigger fired on 90% of both, so it cannot select (Revision 11
+  changelog). Code: workflow_strategies_r11.strategy_4a_r11.
+
+π_4a (Revision 10, SUPERSEDED - the record of what the first pilot ran):
   1. if the choice node OR the score node is repeat_unstable (§2)
        -> ESCALATE    (noul has no modal-stability concept, §2, so it
                        does not enter this check)
@@ -677,7 +749,11 @@ the constant list.
 Uses only information a real deployed system observes at decision time.
 ```
 
-What makes 4a "primitive-aware" is **only** its triggers. The
+**Revision 11:** with the `choice` trigger removed, 4a is no longer
+primitive-aware. It is `F` plus repeat-instability escalation, almost
+the same as Strategy 1. The paragraph below describes Revision 10.
+
+What made 4a "primitive-aware" (Revision 10) was **only** its triggers. The
 `choice`-confidence trigger is primitive-specific, and the repeat-
 instability check reflects §2's measurement layer, which differs by
 primitive. The composition step itself is `F`. That is the scope in
@@ -723,7 +799,7 @@ triggers feed Strategy 4a.
 | Trigger | Definition | Deployable or diagnostic-only? | Used in |
 |---|---|---|---|
 | Repeat instability | A node's 3-call modal reduction (§2) produced no modal decision | **Deployable** — the repeat calls are always made, their outcome is directly observed | 4a |
-| `choice` confidence ≥ 0.90 | Exact boundary of Step 0B's observed subgroup (n=6), frozen | **Deployable** — confidence is a real, observed API field | 4a |
+| `choice` confidence ≥ 0.90 | **REMOVED in Revision 11.** Fired on 27/30 synthetic and 19/21 real inputs; the signal is saturated at 1.0, so no cut-off on it selects a minority (`threshold_transfer_finding.md`) | Deployable in form, non-selective in fact | none (was 4a) |
 | Cross-node disagreement | Task-specific joint-inconsistency rule. **Frozen as NONE for this task (Revision 10)**, matching the calibration pilot under which `d(2v4a)` was measured. For this generator, "inconsistent" would have to be defined over `choice`'s routing label, which `F` doesn't use (§7.3), so no principled rule exists | **Deployable** in form; inert here | 4a (never fires) |
 | `score` construction-class flag | Item's *true* construction matches the presentation-sensitivity study's `MATERIAL`-flagged composition class | **Diagnostic-only** — requires generator-side knowledge no deployed system has | 4b (oracle) **only** |
 
@@ -740,7 +816,7 @@ Policy-development set:   REMOVED (Revision 10). Every threshold and
                            (Strategy 2: 0.5; 4a: 0.90 from Step 0B, cross-
                            node rule = none; Strategy 3: fixed constants),
                            so a held-out fitting set would fit nothing.
-Evaluation set:            all N_final = 733 instances - scores the frozen
+Evaluation set:            all N_final instances (733 void, Rev 11) - scores the frozen
                            rules only, no post-hoc adjustment.
 External validation set:   later, separate, out of scope here (§4.1).
 ```
@@ -796,7 +872,7 @@ comparison.
 | Tier | Question | What would establish it |
 |---|---|---|
 | Verifier validity | Does the strategy code correctly implement its own frozen contract (§7)? | Exhaustive/mutation-tested unit verification, same discipline as `verify_score_gate_logic.py`, plus §2's bundle-isolation self-test |
-| Strategy validity | Does 4a improve `P(Y_decision=1)` over Strategy 2 on the construction-defined evaluation set, using only thresholds fixed before Step 2 data existed? (Revision 10: 4a is the sole primary comparator; Strategy 3 is not tested.) | A properly powered Step 2 run (§14, `N_final = 733`) |
+| Strategy validity | Does 4a improve `P(Y_decision=1)` over Strategy 2 on the construction-defined evaluation set, using only thresholds fixed before Step 2 data existed? (Revision 10: 4a is the sole primary comparator; Strategy 3 is not tested.) | A properly powered Step 2 run (§14; `N` to be recomputed under Revision 11, since 733 is void) |
 | External validity | Does that improvement hold on independently-validated ground truth? | The separate, later externally-validated task (§4.1) — not addressed here |
 
 ## 13. Outcome/claims matrix
@@ -805,7 +881,7 @@ comparison.
 |---|---|---|
 | `Δ_marginal ≈ 0` and `Δ_seq ≈ 0`, strategies 1, 2, 4a similar `P(Y_decision=1)` | Per-node thresholds approximate this benchmark reasonably | Generalization beyond this construction-defined task |
 | `Δ_marginal < 0` (Lin-et-al.-corrected) | Cascading failure, motivating a workflow-level policy | That any strategy in §7 fixes it |
-| 4a beats 2 on `P(Y_decision=1)` (primary McNemar test, α = 0.05) | `F`-composition plus deployable escalation triggers (repeat instability; a primitive-specific `choice`-confidence ≥ 0.90 trigger) beats naive confidence-product composition, on this benchmark/evaluation set | External validity (§12); that the triggers transfer beyond their disclosed scope (they are pre-specified exploratory rules, §8); **that primitive-aware *composition* as such helps**, since 4a's composition step is `F`, and only its triggers are primitive-specific |
+| 4a beats 2 on `P(Y_decision=1)` (primary McNemar test, α = 0.05) | **Revision 11:** decision-based composition (`F` plus repeat-instability escalation) beats naive confidence-product composition **when both escalate at matched rates**, on this benchmark/evaluation set | External validity (§12); **anything about primitive-aware composition**, since 4a has no primitive-specific signal left (Revision 11); that confidence signals are useless, since only one composition of them (the product) is tested |
 | 4a vs. 2 not significant | No evidence at this N that these deployable triggers improve on naive confidence composition, for MDE = 0.05 | That no escalation rule helps, or that effects smaller than 0.05 are absent |
 | Strategy 3 ≡ Strategy 1 (descriptive) | That the specified primitive-aware arm is empty under this trigger configuration (§7.3) | Anything about primitive-aware composition's value. This is a statement about the protocol, not about the primitives |
 | No strategy beats 1 | Confidence-like signals may not add value here | Confidence signals are worthless in general |
@@ -813,6 +889,12 @@ comparison.
 | High instability/abstention rates | `score`/`noul`'s representation-validity gaps are workflow-relevant | The deployable triggers are well-calibrated in general |
 
 ## 14. Power analysis — binding sizing (Revision 10)
+
+**Revision 11: `N = 733` below is VOID.** It came from `d(2v4a)`
+measured under the Revision 10 strategy definitions, which Revision 11
+replaced (§7.2, §7.4a). The procedure stays binding. `N` is recomputed
+from the disagreement rate the second calibration pilot measures under
+the Revision 11 definitions.
 
 **Binding, Revision 10 — the procedure below is binding; the `N = 733`
 it produces is PROVISIONAL.** That figure was computed from `d` measured
@@ -1206,8 +1288,10 @@ and prior to authorizing Step 2's full evaluation run.
 
 ### 16.6 Policy-development/evaluation split — REMOVED (Revision 10)
 
-**Binding, Revision 10: no split. All `N_final = 733` instances are
-evaluation instances.** There is nothing left to fit: every threshold and
+**Binding, Revision 10 (still binding in Revision 11): no split. All
+`N_final` instances are evaluation instances** (733 at Revision 10, now
+void; recomputed under Revision 11). Revision 11 keeps this: Strategy 2's
+`q` comes from the design, so nothing is fit on a held-out set. There is nothing left to fit: every threshold and
 weight is fixed before Step 2 data exists (§8's data-separation block).
 
 **Why this does not violate the pilot's prohibited-use list (§16.5),
@@ -1251,8 +1335,8 @@ variants) in this document was checked. Result:
 
 | Term found | Location | Status |
 |---|---|---|
-| "threshold" (Strategy 2's `conf_product` cutoff) | §7.2 | Pinned (Revision 10): `0.5`, the value the calibration pilot used, fixed before it ran. No longer fit on a policy-development set (removed, §16.6) |
-| "threshold" (4a's `choice`-confidence trigger) | §7.4a, §8 | Pinned: `0.90`, the Step 0B subgroup boundary, a prior finding. Cross-node rule pinned as *none* (Revision 10) |
+| "threshold" (Strategy 2) | §7.2 | **Revision 11:** no numeric cutoff. A fixed escalation rate `q = 6/9`, taken from the design. (Revision 10's `0.5` is superseded.) |
+| "threshold" (4a's `choice`-confidence trigger) | §7.4a, §8 | **Revision 11: removed** (saturated signal). Cross-node rule pinned as *none* |
 | "weight"/`w_choice`/`w_noul`/`w_score` | §7.3 | Pinned: `w_choice=1.0`, `w_noul=0.5`, `w_score∈{1.0,0.0}` — all named constants, fixed before any Step 2 data, none tuned |
 | "threshold-selection procedure" | §9 | Descriptive reporting requirement (states what must be *disclosed* about a already-fixed threshold), not an open choice |
 | "choose"/"chosen" (ordering, cost severity, MDE) | §16.1, §16.3, §16.5 | Each is a disclosed, rationale-attached constant, fixed in this revision — not left open, not tuned post-hoc |

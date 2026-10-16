@@ -1,11 +1,13 @@
-> **Current status (2026-09-28):** the `choice`/`noul` characterization
+> **Current status (2026-10-16):** the `choice`/`noul` characterization
 > and both `score` studies are complete. The first workflow calibration
-> pilot has run (270 calls). The Step 2 protocol is at Revision 10, with
-> one primary comparison (2 vs 4a) and a provisional N. The template
-> grammar is drafted, with one open decision. No Step 2 evaluation call
-> has been made. The updates below run **oldest first**; the latest is
-> "Where things stand (2026-09-28)", just before the session-1 plan.
-> For a short overview, see `README.md`.
+> pilot has run (270 calls). Tushar's Mozilla real-data study is reviewed
+> and ready to run; its 10% smoke test (252 calls) found that Revision
+> 10's confidence thresholds didn't carry over from synthetic to real
+> text, which led to **Revision 11** of the Step 2 protocol. N is void
+> until the second calibration pilot. No Step 2 evaluation call has been
+> made. The updates below run **oldest first**; the latest is
+> "Update (Revision 11 …)", just before the session-1 plan. For a short
+> overview, see `README.md`.
 
 **Update (post collaborator review):** the sections below reflect the
 original session-1 state. A collaborator review then (1) approved Step 0A/
@@ -1027,6 +1029,51 @@ the sizing record, the grammar, this log, and a new `README.md`. Next:
 decide the reuse definition → revise the vocabulary → freeze and audit
 the grammar → second calibration pilot → recompute N → build the
 manifest → preflight → explicit Step 2 authorization.
+
+**Update (Mozilla real-data study reviewed, smoke-tested; Revision 11 —
+2026-10-16):** Tushar proposed (branch `mozilla-proposal`) running the
+3-node chain on 202 real Firefox bugs with Mozilla's human triage labels.
+That would be the externally validated task the plan has always lacked.
+- **Review.** Six fixes went into the proposal's Revision 2. Two were
+  wrong figures, and one was a specification gap that would have
+  inverted the severity scale in the label-wording arm. The review also
+  added `run_mozilla_validation.py`, which reuses the frozen pilot code.
+- **Probing the runner.** Feeding it failed calls, unstable nodes and
+  partial data exposed four defects in my first version, all fixed and
+  covered by tests: the model would have been shown "None"; partial data
+  would have been analyzed silently; the upward-lean rate was biased low;
+  and failed calls went uncounted.
+- **Smoke test, approved.** 21 bugs, 252 calls: all clean, and a hand
+  recount matched the analysis.
+
+**The finding (full account: `research/results/threshold_transfer_finding.md`).**
+Strategies 2 and 4a escalated almost every bug. Diagnosed from input
+signals only:
+- 4a's `choice ≥ 0.90` trigger fired on **90% of inputs in both the
+  synthetic pilot (27/30) and real data (19/21)**. `choice` confidence
+  is saturated, median 1.0 on both.
+- Strategy 2's fixed 0.5 cut escalated **73% of synthetic** instances
+  (near the ideal 67%) but **90% of real** ones (ideal 38%).
+
+So Revision 10's only main comparison set two escalate-almost-always
+policies against each other.
+
+**Revision 11:** Strategy 2 now escalates a fixed rate `q` (6/9 from the
+design), and 4a's saturated trigger is removed. Neither change was tuned
+on results. What it costs: 4a is no longer primitive-aware (it is almost
+Strategy 1), so the main comparison now tests confidence-product
+composition against decision composition at matched escalation rates;
+and N = 733 is void. **Lesson for the paper:** a fixed confidence
+threshold carries one content distribution's scale with it, and the
+constructed data was too clean to show it.
+
+**Where things stand (2026-10-16).** Nothing is pushed: the Mozilla
+review commits, the smoke test and Revision 11 are local on
+`mozilla-proposal`. Next:
+- run the 2,172 remaining Mozilla calls (D1);
+- settle the grammar's reuse definition;
+- run the second calibration pilot under Revision 11, which re-measures
+  `d` → recompute N.
 
 # Research plan — session 1 (Phase 0 + Phase 1)
 
