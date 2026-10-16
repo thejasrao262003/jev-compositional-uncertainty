@@ -1,7 +1,9 @@
 # Mozilla Bugzilla Extension — Proposal for Review
 
-Status: **proposal, not approved.** No Jev API call has been made for
-this work, and none is requested until this document is reviewed. The
+Status (Revision 2): **reviewed, fixes applied, ready for the
+reviewer's go/no-go.** No Jev API call has been made for this work. The
+runner, its self-tests and the dry-run preflight are done (§2.7). The
+2,424 live calls still need explicit approval (§5, D1). The
 only network access so far is read-only Bugzilla queries:
 - counts: `research/src/mozilla_feasibility_counts.py` →
   `research/results/mozilla_feasibility_counts.json`
@@ -15,6 +17,59 @@ in review, the dataset is rebuilt; nothing has been run against it.
 
 Proposed by: Tushar (tushar.m@mobisy.com). Reviewer: Thejas.
 
+## Revision 2 — review fixes (2026-10-16)
+
+Review checked the proposal against the code, the dataset and the
+committed project data. The design is unchanged except where noted
+below. The dataset and its builder are **not** changed, so their
+recorded hashes still hold. Fixes:
+
+1. **Fuzzing exclusion described accurately** (§2.3). The builder
+   detects fuzzing bugs from description markers only. It never checked
+   the reporter account, and no verified list of fuzzing accounts
+   exists to check against. Residual fuzzing bugs are possible and are
+   listed as a limitation (§2.6).
+2. **Label-wording arm fully specified** (§2.4, §2.5). Mozilla's
+   definitions are passed **S4 → S1**, because `score`'s index 0 is the
+   least severe level; passing them in Mozilla's S1-first order would
+   invert the scale. Each 4-level response is collapsed to 3 levels by
+   summing the S2 and S1 probabilities, the same merge the labels use,
+   before the standard reduction. The arm now makes **3 repeats**, not
+   1, and gets **node 3's exact input**, so only the criteria differ
+   from the primary `score` node. Total calls: **2,424**.
+3. **The re-triage exclusion is named as a bias** (§2.3, §2.6). It
+   removes the bugs triagers disagreed about, so agreement figures are
+   optimistic.
+4. **Routing-cue leakage gets a pre-registered split** (§2.5). 127 of
+   202 texts name their own subsystem. The primary analysis uses all
+   202 bugs; cue-free, regression-wording-free and recent-12-months
+   subsets are secondary. The lexicons are frozen in the runner.
+5. **"Exactly as frozen" corrected** (§2.1). The strategy rules are
+   unchanged, but `choice`'s criteria and `noul`'s question differ from
+   Revision 10.
+6. **Strategy results are not externally validated** (§2.1). `a*`
+   comes from applying our `F` to Mozilla's labels. Only the three node
+   labels are independent.
+7. **Wrong figures corrected:**
+   - The pilot's cosmetic items were 5 at level 1, 4 at level 2 and 1
+     unstable, not "5 and 5". The point stands: no item and no single
+     call got level 0.
+   - **Run time:** the measured latency is about 0.4 s per call (the
+     270-call pilot took 110 s), not 6.5 s. 6.59 s was the single
+     slowest call. The full run takes about 17 minutes, not 4.3 hours.
+   - **Precision:** at n = 54 (the S4 row) the Wilson half-width is
+     about ±0.13, not ±0.10.
+   - **Truncation:** 3 texts are hard-cut at 2,000 characters rather
+     than on a sentence boundary.
+   - **Description-length sample:** it was a convenience sample (the
+     API's first 8 bugs per severity), not a random one.
+8. **Built since Revision 1:** `research/src/run_mozilla_validation.py`,
+   with 9 self-tests and a dry-run preflight, both passing (§2.7).
+
+"524 project calls" (§2.4) was **correct**: 524 calls have token usage
+recorded, with a mean of 380 input tokens. The review's first pass
+wrongly flagged it.
+
 ## 0. Summary
 
 Two separate pieces of work, both using public Mozilla Bugzilla data.
@@ -22,7 +77,7 @@ They are independent: either can be approved without the other.
 
 | Part | What it does | What it touches | Jev calls |
 |---|---|---|---|
-| **A. Realistic validation study** | Runs the same 3-node chain on real, human-labeled Firefox bug reports | New, separate artifacts only. Nothing frozen changes | 2,020 (202 bugs as built), only after approval |
+| **A. Realistic validation study** | Runs the same 3-node chain on real, human-labeled Firefox bug reports | New, separate artifacts only. Nothing frozen changes | 2,424 (202 bugs as built), only after approval |
 | **B. Vocabulary source for the template grammar** | Uses Mozilla bug summaries as a provenance-tracked source for the grammar's short content vocabularies (grammar spec §5, Option A) | Input to the open §5 decision. Grammar is not frozen, so nothing frozen changes | 0 |
 
 Part A fills a gap the project has already named: the research plan
@@ -62,26 +117,41 @@ Each is a direct re-check, on real text, of a finding so far established
 only on constructed items:
 
 - **RQ-A1 (severity lean).** In the first calibration pilot, `score`
-  never chose level 0: all 10 cosmetic items were rated 1 or 2 (5 and
-  5). Phase B found `score` aligned with the highest-severity sentence
+  never chose level 0 for a cosmetic item. The 10 items' modal decisions
+  were 5 at level 1, 4 at level 2 and 1 unstable, and all 30 individual
+  calls chose level 1 or 2. Phase B found `score` aligned with the highest-severity sentence
   on 6/6 items. *Does the upward lean appear on bugs triaged S4?*
 - **RQ-A2 (high-confidence errors).** Stage 1 found a `choice` subgroup
   with mean confidence 0.92 and accuracy 2/6. Strategy 4a's `≥ 0.90`
   trigger rests on it. *On real text, is `choice` agreement lower in
   the ≥ 0.90 band than the confidence suggests?*
-- **RQ-A3 (strategies).** *How do Strategies 1, 2 and 4a, exactly as
-  frozen in Revision 10, behave on real inputs?* Reported descriptively.
-  This study is **not** powered for, and **must not** be presented as,
-  a replication of the Step 2 primary comparison.
+- **RQ-A3 (strategies).** *How do Strategies 1, 2 and 4a behave on real
+  inputs?* Their decision rules are the Revision 10 rules, unchanged
+  (the runner imports the frozen pilot code). Their inputs differ:
+  `choice`'s `database` criterion becomes `storage`, `noul` asks about
+  regressions, and 4a's `≥ 0.90` trigger was set on the old `choice`
+  wording. Reported descriptively. This study is **not** powered for,
+  and **must not** be presented as, a replication of the Step 2 primary
+  comparison. **The strategy results are not externally validated:**
+  the target action `a*` comes from applying our `F` to Mozilla's
+  labels, and `F`'s escalate/defer meanings were designed around
+  "customer-facing", not "regression". Only the three node labels are
+  independent of this project.
 - **RQ-A4 (repeat instability).** *What share of real inputs are
   `repeat_unstable` at each node?*
 
 ### 2.2 Node mapping
 
-The chain, adapter and repeat structure are the same as the first
-calibration pilot (3 nodes × 3 repeats, each node's input gets the
-upstream modal decisions appended). Only the input text and label
-sources change.
+The chain and repeat structure are the same as the first calibration
+pilot (3 nodes × 3 repeats). Only the input text, the label sources and
+the adapter's node-2 wording change. The adapter, exactly as the runner
+implements it:
+
+- **Node 1 input:** the bug text.
+- **Node 2 input:** text + `"\n\nRouting determination: {node 1 modal decision}."`
+- **Node 3 input:** text + `"\n\nRouting determination: {d1}. Regression
+  assessment: {regression | not a regression}."` The pilot's wording
+  was "Customer impact assessment".
 
 | Node | Question (same wording as pilot unless noted) | Label source |
 |---|---|---|
@@ -141,19 +211,34 @@ labels are excluded rather than mapped), severity ∈ {S1, S2, S3, S4}.
    header. Their severity is a flaky test's priority, not user impact:
    S4 on these means "low-priority test failure", not "cosmetic".
    (Added after inspecting the first build; see §2.6a.)
-1. Bugs filed by fuzzing (reporter is a known fuzzing account, or the
-   description contains the fuzzing harness boilerplate). Their
-   severity reflects security triage of an assertion, not user impact.
-2. Descriptions under 100 characters after cleaning.
-3. Bugs whose severity was changed after the first triage (the
-   history endpoint gives this). The *current* severity is used for
-   everything else. Count excluded under this rule is reported.
+1. Bugs filed by fuzzing, detected **only** by fuzzing-harness markers
+   in the first comment ("found while fuzzing", "grizzly", "fuzzfetch",
+   "--enable-fuzzing", "fuzzing-team", "oss-fuzz", "fuzzilli"; the full
+   list is in the builder). Their severity reflects security triage of
+   an assertion, not user impact. *(Revision 2: Revision 1 also
+   claimed a reporter-account check, which was never implemented. No
+   verified list of Mozilla fuzzing accounts exists here to check
+   against, so fuzzing bugs without these markers can remain; see
+   §2.6.)*
+2. Bugs whose body is under 100 characters after cleaning, measured as
+   the length of the cleaned text minus the length of the raw summary.
+3. Bugs whose severity was changed away from an S1–S4 value after first
+   triage (the history endpoint gives this). Moving from `--` or the old
+   default `normal` to an S-value is allowed. The count excluded is
+   reported. **This exclusion biases agreement upward** (Revision 2):
+   it removes exactly the bugs triagers themselves disagreed about,
+   which are the hardest cases. Agreement figures should be read as
+   agreement on bugs whose severity was settled at first triage.
 
 **Input text.** `summary + "\n\n" + first comment`, cleaned: URLs →
 `[link]`, email addresses removed, fenced code blocks and stack frames
-removed, user-agent lines removed, then truncated at 2,000 characters
-on a sentence boundary. Median raw description length in a 48-bug
-sample: 1,274 characters (network), 2,023 (storage).
+removed, user-agent lines removed, then truncated at 2,000 characters:
+at the last sentence or paragraph boundary if one falls in the second
+half of the text, otherwise by a hard cut. In the built dataset, 3 of
+202 texts are hard-cut mid-sentence. The median raw description length
+was 1,274 characters (network) and 2,023 (storage). That figure comes
+from a 48-bug convenience sample (the API's first 8 bugs per severity
+and group, not a random draw); it was used only to estimate token cost.
 
 **Sampling.** 6 cells (2 groups × 3 severity levels, S1+S2 merged as
 level 2). **Target 40 bugs per cell, 240 total**, drawn by a seeded
@@ -178,34 +263,78 @@ is the frozen artifact, not the query.
 
 | Arm | Calls |
 |---|---:|
-| Primary: 240 bugs × 3 nodes × 3 repeats | 2,160 |
-| Label-wording check: 240 bugs × 1 `score` call with Mozilla's verbatim S-definitions as criteria (§2.5) | 240 |
-| **Total** (at the 240-bug target; 2,020 at the 202 bugs as built, §2.6a) | **2,400** |
+| Arm (202 bugs as built, §2.6a) | Calls |
+|---|---:|
+| Primary: 202 bugs × 3 nodes × 3 repeats | 1,818 |
+| Label-wording arm: 202 bugs × 3 repeats of a `score` call with Mozilla's verbatim definitions as criteria, on node 3's exact input (§2.5) | 606 |
+| **Total** | **2,424** |
 
-From the 524 project calls to date, mean input is 380 tokens per call.
-Bug inputs are longer: about 650 tokens per call is assumed, so about
-1.6M input tokens in total. At the blog's listed $0.042/MTok (not
-verified against the console), that's under $0.10. At the observed
-~6.5 s latency, it's about 4.3 hours sequential.
+*(Revision 2: the wording arm went from 1 call per bug to 3, so it goes
+through the same 3-repeat reduction as the primary `score` node.
+Revision 1 listed 2,400 calls at a 240-bug target and 2,020 as built.)*
+
+The 524 project calls with recorded token usage average 380 input tokens
+per call. Bug inputs are longer: about 650 tokens per call is assumed,
+so about 1.6M input tokens in total. At the blog's listed $0.042/MTok
+(not verified against the console), that's under $0.10. **Run time:**
+measured latency is about 0.4 s per call, and the 270-call pilot took
+110 s end to end, so the full run takes about **17 minutes**. *(Revision
+1 said "~6.5 s latency … 4.3 hours". 6.59 s was the slowest single
+call, not a typical one.)*
 
 ### 2.5 Analysis (all descriptive, fixed now)
 
+All of the following is implemented in `run_mozilla_validation.py`
+(`analyze()`) and has been checked end to end on synthetic responses
+(§2.7).
+
+- **Unit of analysis:** each node's 3 repeats are reduced with the
+  frozen pilot rule (tie tolerance 0.02, modal decision needs ≥ 2 of 3).
+  A `repeat_unstable` node counts as **not agreeing**, and the unstable
+  rate is reported separately. Continuous quantities use the mean over
+  all 3 responses.
 - **Per node:** agreement with the Mozilla label, with Wilson 95%
   intervals. Called "agreement with Mozilla triage," never "accuracy."
 - **`score`:** the full 3×3 confusion matrix (true level × modal Jev
-  level), and **P(Jev level > Mozilla level)** per true level. RQ-A1 is
-  answered by the S4 row. The label-wording arm repeats the S4 row
-  using Mozilla's own definitions as criteria. If the lean disappears
-  there, it's a criteria-wording effect, not a `score` property, and
-  must be reported that way.
-- **`choice`:** agreement by confidence band, using both binning schemes
-  from `stage1_h1h2b_analysis.py` (equal-width and equal-mass), plus the
-  ≥ 0.90 band on its own (RQ-A2). Unified 2-term Brier and ECE, with the
-  same conventions as Stage 1.
-- **`noul`:** the same unified Brier and ECE, plus a reliability table.
+  level, with an `unstable` column), and **P(Jev level > Mozilla
+  level)** per true level. RQ-A1 is answered by the S4 row.
+- **Label-wording arm (specified in Revision 2):**
+  - **Criteria order:** Mozilla's verbatim definitions are passed **S4,
+    S3, S2, S1** as indices 0–3. `score`'s index 0 is the least severe
+    level, so Mozilla's own S1-first order would invert the scale.
+  - **Collapse to 3 levels:** each response is mapped to 3 levels
+    *before* reduction, by summing the S2 and S1 probabilities into
+    level 2, the same merge the labels use. It then goes through the
+    identical reduction as the primary `score` node.
+  - **Input:** node 3's exact input, including the appended upstream
+    decisions, so the criteria are the only difference.
+  - **Interpretation:** if the S4-row lean disappears in this arm, it's
+    a criteria-wording effect, not a `score` property, and must be
+    reported that way.
+- **`choice`:** agreement by confidence band, with equal-width and
+  equal-mass bins (4 each, Stage 1 conventions), plus the ≥ 0.90 band on
+  its own (RQ-A2). Unified 2-term Brier `2(1 − p_ref)²` and ECE.
+  `p_ref` is the mean probability on the Mozilla group.
+- **`noul`:** the same unified Brier, using `p_ref = mean_noul` for
+  regressions and `1 − mean_noul` otherwise. Plus ECE and reliability
+  tables, using `2|mean_noul − 0.5|` as the confidence-like value.
 - **Strategies 1, 2, 4a:** `P(Y_decision = 1)`, coverage, and the 2×2
-  discordance tables against Strategy 2. Reported as counts. Not tested.
-- **Repeat instability:** rate per node.
+  discordance tables against Strategy 2. Reported as counts, not
+  tested, and scored against `a*` from `F` (see RQ-A3 on why that isn't
+  externally validated).
+- **Repeat instability:** rate per node. For `noul`, the mean spread of
+  its 3 raw values.
+- **Reporting order:** per-cell figures (6 cells) lead. The sample is
+  balanced at 40 per cell while S3 dominates in reality, so pooled
+  figures describe this design, not real-world rates.
+- **Pre-registered subsets** (lexicons frozen in the runner):
+
+  | Subset | n | Why |
+  |---|---:|---|
+  | `all` | 202 | **Primary.** Real input, cues included |
+  | `no_routing_cue` | 75 | 127 texts name their subsystem ("HTTP", "IndexedDB", …), so `choice` agreement on `all` is partly keyword matching |
+  | `no_regression_wording` | 183 | 19 texts contain "regress" |
+  | `recent_12_months` | 54 | A partial check for training contamination (§2.6) |
 
 ### 2.6 Known limitations (to carry into any write-up)
 
@@ -226,9 +355,29 @@ verified against the console), that's under $0.10. At the observed
 5. **Node 2's question differs** from the constructed chain's
    (regression vs. customer-facing), so `F`'s action semantics differ
    too.
-6. **Not powered.** About 200–240 bugs gives roughly ±0.10 Wilson half-width on a
-   per-level proportion at n ≈ 80. That's enough to see whether the S4
-   lean recurs, not to compare strategies.
+6. **Not powered.** Worst-case (p = 0.5) Wilson 95% half-widths on the
+   built dataset, computed rather than estimated *(Revision 2: Revision
+   1 said "±0.10 at n ≈ 80")*:
+
+   | Row | n | Half-width |
+   |---|---:|---:|
+   | S3 (level 1) | 80 | ±0.11 |
+   | S1+S2 (level 2) | 68 | ±0.12 |
+   | **S4 (level 0), the RQ-A1 row** | 54 | **±0.13** |
+   | network S4 cell alone | 40 | ±0.15 |
+   | storage S4 cell alone | 14 | ±0.23 |
+
+   That's enough to see whether a large S4 lean recurs, not to compare
+   strategies or to read the storage S4 cell on its own.
+7. **Agreement is optimistic** (Revision 2). Exclusion 3 removes bugs
+   whose severity triagers revised, which are the hardest cases (§2.3).
+8. **Labels leak into the text** (Revision 2). 127 of 202 texts name
+   their own subsystem and 19 contain "regress". The pre-registered
+   subsets (§2.5) measure how much this matters. They don't remove it
+   from the primary analysis, because cue-bearing text is what real
+   input looks like.
+9. **Fuzzing detection relies on markers only** (Revision 2). Fuzzing
+   bugs without harness boilerplate can remain (§2.3).
 
 ### 2.6a The built dataset (2026-10-04)
 
@@ -275,7 +424,7 @@ Observations for review:
 - Cleaned text: 151–2,000 characters, median 553. No URLs, email
   addresses or intermittent-failure reports remain (checked).
 
-At 202 bugs the call count is 202 × 9 + 202 = **2,020**, not 2,400.
+At 202 bugs the call count is 202 × 9 + 202 × 3 = **2,424** (Revision 2: the wording arm now makes 3 repeats; Revision 1 said 2,020).
 
 ### 2.7 Artifacts (all new; nothing existing is modified)
 
@@ -286,7 +435,7 @@ research/src/build_mozilla_dataset.py                   (exists)
 research/data/mozilla/dataset.jsonl                     (exists; cleaned bugs + labels)
 research/data/mozilla/dataset_manifest.json             (exists; per-cell + exclusion counts)
 research/data/mozilla/dataset_hashes.json               (exists)
-research/src/run_mozilla_validation.py                  (after approval)
+research/src/run_mozilla_validation.py                  (exists; Revision 2. Self-tests and dry-run pass)
 research/results/mozilla_validation_execution_manifest.json
 research/results/mozilla_validation_report.md
 ```
@@ -294,8 +443,28 @@ research/results/mozilla_validation_report.md
 Same discipline as the rest of the repo: the manifest is built and
 hash-locked → runner self-tests → dry-run preflight with
 `requests.post` patched to raise → explicit approval → live run behind
-`--live --confirm-2020-mozilla-calls` (the count for the built 202-bug
+`--live --confirm-2424-mozilla-calls` (the count for the built 202-bug
 dataset, §2.6a).
+
+**Readiness (Revision 2).** `run_mozilla_validation.py` passes 9
+self-tests:
+- tampering with the dataset is caught;
+- a changed frozen dependency blocks the run (the pilot runner,
+  pilot builder and Stage 1 analysis are pinned to their committed
+  hashes);
+- extra, missing and duplicate call cells are rejected;
+- the wording-arm criteria run S4 → S1 and collapse correctly;
+- the adapter templates are exact;
+- end to end on synthetic responses, the analysis gives agreement 1.0
+  when every answer matches and 0.0 when every answer is wrong, and
+  detects an injected upward lean;
+- `a* = F(regression, level)`, and no strategy sees a label;
+- the subset sizes are as listed;
+- the preflight makes zero network calls.
+
+The dry-run preflight passes: 202 bugs, 2,424 planned calls, all hashes
+match. **No Jev call has been made.** The live run needs the reviewer's
+explicit approval (§5, D1).
 
 ## 3. Part B — Mozilla as a vocabulary source for the grammar
 
@@ -371,10 +540,10 @@ already calls for.
 
 | # | Decision | Proposed default |
 |---|---|---|
-| D1 | Approve Part A's design (§2) for manifest-building? This does not yet authorize calls | Yes |
+| D1 | Approve Part A (§2) and authorize the 2,424 live calls. The runner and preflight are ready (§2.7) | Yes |
 | D2 | Node 2 label: `regression` or `crash` | `regression` (§2.2 table) |
-| D3 | Include the 240-call label-wording arm? | Yes |
-| D4 | Keep the cleaned bug text (`dataset.jsonl`) and future raw responses in git after merge, or strip to IDs + hashes | Keep: it's public data with emails and URLs removed. Confirm Bugzilla's content terms before any public release of the repo |
+| D3 | Include the label-wording arm, now 606 calls (3 repeats, node 3's input, S4 → S1 order; §2.5)? | Yes |
+| D4 | Keep the cleaned bug text (`dataset.jsonl`) and future raw responses in git after merge, or strip to IDs + hashes | Keep: it's public data with emails and URLs removed. Confirm Bugzilla's content terms and the GitHub repo's visibility first (Revision 2: the review could not confirm the visibility) |
 | D5 | Approve Part B as the source for grammar Option A's blocking-function expansion | Yes, if Option A is chosen |
 | D6 | Who does Part B's curation (§3.3 step 3) | Tushar |
 
@@ -384,8 +553,10 @@ already calls for.
    check cleaning quality and the cell shortfalls in
    `dataset_manifest.json`, then freeze it (or rebuild it if the design
    changes).
-2. Write `run_mozilla_validation.py` by adapting the first pilot's
-   runner. Self-tests and a dry-run preflight follow.
-3. Ask for explicit live authorization for the 2,020 calls.
+2. ~~Write `run_mozilla_validation.py`~~ Done in Revision 2. 9
+   self-tests and the dry-run preflight pass.
+3. Explicit live authorization for the **2,424** calls (D1). Then:
+   `python research/src/run_mozilla_validation.py --mode live --live
+   --confirm-2424-mozilla-calls`, about 17 minutes.
 4. In parallel: Part B curation → grammar audits → feed into the §5
    decision.

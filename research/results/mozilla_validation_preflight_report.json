@@ -1,0 +1,35 @@
+{
+  "inputs": {
+    "dataset.jsonl": {
+      "sha256": "3959b693f6a4a516929e70ab2f6461658fa7e347d78c4d7c178b9be1941274d4",
+      "match": true
+    },
+    "build_mozilla_dataset.py": {
+      "sha256": "64d71a61f1e169ba179fd5e3976f1751e610a89090b455b21cfaf50526c3d913",
+      "match": true
+    },
+    "dependencies": {
+      "run_workflow_calibration_pilot.py": {
+        "sha256": "ff080cbff22b0071aed95ec8cc39e89c74a942999fa33ddfc2b1ffb85e14db12",
+        "match": true
+      },
+      "build_workflow_calibration_pilot_manifest.py": {
+        "sha256": "284eab7215e7d40f62b197cdff5400aa250184ea258806266d6d4f5e7a1934de",
+        "match": true
+      },
+      "stage1_h1h2b_analysis.py": {
+        "sha256": "6d6b5ef36d32033b0319326bcd104662fc864ff31c05f781f12d84c778a48faa",
+        "match": true
+      }
+    }
+  },
+  "n_bugs": 202,
+  "planned_calls": 2424,
+  "calls_per_bug": 12,
+  "subset_sizes": {
+    "all": 202,
+    "no_routing_cue": 75,
+    "no_regression_wording": 183,
+    "recent_12_months": 54
+  }
+}
