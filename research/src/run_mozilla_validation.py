@@ -46,6 +46,10 @@ HASHES = MOZ_DIR / "dataset_hashes.json"
 RAW_OUT = MOZ_DIR / "mozilla_validation_raw_responses.jsonl"
 EXEC_OUT = RESULTS_DIR / "mozilla_validation_execution_manifest.json"
 REPORT_OUT = RESULTS_DIR / "mozilla_validation_report.md"
+SMOKE_RAW_OUT = MOZ_DIR / "mozilla_smoketest_raw_responses.jsonl"
+SMOKE_EXEC_OUT = RESULTS_DIR / "mozilla_smoketest_execution_manifest.json"
+SMOKE_REPORT_OUT = RESULTS_DIR / "mozilla_smoketest_report.md"
+SMOKE_FRACTION = 0.10
 
 EXPECTED_N = 202
 REPEATS = 3
@@ -221,15 +225,27 @@ def preflight() -> dict:
 # ---------------------------------------------------------------------------
 
 
-def run_live(bugs: list[dict]) -> list[dict]:
+def smoke_subset(bugs: list[dict]) -> list[dict]:
+    """First ceil(10%) of each cell, in dataset order - deterministic, no
+    sampling choice, and every cell (incl. the S4 row) is represented."""
+    import math
+    cells = defaultdict(list)
+    for b in bugs:
+        cells[(b["group"], b["level"])].append(b)
+    return [b for v in cells.values() for b in v[: math.ceil(SMOKE_FRACTION * len(v))]]
+
+
+def run_live(bugs: list[dict], raw_out: Path | None = None) -> list[dict]:
     from jev_client import ClientConfig, JevClient  # imported only on the live path
 
-    if RAW_OUT.exists():
-        raise PreflightError(f"{RAW_OUT.name} already exists; refusing to overwrite collected data or "
+    raw_out = raw_out or RAW_OUT
+    expected = len(bugs) * CALLS_PER_BUG
+    if raw_out.exists():
+        raise PreflightError(f"{raw_out.name} already exists; refusing to overwrite collected data or "
                              f"re-spend calls. Move it aside deliberately to re-run.")
     client = JevClient(config=ClientConfig())
     rows, n = [], 0
-    with RAW_OUT.open("w", encoding="utf-8") as f:
+    with raw_out.open("w", encoding="utf-8") as f:
         for b in bugs:
             d1 = d2 = None
             state3 = None
@@ -240,7 +256,7 @@ def run_live(bugs: list[dict]) -> list[dict]:
                 calls = []
                 for r in range(1, REPEATS + 1):
                     n += 1
-                    print(f"[{n}/{EXPECTED_CALLS}] bug {b['bug_id']} {arm} rep {r}", file=sys.stderr)
+                    print(f"[{n}/{expected}] bug {b['bug_id']} {arm} rep {r}", file=sys.stderr)
                     rec = client.ask(state=state, questions=q,
                                      test_group=f"mozilla_validation:{b['bug_id']}:{arm}:{r}").to_json_dict()
                     row = {"bug_id": b["bug_id"], "arm": arm, "repeat": r, **rec}
@@ -252,8 +268,8 @@ def run_live(bugs: list[dict]) -> list[dict]:
                     d1 = reduce_choice_or_score_cell(calls)["modal_decision"]
                 elif arm == "noul":
                     d2 = reduce_noul_cell(calls)["decision"]
-    if len(rows) != EXPECTED_CALLS:
-        raise PreflightError(f"executed {len(rows)} calls, expected {EXPECTED_CALLS}")
+    if len(rows) != expected:
+        raise PreflightError(f"executed {len(rows)} calls, expected {expected}")
     return rows
 
 # ---------------------------------------------------------------------------
@@ -621,12 +637,30 @@ def main() -> None:
     ap.add_argument(CONFIRM_FLAG, dest="confirm", action="store_true")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--analyze-only", action="store_true")
+    ap.add_argument("--smoke-test", action="store_true", help="first 10%% of each cell, separate artifacts")
+    ap.add_argument("--confirm-252-smoke-calls", dest="confirm_smoke", action="store_true")
     a = ap.parse_args()
 
     if a.selftest:
         run_selftest()
         return
     report = preflight()
+    if a.smoke_test:
+        sub = smoke_subset(load_dataset())
+        if a.analyze_only:
+            rows = [json.loads(line) for line in SMOKE_RAW_OUT.open()]
+        else:
+            if len(sub) * CALLS_PER_BUG != 252 or not a.confirm_smoke:
+                sys.exit("Refusing: smoke test needs --confirm-252-smoke-calls (21 bugs x 12 calls)")
+            rows = run_live(sub, SMOKE_RAW_OUT)
+        analysis = analyze(sub, rows)
+        SMOKE_EXEC_OUT.write_text(json.dumps({"status": "SMOKE TEST - pipeline check, NOT study results",
+                                              "bugs": [b["bug_id"] for b in sub], "calls": len(rows),
+                                              "retries": sum(1 for r in rows if r.get("is_retry")),
+                                              "analysis": analysis}, indent=2, default=str))
+        write_report(analysis, SMOKE_REPORT_OUT)
+        print(f"Wrote {SMOKE_EXEC_OUT.relative_to(REPO_ROOT)}")
+        return
     if a.analyze_only:
         rows = [json.loads(line) for line in RAW_OUT.open()]
         analysis = analyze(load_dataset(), rows)
