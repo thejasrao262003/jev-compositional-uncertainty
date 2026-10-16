@@ -1,0 +1,83 @@
+"""Traceability check: recompute the paper's headline numbers from committed
+artifacts and confirm each appears in main.tex as stated. Exits non-zero on
+any mismatch. No API calls.
+
+  python3 research/paper/latex/check_paper_numbers.py
+"""
+import json
+import re
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+RES = HERE.parents[1] / "results"
+tex = re.sub(r"\s+", " ", (HERE / "main.tex").read_text())
+st = json.loads((HERE / "paper_statistics.json").read_text())
+
+
+def man(name):
+    m = json.loads((RES / name).read_text())
+    return m.get("analysis", m)["subsets"]["all"]
+
+
+def expl(name):
+    return json.loads((RES / name).read_text())
+
+
+moz, ker = man("mozilla_validation_execution_manifest.json"), man("kernel_validation_execution_manifest.json")
+emoz, eker = expl("mozilla_exploratory_analysis.json"), expl("kernel_exploratory_analysis.json")
+f2 = lambda x: f"{x:.2f}"
+f3 = lambda x: f"{x:.3f}"
+ci2 = lambda c: f"[{f2(c[0])}, {f2(c[1])}]"
+checks = []
+
+
+def need(label, text):
+    checks.append((label, text, text in tex))
+
+
+# Node agreement (Table 3)
+need("moz choice agreement", f"0.89 {ci2(moz['choice_agreement']['wilson95'])}")
+need("moz noul agreement", f"0.80 {ci2(moz['noul_agreement']['wilson95'])}")
+need("moz score agreement", f"0.53 {ci2(moz['score_agreement']['wilson95'])}")
+need("ker choice agreement", f"{f3(ker['choice_agreement']['rate'])} {ci2(ker['choice_agreement']['wilson95'])}")
+need("ker noul agreement", f"{f3(ker['noul_agreement']['rate'])} {ci2(ker['noul_agreement']['wilson95'])}")
+need("ker score agreement", f"0.44 {ci2(ker['score_agreement']['wilson95'])}")
+# Own-confidence AUROCs with CIs (Table 1)
+for d, lab in (("mozilla", "moz"), ("kernel", "ker")):
+    for node in ("choice", "noul", "score"):
+        a = st[d]["auroc_own"][node]
+        need(f"{lab} {node} AUROC", f"AUROC {f2(a['point'])} {ci2(a['ci95'])}")
+# Severity compression
+lm = moz["score_P_jev_above_mozilla_by_true_level"]["0"]
+lk = ker["score_P_jev_above_reporter_label_by_true_level"]["0"]
+need("moz minor rated higher", f"79\\% {ci2(lm['wilson95'])}")
+need("ker minor rated higher", f"75\\% {ci2(lk['wilson95'])}")
+# Composition (Section 7)
+for d, lab in (("mozilla", "Mozilla"), ("kernel", "kernel")):
+    c = st[d]["composition"]
+    need(f"{d} AUROC (A)", f"{f2(c['auroc_missed_serious']['point'])} {ci2(c['auroc_missed_serious']['ci95'])}")
+    need(f"{d} AUROC (B)", f"{f2(c['auroc_S1_wrong']['point'])} {ci2(c['auroc_S1_wrong']['ci95'])}")
+cm, ck = st["mozilla"]["composition"], st["kernel"]["composition"]
+need("moz S1-S2 discordant", f"{cm['S1_minus_S2']['discordant_S1_only']} vs.\\ {cm['S1_minus_S2']['discordant_S2_only']} discordant")
+need("ker S1-S2 discordant", f"{ck['S1_minus_S2']['discordant_S1_only']} vs.\\ {ck['S1_minus_S2']['discordant_S2_only']} discordant")
+need("moz S1-S2 CI", f"0.17 {ci2(cm['S1_minus_S2']['ci95'])}")
+need("moz H1 totals", f"{cm['h1_per_bug_cost_diff_vs_random']['totals'][0]} vs.\\ {round(cm['h1_per_bug_cost_diff_vs_random']['totals'][1])}")
+need("ker H1 totals", f"{ck['h1_per_bug_cost_diff_vs_random']['totals'][0]} vs.\\ {round(ck['h1_per_bug_cost_diff_vs_random']['totals'][1])}")
+# Threshold transfer (Table 2)
+sel_m = json.loads((RES / "mozilla_validation_execution_manifest.json").read_text())
+sel_m = sel_m.get("analysis", sel_m)["selectivity"]
+sel_k = json.loads((RES / "kernel_validation_execution_manifest.json").read_text())["analysis"]["selectivity"]
+need("moz trigger fired", f"{round(100 * sel_m['rev10_choice_conf_ge_0.90_trigger'])}\\%")
+need("ker trigger fired", f"{round(100 * sel_k['rev10_choice_conf_ge_0.90_trigger'])}\\%")
+need("moz cut escalated", f"{round(100 * sel_m['rev10_strategy2_escalation_rate'])}\\%")
+need("ker cut escalated", f"{round(100 * sel_k['rev10_strategy2_escalation_rate'])}\\%")
+# noul error direction (kernel)
+nc = eker["noul_confusion_true_vs_jev"]
+need("ker noul false alarms vs misses", f"{nc['0->1']} false alarms vs.\\ {nc['1->0']} misses")
+
+bad = [c for c in checks if not c[2]]
+for label, text, ok in checks:
+    print(("OK   " if ok else "MISS ") + f"{label}: {text}")
+print(f"\n{len(checks) - len(bad)}/{len(checks)} traced")
+sys.exit(1 if bad else 0)

@@ -1,0 +1,149 @@
+{
+  "mozilla": {
+    "n": 202,
+    "auroc_own": {
+      "choice": {
+        "point": 0.902,
+        "ci95": [
+          0.829,
+          0.965
+        ]
+      },
+      "noul": {
+        "point": 0.534,
+        "ci95": [
+          0.422,
+          0.645
+        ]
+      },
+      "score": {
+        "point": 0.582,
+        "ci95": [
+          0.503,
+          0.658
+        ]
+      }
+    },
+    "composition": {
+      "S1_minus_S2": {
+        "point": 0.168,
+        "ci95": [
+          0.084,
+          0.267
+        ],
+        "discordant_S1_only": 61,
+        "discordant_S2_only": 27,
+        "exact_mcnemar_p": 0.0003740220149449215
+      },
+      "auroc_missed_serious": {
+        "point": 0.491,
+        "ci95": [
+          0.37,
+          0.61
+        ],
+        "target": "among bugs S1 did not escalate: target is escalate"
+      },
+      "auroc_S1_wrong": {
+        "point": 0.539,
+        "ci95": [
+          0.452,
+          0.627
+        ],
+        "target": "S1's action differs from a*"
+      },
+      "h1_per_bug_cost_diff_vs_random": {
+        "point": 0.162,
+        "ci95": [
+          -0.013,
+          0.245
+        ],
+        "randomization_p": 0.0498,
+        "totals": [
+          390,
+          357.2
+        ]
+      }
+    }
+  },
+  "kernel": {
+    "n": 240,
+    "auroc_own": {
+      "choice": {
+        "point": 0.979,
+        "ci95": [
+          0.953,
+          0.996
+        ]
+      },
+      "noul": {
+        "point": 0.409,
+        "ci95": [
+          0.322,
+          0.499
+        ]
+      },
+      "score": {
+        "point": 0.569,
+        "ci95": [
+          0.496,
+          0.644
+        ]
+      }
+    },
+    "composition": {
+      "S1_minus_S2": {
+        "point": 0.062,
+        "ci95": [
+          -0.029,
+          0.146
+        ],
+        "discordant_S1_only": 66,
+        "discordant_S2_only": 51,
+        "exact_mcnemar_p": 0.19534905940457867
+      },
+      "auroc_missed_serious": {
+        "point": 0.499,
+        "ci95": [
+          0.403,
+          0.603
+        ],
+        "target": "among bugs S1 did not escalate: target is escalate"
+      },
+      "auroc_S1_wrong": {
+        "point": 0.469,
+        "ci95": [
+          0.399,
+          0.54
+        ],
+        "target": "S1's action differs from a*"
+      },
+      "h1_per_bug_cost_diff_vs_random": {
+        "point": -0.086,
+        "ci95": [
+          -0.229,
+          0.061
+        ],
+        "randomization_p": 0.1768,
+        "totals": [
+          338,
+          358.6
+        ]
+      }
+    }
+  },
+  "cross_dataset": {
+    "S1_minus_S2_mozilla_minus_kernel": {
+      "point": 0.106,
+      "ci95": [
+        -0.013,
+        0.243
+      ],
+      "note": "independent bootstraps per dataset; CI covering 0 = no evidence the effects differ"
+    }
+  },
+  "method": {
+    "bootstrap_resamples": 2000,
+    "seed": 20261016,
+    "ci": "95% percentile"
+  }
+}

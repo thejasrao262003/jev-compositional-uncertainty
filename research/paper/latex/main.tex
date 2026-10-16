@@ -21,6 +21,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise]{cleveref}
 
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\choice}{\texttt{choice}}
 \newcommand{\noul}{\texttt{noul}}
 \newcommand{\score}{\texttt{score}}
@@ -40,30 +41,34 @@ An Empirical Study of Confidence Signals in a Multi-Step Decision Workflow}
 Structured-output decision APIs return well-typed answers together with
 numeric confidence, and it is tempting to treat those numbers as
 interchangeable probabilities that can be composed across the steps of a
-workflow. We test that practice on the three decision primitives of a
-commercial API: a categorical \choice{}, a binary \noul{} and an ordinal
-\score{}. The primitives are chained into a three-step triage workflow
-(route, assess, rate severity). We evaluate on controlled constructed
-items, on 202 human-triaged Mozilla bugs and on 240 reporter-labeled Linux
-kernel bugs, using 4{,}584 API calls in the main real-data runs. Four findings replicate
-across both bug trackers. First, the primitives' uncertainty signals
-behave incompatibly. \choice{} confidence is saturated (85--96\% of real
-bugs at $\geq 0.90$) yet discriminative (AUROC 0.90 and 0.98). \noul{}'s
-confidence-like value is uninformative (AUROC 0.53 and 0.41). \score{}'s
-confidence is flat across true severity levels. Second, fixed confidence
-thresholds designed on constructed data lose their intended selectivity on
-real text: a cut that escalated 73\% of constructed items (target 67\%)
-escalated 88\% and 78\% of real bugs (targets 41--42\%). Third, \score{}
-compresses real severity toward the middle level, against both triage and
-reporter labels. Fourth, in an exploratory analysis, composed confidence
-carries essentially no information about which cases to escalate: ranking
-escalations by it performs at chance on both trackers (AUROC 0.49--0.51).
-We also report a methodological lesson. The natural comparison of
-``confidence composition'' against ``decision composition'' is confounded
-when the target action is itself a function of the decisions, and the
-apparent advantage of decision composition does not replicate in strength
-($p = 0.0005$ vs.\ $p = 0.20$). We give the corrected comparison, which is
-pre-registered for a controlled follow-up study.
+workflow. We examine that practice for the three decision primitives of
+one commercial API: a categorical \choice{}, a binary \noul{} and an
+ordinal \score{}. The primitives are chained into a three-step triage
+workflow (route, assess, rate severity). We evaluate on controlled
+constructed items, on 202 Mozilla bugs labeled by triage and on 240 Linux
+kernel bugs labeled by their reporters, using 4{,}584 API calls in the main
+real-data runs. Three findings hold on both trackers.
+First, the primitives' confidence signals have distinct failure modes.
+\choice{} confidence is saturated (85--96\% of real bugs at $\geq 0.90$)
+yet discriminative (AUROC 0.90 [0.83, 0.96] and 0.98 [0.95, 1.00]).
+\noul{}'s confidence-like value is uninformative (AUROC 0.53
+[0.42, 0.65] and 0.41 [0.32, 0.50]). \score{}'s confidence is flat across
+true severity levels.
+Second, fixed confidence thresholds designed on constructed data lose
+their intended selectivity on real text: a cut that escalated 73\% of
+constructed items (target 67\%) escalated 88\% and 78\% of real bugs
+(targets 41--42\%).
+Third, \score{} compresses severity toward the middle level, consistent
+with central-tendency bias reported for LLM raters in other domains, and
+its confidence gives no indication of it.
+In exploratory analyses, the composition rules we tested did not
+consistently identify which cases to escalate: ranking escalations by
+composed confidence was indistinguishable from random selection on both
+trackers, although the intervals cannot exclude a modest signal. We
+also show that a natural comparison of confidence-based against
+decision-based composition is confounded when the target action is
+itself a function of the decisions. The corrected comparison is
+pre-registered for a controlled follow-up that has not yet been run.
 \end{abstract}
 
 %======================================================================
@@ -94,12 +99,13 @@ one kind of quantity is a modeling assumption, and this paper tests it.
   \item \textbf{Transfer} (\cref{sec:transfer}). Fixed thresholds set on
   constructed content lose their selectivity on real text, in two
   distinct ways.
-  \item \textbf{Real-data validation} (\cref{sec:real}). Two independent
-  bug trackers with different labeling processes (triage and reporter),
-  with severity compression replicating on both.
-  \item \textbf{Composition} (\cref{sec:comp}, exploratory). Composed
-  confidence adds nothing over the decisions on either tracker. We
-  identify and correct a confound in the obvious comparison.
+  \item \textbf{Real-data validation} (\cref{sec:real}). Two bug trackers
+  from different projects, with different labeling processes (triage and
+  reporter), on which severity compression appears in both.
+  \item \textbf{Composition} (\cref{sec:comp}, exploratory). The
+  confidence-based escalation rules we tested did not consistently pick
+  better cases than random on either tracker. We identify, and correct for
+  the follow-up, a confound in the obvious comparison.
   \item \textbf{Method} (\cref{sec:method}). A pre-registration and audit
   process that caught six design or implementation defects, most of them
   before any evaluation data existed.
@@ -141,18 +147,43 @@ through model tiers. Prior work studies early abstention
 \citep{dou2026conformalcascade}, confidence tuning \citep{rabanser2025gatekeeper}
 and judges with escalation guarantees \citep{jung2025trust}.
 
+\paragraph{Combining confidence across components.} Fixed combination
+rules such as the product rule are classical
+\citep{kittler1998combining}. The product rule's usual justification
+assumes conditional independence and comparable probability scales, and
+these are precisely the assumptions our strategy S2 makes implicitly. At
+the system level, a recent taxonomy argues that uncertainty in LLM
+applications must be studied across the whole compound system, as it
+propagates between model calls, workflow stages and human processes
+\citep{xia2026propagation}. Cost-sensitive deferral to multiple experts
+under workload limits \citep{alves2024defer} formalizes the budgeted
+escalation setting our follow-up uses.
+
+\paragraph{Ordinal outputs and central tendency.} LLM raters have been
+reported to compress ordinal scores toward the middle of the scale, for
+example in clinical scoring, where prompt changes did not remove the
+effect \citep{zhang2026centraltendency}. Few-label calibration of ordinal
+LLM outputs models such flattening explicitly \citep{wang2026cordial}.
+Our severity result is consistent with this literature. What we add is
+that it appears in bug triage, against two labeling processes, and that
+the primitive's own confidence gives no sign of it.
+
 \paragraph{Agents and trajectories.} Closest to us, step-level
 calibration has been shown not to imply trajectory-level calibration for
 LLM agents \citep{lin2026uqagents}. Related work calibrates agent
 trajectories \citep{zhang2026agentic} and studies uncertainty propagation
 in multi-step agentic decisions \citep{duan2025uprop}.
 
-\paragraph{Gap.} We found no work that studies \emph{heterogeneous}
-primitives with \emph{structurally different} uncertainty representations
-within one workflow and measures them against real labels. Our
-literature search was web-based and did not systematically cover
-reliability engineering or HCI escalation research, so this claim is
-provisional.
+\paragraph{Positioning.} Prior work studies calibration of single
+decisions, cascades of the \emph{same} decision, agent trajectories, and
+system-level propagation in general. Our contribution is narrower and
+empirical. We measure how the uncertainty signals of three
+\emph{structurally different} primitives of one API behave inside one
+workflow against real labels, and whether simple composition rules over
+them identify escalation candidates. We are not aware of prior work with
+this specific design. Our literature search was web-based and did not
+systematically cover reliability engineering or HCI escalation
+research, so we make no stronger priority claim.
 
 %======================================================================
 \section{Setting}
@@ -215,7 +246,24 @@ result is conditional on it.
   10\% budget.
   \item \textbf{R:} the same budget escalated at random.
 \end{itemize}
-Outcomes are $P(Y_{\text{decision}})$, the probability that the action
+\paragraph{Statistics.} Agreement rates carry Wilson 95\% intervals.
+AUROCs use the Mann--Whitney estimator, with 95\% percentile bootstrap
+intervals over bugs ($B = 2{,}000$, fixed seed). Bugs are distinct
+reports with no shared unit, so we resample bugs. Paired strategy
+comparisons use the exact McNemar test on discordant pairs, and the
+difference in $P(Y_{\text{decision}})$ gets a bootstrap interval. Within
+every resample, the set-relative rankings (S2, 2h) are recomputed. We
+compare the two trackers through the difference of their paired
+differences, with independent bootstraps per tracker. We do not compare
+their $p$-values. For budgeted overrides, the reference is the
+\emph{exact} expected cost of $k$ random overrides. The randomization
+$p$-value (10{,}000 random $k$-subsets) is conditional on the evaluated
+bugs, and a bootstrap interval over bugs gives the sampling uncertainty.
+An interval that covers the null value is read as \emph{no evidence of an
+effect}, not as evidence of no effect. The scripts are
+\texttt{paper\_statistics.py} and \texttt{mozilla\_exploratory\_analysis.py}.
+
+\paragraph{Outcomes.} Outcomes are $P(Y_{\text{decision}})$, the probability that the action
 equals $\astar$, and the cost under a frozen matrix (\cref{tab:cost}),
 in which a wrong \emph{accept} costs 6--10, any other mismatch 1, and each
 escalation an extra 1 for human time.
@@ -228,25 +276,25 @@ escalation an extra 1 for human time.
 \begin{table}[t]
 \centering
 \small
-\begin{tabularx}{\linewidth}{l X X X}
+\begin{tabularx}{\linewidth}{l Y Y Y}
 \toprule
  & Constructed items & Mozilla ($n{=}202$, triage) & Kernel ($n{=}240$, reporter) \\
 \midrule
 \choice{} & High-confidence error subgroup: mean confidence 0.915, accuracy 0.333 ($n{=}6$)
- & 85\% at $\geq0.90$, agreeing 0.96; AUROC 0.90; ECE 0.05
- & 96\% at $\geq0.90$, agreeing 0.99; AUROC 0.98; ECE 0.02 \\
+ & 85\% at $\geq0.90$, agreeing 0.96; AUROC 0.90 [0.83, 0.96]; ECE 0.05
+ & 96\% at $\geq0.90$, agreeing 0.99; AUROC 0.98 [0.95, 1.00]; ECE 0.02 \\
 \addlinespace
 \noul{} & 24/24 correct, confidence below accuracy in every bin
- & Agreement flat across bands (0.71--0.84); AUROC 0.53; ECE 0.36
- & Non-monotonic (0.58--0.93); AUROC 0.41; ECE 0.36 \\
+ & Agreement flat across bands (0.71--0.84); AUROC 0.53 [0.42, 0.65]; ECE 0.36
+ & Non-monotonic (0.58--0.93); AUROC 0.41 [0.32, 0.50]; ECE 0.36 \\
 \addlinespace
 \score{} & Tracks the most severe sentence (6/6); confidence varies by 0.173 with sentence order alone (1 of 3 items)
- & Confidence $\approx$0.6 at every true level; AUROC 0.58
- & Confidence 0.65 / 0.62 / 0.61 by true level; AUROC 0.57 \\
+ & Confidence $\approx$0.6 at every true level; AUROC 0.58 [0.50, 0.66]
+ & Confidence 0.65 / 0.62 / 0.61 by true level; AUROC 0.57 [0.50, 0.64] \\
 \bottomrule
 \end{tabularx}
 \caption{Per-primitive behavior of the confidence signal. AUROC is for
-predicting the node's own agreement with the reference label.}
+predicting the node's own agreement with the reference label, with 95\% bootstrap intervals.}
 \label{tab:char}
 \end{table}
 
@@ -256,7 +304,8 @@ low-confidence answers are where its errors are. The high-confidence
 error subgroup found on deliberately ambiguous constructed items does not
 recur on real text (2 of 6 kernel errors are at $\geq 0.90$). \noul{}'s
 confidence-like value carries no usable information about correctness on
-either tracker. \score{}'s confidence does not vary with the true level,
+either tracker. Its Mozilla interval covers 0.5, and its kernel interval
+lies at or just below 0.5 (weakly anti-informative). \score{}'s confidence does not vary with the true level,
 so it gives no warning of the systematic bias in \cref{sec:real}. Any
 composition rule that multiplies or averages these numbers inherits this
 mix.
@@ -349,9 +398,13 @@ higher than their label: 79\% [0.67, 0.88] on Mozilla and 75\%
 43\% and 56\%. The middle level absorbs both. With Mozilla's own
 severity definitions in place of ours, serious bugs improve but normal
 bugs are pushed up, and agreement moves only from 0.53 to 0.56. The
-criteria matter, but the compression persists. Because the two trackers
-use different labeling processes, the replication makes an artifact of
-one process less likely.
+criteria matter, but the compression persists. The two trackers differ
+in project, bug population and labeling process. They share the API,
+the prompts, our sampling design and, plausibly, training-data exposure,
+so the replication speaks against an artifact of one \emph{labeling}
+process, not against every shared factor. The pattern matches
+central-tendency bias reported for LLM raters in other domains
+\citep{zhang2026centraltendency}.
 
 \begin{table}[t]
 \centering
@@ -383,28 +436,42 @@ had been seen. They are hypothesis-generating, and the confirmatory test
 is pre-registered (\cref{sec:prereg}).
 
 \paragraph{The naive comparison is confounded.} On Mozilla, decision
-composition (S1/S4a) beats confidence composition (S2): 0.65 vs.\ 0.48,
-with 60 vs.\ 27 discordant pairs (exact McNemar $p = 0.0005$). But S2
-never reads the node decisions, while $\astar$ escalates on the severity
-\emph{decision}. To be right on a serious bug, S2 needs low confidence to
-\emph{mean} high severity. The comparison therefore mostly measures
-whether confidence can stand in for severity. On the kernel, the same
-comparison weakens to 66 vs.\ 51 ($p = 0.20$), and among bugs filed since
-2018 ($n = 35$) it reverses.
+composition (S1) beats confidence composition (S2) by 0.17 [0.08, 0.27]
+in $P(Y_{\text{decision}})$, with 61 vs.\ 27 discordant pairs (exact
+McNemar $p = 0.0004$). But S2 never reads the node decisions, while
+$\astar$ escalates on the severity \emph{decision}. To be right on a
+serious bug, S2 needs low confidence to \emph{mean} high severity, so the
+comparison mostly measures whether confidence can stand in for severity.
+On the kernel the difference is smaller and inconclusive: 0.06
+[$-0.03$, 0.15], 66 vs.\ 51 discordant pairs, $p = 0.20$. The difference
+between trackers is 0.11 [$-0.01$, 0.24]. Its interval covers zero, so we
+have \emph{no evidence that the effect differs} between trackers, only a
+weaker estimate on one of them.
 
-\paragraph{The fair question.} Does confidence add anything \emph{beyond}
-the decisions? Starting from the decision-based action $F$, we also escalate the
-$k$ least-confident candidates that $F$ did not escalate, for every $k$,
-and compare with the exact expectation under random selection
-(\cref{fig:override}). On both trackers, the confidence-ranked curves
-track the random expectation. The AUROC for finding the serious bugs
-that $F$ missed is 0.49--0.50 (Mozilla) and 0.50--0.51 (kernel). As a
-detector of where $F$'s decisions are wrong, composed confidence reaches
-AUROC 0.54--0.59 on Mozilla and 0.47--0.53 on the kernel. At a fixed
-10\% budget scored by cost, confidence-ranked overrides cost more than
-random on Mozilla (390 vs.\ 357, $p \approx 0.05$) and less on the kernel
-(338 vs.\ 359, $p = 0.18$). The sign flips, which is what one expects
-from a signal carrying no information.
+\paragraph{The fair question, and two different targets.} Does confidence
+add anything \emph{beyond} the decisions? Starting from the decision-based
+action $F$, we also escalate the $k$ least-confident bugs that $F$ did
+not escalate, for every $k$, and compare with the exact expectation under
+random selection (\cref{fig:override}). We report two AUROCs with
+different prediction targets, which should not be conflated:
+\begin{itemize}
+  \item \textbf{(A) Missed serious bugs.} Among bugs that $F$ did not
+  escalate, does low composed confidence rank those whose target is
+  \emph{escalate} first? This is what an override budget can fix. AUROC
+  0.49 [0.37, 0.61] on Mozilla and 0.50 [0.40, 0.60] on the kernel.
+  \item \textbf{(B) Any decision error.} Across all bugs, does low composed
+  confidence rank those where $F$'s action is wrong first? AUROC 0.54
+  [0.45, 0.63] on Mozilla and 0.47 [0.40, 0.54] on the kernel.
+\end{itemize}
+Every interval covers 0.5. The data show no evidence that composed
+confidence ranks either target better than chance, but they cannot rule
+out a modest signal (AUROC up to about 0.6). At a fixed 10\% budget
+scored by cost, the per-bug cost difference of confidence-ranked
+overrides relative to random is $+0.16$ [$-0.01$, 0.25] on Mozilla
+(totals 390 vs.\ 357; randomization $p = 0.05$) and $-0.09$
+[$-0.23$, 0.06] on the kernel (338 vs.\ 359; $p = 0.18$). The point
+estimates have opposite signs and both intervals cover zero, so neither
+tracker gives reliable evidence in either direction.
 
 \begin{figure}[t]
 \centering
@@ -445,7 +512,7 @@ action, and the two signals that do reach it are close to uninformative.
 \begin{table}[t]
 \centering
 \small
-\begin{tabularx}{\linewidth}{X l l}
+\begin{tabularx}{\linewidth}{Y l l}
 \toprule
 Defect & Detected by & When \\
 \midrule
@@ -454,7 +521,7 @@ A trigger firing on $\approx$90\% of inputs & selectivity on input signals only 
 A threshold sensitive to the data distribution & smoke test vs.\ pilot & before the full run \\ \addlinespace
 Four silent runner defects (e.g.\ the literal ``None'' shown to the model; partial data analyzed) & adversarial probing & before the live run \\ \addlinespace
 The confidence-vs-decisions confound & post-hoc review & after the Mozilla result \\ \addlinespace
-Template content whose labels were recoverable from punctuation alone (100\%) and whose sentences leaked cross-label cues & independent reviewer & before the controlled study \\
+Template content whose labels were recoverable from punctuation alone (100\%) and whose sentences leaked cross-label cues & independent review (separate AI agent) & before the controlled study \\
 \bottomrule
 \end{tabularx}
 \caption{Defects found by the study's own audits.}
@@ -492,11 +559,12 @@ selectivity on pilot inputs, before freezing any escalation policy.
 \end{itemize}
 
 %======================================================================
-\section{Pre-registered follow-up}
+\section{Pre-registered follow-up (planned; not yet run)}
 \label{sec:prereg}
 %======================================================================
 
-To test the composition question under control, we pre-registered a
+\emph{No result in this paper comes from this study.} To test the
+composition question under control, we pre-registered a
 study on deterministic template content: 3{,}103 units, each instance
 describing one incident about one service, with value-neutral sentence
 frames and 13 automated audits. Its primary tests are H1, confidence-ranked
@@ -505,22 +573,28 @@ per-primitive vs.\ raw-product ranking, with a sign-flip test clustered by
 service. Both are Holm-corrected. The sample size is set from a second
 calibration pilot, with a content ceiling of 720 instances. Given the
 results above, a null H1 is a live outcome, and it would be reported as
-the answer to the composition question.
+the answer to the composition question. Deterministic templates raise
+their own external-validity questions. That is why the real-data studies
+above are reported separately, and why their conclusions do not depend on
+the follow-up.
 
 %======================================================================
 \section{Conclusion}
 %======================================================================
 
 Structured outputs make uncertainty \emph{look} uniform: every primitive
-returns a number between 0 and 1. In the workflow we studied, those
-numbers meant different things. One was saturated but informative, one
-was uninformative, and one was flat while its decisions were
-systematically biased. Fixed thresholds on them did not survive a change
-of content distribution, and composing them told us nothing about which
-cases to escalate. On two independent real-data sources, the decisions
-themselves carried the usable information, and the most consequential
-failure, severity compression, was invisible to the confidence signal.
-Workflow reliability needs its own evaluation.
+returns a number between 0 and 1. In the evaluated workflow, the
+confidence values of three heterogeneous primitives showed distinct
+failure modes. One was saturated but informative, one was uninformative,
+and one was flat while its decisions were systematically biased. Fixed
+thresholds on them did not keep their selectivity across content
+distributions, and the composition rules we tested did not consistently
+identify cases for escalation. Severity compression appeared on two bug
+trackers with different labeling processes and was invisible to the
+primitive's own confidence. These findings do not show that confidence
+composition fails in general. They show that primitive-level confidence
+values should not be assumed to be directly composable, and that
+uncertainty should be evaluated at the level of the workflow that uses it.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
