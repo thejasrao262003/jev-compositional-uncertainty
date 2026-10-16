@@ -35,7 +35,7 @@ ways of composing these signals across a three-step chain.
 | Workflow composition, template grammar | Drafted and audited; one open decision (how to define sentence reuse) |
 | Mozilla real-data validation (Tushar) | Full run complete: 2,424 calls, all clean; see `research/results/mozilla_validation_results.md` |
 | Findings synthesis | `research/results/findings_synthesis.md` (revision 2, after review); exploratory follow-up: `research/results/mozilla_exploratory_analysis.md` |
-| Revision 12 (Strategy 5) | Proposed, awaiting a decision; see `research/methodology/revision12_strategy5_proposal.md` |
+| Step 2 protocol | **Revision 12 adopted:** primary tests H1 (confidence overrides vs random) and H2 (per-primitive vs raw product) on cost |
 | Threshold transfer finding → Revision 11 | Fixed thresholds didn't carry over from synthetic to real text; see `research/results/threshold_transfer_finding.md` |
 | Main Step 2 evaluation | **Not built, not run.** Sample size void until the second calibration pilot |
 

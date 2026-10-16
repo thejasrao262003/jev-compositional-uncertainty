@@ -1,6 +1,6 @@
 # Proposed Revision 12 — Strategy 5 and the paper's framing
 
-Status: **proposal for review, not frozen.** Written and committed before
+Status: **ADOPTED 2026-10-16** into the protocol as Revision 12, with §8's hybrid arms, refined on adoption: the primary H1 compares 2h with random overrides (R) rather than with Strategy 1, and both tests use cost. See the protocol's Revision 12 changelog. Original status line: proposal for review, not frozen. Written and committed before
 the full Mozilla run's results were examined. The run itself was already
 in progress, so this proposal is on record ahead of any result from it.
 No Step 2 evaluation data exists.

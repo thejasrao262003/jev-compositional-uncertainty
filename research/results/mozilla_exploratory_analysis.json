@@ -1044,5 +1044,37 @@
     "0": 0.6515432098765431,
     "1": 0.61575,
     "2": 0.6145098039215686
+  },
+  "revision12_tests_descriptive": {
+    "r_override": 0.1,
+    "H1_2h_vs_random": {
+      "k": 21,
+      "n_candidates": 139,
+      "base_total_cost": 361,
+      "hybrid_total_cost": 390,
+      "random_expected_total_cost": 357.2230215827338,
+      "per_instance_difference_vs_random": 0.16226226939240695,
+      "p_two_sided": 0.049795020497950204
+    },
+    "H1_5h_vs_random": {
+      "k": 21,
+      "n_candidates": 139,
+      "base_total_cost": 361,
+      "hybrid_total_cost": 360,
+      "random_expected_total_cost": 357.2230215827338,
+      "per_instance_difference_vs_random": 0.01374741790725845,
+      "p_two_sided": 0.8705129487051295
+    },
+    "H2_5h_vs_2h": {
+      "total_difference": -30,
+      "per_instance_difference": -0.1485148514851485,
+      "n_nonzero": 20,
+      "p_two_sided": 0.04559544045595441
+    },
+    "Y_decision": {
+      "1": 131,
+      "2h": 116,
+      "5h": 123
+    }
   }
 }

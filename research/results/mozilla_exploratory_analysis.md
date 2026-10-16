@@ -142,3 +142,26 @@ a statistic.
    inherits the confound. See the Revision 12 addendum (§8): the fair
    comparator is a hybrid arm, `F` plus confidence overrides at a fixed
    rate.
+
+## E6. Revision 12's primary tests, applied descriptively
+
+Revision 12 was adopted after E1–E5. Its constant (`R_OVERRIDE = 0.10`)
+was fixed in the proposal addendum before this was computed, and
+Mozilla sets no constant. These p-values are **not confirmatory**.
+
+| Quantity | Value |
+|---|---|
+| `k` overrides (of 139 candidates) | 21 |
+| Total cost: `F(decisions)` alone | 361 |
+| Total cost: random overrides, exact expectation | 357.2 |
+| Total cost: 2h (`conf_product`) | **390** (H1 randomization p ≈ 0.050) |
+| Total cost: 5h (Strategy 5 U) | 360 (vs random p ≈ 0.87) |
+| 5h vs 2h, paired | 5h lower by 30 total (sign-flip p ≈ 0.046) |
+
+**Reading:**
+- `conf_product` ranked *toward* bugs the decisions already got right,
+  so it did worse than chance.
+- Strategy 5's normalization removed that harm but added no
+  information.
+- Random escalation itself slightly lowers cost (361 → 357.2). That is
+  why H1 compares against R, not against decisions alone.

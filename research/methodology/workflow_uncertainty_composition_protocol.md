@@ -1,4 +1,7 @@
-# Workflow Uncertainty Composition Protocol — Step 2, Specified (Revision 11)
+# Workflow Uncertainty Composition Protocol — Step 2, Specified (Revision 12)
+
+Status (Revision 12, 2026-10-16): primary tests are now H1 (2h vs R)
+and H2 (5h vs 2h) on cost (§11); N is void until the second pilot.
 
 Status (Revision 10): **no Step 2 evaluation manifest exists and no
 Step 2 call has been made or authorized.** The first calibration pilot
@@ -16,6 +19,76 @@ authorization. **`N = 733` is void as of Revision 11** (§14): it was
 measured under strategy definitions Revision 11 replaced. The second
 calibration pilot re-measures the disagreement rate under the Revision 11
 definitions.
+
+## Changelog from Revision 11 — the composition question asked on top of the decisions (Revision 12)
+
+Adopted 2026-10-16. Sources:
+- `research/methodology/revision12_strategy5_proposal.md` (§1–§8);
+- `research/results/mozilla_exploratory_analysis.md` (E1–E3).
+
+**What was wrong with Revision 11's primary comparison:**
+- Strategy 2 never reads the node decisions, while `a* = F(c2*, c3*)`
+  escalates on the severity level. So 2 vs 4a mostly measured which arm
+  is given the information `F` needs.
+- Under `Y_decision`, escalating a wrong decision earns nothing, even
+  though §16.1's frozen cost matrix prices exactly that as a remedy.
+- It was found by post-hoc review of the descriptive Mozilla
+  comparison, not from any Step 2 data.
+
+**What changed:**
+- **New arms (§7.6):**
+  - **2h:** `F(decisions)`, plus escalating the `k` least-confident
+    instances by `conf_product`.
+  - **5h:** the same, ranked by Strategy 5's per-primitive rank
+    average.
+  - **R:** `k` random overrides; a reference, not a policy.
+  - `k = min(⌈0.10·n⌉, #candidates)`.
+- **New primary tests (§11, §14):**
+  - **H1:** 2h vs R.
+  - **H2:** 5h vs 2h.
+  - Both are on per-instance cost `C_action + C_human` (§6, §16.1),
+    Holm-corrected, family-wise α = 0.05.
+- **Why R and not Strategy 1 as H1's comparator:** under cost, any
+  escalation of a wrongly accepted case pays off, so 2h vs 1 would
+  partly measure "escalating is cheap", not "confidence is
+  informative". Random overrides of the same budget hold that constant.
+  (This refines proposal §8, which named 1 vs 2h.)
+- **2 vs 4a becomes secondary and descriptive,** with the confound
+  disclosed wherever it is reported. Strategy 5 standalone is
+  descriptive.
+- **The paper is led by the empirical findings**
+  (`research/results/findings_synthesis.md`). Step 2 tests the
+  composition question.
+
+**Constants:**
+- **New:** `R_OVERRIDE = 0.10`, a review-workload design constant
+  fixed in the proposal addendum before any Revision 12 test was
+  computed on any data. It is not taken from the Mozilla override
+  curve.
+- **Reused, already frozen:** the cost matrix; `C_human = 1`; the MDE,
+  as its cost-unit form from §16.5 (0.05 × 9 ≈ 0.45 per instance).
+- **Randomization:** 10,000 draws, seed 20261016.
+
+Code: `research/src/workflow_strategies_r12.py`, with a self-test.
+
+**Mozilla, descriptive and disclosed, not decisive.** Using the frozen
+code on the 202 Mozilla bugs:
+- 2h cost **more** than random overrides (390 vs. an expected 357;
+  randomization p ≈ 0.05);
+- 5h was at chance (360);
+- 5h beat 2h (sign-flip p ≈ 0.05).
+
+None of this sets a constant or changes a definition. It does say that
+a null or negative H1 is a live outcome.
+
+**What it costs:**
+- **The effect is bounded.** Only `k` instances can change, so the
+  achievable per-instance effect is at most about `0.10 × 11`.
+- **Power is limited.** The MDE of 0.45 cost points is a large effect
+  inside that bound, so H1 and H2 are powered for large effects only.
+  Smaller ones are reported as not detected, never as absent.
+- **N is still void.** It is recomputed from the second pilot's
+  per-instance cost-difference SDs (§14).
 
 ## Changelog from Revision 10 — thresholds that did not transfer (Revision 11)
 
@@ -772,6 +845,31 @@ this diagnostic-only signal were somehow made deployable." Labeled
 policy comparison or §13's outcome/claims matrix as a real strategy.
 ```
 
+### 7.6 Revision 12 arms — overrides on top of the decisions (binding)
+
+```
+Base: Strategy 1's action for every instance (F on the decisions).
+Candidates: instances whose base action is not escalate.
+k = min(ceil(R_OVERRIDE * n), #candidates), R_OVERRIDE = 0.10 (frozen).
+2h: escalate the k candidates with the lowest conf_product (undefined
+    ranks lowest; ties by instance id). Code: strategy_2h.
+5h: escalate the k candidates with the highest Strategy 5 U (per-
+    primitive uncertainty, admissibility rule MAX_MODAL_SHARE = 0.5,
+    within-set rank percentiles; workflow_strategy5_proposal.py). If no
+    signal is admissible, 5h is NOT COMPUTABLE and H2 is reported as
+    such - never silently replaced. Code: strategy_5h.
+R:  k candidates drawn uniformly at random. A reference distribution
+    for H1, not a policy; its expectation is computed exactly.
+Strategy 5 standalone (escalate ceil(q*n) by U, accept the rest):
+    descriptive only.
+```
+
+All Revision 12 arms see exactly the inputs Strategies 1 and 2 already
+use: single-call decisions and confidences, with no repeats beyond §2
+and no labels. `R_OVERRIDE` sets the human-review budget and is
+identical across 2h, 5h and R. That is the matched-budget property
+Revision 11 got from `q`.
+
 ### 7.5 Information budget per strategy
 
 | Strategy | Single evaluation? | Repeats accessed? | Native distribution? | Offline calibration data? | Can escalate? |
@@ -851,8 +949,28 @@ instability rate per node type; **Strategy 4b's oracle ceiling** (§7.4b).
 
 ## 11. Policy-level analyses (kept separate from mechanism diagnosis)
 
-**Sole primary, powered comparison (Revision 10)**: Strategy 2 vs.
-Strategy 4a, paired McNemar test on `Y_decision` at α = 0.05 (§14).
+**Primary tests (Revision 12, binding).** Both use the per-instance
+cost `C_action + C_human` (§6, §16.1). Holm–Bonferroni across the two,
+family-wise α = 0.05.
+- **H1, 2h vs R:** total cost of 2h against the distribution of total
+  cost under `k` random overrides of the same candidates. Two-sided
+  randomization test centred on the exact random expectation, 10,000
+  draws, seed 20261016. It asks: does composed confidence pick better
+  overrides than chance?
+- **H2, 5h vs 2h:** paired per-instance cost differences. Two-sided
+  sign-flip randomization test, same draws and seed. It asks: does
+  per-primitive normalization pick better overrides than the raw
+  product?
+
+**Secondary, descriptive:**
+- `Y_decision` for every arm;
+- 2 vs 4a, with its information-access confound disclosed wherever
+  reported;
+- Strategy 5 standalone.
+
+*Superseded (Revisions 10–11):* "Sole primary, powered comparison:
+Strategy 2 vs. Strategy 4a, paired McNemar test on `Y_decision` at
+α = 0.05."
 
 **Reported descriptively, not as hypothesis tests**: Strategy 1 (decision-
 only baseline) and Strategy 3 (implementation-equivalence arm, §7.3),
@@ -881,7 +999,11 @@ comparison.
 |---|---|---|
 | `Δ_marginal ≈ 0` and `Δ_seq ≈ 0`, strategies 1, 2, 4a similar `P(Y_decision=1)` | Per-node thresholds approximate this benchmark reasonably | Generalization beyond this construction-defined task |
 | `Δ_marginal < 0` (Lin-et-al.-corrected) | Cascading failure, motivating a workflow-level policy | That any strategy in §7 fixes it |
-| 4a beats 2 on `P(Y_decision=1)` (primary McNemar test, α = 0.05) | **Revision 11:** decision-based composition (`F` plus repeat-instability escalation) beats naive confidence-product composition **when both escalate at matched rates**, on this benchmark/evaluation set | External validity (§12); **anything about primitive-aware composition**, since 4a has no primitive-specific signal left (Revision 11); that confidence signals are useless, since only one composition of them (the product) is tested |
+| **H1: 2h beats R** (Revision 12 primary, Holm) | Composed confidence picks better overrides than chance, at a 10% review budget, on this benchmark | External validity; other budgets; other compositions of the signals |
+| H1: 2h not different from R | No evidence that `conf_product` carries override-relevant information beyond the decisions, for effects ≥ 0.45 cost points | That it carries none. Smaller effects aren't ruled out |
+| H1: 2h worse than R | `conf_product` ranks *away* from errors on this benchmark (anti-informative) | That confidence signals are harmful in general |
+| **H2: 5h beats 2h** (Revision 12 primary, Holm) | Per-primitive normalization picks better overrides than the raw product | That 5h beats chance (that is H1's question for 5h, reported descriptively) |
+| *(Revision 11, now secondary)* 4a beats 2 on `P(Y_decision=1)` (McNemar) | **Revision 11:** decision-based composition (`F` plus repeat-instability escalation) beats naive confidence-product composition **when both escalate at matched rates**, on this benchmark/evaluation set | External validity (§12); **anything about primitive-aware composition**, since 4a has no primitive-specific signal left (Revision 11); that confidence signals are useless, since only one composition of them (the product) is tested |
 | 4a vs. 2 not significant | No evidence at this N that these deployable triggers improve on naive confidence composition, for MDE = 0.05 | That no escalation rule helps, or that effects smaller than 0.05 are absent |
 | Strategy 3 ≡ Strategy 1 (descriptive) | That the specified primitive-aware arm is empty under this trigger configuration (§7.3) | Anything about primitive-aware composition's value. This is a statement about the protocol, not about the primitives |
 | No strategy beats 1 | Confidence-like signals may not add value here | Confidence signals are worthless in general |
@@ -890,7 +1012,29 @@ comparison.
 
 ## 14. Power analysis — binding sizing (Revision 10)
 
-**Revision 11: `N = 733` below is VOID.** It came from `d(2v4a)`
+**Revision 12 sizing (binding; supersedes the 2-vs-4a procedure
+below).**
+
+```
+Inputs from the second calibration pilot (templated content, 30
+  instances), computed with the Revision 12 code:
+  sigma_H1 = SD over instances of [cost(2h, i) - E_R cost(i)]
+  sigma_H2 = SD over instances of [cost(5h, i) - cost(2h, i)]
+MDE_cost = 0.45 per instance (§16.5's derivation, in cost units).
+alpha = 0.025 per test (Holm's first step, conservative), power = 0.80.
+n_required(H) = ceil(((z_{0.0125} + z_{0.80}) * sigma_H / MDE_cost)^2)
+N_final = max(n_required(H1), n_required(H2)).
+Floor: if a pilot sigma is 0, use sqrt(1/30 - 1/900) ~ 0.180, the SD
+  of 30 values with exactly one |difference| = 1 (one discordant
+  instance treated as observed, as MIN_DISCORDANCE_FLOOR did). Disclosed
+  at sizing time; never used to judge outcomes.
+Feasibility: if N_final x 9 calls exceeds what is authorized, report
+  and stop for a decision. The MDE is never loosened to fit.
+Prohibited: Mozilla's figures (any) as sizing inputs.
+```
+
+
+**Revision 11 (superseded by the Revision 12 sizing above): `N = 733` below is VOID.** It came from `d(2v4a)`
 measured under the Revision 10 strategy definitions, which Revision 11
 replaced (§7.2, §7.4a). The procedure stays binding. `N` is recomputed
 from the disagreement rate the second calibration pilot measures under

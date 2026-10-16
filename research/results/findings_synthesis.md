@@ -121,11 +121,15 @@ exploratory:**
   confidence (`choice`, 0.90) belongs to the one node `F` doesn't use
   (E4).
 
+- **Under Revision 12's frozen tests (applied descriptively):**
+  `conf_product` overrides cost *more* than random ones (390 vs 357),
+  and Strategy 5's were at chance (E6).
+
 **Evidential status:** hypothesis-generating. It doesn't share F1–F3's
 standing because it came from the same data and the target is
-constructed. **It also changes Step 2:** Step 2's 2-vs-4a comparison has
-the same confound, so its fair test needs a hybrid arm (Revision 12
-addendum §8). Confirmation is reserved for Step 2 under the frozen
+constructed. **It also changes Step 2:** Step 2's 2-vs-4a comparison had
+the same confound. Revision 12, now adopted, replaces it with H1 (2h vs
+random overrides) and H2 (5h vs 2h) on cost. Confirmation is reserved for Step 2 under the frozen
 protocol, whichever way it comes out.
 
 ## F5. Method: audits that caught defects before evaluation
@@ -136,7 +140,7 @@ protocol, whichever way it comes out.
 | 4a trigger non-selective (fires on about 90%) | Selectivity on input signals only, before evaluation data | Revision 11: trigger removed |
 | Strategy 2 threshold distribution-sensitive | Same check, smoke test vs pilot | Revision 11: fixed-rate `q` |
 | Runner: "None" shown to the model, partial data analyzed, biased upward-lean rate, uncounted failures | Adversarial input probing | Fixed, with tests, before the live run |
-| Strategy 2 ignores decisions while `a*` is severity-defined | Post-hoc review of the Mozilla comparison | Revision 12 addendum §8 (proposed) |
+| Strategy 2 ignores decisions while `a*` is severity-defined | Post-hoc review of the Mozilla comparison | Revision 12 (adopted): H1/H2 on cost |
 
 These are methodological lessons, not evidence that any composition
 method works. The last row is a cautionary case: the audit happened

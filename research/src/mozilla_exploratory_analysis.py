@@ -27,6 +27,7 @@ from run_mozilla_validation import (RAW_OUT, RESULTS_DIR, F, check_complete, loa
                                     strategy_1_decision_only)
 from workflow_strategies_r11 import conf_product, prevalence_q, strategy_2_r11, strategy_4a_r11
 from workflow_strategy5_proposal import strategy_5
+from workflow_strategies_r12 import R_OVERRIDE, h1_randomization_test, h2_sign_flip_test, strategy_2h, strategy_5h
 
 OUT_JSON = RESULTS_DIR / "mozilla_exploratory_analysis.json"
 
@@ -168,6 +169,21 @@ def main() -> None:
     out["score_mean_confidence_by_true_level"] = {
         t: sum(sc_c[n] for n, i in enumerate(ids) if per[i]["bug"]["level"] == t)
         / sum(1 for i in ids if per[i]["bug"]["level"] == t) for t in (0, 1, 2)}
+
+    # 6. Revision 12's primary tests applied DESCRIPTIVELY (R_OVERRIDE was
+    #    fixed in the Revision 12 addendum before this was computed; Mozilla
+    #    sets no Step 2 constant, and these p-values are not confirmatory).
+    a_star = {i: per[i]["a_star"] for i in ids}
+    h2a = strategy_2h(base, inst)
+    h5a = strategy_5h(base, inst)
+    out["revision12_tests_descriptive"] = {
+        "r_override": R_OVERRIDE,
+        "H1_2h_vs_random": h1_randomization_test(base, h2a, a_star),
+        "H1_5h_vs_random": h1_randomization_test(base, h5a, a_star) if h5a else "NOT COMPUTABLE",
+        "H2_5h_vs_2h": h2_sign_flip_test(h5a, h2a, a_star) if h5a else "NOT COMPUTABLE",
+        "Y_decision": {"1": sum(base_right.values()),
+                       "2h": sum(h2a[i] == a_star[i] for i in ids),
+                       "5h": sum(h5a[i] == a_star[i] for i in ids) if h5a else None}}
 
     OUT_JSON.write_text(json.dumps(out, indent=2, default=str))
     print(json.dumps({k: v for k, v in out.items() if k != "override_curve"}, indent=1, default=str))

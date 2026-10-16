@@ -2,8 +2,8 @@
 > and both `score` studies are complete. The first workflow calibration
 > pilot has run (270 calls). Tushar's Mozilla real-data study has run in
 > full (2,424 calls); see `research/results/mozilla_validation_results.md`.
-> Its smoke test led to **Revision 11**, and **Revision 12** (Strategy 5)
-> is proposed, awaiting a decision. The paper's findings are pulled
+> Its smoke test led to **Revision 11**. **Revision 12** is adopted (H1/H2
+> on cost, §11 of the protocol). The paper's findings are pulled
 > together in `research/results/findings_synthesis.md`. N is void until
 > the second calibration pilot. No Step 2 evaluation call has been made.
 > The updates below run **oldest first**; the latest is "Update (Mozilla
@@ -1124,6 +1124,24 @@ The exploratory analysis (no API calls; all post-hoc):
 F4 is restated, with the old text kept as superseded. **The same
 confound is in Step 2's primary comparison.** Revision 12 addendum §8
 proposes a hybrid arm (1 vs 2h). Needs a decision.
+
+**Update (Revision 12 adopted — 2026-10-16):**
+
+The user delegated the open decisions. Taken:
+1. Revision 12 is adopted.
+2. Its primary tests are **H1: 2h vs R** (confidence-ranked vs random
+   overrides on top of `F(decisions)`, 10% budget) and **H2: 5h vs 2h**.
+   Both are on per-instance cost from the frozen §16.1 matrix, with
+   Holm correction.
+3. 2 vs 4a is secondary.
+4. The branch is pushed for Tushar's review.
+
+Mozilla, descriptive: 2h was worse than random (390 vs 357), 5h at
+chance.
+
+**Next:**
+- grammar reuse definition → freeze and audit → second pilot (measures
+  `sigma_H1`, `sigma_H2`) → N → manifest → authorization.
 
 # Research plan — session 1 (Phase 0 + Phase 1)
 
