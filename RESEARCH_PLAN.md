@@ -1102,6 +1102,29 @@ review commits, the smoke test and Revision 11 are local on
     recompute N;
   - push/merge `mozilla-proposal`.
 
+**Update (external review of the Mozilla results; exploratory analysis — 2026-10-16):**
+Two external reviews were mostly sound. Adopted:
+- F2 reframed: 4a's trigger was non-selective everywhere; Strategy 2 is
+  the transfer evidence.
+- Explicit scope statements added.
+- The memorization caveat tightened.
+
+Found while acting on the reviews, and missed by both:
+- **Strategy 2 never reads the node decisions**, while `a*`
+  escalates on severity. So the 60-vs-27 result mostly shows a
+  confidence-only gate is a poor severity detector.
+
+The exploratory analysis (no API calls; all post-hoc):
+- confidence overrides on top of `F(decisions)` never beat the
+  decisions alone, at any rate;
+- composed confidence barely flags decision errors (AUROC 0.54–0.59);
+- `choice` is the only discriminative confidence (AUROC 0.90), and `F`
+  doesn't use it.
+
+F4 is restated, with the old text kept as superseded. **The same
+confound is in Step 2's primary comparison.** Revision 12 addendum §8
+proposes a hybrid arm (1 vs 2h). Needs a decision.
+
 # Research plan — session 1 (Phase 0 + Phase 1)
 
 Research theme: *From Calibrated Decisions to Reliable Workflows: Evaluating

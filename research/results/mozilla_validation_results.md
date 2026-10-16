@@ -32,8 +32,9 @@ edge case never occurred. Repeat instability: `choice` 1/202, `score`
 | `score`, Mozilla's wording | 113/202 = **0.56** [0.49, 0.63] | — | Different errors, similar total |
 
 The subsets barely move these. The recent-12-months subset (n = 54)
-scores 0.91 / 0.81 / 0.63, so there is no sign that older, possibly
-memorized bugs inflate agreement. The cue-free subset costs `choice`
+scores 0.91 / 0.81 / 0.63, about the same as the full set. That is
+reassuring, but 54 bugs can't rule out training-data overlap or
+memorization. The cue-free subset costs `choice`
 about 5 points, so keyword leakage is minor.
 
 ## RQ-A1 — does `score` over-rate minor bugs? **Yes, strongly. It also under-rates severe ones.**
@@ -95,11 +96,16 @@ flat curve, not overconfidence. Only 1 of 202 bugs reaches ≥ 0.90.
 | 2 (Rev 10, fixed 0.5) | 75/202 = 0.37 | 177 |
 | 4a (Rev 10, `choice ≥ 0.90`) | 81/202 = 0.40 | 183 |
 
-- **Combining decisions beat combining confidences by about 17 points.**
-  Of the bugs where Strategies 2 and 4a disagreed on correctness, 60
-  went 4a's way and 27 went Strategy 2's. This isn't caused by Strategy
-  2's inability to say "defer": only 15 bugs (7%) have "defer" as their
-  target, so its ceiling is 0.93.
+- **Strategy 4a beat Strategy 2 by about 16 points.** Of the bugs where
+  they disagreed on correctness, 60 went 4a's way and 27 went Strategy
+  2's. This isn't caused by Strategy 2's inability to say "defer": only
+  15 bugs (7%) have "defer" as their target, so its ceiling is 0.93.
+  **Caveat, added after review:** Strategy 2 never reads the decisions,
+  and `a*` escalates on severity. So this mostly shows that a
+  confidence-only gate is a poor severity detector, not that composing
+  confidences is worse. The fairer test, confidence overrides on top of
+  `F(decisions)`, is in `mozilla_exploratory_analysis.md` E2. Those
+  overrides didn't help at any rate.
 - **Per-primitive normalization (Strategy 5) didn't help here.** Its
   disagreements with Strategy 2 split 17 vs. 20. Strategy 5's rule
   excluded `choice` as saturated, so it ranked by `noul` and `score`
@@ -115,8 +121,9 @@ It **does** establish, on 202 human-triaged real bugs:
 - `choice` is accurate, and its confidence is saturated but accurate at
   the top;
 - `noul`'s confidence is uninformative;
-- with these primitives, combining their decisions beat combining their
-  confidences.
+- a confidence-only gate did much worse than `F(decisions)` on this
+  `a*`. Whether confidence adds anything beyond the decisions is a
+  separate question (exploratory E2: it didn't here).
 
 It **doesn't** establish general calibration, behavior outside Firefox
 networking and storage bugs, or anything about Step 2. Step 2 uses

@@ -120,3 +120,50 @@ difference below that would most likely be missed. The paper should be
 ready to report that null honestly. The
 recommendation in §1 stands as written. Adopt or reject is the
 reviewer's decision.
+
+## 8. Addendum: Strategy 2 can't test confidence composition against an `F`-defined target (2026-10-16)
+
+Found in post-hoc review of the Mozilla comparison; details in
+`research/results/mozilla_exploratory_analysis.md` E1–E2.
+
+**The problem:**
+- `a* = F(c2*, c3*)` escalates on the severity *level*.
+- Strategy 2 (and Strategy 5) output accept or escalate from confidence
+  alone and never read the decisions. To be right on an escalate
+  target, low confidence would have to *mean* high severity.
+- Strategies 1 and 4a apply `F` to the decisions, so they estimate
+  `a*` directly.
+
+So 2 vs 4a (and 5 vs 4a) mostly measures the information each arm is
+given, not the value of composing uncertainty. This holds for Step 2's
+designed content as much as for Mozilla, because the same `F` and the
+same Strategy 2 are used.
+
+**Proposed fix (for review, not adopted).** Add a hybrid arm, **2h**:
+- apply `F(decisions)` as Strategy 1 does;
+- then escalate the `⌈r·n⌉` least-confident instances, by
+  `conf_product`, that `F` didn't already escalate;
+- **fix `r` before any data:** suggested `r = 0.10`. It is a design
+  constant chosen for review workload. It must not be chosen from the
+  Mozilla curve, which was flat-to-negative at every `r`.
+
+**Primary comparison:** 1 vs 2h. It isolates the question "does
+composed confidence add information beyond the decisions?" The 2h
+variant using Strategy 5's U in place of `conf_product` (5h) gives
+"does per-primitive normalization help?"
+
+**What changes if adopted:**
+- 2 vs 4a and 2 vs 5 become secondary and descriptive.
+- Holm applies to 1 vs 2h and 2h vs 5h.
+
+**What it costs:**
+- The second pilot must measure the discordance rate for 1 vs 2h. At a
+  low `r` that rate is small, which keeps N moderate.
+- The effect is bounded by `r`. At most `r` of the instances can
+  change, so the MDE must be ≤ `r`. With MDE 0.05 and `r` 0.10 that is
+  feasible but tight.
+
+**Mozilla prior, disclosed and non-decisive:** confidence overrides
+didn't beat random on Mozilla (E2). A null result for 1 vs 2h is the
+likely Step 2 outcome. The paper should present it as the test of the
+composition question, whichever way it comes out.
