@@ -1,0 +1,143 @@
+{
+  "status": "DEVELOPMENT (training bugs only; held-out 500 never loaded)",
+  "plan": "research/methodology/case_level_review_development_plan.md",
+  "in_sample_all_442": {
+    "n": 442,
+    "k": 45,
+    "no_review": 713,
+    "oracle": 332,
+    "P": {
+      "cost": 630.0,
+      "wrong_accepts_caught": 16.0,
+      "share_of_oracle_saving": 0.218,
+      "auroc_wrong_accept_among_accepts": 0.69
+    },
+    "L": {
+      "cost": 608.0,
+      "wrong_accepts_caught": 18.0,
+      "share_of_oracle_saving": 0.276,
+      "auroc_wrong_accept_among_accepts": 0.692
+    },
+    "A1": {
+      "cost": 703.84,
+      "wrong_accepts_caught": 9.57,
+      "share_of_oracle_saving": 0.024
+    },
+    "B": {
+      "cost": 693.8,
+      "wrong_accepts_caught": 8.4,
+      "share_of_oracle_saving": 0.05,
+      "auroc_wrong_accept_among_accepts": 0.569
+    },
+    "C": {
+      "cost": 716.3,
+      "wrong_accepts_caught": 6.74,
+      "share_of_oracle_saving": -0.009
+    }
+  },
+  "cross_tracker": {
+    "fit_mozilla_eval_kernel": {
+      "n": 240,
+      "k": 24,
+      "no_review": 352,
+      "oracle": 178,
+      "P": {
+        "cost": 312.0,
+        "wrong_accepts_caught": 8.0,
+        "share_of_oracle_saving": 0.23,
+        "auroc_wrong_accept_among_accepts": 0.695
+      },
+      "L": {
+        "cost": 334.0,
+        "wrong_accepts_caught": 6.0,
+        "share_of_oracle_saving": 0.103,
+        "auroc_wrong_accept_among_accepts": 0.559
+      },
+      "A1": {
+        "cost": 351.09,
+        "wrong_accepts_caught": 4.57,
+        "share_of_oracle_saving": 0.005
+      },
+      "B": {
+        "cost": 362.67,
+        "wrong_accepts_caught": 2.0,
+        "share_of_oracle_saving": -0.061,
+        "auroc_wrong_accept_among_accepts": 0.514
+      },
+      "C": {
+        "cost": 358.58,
+        "wrong_accepts_caught": 2.74,
+        "share_of_oracle_saving": -0.038
+      }
+    },
+    "fit_kernel_eval_mozilla": {
+      "n": 202,
+      "k": 21,
+      "no_review": 361,
+      "oracle": 178,
+      "P": {
+        "cost": 318.0,
+        "wrong_accepts_caught": 8.0,
+        "share_of_oracle_saving": 0.235,
+        "auroc_wrong_accept_among_accepts": 0.688
+      },
+      "L": {
+        "cost": 373.0,
+        "wrong_accepts_caught": 3.0,
+        "share_of_oracle_saving": -0.066,
+        "auroc_wrong_accept_among_accepts": 0.504
+      },
+      "A1": {
+        "cost": 353.58,
+        "wrong_accepts_caught": 4.89,
+        "share_of_oracle_saving": 0.041
+      },
+      "B": {
+        "cost": 319.0,
+        "wrong_accepts_caught": 8.0,
+        "share_of_oracle_saving": 0.23,
+        "auroc_wrong_accept_among_accepts": 0.62
+      },
+      "C": {
+        "cost": 357.22,
+        "wrong_accepts_caught": 4.08,
+        "share_of_oracle_saving": 0.021
+      }
+    }
+  },
+  "repeated_5fold": {
+    "P": {
+      "mean_cost": 630.0,
+      "min_cost": 630.0,
+      "max_cost": 630.0
+    },
+    "L": {
+      "mean_cost": 639.2,
+      "min_cost": 619.0,
+      "max_cost": 663.0
+    },
+    "A1": {
+      "mean_cost": 740.74,
+      "min_cost": 714.96,
+      "max_cost": 762.59
+    },
+    "B": {
+      "mean_cost": 693.8,
+      "min_cost": 693.8,
+      "max_cost": 693.8
+    },
+    "C": {
+      "mean_cost": 716.3,
+      "min_cost": 716.3,
+      "max_cost": 716.3
+    },
+    "no_review": 713,
+    "oracle": 332
+  },
+  "selection": {
+    "chosen": "P",
+    "rule": "L only if better than P in both cross-tracker directions and 5-fold mean",
+    "frozen_file": "research/results/frozen_case_review_score_v1.json",
+    "sha256": "82d93045a0b99d93ab761aa09711909cc193458f558ca613201770881c1687ae"
+  }
+}

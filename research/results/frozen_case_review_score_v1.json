@@ -1,0 +1,7 @@
+{
+  "score": "P",
+  "applies_to": "accepted cases only; every non-accepted candidate ranks below every accepted case",
+  "budget": 0.1,
+  "frozen_on": "2026-10-17, 442 training bugs, before any fresh bug exists",
+  "definition": "9*p2 + 6*p1*q - 2*(1 - p2 - p1*q); p2/p1 = score mean_probabilities['2']/['1'], q = noul mean_noul"
+}
