@@ -88,7 +88,7 @@ def load_bugs() -> list[tuple[str, str, dict]]:
     return out
 
 
-def run(model_id: str, limit: int | None = None) -> Path:
+def run(model_id: str, limit: int | None = None, cls_name: str = "OpenJev") -> Path:
     import modal
     from run_workflow_calibration_pilot import reduce_choice_or_score_cell, reduce_noul_cell
     safe = model_id.replace("/", "__")
@@ -97,7 +97,7 @@ def run(model_id: str, limit: int | None = None) -> Path:
         raise SystemExit(f"{out.name} exists; refusing to overwrite.")
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     bugs = load_bugs()[:limit] if limit else load_bugs()
-    OpenJev = modal.Cls.from_name("openjev", "OpenJev")
+    OpenJev = modal.Cls.from_name("openjev", cls_name)
     engine = OpenJev(model_id=model_id)
     state = {i: {"d1": None, "d2": None} for i in range(len(bugs))}
     rows = {i: [] for i in range(len(bugs))}
@@ -143,5 +143,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True)
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--cls", default="OpenJev", help="OpenJevT447 for models needing transformers 4.47 (OLMo-2)")
     a = ap.parse_args()
-    run(a.model, a.limit)
+    run(a.model, a.limit, a.cls)

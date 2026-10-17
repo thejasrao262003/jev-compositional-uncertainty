@@ -137,3 +137,18 @@ were already running. None of their results had been analyzed.
 - **If time and cost allow:** the 9B sibling
   `openjev/OpenJev-Flash-9B`, under the same rules. If run, it adds 2
   tests to the Holm family.
+
+## Amendment 2 (2026-10-17): OLMo-2 library version (deviation, disclosed)
+
+- **What failed:** `allenai/OLMo-2-1124-7B-Instruct` could not load under
+  the pinned `transformers==4.46.3`. OLMo-2 support begins in 4.47. Its
+  container failed at startup, and no output was produced.
+- **The pre-registered rule:** replace a model that fails to load with
+  Qwen2.5-14B.
+- **What we did instead:** we kept the pre-registered model and ran it
+  under `transformers==4.47.1` (class `OpenJevT447`; everything else
+  identical).
+- **Why:** the failure was our library pin, not the model, and no OLMo
+  output had been seen when this was decided.
+- **Consequence:** Qwen2.5-7B and Phi-3.5 ran under 4.46.3 and OLMo-2
+  under 4.47.1. That difference is disclosed wherever results are shown.

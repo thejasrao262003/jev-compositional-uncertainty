@@ -34,7 +34,8 @@ from run_workflow_calibration_pilot import (reduce_choice_or_score_cell, reduce_
 ROOT = SRC.parents[1]
 DATA = ROOT / "research" / "data" / "openjev"
 OUT = ROOT / "research" / "results" / "openjev_crossmodel_analysis.json"
-MODELS = ["Qwen/Qwen2.5-7B-Instruct", "allenai/OLMo-2-1124-7B-Instruct", "microsoft/Phi-3.5-mini-instruct"]
+MODELS = ["Qwen/Qwen2.5-7B-Instruct", "allenai/OLMo-2-1124-7B-Instruct", "microsoft/Phi-3.5-mini-instruct",
+          "openjev/openjev-27B"]  # Amendment 1: OpenJev served via its shim (file label openjev__openjev-27B)
 ALPHA = 0.05
 
 
