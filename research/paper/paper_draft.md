@@ -1,5 +1,7 @@
 # Structured Outputs Do Not Imply Compatible Uncertainty: An Empirical Study of Confidence Signals in a Multi-Step Decision Workflow
 
+> **SUPERSEDED (2026-10-17).** The LaTeX paper in `latex/` is the current version (new title, reframed after a novelty review). This draft is kept unchanged as history.
+
 *Working draft v0.2, 2026-10-16 (kernel results filled in). Target: workshop paper or preprint
 (option A in the session log). Every number is taken from a committed
 result file, cited in brackets as [file]. Citation keys refer to

@@ -9,10 +9,15 @@ into a workflow, errors at one step propagate to the next. A common hope
 is that each step's reported confidence can be composed into a
 workflow-level signal that says when to hand a case to a human.
 
-We ask a narrower and more testable question. \emph{When a workflow
-chains heterogeneous decision primitives, can it rely on their
-uncertainty signals, and how should it combine them?} Heterogeneity
-matters because Jev exposes three primitives whose uncertainty is
+Prior work has benchmarked Jev's primitives and calibration on single
+tasks \citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and recent
+work has examined uncertainty across multi-step agent trajectories
+\citep{lin2026uqagents}. We study a different, operational question.
+\emph{When a workflow chains heterogeneous typed decisions, which signals
+identify the cases where it fails, and can those signals identify the
+specific costly errors for which human review is worthwhile?} The two
+halves can come apart: a signal can rank failures well and still not say
+which reviews pay. Heterogeneity matters because Jev exposes three primitives whose uncertainty is
 \emph{structurally} different. \choice{} returns a
 distribution over labels plus a scalar confidence. \score{} returns an
 ordinal distribution plus a scalar confidence. \noul{} returns a single
@@ -32,34 +37,35 @@ calibration claim. They are a measurement of how these documented
 concentration statistics behave as escalation signals when Jev's
 primitives are chained, which the documentation leaves open.
 
-\para{Contributions}
+\para{Contributions} The main findings concern workflow-level prediction
+and its decision utility.
 \begin{enumerate}
-  \item \textbf{Characterization} (\cref{sec:char}). Per-primitive behavior
-  of confidence on controlled and real data, showing three incompatible
-  profiles.
-  \item \textbf{Transfer} (\cref{sec:transfer}). Fixed thresholds set on
-  constructed content lose their selectivity on real text, in two
-  distinct ways.
-  \item \textbf{Real-data validation} (\cref{sec:real}). Two bug trackers
-  from different projects, with different labeling processes (triage and
-  reporter), on which severity compression appears in both.
-  \item \textbf{Composition} (\cref{sec:comp}, exploratory). The
-  confidence-based escalation rules we tested did not consistently pick
-  better cases than random on either tracker. We identify, and correct for
-  the follow-up, a confound in the obvious comparison.
-  \item \textbf{Held-out and cross-model tests} (\cref{sec:heldout,sec:crossmodel},
+  \item \textbf{Workflow failure prediction} (\cref{sec:heldout,sec:crossmodel},
   pre-registered). A frozen decision-feature estimator ranks wrong workflow
   actions better than final-step confidence on 500 new bugs. The gap
-  replicates across five evaluated models from four sources. Most of the
-  signal is the chosen action's historical error rate.
-  \item \textbf{Intervention} (\cref{sec:intervention}, pre-registered).
-  At a 10\% review budget, that predictive signal does not yield a lower
-  cost than confidence-ranked review, and no strategy beat no review. An
-  oracle shows the reason: the expensive errors exist, but the signals we
-  tested could not isolate them within an action. A
+  replicates across five evaluated models from four sources, and Jev's
+  frozen estimator transfers unchanged to an independently trained
+  Jev-style model. Most of the signal is the chosen action's historical
+  error rate.
+  \item \textbf{Prediction is not intervention utility} (\cref{sec:intervention},
+  pre-registered). At a 10\% review budget, that predictive signal does
+  not yield a lower cost than confidence-ranked review, and no strategy
+  beat no review. An oracle shows the reason: the expensive errors exist,
+  but the signals we tested could not isolate them within an action. A
   case-level score developed on training bugs did not meet a
   pre-registered feasibility criterion under the natural bug mix, so the
   planned confirmatory study was stopped before any new data.
+  \item \textbf{Supporting evidence on the primitives}
+  (\cref{sec:char,sec:transfer,sec:real,sec:comp}). Inside this workflow,
+  the three primitives' confidence signals behave differently; fixed
+  thresholds set on constructed content lose their selectivity on real
+  text; \score{} compresses severity on two trackers with different
+  labeling processes; and confidence-based escalation rules did not
+  consistently beat random selection (exploratory, with a confound we
+  identify). Primitive-level calibration of Jev has been studied
+  elsewhere on single tasks
+  \citep{deusser2026jev,meng2026jevaudit}; these results are the
+  foundation for the workflow study rather than its main claim.
   \item \textbf{Method} (\cref{sec:method}). A pre-registration and audit
   process that caught six design or implementation defects, most of them
   before any evaluation data existed.
@@ -73,6 +79,29 @@ operational benefit.
 \section{Related work}
 %======================================================================
 
+\para{Evaluations of Jev and open decision models} Jev has been
+benchmarked zero-shot on 37 datasets (346{,}009 requests), where its
+\choice{} probabilities were well calibrated and supported selective
+prediction, while its binary probabilities ranked well but sat poorly
+relative to a 0.5 threshold, and thresholds tuned on training data
+improved F1 \citep{deusser2026jev}. A pre-registered calibration audit
+compared Jev with open and general-purpose classifiers on two public
+classification tasks \citep{meng2026jevaudit}, and a comparison on seven
+political-science replications found its calibration advantage over
+other models not consistent \citep{denney2026jev}. An early evidence
+audit of 28 papers on typed decision models found no independent
+accuracy advantage yet for the typed readout over comparable
+label-probability readouts, and proposed an evaluation checklist
+\citep{tang2026typed}. Open instruction-tuned models can produce
+Jev-like decisions by reading answer-label logits in one forward pass
+\citep{geuter2026innerjev}, the same kind of readout we use for the
+general models in \cref{sec:crossmodel}. These studies evaluate single
+requests. Our results agree with them where they overlap: \choice{}
+confidence discriminates, and thresholds must be set on one's own data.
+On our task, \noul{}'s probability was uninformative about its own
+correctness, which suggests that binary-probability quality is
+task-dependent.
+
 \para{Calibration of single decisions} Post-hoc calibration
 \citep{platt1999probabilistic,naeini2015bbq} and the miscalibration of
 modern networks \citep{guo2017calibration} are well studied, and
@@ -83,6 +112,14 @@ confidence estimation for language models has been surveyed in
 and reject options \citep{elyaniv2010selective,geifman2017selective,geifman2019selectivenet},
 learning to defer \citep{madras2018predict} and prediction sets in
 human--AI teams \citep{babbar2022predsets} address \emph{one} decision.
+Closest to our intervention result, recent work argues that error risk is
+not review value under bounded review budgets: review priority should
+depend on wrongness, repairability, impact and cost, and ranking by
+review value left less residual error than ranking by risk on a
+question-answering benchmark \citep{park2026riskreview}. Our
+intervention finding is an instance of that distinction in a dependent
+typed-decision workflow, with a frozen cost table and pre-registered
+tests.
 
 \para{Conformal methods and composition} Conformal prediction
 \citep{angelopoulos2021gentle} and conformal risk control
@@ -123,23 +160,26 @@ Our severity result is consistent with this literature. What we add is
 that it appears in bug triage, against two labeling processes, and that
 the primitive's own confidence gives no sign of it.
 
-\para{Agents and trajectories} Closest to us, a counterexample
+\para{Agents and trajectories} Closest to our workflow framing, a counterexample
 shows that step-level calibration need not imply trajectory-level
 calibration for LLM agents, and step errors are empirically coupled along
 trajectories \citep{lin2026uqagents}. Related work calibrates agent
 trajectories \citep{zhang2026agentic} and studies uncertainty propagation
 in multi-step agentic decisions \citep{duan2025uprop}.
 
-\para{Positioning} Prior work studies calibration of single
-decisions, cascades of the \emph{same} decision, agent trajectories, and
-system-level propagation in general. Our contribution is narrower and
-empirical. We measure how the uncertainty signals of three
-\emph{structurally different} primitives of Jev behave inside one
-workflow against real labels, and whether simple composition rules over
-them identify escalation candidates. We are not aware of prior work with
-this specific design. Our literature search was web-based and did not
-systematically cover reliability engineering or HCI escalation
-research, so we make no stronger priority claim.
+\para{Positioning} Prior work benchmarks Jev's primitives on single
+requests, studies calibration of single decisions, cascades of the
+\emph{same} decision and agent trajectories, and argues in general that
+risk differs from review value. Our contribution is narrower and
+empirical: in a dependent workflow of three \emph{structurally
+different} typed decisions, against real labels, held-out data and five
+evaluated models, we test which signals predict workflow failure and
+whether they identify the costly errors that make human review
+worthwhile. We are not aware of prior work with this specific design, but
+we make no priority claim. Our literature search was web-based, did not
+systematically cover reliability engineering or HCI escalation research,
+and the Jev literature is growing quickly: the studies cited above
+appeared in September and October 2026.
 
 %======================================================================
 \section{Setting}
@@ -607,16 +647,19 @@ same 942 bugs, questions and three-step adapter through four further
 models.
 \begin{itemize}
   \item \textbf{OpenJev 27B} \citep{openjev2026}: an independently
-  trained Jev-style decision model. It is served on one H100 exactly as
-  its authors specify, with their calibrated readout. Its 2{,}826
+  trained Jev-style decision model (Hugging Face \texttt{openjev/openjev},
+  commit \texttt{b4a89f5}; several unrelated projects share the name).
+  It is served on one H100 exactly as its authors specify, with their
+  calibrated readout. Its 2{,}826
   requests had 0 failures. (An unofficial architectural reconstruction
   of Jev also exists \citep{gomez2026openjev}, but it has no trained
   weights, so it could not be evaluated.)
   \item \textbf{Three general instruct models:} Qwen2.5-7B
   \citep{qwen2024qwen25}, OLMo-2-7B \citep{olmo2024olmo2} and
   Phi-3.5-mini \citep{abdin2024phi3}. Each runs behind a Jev-compatible
-  readout: next-token probabilities over the allowed labels, with
-  TypeSafe's documented confidence formulas.
+  readout: next-token probabilities over the allowed labels (as in
+  \citep{geuter2026innerjev}), with TypeSafe's documented confidence
+  formulas.
 \end{itemize}
 Each model's estimator was trained on that model's own outputs for the
 442 training bugs and tested on its 500 held-out bugs. The pre-registered
