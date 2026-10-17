@@ -656,7 +656,7 @@ intervals overlap only for OLMo-2.}
 \end{colfigure}
 
 \para{Result} All 8 pre-registered tests are supported
-(\cref{fig:crossmodel}).
+(\cref{fig:crossmodel}, \cref{tab:crossmodel}).
 \begin{itemize}
   \item \textbf{Decision estimators:} AUROC 0.64--0.76.
   \item \textbf{Final-step confidence:} 0.40--0.58.
@@ -666,6 +666,22 @@ intervals overlap only for OLMo-2.}
   reaches 0.76 [0.72, 0.80] on OpenJev's outputs, as well as OpenJev's
   own estimator does.
 \end{itemize}
+
+\begin{widetable}
+\centering
+\caption{Per-model results on the same 500 held-out bugs. AUROC columns
+rank wrong workflow actions (95\% bootstrap CI): the decision-feature
+estimator fitted on each model's own training outputs, the model's
+final-step confidence, the action-conditional error-rate rule, and Jev's
+frozen estimator applied unchanged. Cost columns are from the
+pre-registered intervention test (\cref{sec:intervention}); the oracle
+is an upper bound that must spend all 50 reviews, and ``wrong accepts''
+is their share of no-review cost. Absolute failure rates are not a clean
+quality comparison, because the Jev-style and general models use
+different interfaces.}
+\label{tab:crossmodel}
+\resizebox{\textwidth}{!}{\input{table_crossmodel.tex}}
+\end{widetable}
 
 \para{The signal is simple} A class-frequency rule, ``the historical
 error rate of the action the workflow chose'' (estimated on training
@@ -719,9 +735,9 @@ lower, with an interval spanning zero). Every review arm costs more than no revi
 \begin{colfigure}
 \centering
 \begin{tikzpicture}
-\begin{axis}[ybar, bar width=4.5pt, width=\linewidth, height=4.0cm,
-  symbolic x coords={Jev,OpenJev,Qwen2.5}, xtick=data, ymin=0, ymax=960,
-  ylabel={total cost (500 bugs)}, enlarge x limits=0.25,
+\begin{axis}[ybar, bar width=3pt, width=\linewidth, height=4.0cm,
+  symbolic x coords={Jev,OpenJev,Qwen2.5,Phi-3.5,OLMo-2}, xtick=data, ymin=0, ymax=960,
+  ylabel={total cost (500 bugs)}, enlarge x limits=0.12,
   grid=major, grid style={gray!20}, tick label style={font=\scriptsize}, label style={font=\scriptsize},
   legend image code/.code={\draw[#1] (0cm,-0.08cm) rectangle (0.18cm,0.12cm);}, legend style={font=\scriptsize, at={(0.5,1.02)}, anchor=south, legend columns=5, draw=none}]
 \addplot[fill=gray!40] table[x=model, y=noreview] {fig_intervention.dat};
@@ -734,7 +750,10 @@ lower, with an interval spanning zero). Every review arm costs more than no revi
 \end{tikzpicture}
 \caption{Total cost at a 10\% review budget. No feasible strategy beats
 no review. A perfect reviewer (oracle, an upper bound using held-out
-outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%.}
+outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%. For the general
+models it saves little or nothing: they escalate most cases themselves,
+leaving few reviewable errors (Phi-3.5's oracle exceeds no review because
+50 reviews must be spent on 63 candidates, only 4 of which gain).}
 \label{fig:intervention}
 \end{colfigure}
 
