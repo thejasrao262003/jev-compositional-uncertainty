@@ -1,0 +1,100 @@
+{
+  "mozilla": {
+    "distinct_risk_levels": 8,
+    "ece": 0.202,
+    "mean_predicted": 0.353,
+    "observed_failure": 0.352,
+    "levels_(pred,n,observed)": [
+      [
+        0.11,
+        2,
+        1.0
+      ],
+      [
+        0.113,
+        21,
+        0.048
+      ],
+      [
+        0.242,
+        132,
+        0.114
+      ],
+      [
+        0.402,
+        30,
+        0.767
+      ],
+      [
+        0.411,
+        33,
+        0.788
+      ],
+      [
+        0.865,
+        29,
+        0.621
+      ],
+      [
+        0.986,
+        1,
+        1.0
+      ],
+      [
+        0.987,
+        2,
+        1.0
+      ]
+    ]
+  },
+  "kernel": {
+    "distinct_risk_levels": 7,
+    "ece": 0.181,
+    "mean_predicted": 0.51,
+    "observed_failure": 0.508,
+    "levels_(pred,n,observed)": [
+      [
+        0.11,
+        5,
+        0.8
+      ],
+      [
+        0.113,
+        5,
+        0.0
+      ],
+      [
+        0.242,
+        80,
+        0.2
+      ],
+      [
+        0.402,
+        38,
+        0.684
+      ],
+      [
+        0.411,
+        31,
+        0.677
+      ],
+      [
+        0.865,
+        89,
+        0.652
+      ],
+      [
+        0.986,
+        2,
+        1.0
+      ]
+    ]
+  },
+  "pooled": {
+    "distinct_risk_levels": 8,
+    "ece": 0.192,
+    "mean_predicted": 0.431,
+    "observed_failure": 0.43,
+    "levels_(pred,n,observed)": "see trackers"
+  }
+}

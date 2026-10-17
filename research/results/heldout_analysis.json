@@ -1,0 +1,63 @@
+{
+  "n": 500,
+  "failure_rate": {
+    "mozilla": 0.352,
+    "kernel": 0.508
+  },
+  "HR1": {
+    "auroc_E_dec": 0.763,
+    "auroc_low_score_conf": 0.549,
+    "difference": 0.214,
+    "one_sided_95_lower": 0.158,
+    "bootstrap_p_one_sided": 0.0
+  },
+  "HR2": {
+    "mozilla": {
+      "auroc_E_dec": 0.811,
+      "one_sided_95_lower": 0.761,
+      "bootstrap_p_one_sided": 0.0
+    },
+    "kernel": {
+      "auroc_E_dec": 0.697,
+      "one_sided_95_lower": 0.643,
+      "bootstrap_p_one_sided": 0.0
+    }
+  },
+  "holm_supported": {
+    "HR1": true,
+    "HR2_mozilla": true,
+    "HR2_kernel": true
+  },
+  "secondary_descriptive": {
+    "mozilla": {
+      "E_dec": 0.811,
+      "E_all": 0.818,
+      "low_score_conf": 0.532,
+      "low_min_conf": 0.561,
+      "low_product": 0.569,
+      "risk_at_80pct_coverage_E_dec": 0.255,
+      "risk_at_80pct_coverage_E_all": 0.255,
+      "risk_at_80pct_coverage_low_score_conf": 0.34
+    },
+    "kernel": {
+      "E_dec": 0.697,
+      "E_all": 0.706,
+      "low_score_conf": 0.574,
+      "low_min_conf": 0.485,
+      "low_product": 0.48,
+      "risk_at_80pct_coverage_E_dec": 0.475,
+      "risk_at_80pct_coverage_E_all": 0.46,
+      "risk_at_80pct_coverage_low_score_conf": 0.46
+    },
+    "pooled": {
+      "E_dec": 0.763,
+      "E_all": 0.769,
+      "low_score_conf": 0.549,
+      "low_min_conf": 0.503,
+      "low_product": 0.498,
+      "risk_at_80pct_coverage_E_dec": 0.372,
+      "risk_at_80pct_coverage_E_all": 0.37,
+      "risk_at_80pct_coverage_low_score_conf": 0.398
+    }
+  }
+}
