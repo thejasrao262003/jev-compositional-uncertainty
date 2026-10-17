@@ -84,3 +84,40 @@ Those are new hypotheses, not this test.
 - The target action is constructed.
 - The general models use our prompt/readout, so their candidate sets
   differ structurally.
+
+
+## Correction after a descriptive follow-up (2026-10-17; `intervention_cost_mechanism.json`, exploratory)
+
+"What it means", point 1, explained the result as "most of the workflow's
+errors are cheap". **For the Jev-style models that is wrong.** The text
+above is left unchanged; the correction is below.
+
+An **oracle**, which knows held-out outcomes and so is an upper bound, not
+a strategy, shows how much a perfect choice of 50 reviews could save:
+
+| Model | No review | Best pre-registered arm | Oracle (perfect 50) | Share of no-review cost from wrong *accepts* | Candidates where review saves |
+|---|---:|---:|---:|---:|---:|
+| Jev 1.13 | 658 | 681 | **370** (−44%) | 52% | 38 of 363 |
+| OpenJev | 660 | 674 | **441** (−33%) | 40% | 29 of 314 |
+| Qwen | 903 | 910 | 856 (−5%) | 14% | 14 of 80 |
+| Phi | 831 | 890 | 890 | 4% | 4 of 63 |
+| OLMo | 893 | 916 | 916 | 1% | 1 of 17 |
+
+**Corrected reading:**
+- **Jev-style models: the value exists, the identification fails.** About
+  half the cost is wrongly accepted serious or regression bugs, and a
+  perfect reviewer could remove a third to almost half of total cost.
+  They are 15–16% of accepted cases.
+  - The action rule cannot separate them (every accept looks alike).
+  - Confidence could not either.
+  - So the failure is in *finding the expensive errors within an
+    action*, not in the cost structure.
+- **General models: the explanation is structural.** Their cost is
+  dominated by over-escalation (`escalate → accept`, 518–610 units),
+  which more review cannot reduce. Even the oracle saves little.
+
+**This gives the next hypothesis** (new, to be pre-registered and tested
+on fresh data): a per-case estimator of *P(wrong accept)*, which bugs
+were wrongly accepted, built only from training data. For example, from
+the `score` distribution's mass on "blocking" and `noul`'s probability.
+Can it capture a meaningful part of the oracle's saving at a 10% budget?

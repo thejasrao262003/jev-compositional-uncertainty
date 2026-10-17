@@ -1,0 +1,147 @@
+{
+  "status": "DESCRIPTIVE / EXPLORATORY; oracle uses held-out outcomes and is an upper bound, not a strategy",
+  "models": {
+    "Jev 1.13": {
+      "no_review_cost": 658,
+      "cost_by_cell_(action->target)": {
+        "accept->escalate": 200,
+        "accept->defer": 144,
+        "escalate->accept": 132,
+        "escalate->defer": 70,
+        "defer->accept": 48,
+        "escalate->escalate": 36,
+        "defer->escalate": 28
+      },
+      "share_of_cost_from_wrong_accepts": 0.523,
+      "candidates": 363,
+      "candidates_where_review_saves": 38,
+      "max_total_saving_any_budget": 288,
+      "oracle_cost_at_k50": 370,
+      "best_preregistered_arm_cost": 681.0,
+      "per_action": {
+        "accept": {
+          "n": 245,
+          "mean_saving_if_reviewed": -0.514,
+          "share_where_review_saves": 0.155
+        },
+        "defer": {
+          "n": 118,
+          "mean_saving_if_reviewed": -1.119,
+          "share_where_review_saves": 0.0
+        }
+      }
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "no_review_cost": 903,
+      "cost_by_cell_(action->target)": {
+        "escalate->accept": 518,
+        "escalate->defer": 176,
+        "accept->escalate": 80,
+        "escalate->escalate": 73,
+        "accept->defer": 48,
+        "defer->accept": 5,
+        "defer->escalate": 3
+      },
+      "share_of_cost_from_wrong_accepts": 0.142,
+      "candidates": 80,
+      "candidates_where_review_saves": 14,
+      "max_total_saving_any_budget": 108,
+      "oracle_cost_at_k50": 856,
+      "best_preregistered_arm_cost": 910.0,
+      "per_action": {
+        "accept": {
+          "n": 71,
+          "mean_saving_if_reviewed": -0.085,
+          "share_where_review_saves": 0.197
+        },
+        "defer": {
+          "n": 9,
+          "mean_saving_if_reviewed": -0.778,
+          "share_where_review_saves": 0.0
+        }
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "no_review_cost": 893,
+      "cost_by_cell_(action->target)": {
+        "escalate->accept": 610,
+        "escalate->defer": 190,
+        "escalate->escalate": 83,
+        "accept->escalate": 10
+      },
+      "share_of_cost_from_wrong_accepts": 0.011,
+      "candidates": 17,
+      "candidates_where_review_saves": 1,
+      "max_total_saving_any_budget": 9,
+      "oracle_cost_at_k50": 916,
+      "best_preregistered_arm_cost": 916.0,
+      "per_action": {
+        "accept": {
+          "n": 17,
+          "mean_saving_if_reviewed": -1.353,
+          "share_where_review_saves": 0.059
+        }
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "no_review_cost": 831,
+      "cost_by_cell_(action->target)": {
+        "escalate->accept": 530,
+        "escalate->defer": 182,
+        "escalate->escalate": 81,
+        "accept->escalate": 20,
+        "accept->defer": 16,
+        "defer->escalate": 1,
+        "defer->accept": 1
+      },
+      "share_of_cost_from_wrong_accepts": 0.043,
+      "candidates": 63,
+      "candidates_where_review_saves": 4,
+      "max_total_saving_any_budget": 30,
+      "oracle_cost_at_k50": 890,
+      "best_preregistered_arm_cost": 890.0,
+      "per_action": {
+        "accept": {
+          "n": 59,
+          "mean_saving_if_reviewed": -1.356,
+          "share_where_review_saves": 0.068
+        },
+        "defer": {
+          "n": 4,
+          "mean_saving_if_reviewed": -1.25,
+          "share_where_review_saves": 0.0
+        }
+      }
+    },
+    "openjev/openjev-27B": {
+      "no_review_cost": 660,
+      "cost_by_cell_(action->target)": {
+        "escalate->accept": 186,
+        "accept->escalate": 170,
+        "accept->defer": 96,
+        "escalate->defer": 82,
+        "defer->accept": 59,
+        "escalate->escalate": 52,
+        "defer->escalate": 15
+      },
+      "share_of_cost_from_wrong_accepts": 0.403,
+      "candidates": 314,
+      "candidates_where_review_saves": 29,
+      "max_total_saving_any_budget": 225,
+      "oracle_cost_at_k50": 441,
+      "best_preregistered_arm_cost": 674.0,
+      "per_action": {
+        "accept": {
+          "n": 198,
+          "mean_saving_if_reviewed": -0.571,
+          "share_where_review_saves": 0.146
+        },
+        "defer": {
+          "n": 116,
+          "mean_saving_if_reviewed": -1.233,
+          "share_where_review_saves": 0.0
+        }
+      }
+    }
+  }
+}
