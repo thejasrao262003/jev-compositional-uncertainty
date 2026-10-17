@@ -118,7 +118,7 @@ def run(model_id: str, limit: int | None = None, cls_name: str = "OpenJev") -> P
         for i, (d, mp) in enumerate(zip(dists, maps)):
             ans = to_answer(arm, d, mp)
             meta["label_mass"].append(d["label_mass"])
-            call = {"http_status": 200, "parsed_response": {"answers": ans}}
+            call = {"http_status": 200, "parsed_response": {"answers": ans}, "label_mass": d["label_mass"]}
             for r in range(1, kv.REPEATS + 1):
                 rows[i].append({"split": bugs[i][0], "tracker": bugs[i][1], "bug_id": bugs[i][2]["bug_id"], "arm": arm,
                                 "repeat": r, "deterministic": True, "model": model_id, **call})

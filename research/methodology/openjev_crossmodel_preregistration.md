@@ -152,3 +152,26 @@ were already running. None of their results had been analyzed.
   output had been seen when this was decided.
 - **Consequence:** Qwen2.5-7B and Phi-3.5 ran under 4.46.3 and OLMo-2
   under 4.47.1. That difference is disclosed wherever results are shown.
+
+## Amendment 3 (2026-10-17): readout bug fixed; all three general models re-run (deviation, disclosed)
+
+- **The bug.** The first readout took the first token of each label in
+  isolation. For SentencePiece tokenizers (Phi-3.5), every digit begins
+  with the same word-start piece. So Phi's three severity labels got
+  identical probability, and every severity answer became a tie.
+- **When it was found:** in the interim analysis, after results for all
+  three general models had been computed and seen. Those results are
+  archived unchanged in `research/data/openjev_superseded_readout_v1/`.
+- **The fix:**
+  - each label is tokenized *in context* (prompt + label);
+  - any prefix all labels share is appended to the context;
+  - the probability is read at the first token where the labels differ;
+  - the readout fails closed if labels still collide;
+  - per-request label mass is now stored.
+
+  The rule is general, not model-specific.
+- **What was re-run:** all three general models, so they share one
+  readout. Hypotheses, features, tests and Holm family are unchanged.
+- **The risk, disclosed:** interim X1/X2 values were seen before the
+  re-run. The fix is mechanical and was not chosen by its effect on any
+  result. Both versions are kept so readers can compare.

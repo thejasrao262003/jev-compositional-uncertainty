@@ -1,0 +1,7 @@
+{
+  "model": "allenai/OLMo-2-1124-7B-Instruct",
+  "bugs": 942,
+  "forward_passes": 2826,
+  "label_mass_min": 0.010634827289322857,
+  "label_mass_median": 0.9989133691415191
+}
