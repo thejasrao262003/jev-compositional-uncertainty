@@ -48,3 +48,49 @@ does **not** remove them from history. Choose one:
   benchmark of Jev.**
 - Commit hashes cited in the docs refer to this private repository.
   Under option A, add a note that maps them.
+
+## Release audit (2026-10-17)
+
+Read-only audit of the tracked tree and history. Nothing was published.
+
+**Secrets: pass.**
+- `.env` was never committed (`git log --all -- .env` is empty).
+- The API key string occurs in no commit of any branch. Searched with
+  `git grep` across `git rev-list --all`.
+- No other key-like strings were found.
+
+**Bug text: §1's file list is out of date.** All files with bug text
+(field `text`) or call inputs (field `state`) are listed below. Scrub
+every one of them for the public tree.
+
+| File | Field |
+|---|---|
+| `research/data/mozilla/dataset.jsonl` | text |
+| `research/data/kernel/dataset.jsonl` | text |
+| `research/data/heldout/mozilla_heldout.jsonl` | text |
+| `research/data/heldout/kernel_heldout.jsonl` | text |
+| `research/data/mozilla/mozilla_{validation,smoketest}_raw_responses.jsonl` | state |
+| `research/data/kernel/kernel_{validation,smoketest}_raw_responses.jsonl` | state |
+| `research/data/heldout/heldout{,_smoketest}_raw_responses.jsonl` | state |
+
+- **Constructed content needs no scrub.** `research/data/characterization/*`
+  holds `state` too, but it is our own constructed content, not bug text.
+- **Cross-model outputs are clean.** The files in `research/data/openjev*`
+  hold bug IDs and parsed answers only, with no text.
+
+**Personal data:**
+- **Bug-text files:** no email addresses (already scrubbed).
+- **Elsewhere:** only the two authors' public emails (paper and README),
+  and **one work email**,
+  `research/methodology/mozilla_realistic_validation_proposal.md:18`
+  (`tushar.m@mobisy.com`). Replace it or confirm with Tushar.
+- **Commit authors:** 53 commits use a work email
+  (`thejas.rao@lyzr.ai`). Under option A, history is not published, but
+  choose the author identity for the fresh commit.
+
+**Still open, and not checkable by audit:**
+- TypeSafe's terms on publishing a Jev benchmark.
+- The OpenJev weights licence is CC BY-NC 4.0. We publish outputs only,
+  not weights; confirm that is acceptable.
+- Choose a licence for the public repository.
+- Map the cited commit hashes (option A).

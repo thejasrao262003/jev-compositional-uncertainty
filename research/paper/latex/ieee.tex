@@ -13,7 +13,7 @@
 \newenvironment{colfigure}{\begin{figure}[t]}{\end{figure}}
 \newenvironment{coltable}{\begin{table}[t]}{\end{table}}
 % Appendix tables print exactly where written (no floating into the references).
-\newenvironment{apptable}{\begin{table}[H]}{\end{table}}
+\newenvironment{apptable}{\setlength{\intextsep}{4pt}\begin{table}[H]\let\small\footnotesize}{\end{table}}
 \newenvironment{widefigure}{\begin{figure*}[t]}{\end{figure*}}
 \newenvironment{widetable}{\begin{table*}[t]}{\end{table*}}
 
@@ -39,5 +39,7 @@ selective prediction, escalation, LLM evaluation, bug triage
 \appendices
 \input{appendix}
 \bibliographystyle{IEEEtran}
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{\OLDthebibliography{#1}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \bibliography{references}
 \end{document}

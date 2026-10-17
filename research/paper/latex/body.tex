@@ -54,8 +54,9 @@ primitives are chained, which the documentation leaves open.
   signal is the chosen action's historical error rate.
   \item \textbf{Intervention} (\cref{sec:intervention}, pre-registered).
   At a 10\% review budget, that predictive signal does not yield a lower
-  cost than confidence-ranked review. An oracle shows the reason: the
-  expensive errors exist but cannot be isolated within an action. A
+  cost than confidence-ranked review, and no strategy beat no review. An
+  oracle shows the reason: the expensive errors exist, but the signals we
+  tested could not isolate them within an action. A
   case-level score developed on training bugs did not meet a
   pre-registered feasibility criterion under the natural bug mix, so the
   planned confirmatory study was stopped before any new data.
@@ -635,7 +636,7 @@ amendments.
 \begin{colfigure}
 \centering
 \begin{tikzpicture}
-\begin{axis}[width=0.8\linewidth, height=4.8cm, xmin=0.3, xmax=0.9, ymin=0.4, ymax=5.6,
+\begin{axis}[width=0.8\linewidth, height=4.4cm, xmin=0.3, xmax=0.9, ymin=0.4, ymax=5.6,
   ytick={1,2,3,4,5}, yticklabels={OLMo-2, Phi-3.5, Qwen2.5, OpenJev, Jev 1.13},
   xlabel={held-out AUROC for wrong actions (95\% CI)}, grid=major, grid style={gray!20},
   tick label style={font=\scriptsize}, label style={font=\scriptsize},
@@ -710,14 +711,15 @@ outcome.
 \end{itemize}
 
 \para{Result} Two of ten pre-registered tests are supported: A1 beats
-random for Jev and OpenJev, by about 10--12 cost units. A1 never beats
-confidence. Every review arm costs more than no review at all; for Jev,
+random for Jev and OpenJev, by about 10--12 cost units. A1 is not shown
+to beat confidence for any model (for Jev its point estimate is 4 units
+lower, with an interval spanning zero). Every review arm costs more than no review at all; for Jev,
 658 with no review against 681--714 with review (\cref{fig:intervention}).
 
 \begin{colfigure}
 \centering
 \begin{tikzpicture}
-\begin{axis}[ybar, bar width=4.5pt, width=\linewidth, height=4.6cm,
+\begin{axis}[ybar, bar width=4.5pt, width=\linewidth, height=4.0cm,
   symbolic x coords={Jev,OpenJev,Qwen2.5}, xtick=data, ymin=0, ymax=960,
   ylabel={total cost (500 bugs)}, enlarge x limits=0.25,
   grid=major, grid style={gray!20}, tick label style={font=\scriptsize}, label style={font=\scriptsize},

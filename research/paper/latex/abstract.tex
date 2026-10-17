@@ -40,9 +40,11 @@ Second, this held across five evaluated models from four sources,
 including an independently trained Jev-style model and three general
 instruct models. The signal was mostly the chosen action's historical
 error rate, and failure modes differed by model family.
-Third, at a 10\% review budget this signal did not reduce cost relative to
-confidence-ranked review. An oracle shows why: the expensive errors exist
-but cannot be isolated within an action. A case-level score developed
+Third, at a 10\% review budget no review strategy cost less than no review
+at all; the action-based rule beat random selection for the two Jev-style
+models but was not shown to beat confidence-ranked review. An oracle shows why: the
+expensive errors exist, but the signals we tested could not isolate them
+within an action. A case-level score developed
 on training bugs failed a pre-registered feasibility check (power at most
 0.20 under the natural bug mix), so the confirmatory study was stopped
 before collecting new data.
