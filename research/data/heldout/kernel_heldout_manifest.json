@@ -1,0 +1,30 @@
+{
+  "tracker": "kernel",
+  "seed": "heldout-risk-v1",
+  "n": 250,
+  "sampling": "natural mix, random from full pool",
+  "stats": {
+    "eligible_after_removing_used": 3474,
+    "used_excluded": 240,
+    "inspected": 260,
+    "excluded_intermittent": 0,
+    "excluded_fuzzing": 0,
+    "excluded_too_short": 6,
+    "excluded_severity_retriaged": 4,
+    "privacy_name_occurrences_scrubbed": 151
+  },
+  "mix": {
+    "network:level0": 4,
+    "network:level1": 118,
+    "network:level2": 39,
+    "storage:level0": 1,
+    "storage:level1": 64,
+    "storage:level2": 24
+  },
+  "regression_share": 0.276,
+  "built_utc": "2026-10-17T06:49:12.876344+00:00",
+  "sha256": {
+    "dataset": "1930704307d5e260aa3db52feab47f852475b4cc6cc0563d27c4ea2eba39a723",
+    "builder": "fcd0e8f00f952b31fea4e68041e923ae310eace1a1157dbcb98d368452036602"
+  }
+}
