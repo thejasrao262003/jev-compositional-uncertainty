@@ -29,8 +29,17 @@ In exploratory analyses, the composition rules we tested did not
 consistently identify which cases to escalate: ranking escalations by
 composed confidence did no better than random selection on either
 tracker (one borderline worse-than-random estimate did not replicate), and
-the intervals cannot exclude a modest signal. We
-also show that a natural comparison of confidence-based against
-decision-based composition is confounded when the target action is
-itself a function of the decisions. The corrected comparison is
-pre-registered for a controlled follow-up that has not yet been run.
+the intervals cannot exclude a modest signal. A natural comparison of confidence-based against decision-based
+composition turns out to be confounded when the target action is itself a
+function of the decisions.
+Pre-registered tests then showed three further things.
+First, on 500 new bugs, a frozen estimator built on what the model decided
+ranked wrong workflow actions better than final-step confidence (AUROC 0.76
+vs.\ 0.55).
+Second, this held across five evaluated models from four sources,
+including an independently trained Jev-style model and three general
+instruct models. The signal was mostly the chosen action's historical
+error rate, and failure modes differed by model family.
+Third, at a 10\% review budget this signal did not reduce cost relative to
+confidence-ranked review. An oracle shows why: the expensive errors exist
+but cannot be isolated within an action.

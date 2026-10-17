@@ -115,3 +115,36 @@ heatmap("kernel", "kernel_validation_execution_manifest.json")
 transfer()
 forest()
 print("wrote additional figure data")
+
+
+# ---------------------------------------------------------------------------
+# Cross-model and intervention figures (added 2026-10-17)
+# ---------------------------------------------------------------------------
+def crossmodel():
+    rb = json.loads((RES / "openjev_robustness_checks.json").read_text())["models"]
+    names = [("Jev 1.13", "Jev"), ("openjev/openjev-27B", "OpenJev"), ("Qwen/Qwen2.5-7B-Instruct", "Qwen2.5"),
+             ("microsoft/Phi-3.5-mini-instruct", "Phi-3.5"), ("allenai/OLMo-2-1124-7B-Instruct", "OLMo-2")]
+    with open(HERE / "fig_crossmodel.dat", "w") as f:
+        f.write("model y dec declo dechi conf conflo confhi\n")
+        for i, (key, short) in enumerate(names):
+            v = rb[key]
+            d, c = v["E_dec"], v["final_step_conf"]
+            y = len(names) - i
+            f.write(f"{short} {y} {d[0]} {d[0] - d[1][0]:.3f} {d[1][1] - d[0]:.3f} "
+                    f"{c[0]} {c[0] - c[1][0]:.3f} {c[1][1] - c[0]:.3f}\n")
+
+
+def intervention():
+    it = json.loads((RES / "intervention_test.json").read_text())["models"]
+    mech = json.loads((RES / "intervention_cost_mechanism.json").read_text())["models"]
+    with open(HERE / "fig_intervention.dat", "w") as f:
+        f.write("model noreview A1 B C oracle\n")
+        for key, short in (("Jev 1.13", "Jev"), ("openjev/openjev-27B", "OpenJev"), ("Qwen/Qwen2.5-7B-Instruct", "Qwen2.5")):
+            a = it[key]["arms"]
+            f.write(f"{short} {it[key]['base_total_cost']} {a['A1']['total_cost']} {a['B']['total_cost']} "
+                    f"{a['C']['total_cost']} {mech[key]['oracle_cost_at_k50']}\n")
+
+
+crossmodel()
+intervention()
+print("wrote cross-model and intervention figure data")

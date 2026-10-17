@@ -29,6 +29,11 @@ remain unverified.
 | typesafe2026confidence | Jev's `confidence` summarizes the output distribution (1 = all mass on one outcome, 0 = even); "one reasonable way to summarize a distribution, not the only one"; set thresholds on your own data; `noul` returns a single probability with no separate confidence | docs.typesafe.ai/confidence, fetched 2026-10-16 | Consistent. The page doesn't use the name "Jev"; the model name `jev-*` comes from the TypeSafe API (`jev-latest` → `jev-1.13.0`) |
 | angelopoulos2021gentle, angelopoulos2024crc | Conformal prediction; conformal risk control | Literature-matrix abstract fetches | Not re-checked this pass |
 | platt1999probabilistic, guo2017calibration, naeini2015bbq, elyaniv2010selective, geifman2017selective, geifman2019selectivenet, barlow1965reliability | Standard background | Literature matrix | Not re-checked this pass (classical, widely cited) |
+| qwen2024qwen25 | Qwen2.5 model family (Qwen2.5-7B-Instruct used in the cross-model replication) | arXiv abstract page 2412.15115, fetched 2026-10-17 | Consistent. **Corrected** byline: group author "Qwen" precedes An Yang |
+| olmo2024olmo2 | OLMo 2 model family (OLMo-2-7B-Instruct) | arXiv abstract page 2501.00656 (v1 31 Dec 2024), fetched 2026-10-17 | Consistent (title "2 OLMo 2 Furious"; Team OLMo, Walsh, Soldaini) |
+| abdin2024phi3 | Phi-3 family (Phi-3.5-mini-instruct) | arXiv abstract page 2404.14219, fetched 2026-10-17 | Consistent |
+| openjev2026 | Independent trained Jev-style open-weights model, served per its authors' instructions | Hugging Face model card (huggingface.co/openjev/openjev), read 2026-10-17 when deploying | Consistent. Cited only as the model's source; no performance claims taken from the card |
+| gomez2026openjev | Unofficial architectural reconstruction of Jev with no trained weights | GitHub README (github.com/kyegomez/open-jev), read 2026-10-17 | Consistent. Cited only to explain why it was not evaluated |
 
 **Not established by this record:**
 - that the literature review is exhaustive;

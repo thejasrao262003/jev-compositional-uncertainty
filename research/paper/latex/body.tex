@@ -47,6 +47,15 @@ primitives are chained, which the documentation leaves open.
   confidence-based escalation rules we tested did not consistently pick
   better cases than random on either tracker. We identify, and correct for
   the follow-up, a confound in the obvious comparison.
+  \item \textbf{Held-out and cross-model tests} (\cref{sec:heldout,sec:crossmodel},
+  pre-registered). A frozen decision-feature estimator ranks wrong workflow
+  actions better than final-step confidence on 500 new bugs. The gap
+  replicates across five evaluated models from four sources. Most of the
+  signal is the chosen action's historical error rate.
+  \item \textbf{Intervention} (\cref{sec:intervention}, pre-registered).
+  At a 10\% review budget, that predictive signal does not yield a lower
+  cost than confidence-ranked review. An oracle shows the reason: the
+  expensive errors exist but cannot be isolated within an action.
   \item \textbf{Method} (\cref{sec:method}). A pre-registration and audit
   process that caught six design or implementation defects, most of them
   before any evaluation data existed.
@@ -432,8 +441,9 @@ down.}
 %======================================================================
 
 All analyses in this section were specified after the Mozilla results
-had been seen. They are hypothesis-generating, and the confirmatory test
-is pre-registered (\cref{sec:prereg}).
+had been seen. They are hypothesis-generating. The pre-registered tests
+that followed are reported in
+\cref{sec:heldout,sec:crossmodel,sec:intervention}.
 
 \para{The naive comparison is confounded} On Mozilla, decision
 composition (S1) beats confidence composition (S2) by 0.17 [0.08, 0.27]
@@ -549,6 +559,196 @@ one node that $F$ does not use. The informative signal never reaches the
 action, and the two signals that do reach it are close to uninformative.
 
 %======================================================================
+\section{A pre-registered held-out test}
+\label{sec:heldout}
+%======================================================================
+
+\para{Design} The exploratory analyses above suggested that a model's
+\emph{decisions} carry the information its confidence lacks. We tested
+this prospectively, as follows.
+\begin{itemize}
+  \item \textbf{Estimator.} We trained one decision-feature estimator
+  ($E_{\text{dec}}$: $L_2$-regularized logistic regression on the
+  \score{} level, the \noul{} decision and the workflow action, with
+  $\lambda = 1$) on all 442 previously collected bugs. We froze it by
+  hash, before any new data existed.
+  \item \textbf{Fresh bugs.} We collected 500 new bugs: 250 per tracker,
+  sampled at each tracker's \emph{natural} mix, with no overlap with the
+  training bugs. That required 4{,}500 Jev calls.
+  \item \textbf{Hypotheses (pre-registered).} HR1: $E_{\text{dec}}$
+  ranks wrong workflow actions better than low final-step confidence.
+  HR2: $E_{\text{dec}}$ ranks above chance on each tracker. One-sided
+  bootstrap tests, Holm-corrected.
+\end{itemize}
+
+\para{Result} Both hypotheses are supported.
+\begin{itemize}
+  \item \textbf{HR1:} $E_{\text{dec}}$ reaches AUROC 0.763 against 0.549
+  for final-step confidence, a difference of $+0.214$ (one-sided 95\%
+  lower bound $+0.158$).
+  \item \textbf{HR2:} AUROC is 0.811 on Mozilla (lower bound 0.761) and
+  0.697 on the kernel (lower bound 0.643).
+  \item \textbf{Calibration:} the estimator's predicted failure rate
+  matches the observed rate overall. But it outputs only 7--8 distinct
+  risk levels (ECE 0.18--0.20).
+\end{itemize}
+
+%======================================================================
+\section{Cross-model replication}
+\label{sec:crossmodel}
+%======================================================================
+
+\para{Models} To test whether the result is specific to Jev, we ran the
+same 942 bugs, questions and three-step adapter through four further
+models.
+\begin{itemize}
+  \item \textbf{OpenJev 27B} \citep{openjev2026}: an independently
+  trained Jev-style decision model. It is served on one H100 exactly as
+  its authors specify, with their calibrated readout. Its 2{,}826
+  requests had 0 failures. (An unofficial architectural reconstruction
+  of Jev also exists \citep{gomez2026openjev}, but it has no trained
+  weights, so it could not be evaluated.)
+  \item \textbf{Three general instruct models:} Qwen2.5-7B
+  \citep{qwen2024qwen25}, OLMo-2-7B \citep{olmo2024olmo2} and
+  Phi-3.5-mini \citep{abdin2024phi3}. Each runs behind a Jev-compatible
+  readout: next-token probabilities over the allowed labels, with
+  TypeSafe's documented confidence formulas.
+\end{itemize}
+Each model's estimator was trained on that model's own outputs for the
+442 training bugs and tested on its 500 held-out bugs. The pre-registered
+tests mirror HR1 and HR2, with Holm correction across all 8 tests.
+
+\para{Deviations, disclosed} We recorded three pre-registration
+amendments.
+\begin{itemize}
+  \item OpenJev was added before any of its outputs existed.
+  \item OLMo-2 needed a newer \texttt{transformers} release.
+  \item A readout bug, in which a SentencePiece word-start token was
+  shared by all digit labels, was found after interim results had been
+  seen. All three general models were re-run under one corrected
+  readout. The conclusions did not change.
+\end{itemize}
+
+\begin{colfigure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.8\linewidth, height=4.8cm, xmin=0.3, xmax=0.9, ymin=0.4, ymax=5.6,
+  ytick={1,2,3,4,5}, yticklabels={OLMo-2, Phi-3.5, Qwen2.5, OpenJev, Jev 1.13},
+  xlabel={held-out AUROC for wrong actions (95\% CI)}, grid=major, grid style={gray!20},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.02,0.02)}, anchor=south west}]
+\draw[dashed, gray] (axis cs:0.5,0.4) -- (axis cs:0.5,5.6);
+\addplot[blue, only marks, mark=*, error bars/.cd, x dir=both, x explicit]
+  table[x=dec, y expr=\thisrow{y}+0.12, x error minus=declo, x error plus=dechi] {fig_crossmodel.dat};
+\addplot[orange, only marks, mark=square*, error bars/.cd, x dir=both, x explicit]
+  table[x=conf, y expr=\thisrow{y}-0.12, x error minus=conflo, x error plus=confhi] {fig_crossmodel.dat};
+\legend{decision estimator, final-step confidence}
+\end{axis}
+\end{tikzpicture}
+\caption{Across five models, the decision-feature estimator ranks wrong
+workflow actions better than the model's own final-step confidence. The
+intervals overlap only for OLMo-2.}
+\label{fig:crossmodel}
+\end{colfigure}
+
+\para{Result} All 8 pre-registered tests are supported
+(\cref{fig:crossmodel}).
+\begin{itemize}
+  \item \textbf{Decision estimators:} AUROC 0.64--0.76.
+  \item \textbf{Final-step confidence:} 0.40--0.58.
+  \item \textbf{Weakest model:} OLMo-2 (0.637 vs.\ 0.551; one-sided
+  $p = 0.037$, passing at the last Holm step).
+  \item \textbf{Transfer:} Jev's frozen estimator, never refitted,
+  reaches 0.76 [0.72, 0.80] on OpenJev's outputs, as well as OpenJev's
+  own estimator does.
+\end{itemize}
+
+\para{The signal is simple} A class-frequency rule, ``the historical
+error rate of the action the workflow chose'' (estimated on training
+bugs only), matches the estimator for Jev (0.76) and OpenJev (0.75), and
+comes close for the others (0.58--0.70). Single uncertainty signals each
+sit at chance for workflow failure:
+\begin{itemize}
+  \item routing confidence: 0.48--0.52;
+  \item regression confidence: 0.45--0.56;
+  \item severity entropy: 0.40--0.55.
+\end{itemize}
+The predictive information is therefore mostly \emph{which action was
+chosen} and how often that action has been wrong before.
+
+\para{Failure modes differ by model family}
+\begin{itemize}
+  \item \textbf{Jev-style models (Jev and OpenJev):} both pull severity
+  to the middle level.
+  \item \textbf{General instruct models:} they push severity to
+  ``blocking'' for 67--100\% of bugs, whatever the true level, and are
+  wrong far more often (72--80\% vs.\ 43--47\%).
+\end{itemize}
+The absolute failure rates are not a clean quality comparison, because
+the two groups use different interfaces. The within-model contrast is.
+
+%======================================================================
+\section{Does the predictive signal reduce cost?}
+\label{sec:intervention}
+%======================================================================
+
+\para{Design} We pre-registered the test before computing any cost
+outcome.
+\begin{itemize}
+  \item \textbf{Budget:} 50 reviews (10\%) per model on the held-out
+  bugs. A review escalates the case to a human, priced with the frozen
+  cost matrix.
+  \item \textbf{Primary arm (A1):} rank candidates by the
+  \emph{action-level expected saving} of a review, estimated on training
+  bugs. It is cost-aware rather than error-rate-based, because a wrong
+  \emph{defer} costs no more than an escalation.
+  \item \textbf{Comparators:} confidence-ranked review (B) and random
+  review (C).
+\end{itemize}
+
+\para{Result} Two of ten pre-registered tests are supported: A1 beats
+random for Jev and OpenJev, by about 10--12 cost units. A1 never beats
+confidence. Every review arm costs more than no review at all; for Jev,
+658 with no review against 681--714 with review (\cref{fig:intervention}).
+
+\begin{colfigure}
+\centering
+\begin{tikzpicture}
+\begin{axis}[ybar, bar width=4.5pt, width=\linewidth, height=4.6cm,
+  symbolic x coords={Jev,OpenJev,Qwen2.5}, xtick=data, ymin=0, ymax=960,
+  ylabel={total cost (500 bugs)}, enlarge x limits=0.25,
+  grid=major, grid style={gray!20}, tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  legend image code/.code={\draw[#1] (0cm,-0.08cm) rectangle (0.18cm,0.12cm);}, legend style={font=\scriptsize, at={(0.5,1.02)}, anchor=south, legend columns=5, draw=none}]
+\addplot[fill=gray!40] table[x=model, y=noreview] {fig_intervention.dat};
+\addplot[fill=blue!55] table[x=model, y=A1] {fig_intervention.dat};
+\addplot[fill=orange!70] table[x=model, y=B] {fig_intervention.dat};
+\addplot[fill=gray!75] table[x=model, y=C] {fig_intervention.dat};
+\addplot[fill=green!55!black] table[x=model, y=oracle] {fig_intervention.dat};
+\legend{no review, action rule, confidence, random, oracle}
+\end{axis}
+\end{tikzpicture}
+\caption{Total cost at a 10\% review budget. No feasible strategy beats
+no review. A perfect reviewer (oracle, an upper bound using held-out
+outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%.}
+\label{fig:intervention}
+\end{colfigure}
+
+\para{Where the cost is} A descriptive follow-up separates two regimes.
+\begin{itemize}
+  \item \textbf{Jev-style models:} 40--52\% of no-review cost comes from
+  wrongly \emph{accepted} serious or regression bugs. An oracle that
+  picked the right 50 cases would save 33--44\%. But those cases are
+  15--16\% of accepted cases. The action rule cannot separate them,
+  because every accept looks alike to it, and confidence cannot either.
+  The value exists; the identification fails.
+  \item \textbf{General models:} cost is dominated by over-escalation
+  (\emph{escalate} when the target is \emph{accept}). More review cannot
+  reduce that; even the oracle saves at most 5\%.
+\end{itemize}
+Ranking which actions are wrong is therefore not the same as finding
+which reviews save money: frequent errors and expensive errors differ.
+
+%======================================================================
 \section{Method: audits that caught defects}
 \label{sec:method}
 %======================================================================
@@ -587,9 +787,10 @@ selectivity on pilot inputs, before freezing any escalation policy.
 %======================================================================
 
 \begin{itemize}
-  \item \textbf{Generality.} We study one model (Jev, version 1.13.0) in
-  one domain. Later Jev versions, or other structured-output APIs, may
-  behave differently.
+  \item \textbf{Generality.} Five models in one domain (bug triage) and
+  one workflow. Jev was version 1.13.0. The general instruct models use
+  our prompt and readout, not a trained decision interface. Later
+  versions and other domains may behave differently.
   \item \textbf{References are not truth.} Mozilla's triage sample
   excludes re-triaged bugs, which biases agreement upward. Kernel labels
   are reporters' claims, and the kernel's middle level is a default value.
@@ -600,6 +801,14 @@ selectivity on pilot inputs, before freezing any escalation policy.
   and all strategy results are conditional on it.
   \item \textbf{Memorization.} Old public bugs may appear in training
   data. The recent subsets are small (Mozilla 54, kernel 35).
+  \item \textbf{Cross-model deviations.} Three amendments to the
+  cross-model pre-registration, including a readout bug fixed after
+  interim results were seen. On 3\% of OLMo-2's requests, most of the
+  probability fell outside the allowed labels; excluding them does not
+  change its result.
+  \item \textbf{Intervention scope.} One budget and one cost table, both
+  frozen in advance. Reviewers are assumed correct, and the oracle is an
+  upper bound, not a strategy.
   \item \textbf{Protocol revisions.} The protocol went through twelve
   revisions. All are dated and disclosed, and each was made before the
   data it affects existed. The number is nonetheless large.
@@ -610,7 +819,17 @@ selectivity on pilot inputs, before freezing any escalation policy.
 \label{sec:prereg}
 %======================================================================
 
-\emph{No result in this paper comes from this study.} To test the
+\emph{No result in this paper comes from the studies in this section.}
+
+\para{Case-level expensive-error estimator} The intervention analysis
+points to a specific next question. Can a per-case estimator of
+\emph{whether an accepted case is wrongly accepted} capture part of the
+oracle's 33--44\% headroom? It would be developed on the 442 training
+bugs only, pre-registered, and tested on a fresh batch of bugs, not on
+the repeatedly analyzed held-out set. Its primary outcome is cost at a
+fixed budget against confidence, action-rule and random review.
+
+\para{Template study} To test the
 composition question under control, we pre-registered a
 study on deterministic template content: 3{,}103 units, each instance
 describing one incident about one service, with value-neutral sentence
@@ -631,14 +850,19 @@ the follow-up.
 
 Structured outputs make uncertainty \emph{look} uniform: every Jev
 primitive returns a number between 0 and 1. In the evaluated workflow,
-the confidence values of Jev's three heterogeneous primitives showed
-distinct failure modes. One was saturated but informative, one was uninformative,
-and one was flat while its decisions were systematically biased. Fixed
-thresholds on them did not keep their selectivity across content
-distributions, and the composition rules we tested did not consistently
-identify cases for escalation. Severity compression appeared on two bug
-trackers with different labeling processes and was invisible to the
-primitive's own confidence. These findings do not show that confidence
-composition fails in general. They show that primitive-level confidence
-values should not be assumed to be directly composable, and that
-uncertainty should be evaluated at the level of the workflow that uses it.
+Jev's three primitives showed distinct confidence failure modes, fixed
+thresholds on them did not transfer, and severity compression appeared
+on two trackers while the primitive's own confidence gave no sign of it.
+
+Pre-registered tests then showed that what the workflow \emph{decided}
+predicts its failures better than how confident it was. This held on 500
+new bugs and across five evaluated models from four sources, and it was
+driven mostly by the chosen action's historical error rate. Jev-style
+decision models and general instruct models failed in different ways:
+compression versus over-escalation.
+
+That prediction did not become a cheaper review policy. The expensive
+errors are real, but they hide inside actions that look alike. Knowing
+which decisions are likely wrong is different from knowing which are
+worth correcting. Workflow uncertainty has to be evaluated against the
+decision it is meant to improve.

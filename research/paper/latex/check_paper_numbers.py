@@ -88,6 +88,29 @@ need("ker cut escalated", f"{round(100 * sel_k['rev10_strategy2_escalation_rate'
 nc = eker["noul_confusion_true_vs_jev"]
 need("ker noul false alarms vs misses", f"{nc['0->1']} false alarms vs.\\ {nc['1->0']} misses")
 
+# Held-out test, cross-model replication, intervention (added 2026-10-17)
+ho = json.loads((RES / "heldout_analysis.json").read_text())
+need("HR1 E_dec vs conf", f"AUROC {ho['HR1']['auroc_E_dec']} against {ho['HR1']['auroc_low_score_conf']}")
+need("HR1 difference and bound", f"$+{ho['HR1']['difference']}$ (one-sided 95\\% lower bound $+{ho['HR1']['one_sided_95_lower']}$)")
+need("HR2 mozilla", f"{ho['HR2']['mozilla']['auroc_E_dec']} on Mozilla (lower bound {ho['HR2']['mozilla']['one_sided_95_lower']})")
+need("HR2 kernel", f"{ho['HR2']['kernel']['auroc_E_dec']} on the kernel (lower bound {ho['HR2']['kernel']['one_sided_95_lower']})")
+cm = json.loads((RES / "openjev_crossmodel_analysis.json").read_text())
+ol = cm["models"]["allenai/OLMo-2-1124-7B-Instruct"]["X1"]
+need("OLMo X1", f"({ol['auroc_E_dec']} vs.\\ {ol['auroc_low_score_conf']}; one-sided $p = {ol['bootstrap_p_one_sided']:.3f}$")
+need("all 8 Holm supported", "All 8 pre-registered tests are supported") if all(cm["holm_supported"].values()) else None
+rb = json.loads((RES / "openjev_robustness_checks.json").read_text())["models"]
+tr = rb["openjev/openjev-27B"]["E_jev_frozen"]
+need("Jev->OpenJev transfer", f"reaches {tr[0]:.2f} [{tr[1][0]:.2f}, {tr[1][1]:.2f}]")
+need("action rule Jev/OpenJev", f"matches the estimator for Jev ({rb['Jev 1.13']['rule_rate_by_action']:.2f}) and OpenJev ({rb['openjev/openjev-27B']['rule_rate_by_action']:.2f})")
+iv = json.loads((RES / "intervention_test.json").read_text())
+need("intervention Jev no-review", f"for Jev, {iv['models']['Jev 1.13']['base_total_cost']} with no review")
+sup = sum(iv["holm_supported"].values())
+need("intervention 2 of 10", f"{['Zero','One','Two','Three'][sup]} of ten pre-registered tests are supported")
+mech = json.loads((RES / "intervention_cost_mechanism.json").read_text())["models"]
+j = mech["Jev 1.13"]; o_ = mech["openjev/openjev-27B"]
+need("oracle Jev 44%", f"cut Jev's cost by {round(100 * (1 - j['oracle_cost_at_k50'] / j['no_review_cost']))}\\%")
+need("oracle OpenJev 33%", f"OpenJev's by {round(100 * (1 - o_['oracle_cost_at_k50'] / o_['no_review_cost']))}\\%")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")
