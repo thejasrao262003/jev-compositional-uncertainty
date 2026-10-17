@@ -1,0 +1,196 @@
+{
+  "status": "EXPLORATORY robustness checks (not pre-registered)",
+  "leakage": {
+    "bug_id_overlap": 0,
+    "exact_text_duplicates": 0,
+    "near_duplicates_jaccard_ge_0.8": 0,
+    "max_jaccard_any_heldout_vs_train": 0.583
+  },
+  "models": {
+    "Jev 1.13": {
+      "n_heldout": 500,
+      "E_dec": [
+        0.763,
+        [
+          0.719,
+          0.803
+        ]
+      ],
+      "final_step_conf": [
+        0.549,
+        [
+          0.495,
+          0.601
+        ]
+      ],
+      "low_choice_conf": 0.476,
+      "low_noul_conf": 0.451,
+      "score_entropy": 0.494,
+      "rule_rate_by_severity": 0.397,
+      "rule_rate_by_action": 0.762
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "n_heldout": 500,
+      "E_dec": [
+        0.736,
+        [
+          0.683,
+          0.785
+        ]
+      ],
+      "E_jev_frozen": [
+        0.736,
+        [
+          0.683,
+          0.785
+        ]
+      ],
+      "final_step_conf": [
+        0.473,
+        [
+          0.413,
+          0.535
+        ]
+      ],
+      "low_choice_conf": 0.481,
+      "low_noul_conf": 0.5,
+      "score_entropy": 0.473,
+      "rule_rate_by_severity": 0.695,
+      "rule_rate_by_action": 0.701,
+      "excluding_low_label_mass_bugs": {
+        "bugs_dropped_heldout": 3,
+        "E_dec": 0.735,
+        "final_step_conf": 0.47
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "n_heldout": 500,
+      "E_dec": [
+        0.637,
+        [
+          0.579,
+          0.694
+        ]
+      ],
+      "E_jev_frozen": [
+        0.639,
+        [
+          0.582,
+          0.696
+        ]
+      ],
+      "final_step_conf": [
+        0.551,
+        [
+          0.481,
+          0.619
+        ]
+      ],
+      "low_choice_conf": 0.524,
+      "low_noul_conf": 0.492,
+      "score_entropy": 0.554,
+      "rule_rate_by_severity": 0.579,
+      "rule_rate_by_action": 0.58,
+      "excluding_low_label_mass_bugs": {
+        "bugs_dropped_heldout": 39,
+        "E_dec": 0.647,
+        "final_step_conf": 0.553
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "n_heldout": 500,
+      "E_dec": [
+        0.677,
+        [
+          0.625,
+          0.73
+        ]
+      ],
+      "E_jev_frozen": [
+        0.7,
+        [
+          0.649,
+          0.751
+        ]
+      ],
+      "final_step_conf": [
+        0.401,
+        [
+          0.344,
+          0.46
+        ]
+      ],
+      "low_choice_conf": 0.5,
+      "low_noul_conf": 0.564,
+      "score_entropy": 0.4,
+      "rule_rate_by_severity": 0.697,
+      "rule_rate_by_action": 0.688,
+      "excluding_low_label_mass_bugs": {
+        "bugs_dropped_heldout": 0,
+        "E_dec": 0.677,
+        "final_step_conf": 0.401
+      }
+    },
+    "openjev/openjev-27B": {
+      "n_heldout": 500,
+      "E_dec": [
+        0.748,
+        [
+          0.705,
+          0.79
+        ]
+      ],
+      "E_jev_frozen": [
+        0.76,
+        [
+          0.717,
+          0.801
+        ]
+      ],
+      "final_step_conf": [
+        0.575,
+        [
+          0.525,
+          0.627
+        ]
+      ],
+      "low_choice_conf": 0.483,
+      "low_noul_conf": 0.461,
+      "score_entropy": 0.518,
+      "rule_rate_by_severity": 0.696,
+      "rule_rate_by_action": 0.746
+    }
+  },
+  "readout_v1_vs_v2": {
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "v1_E_dec_vs_conf": [
+        0.732,
+        0.472
+      ],
+      "v2_E_dec_vs_conf": [
+        0.736,
+        0.473
+      ]
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "v1_E_dec_vs_conf": [
+        0.637,
+        0.55
+      ],
+      "v2_E_dec_vs_conf": [
+        0.637,
+        0.551
+      ]
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "v1_E_dec_vs_conf": [
+        0.566,
+        0.5
+      ],
+      "v2_E_dec_vs_conf": [
+        0.677,
+        0.401
+      ]
+    }
+  }
+}

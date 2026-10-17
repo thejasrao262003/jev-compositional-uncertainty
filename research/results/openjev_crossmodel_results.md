@@ -84,9 +84,12 @@ kernel):
 
 ## What this means
 
-- **The paper's central claim is no longer Jev-specific.** Across five
-  models from four independent sources (TypeSafe, the OpenJev authors,
-  Qwen, AllenAI, Microsoft):
+- **The claim extends beyond Jev, with stated limits.** Across five
+  *evaluated* models from four sources (not "every model"), decision
+  features ranked incorrect workflow actions better than final-step
+  confidence. The failure modes differed between Jev-style decision
+  models and general instruct models.
+  Across those five models:
   - workflow failure is predictable from the pattern of decisions;
   - final-step confidence is at or near chance;
   - routing confidence is the only step-level signal that consistently
@@ -112,3 +115,79 @@ kernel):
   their repeat-variation features are constant.
 - **The target is constructed;** kernel labels are reporters' claims.
 - **One domain** (bug triage) and one workflow.
+
+
+## Robustness checks requested in review (exploratory; `openjev_robustness_checks.json`)
+
+1. **What transfers.** Jev's estimator is the hash-verified frozen file,
+   applied unchanged to all four models and never refitted (code:
+   `analyze_crossmodel.score_rows`). Its held-out AUROC:
+
+   | Model | Frozen Jev estimator [95% CI] |
+   |---|---|
+   | OpenJev | 0.76 [0.72, 0.80] |
+   | Qwen | 0.74 [0.68, 0.79] |
+   | Phi | 0.70 [0.65, 0.75] |
+   | OLMo | 0.64 [0.58, 0.70] |
+
+2. **Uncertainty.** n = 500 held-out bugs per model; 95% bootstrap
+   intervals stratified by tracker:
+
+   | Model | `E_dec` | Final-step confidence | Intervals overlap? |
+   |---|---|---|---|
+   | Jev | 0.76 [0.72, 0.80] | 0.55 [0.50, 0.60] | No |
+   | OpenJev | 0.75 [0.71, 0.79] | 0.58 [0.53, 0.63] | No |
+   | Qwen | 0.74 [0.68, 0.79] | 0.47 [0.41, 0.54] | No |
+   | Phi | 0.68 [0.63, 0.73] | 0.40 [0.34, 0.46] | No |
+   | OLMo | 0.64 [0.58, 0.69] | 0.55 [0.48, 0.62] | **Yes** |
+
+   The `E_dec` intervals of Jev, OpenJev and Qwen overlap, so **models
+   cannot be ranked** against each other on this.
+
+3. **Leakage.**
+   - 0 bug-id overlap.
+   - 0 exact text duplicates.
+   - 0 near-duplicates (word 5-gram Jaccard ≥ 0.8). The highest similarity
+     between any held-out and training bug is 0.58.
+   - Real bugs only, so no template sharing.
+
+4. **Fairer baselines** (held-out AUROC):
+
+   | Baseline | AUROC |
+   |---|---|
+   | Low routing confidence alone | 0.48–0.52 |
+   | Low regression confidence alone | 0.45–0.56 |
+   | Severity-distribution entropy | 0.40–0.55 |
+   | **Class-frequency rule: error rate by workflow action** (fit on each model's training bugs) | **Jev 0.76, OpenJev 0.75, Qwen 0.70, Phi 0.69, OLMo 0.58** |
+
+   **This matches `E_dec`** for Jev and OpenJev (0.76/0.76, 0.75/0.75)
+   and is close for the others. **The predictive information is almost
+   entirely *which action the workflow chose* plus that action's
+   historical error rate.** The logistic model adds little beyond that
+   lookup (≤ 0.06, for OLMo).
+
+   This sharpens the claim: *action-conditional error rates beat
+   confidence.* It is simple and cheap, and it should be stated as
+   such, not dressed up as a sophisticated estimator.
+
+   By contrast, error rate by predicted *severity* alone is 0.40 for Jev
+   (below chance), and 0.58–0.70 for the others.
+
+5. **Different failure rates.** Partly model quality, but the interfaces
+   differ:
+   - the Jev-style models use their own trained question format and
+     calibrated readout;
+   - the general models use our prompt and constrained readout.
+
+   So the absolute failure rates (43–80%) are **not** a clean model
+   comparison. Only the within-model contrast (decisions vs confidence)
+   is.
+
+6. **Readout sensitivity.**
+   - **Readout bug, before vs after the fix:** essentially unchanged for
+     Qwen (0.732 → 0.736) and OLMo (0.637 → 0.637). For Phi, the
+     estimator moved 0.566 → 0.677 and confidence 0.500 → 0.401, because
+     the v1 severity readout was broken. Phi's X1 and X2 were supported
+     under both versions.
+   - **OLMo without its 39 held-out bugs that had a low-label-mass
+     request:** `E_dec` 0.647 vs confidence 0.553. Same conclusion.
