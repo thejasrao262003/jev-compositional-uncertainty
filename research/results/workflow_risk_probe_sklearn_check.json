@@ -1,0 +1,26 @@
+{
+  "within": {
+    "mozilla": {
+      "DECISION": 0.656,
+      "UNCERTAINTY": 0.664,
+      "ALL": 0.689
+    },
+    "kernel": {
+      "DECISION": 0.796,
+      "UNCERTAINTY": 0.795,
+      "ALL": 0.812
+    }
+  },
+  "cross": {
+    "mozilla->kernel": {
+      "DECISION": 0.814,
+      "UNCERTAINTY": 0.76,
+      "ALL": 0.8
+    },
+    "kernel->mozilla": {
+      "DECISION": 0.693,
+      "UNCERTAINTY": 0.656,
+      "ALL": 0.692
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "status": "EXPLORATORY / POST-HOC - not part of the paper; sets no pre-registered constant",
+  "settings": {
+    "lambda": 1.0,
+    "folds": 5,
+    "repeats": 20,
+    "seed": 20261017
+  },
+  "mozilla": {
+    "n": 202,
+    "failure_rate": 0.351,
+    "within_tracker_cv": {
+      "DECISION": {
+        "auroc_mean": 0.67,
+        "auroc_range_over_repeats": [
+          0.633,
+          0.692
+        ],
+        "auroc_ci95_repeat0": [
+          0.611,
+          0.767
+        ],
+        "risk_at_80pct_coverage_mean": 0.275
+      },
+      "UNCERTAINTY": {
+        "auroc_mean": 0.661,
+        "auroc_range_over_repeats": [
+          0.64,
+          0.688
+        ],
+        "auroc_ci95_repeat0": [
+          0.57,
+          0.731
+        ],
+        "risk_at_80pct_coverage_mean": 0.29
+      },
+      "ALL": {
+        "auroc_mean": 0.688,
+        "auroc_range_over_repeats": [
+          0.644,
+          0.718
+        ],
+        "auroc_ci95_repeat0": [
+          0.617,
+          0.779
+        ],
+        "risk_at_80pct_coverage_mean": 0.273
+      }
+    },
+    "baselines": {
+      "base_score": {
+        "auroc": 0.59,
+        "ci95": [
+          0.504,
+          0.666
+        ],
+        "risk_at_80pct_coverage": 0.315
+      },
+      "base_min": {
+        "auroc": 0.528,
+        "ci95": [
+          0.443,
+          0.615
+        ],
+        "risk_at_80pct_coverage": 0.34
+      },
+      "base_product": {
+        "auroc": 0.539,
+        "ci95": [
+          0.455,
+          0.627
+        ],
+        "risk_at_80pct_coverage": 0.346
+      }
+    }
+  },
+  "kernel": {
+    "n": 240,
+    "failure_rate": 0.463,
+    "within_tracker_cv": {
+      "DECISION": {
+        "auroc_mean": 0.795,
+        "auroc_range_over_repeats": [
+          0.79,
+          0.805
+        ],
+        "auroc_ci95_repeat0": [
+          0.742,
+          0.853
+        ],
+        "risk_at_80pct_coverage_mean": 0.37
+      },
+      "UNCERTAINTY": {
+        "auroc_mean": 0.794,
+        "auroc_range_over_repeats": [
+          0.775,
+          0.805
+        ],
+        "auroc_ci95_repeat0": [
+          0.74,
+          0.853
+        ],
+        "risk_at_80pct_coverage_mean": 0.382
+      },
+      "ALL": {
+        "auroc_mean": 0.809,
+        "auroc_range_over_repeats": [
+          0.796,
+          0.821
+        ],
+        "auroc_ci95_repeat0": [
+          0.742,
+          0.854
+        ],
+        "risk_at_80pct_coverage_mean": 0.363
+      }
+    },
+    "baselines": {
+      "base_score": {
+        "auroc": 0.534,
+        "ci95": [
+          0.462,
+          0.607
+        ],
+        "risk_at_80pct_coverage": 0.469
+      },
+      "base_min": {
+        "auroc": 0.459,
+        "ci95": [
+          0.389,
+          0.532
+        ],
+        "risk_at_80pct_coverage": 0.458
+      },
+      "base_product": {
+        "auroc": 0.469,
+        "ci95": [
+          0.397,
+          0.539
+        ],
+        "risk_at_80pct_coverage": 0.453
+      }
+    }
+  },
+  "cross_tracker": {
+    "train_mozilla_test_kernel": {
+      "DECISION": {
+        "auroc": 0.814,
+        "ci95": [
+          0.761,
+          0.865
+        ],
+        "risk_at_80pct_coverage": 0.365
+      },
+      "UNCERTAINTY": {
+        "auroc": 0.76,
+        "ci95": [
+          0.698,
+          0.821
+        ],
+        "risk_at_80pct_coverage": 0.401
+      },
+      "ALL": {
+        "auroc": 0.8,
+        "ci95": [
+          0.74,
+          0.854
+        ],
+        "risk_at_80pct_coverage": 0.365
+      }
+    },
+    "train_kernel_test_mozilla": {
+      "DECISION": {
+        "auroc": 0.693,
+        "ci95": [
+          0.614,
+          0.762
+        ],
+        "risk_at_80pct_coverage": 0.272
+      },
+      "UNCERTAINTY": {
+        "auroc": 0.656,
+        "ci95": [
+          0.576,
+          0.735
+        ],
+        "risk_at_80pct_coverage": 0.29
+      },
+      "ALL": {
+        "auroc": 0.691,
+        "ci95": [
+          0.607,
+          0.773
+        ],
+        "risk_at_80pct_coverage": 0.259
+      }
+    }
+  }
+}
