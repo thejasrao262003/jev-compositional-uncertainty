@@ -1,0 +1,7 @@
+{
+  "model": "microsoft/Phi-3.5-mini-instruct",
+  "bugs": 942,
+  "forward_passes": 2826,
+  "label_mass_min": 0.9941630340235861,
+  "label_mass_median": 0.9999999979954775
+}

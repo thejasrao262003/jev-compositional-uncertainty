@@ -26,7 +26,9 @@ WEIGHTS = "/weights/" + REPO.split("/")[-1]
 
 app = modal.App("openjev-serve")
 weights = modal.Volume.from_name("openjev-weights", create_if_missing=True)
-image = (modal.Image.debian_slim(python_version="3.12")
+# CUDA devel base: vLLM JIT-compiles a kernel at engine start and needs nvcc
+# (the slim image failed with "Could not find nvcc"). CUDA 13 matches SERVE.md's cu130 build.
+image = (modal.Image.from_registry("nvidia/cuda:13.0.0-devel-ubuntu24.04", add_python="3.12")
          .pip_install("vllm==0.29.0", "transformers==5.17.0", "openai==3.16.2", "httpx==0.28.1", "huggingface_hub")
          .add_local_file(Path(__file__).parent / "vendor" / "openjev_shim.py", "/opt/shim.py"))
 
