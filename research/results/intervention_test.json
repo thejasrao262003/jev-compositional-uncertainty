@@ -1,0 +1,282 @@
+{
+  "status": "pre-registered analysis (intervention_test_preregistration.md)",
+  "models": {
+    "Jev 1.13": {
+      "n": 500,
+      "k": 50,
+      "candidates": 363,
+      "base_total_cost": 658,
+      "candidate_actions": {
+        "accept": 245,
+        "defer": 118,
+        "request_more_evidence": 0
+      },
+      "arms": {
+        "A1": {
+          "total_cost": 683.71,
+          "wrong_accepts_caught": 7.76
+        },
+        "A2": {
+          "total_cost": 713.93,
+          "wrong_accepts_caught": 0.0
+        },
+        "E": {
+          "total_cost": 713.93,
+          "wrong_accepts_caught": 0.0
+        },
+        "B": {
+          "total_cost": 688.0,
+          "wrong_accepts_caught": 6.0
+        },
+        "B2": {
+          "total_cost": 681.0,
+          "wrong_accepts_caught": 7.0
+        },
+        "C": {
+          "total_cost": 693.54,
+          "wrong_accepts_caught": 5.23
+        }
+      },
+      "A1_minus_C": {
+        "point": -9.83,
+        "ci95": [
+          -17.43,
+          -2.58
+        ],
+        "bootstrap_p_one_sided": 0.0035
+      },
+      "A1_minus_B": {
+        "point": -4.29,
+        "ci95": [
+          -39.58,
+          36.88
+        ],
+        "bootstrap_p_one_sided": 0.4165
+      }
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "n": 500,
+      "k": 50,
+      "candidates": 80,
+      "base_total_cost": 903,
+      "candidate_actions": {
+        "accept": 71,
+        "defer": 9,
+        "request_more_evidence": 0
+      },
+      "arms": {
+        "A1": {
+          "total_cost": 913.46,
+          "wrong_accepts_caught": 8.08
+        },
+        "A2": {
+          "total_cost": 913.46,
+          "wrong_accepts_caught": 8.08
+        },
+        "E": {
+          "total_cost": 910.0,
+          "wrong_accepts_caught": 8.44
+        },
+        "B": {
+          "total_cost": 912.0,
+          "wrong_accepts_caught": 9.0
+        },
+        "B2": {
+          "total_cost": 911.0,
+          "wrong_accepts_caught": 9.0
+        },
+        "C": {
+          "total_cost": 911.12,
+          "wrong_accepts_caught": 8.75
+        }
+      },
+      "A1_minus_C": {
+        "point": 2.34,
+        "ci95": [
+          -0.85,
+          7.02
+        ],
+        "bootstrap_p_one_sided": 0.91
+      },
+      "A1_minus_B": {
+        "point": 1.46,
+        "ci95": [
+          -28.07,
+          39.16
+        ],
+        "bootstrap_p_one_sided": 0.652
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "n": 500,
+      "k": 50,
+      "candidates": 17,
+      "base_total_cost": 893,
+      "candidate_actions": {
+        "accept": 17,
+        "defer": 0,
+        "request_more_evidence": 0
+      },
+      "arms": {
+        "A1": {
+          "total_cost": 916.0,
+          "wrong_accepts_caught": 1.0
+        },
+        "A2": {
+          "total_cost": 916.0,
+          "wrong_accepts_caught": 1.0
+        },
+        "E": {
+          "total_cost": 916.0,
+          "wrong_accepts_caught": 1.0
+        },
+        "B": {
+          "total_cost": 916.0,
+          "wrong_accepts_caught": 1.0
+        },
+        "B2": {
+          "total_cost": 916.0,
+          "wrong_accepts_caught": 1.0
+        },
+        "C": {
+          "total_cost": 916.0,
+          "wrong_accepts_caught": 1.0
+        }
+      },
+      "A1_minus_C": {
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_p_one_sided": 1.0
+      },
+      "A1_minus_B": {
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_p_one_sided": 1.0
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "n": 500,
+      "k": 50,
+      "candidates": 63,
+      "base_total_cost": 831,
+      "candidate_actions": {
+        "accept": 59,
+        "defer": 4,
+        "request_more_evidence": 0
+      },
+      "arms": {
+        "A1": {
+          "total_cost": 898.37,
+          "wrong_accepts_caught": 3.12
+        },
+        "A2": {
+          "total_cost": 898.37,
+          "wrong_accepts_caught": 3.12
+        },
+        "E": {
+          "total_cost": 897.86,
+          "wrong_accepts_caught": 3.17
+        },
+        "B": {
+          "total_cost": 890.0,
+          "wrong_accepts_caught": 4.0
+        },
+        "B2": {
+          "total_cost": 890.0,
+          "wrong_accepts_caught": 4.0
+        },
+        "C": {
+          "total_cost": 898.46,
+          "wrong_accepts_caught": 3.17
+        }
+      },
+      "A1_minus_C": {
+        "point": -0.09,
+        "ci95": [
+          -1.2,
+          0.85
+        ],
+        "bootstrap_p_one_sided": 0.4745
+      },
+      "A1_minus_B": {
+        "point": 8.37,
+        "ci95": [
+          0.0,
+          22.67
+        ],
+        "bootstrap_p_one_sided": 0.9975
+      }
+    },
+    "openjev/openjev-27B": {
+      "n": 500,
+      "k": 50,
+      "candidates": 314,
+      "base_total_cost": 660,
+      "candidate_actions": {
+        "accept": 198,
+        "defer": 116,
+        "request_more_evidence": 0
+      },
+      "arms": {
+        "A1": {
+          "total_cost": 688.54,
+          "wrong_accepts_caught": 7.32
+        },
+        "A2": {
+          "total_cost": 721.64,
+          "wrong_accepts_caught": 0.0
+        },
+        "E": {
+          "total_cost": 721.64,
+          "wrong_accepts_caught": 0.0
+        },
+        "B": {
+          "total_cost": 674.0,
+          "wrong_accepts_caught": 8.0
+        },
+        "B2": {
+          "total_cost": 701.0,
+          "wrong_accepts_caught": 5.0
+        },
+        "C": {
+          "total_cost": 700.76,
+          "wrong_accepts_caught": 4.62
+        }
+      },
+      "A1_minus_C": {
+        "point": -12.22,
+        "ci95": [
+          -22.22,
+          -3.58
+        ],
+        "bootstrap_p_one_sided": 0.0025
+      },
+      "A1_minus_B": {
+        "point": 14.54,
+        "ci95": [
+          -30.92,
+          55.23
+        ],
+        "bootstrap_p_one_sided": 0.699
+      }
+    }
+  },
+  "holm_supported": {
+    "openjev/openjev-27B:A1<C": true,
+    "Jev 1.13:A1<C": true,
+    "Jev 1.13:A1<B": false,
+    "microsoft/Phi-3.5-mini-instruct:A1<C": false,
+    "Qwen/Qwen2.5-7B-Instruct:A1<B": false,
+    "openjev/openjev-27B:A1<B": false,
+    "Qwen/Qwen2.5-7B-Instruct:A1<C": false,
+    "microsoft/Phi-3.5-mini-instruct:A1<B": false,
+    "allenai/OLMo-2-1124-7B-Instruct:A1<C": false,
+    "allenai/OLMo-2-1124-7B-Instruct:A1<B": false
+  }
+}
