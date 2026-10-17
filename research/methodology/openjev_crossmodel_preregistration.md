@@ -108,3 +108,32 @@ other models?
 
 About 942 bugs × 3 steps = 2,826 forward passes per model, single GPU
 (L4/A10G), roughly $1–3 per model on Modal.
+
+## Amendment 1 (2026-10-17): add OpenJev, a trained Jev-style model
+
+Added before any OpenJev output exists. The three general models above
+were already running. None of their results had been analyzed.
+
+- **Model:** [openjev/openjev](https://huggingface.co/openjev/openjev),
+  an independent 27B open-weights decision model (not affiliated with
+  TypeSafe). It is trained to answer `choice`/`score`/`noul` with
+  calibrated probabilities, behind a TypeSafe-shaped `/v1/systemone`
+  endpoint. The weights are CC BY-NC 4.0, used here for non-commercial
+  research with attribution.
+- **Serving exactly as its authors specify** (`serve/SERVE.md`):
+  - vLLM 0.29.0 on one H100 with online FP8, with the documented flags;
+  - their helper `helper/shim.py`, unmodified (sha256
+    `81a22f1b…a1987a`, verified), with the documented readout settings:
+    `READOUT_T=0.85`, `READOUT_NOUL_T=1.829074`, `READOUT_NOUL_BIAS=0`,
+    `READOUT_TARGETED=1`, `READOUT_INSTR_STYLE=pyrepr`, `SHIM_STAGGER=1`.
+- **Same requests as Jev:** our existing Jev client body
+  `{state, model, questions}` is sent with the same questions and
+  adapter. Confidence is the helper's own.
+- **Repeats:** the readout is deterministic, so it gets the same
+  treatment as the open models above.
+- **Tests:** X1/X2 (and descriptives X3, X4) as in §4. Holm is applied
+  across *all* models in the study, so the family grows from 6 to 8
+  tests.
+- **If time and cost allow:** the 9B sibling
+  `openjev/OpenJev-Flash-9B`, under the same rules. If run, it adds 2
+  tests to the Holm family.
