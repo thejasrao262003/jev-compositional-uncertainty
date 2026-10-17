@@ -82,3 +82,9 @@ already predicts. **This finding was reached before any fresh data
 existed.** Any change to the design (budget, population or stopping
 rule) is a design decision that must be made and pre-registered *before*
 data collection. It must not be tuned against this simulation.
+
+## Outcome (2026-10-17)
+
+A bounded, pre-registered budget check that varied only the review budget
+found no viable design. By its binding stop rule the confirmatory study
+was not run (`case_level_review_budget_check.md`).

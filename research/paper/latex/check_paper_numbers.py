@@ -111,6 +111,16 @@ j = mech["Jev 1.13"]; o_ = mech["openjev/openjev-27B"]
 need("oracle Jev 44%", f"cut Jev's cost by {round(100 * (1 - j['oracle_cost_at_k50'] / j['no_review_cost']))}\\%")
 need("oracle OpenJev 33%", f"OpenJev's by {round(100 * (1 - o_['oracle_cost_at_k50'] / o_['no_review_cost']))}\\%")
 
+# Case-level score development and budget feasibility check (added 2026-10-17)
+dv = json.loads((RES / "case_level_review_dev.json").read_text())["in_sample_all_442"]
+need("plug-in training cost", f"({dv['P']['cost']:.0f} vs.\\ {dv['no_review']})")
+need("plug-in oracle share", f"captured {round(100 * dv['P']['share_of_oracle_saving'])}\\% of the oracle saving")
+bc = json.loads((RES / "case_level_review_budget_check.json").read_text())
+best = max(((n, b, v) for n, r in bc["results"].items() for b, v in r.items()), key=lambda x: x[2]["power"])
+need("budget check best power", f"highest power was {best[2]['power']:.2f} (1\\% budget, 1{{,}}000 bugs), with a median change of ${best[2]['median_cost_change_vs_no_review']:.0f}$")
+need("budget check range", f"[{best[2]['central_80pct'][0]:.0f}, +{best[2]['central_80pct'][1]:.0f}]")
+need("not viable", "No budget was viable") if not bc["decision"]["viable"] else None
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")

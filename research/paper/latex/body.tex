@@ -55,7 +55,10 @@ primitives are chained, which the documentation leaves open.
   \item \textbf{Intervention} (\cref{sec:intervention}, pre-registered).
   At a 10\% review budget, that predictive signal does not yield a lower
   cost than confidence-ranked review. An oracle shows the reason: the
-  expensive errors exist but cannot be isolated within an action.
+  expensive errors exist but cannot be isolated within an action. A
+  case-level score developed on training bugs did not meet a
+  pre-registered feasibility criterion under the natural bug mix, so the
+  planned confirmatory study was stopped before any new data.
   \item \textbf{Method} (\cref{sec:method}). A pre-registration and audit
   process that caught six design or implementation defects, most of them
   before any evaluation data existed.
@@ -748,6 +751,39 @@ outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%.}
 Ranking which actions are wrong is therefore not the same as finding
 which reviews save money: frequent errors and expensive errors differ.
 
+\para{A case-level score, and a stopping decision} We then asked whether a
+per-case score could find the expensive errors. It was developed on the
+442 training bugs only, under a plan committed before any score was
+computed. A parameter-free plug-in score was selected by a pre-stated
+rule over a small logistic model and frozen. It ranks accepted cases by
+expected saving from review, $9p_2 + 6p_1q - 2(1 - p_2 - p_1q)$, using
+Jev's \texttt{score} mass on levels 1 and 2 ($p_1, p_2$) and its
+\texttt{noul} probability $q$. On the training mix it cut cost by 12\%
+against no review (630 vs.\ 713) and captured 22\% of the oracle saving.
+But the training bugs were quota-sampled. Reweighted to each tracker's
+natural label mix, a 10\% budget is projected to cost \emph{more} than
+no review, with power near zero.
+\begin{itemize}
+  \item \textbf{Feasibility check.} Before generating any fresh case, we
+  pre-registered a check that varied only the review budget (1--10\%).
+  Viability required power $\geq 0.80$ to show lower cost than no
+  review, with at most 1{,}000 fresh bugs, and a negative median
+  projected cost change. Each simulated study first resampled the
+  training bugs, so uncertainty in error prevalence and ranking quality
+  was propagated.
+  \item \textbf{Result.} No budget was viable. The highest power was
+  0.20 (1\% budget, 1{,}000 bugs), with a median change of $-2$ and an
+  80\% range of $[-46, +20]$. Every budget of 2\% or more had a positive
+  median cost change, and power below 0.15.
+  \item \textbf{Decision.} By the binding stop rule, the confirmatory
+  study was not run and no further designs were searched. No fresh API
+  calls were made.
+\end{itemize}
+This is a feasibility assessment, not evidence that review cannot help.
+The oracle shows that a good selector would save substantially; the
+signals available here cannot identify the cases well enough to pay for
+the reviews.
+
 %======================================================================
 \section{Method: audits that caught defects}
 \label{sec:method}
@@ -821,13 +857,10 @@ selectivity on pilot inputs, before freezing any escalation policy.
 
 \emph{No result in this paper comes from the studies in this section.}
 
-\para{Case-level expensive-error estimator} The intervention analysis
-points to a specific next question. Can a per-case estimator of
-\emph{whether an accepted case is wrongly accepted} capture part of the
-oracle's 33--44\% headroom? It would be developed on the 442 training
-bugs only, pre-registered, and tested on a fresh batch of bugs, not on
-the repeatedly analyzed held-out set. Its primary outcome is cost at a
-fixed budget against confidence, action-rule and random review.
+\para{Case-level expensive-error estimator (stopped)} The case-level
+follow-up proposed after the intervention test was developed and then
+stopped before data collection by its own pre-registered feasibility rule
+(\cref{sec:intervention}). It is not pending.
 
 \para{Template study} To test the
 composition question under control, we pre-registered a
@@ -865,4 +898,7 @@ That prediction did not become a cheaper review policy. The expensive
 errors are real, but they hide inside actions that look alike. Knowing
 which decisions are likely wrong is different from knowing which are
 worth correcting. Workflow uncertainty has to be evaluated against the
-decision it is meant to improve.
+decision it is meant to improve. A case-level score that targeted the
+expensive errors directly helped on the training mix, but it failed our
+pre-registered feasibility check under the natural mix, and we stopped
+there by rule rather than search for a design that would pass.
