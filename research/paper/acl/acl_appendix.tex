@@ -1,0 +1,278 @@
+% ACL appendix. Reviewers are not required to read it; nothing needed to
+% assess the claims lives only here.
+\section{Action rule and cost matrix}
+\label{app:rules}
+\begin{table}[h]
+\centering
+\caption{The action rule $F(c_2, c_3)$. \emph{Unclear} is checked first.}
+\label{tab:F}
+
+\small
+\begin{tabular}{lccc}
+\toprule
+$c_2$ \textbackslash{} $c_3$ & 0 & 1 & 2 \\
+\midrule
+1 (yes)    & accept & defer  & escalate \\
+0 (no)     & accept & accept & escalate \\
+unclear    & \multicolumn{3}{c}{request evidence (any $c_3$)} \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Frozen cost matrix $\mathrm{cost}(a, \astar)$. One unit of human
+cost is added per escalation. ``req.\ ev.'' = request evidence.}
+\label{tab:cost}
+
+\small
+\begin{tabular}{lcccc}
+\toprule
+action \textbackslash{} target & accept & escalate & req.\ ev. & defer \\
+\midrule
+accept           & 0 & 10 & 6 & 8 \\
+escalate         & 1 & 0  & 1 & 1 \\
+req.\ ev. & 1 & 1  & 0 & 1 \\
+defer            & 1 & 1  & 1 & 0 \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\section{The primitives: full results}
+\label{app:primitives}
+\begin{table*}[t]
+\centering
+\caption{Per-primitive behavior of the confidence signal. AUROC is for
+predicting the node's own agreement with the reference label, with 95\% bootstrap intervals.}
+\label{tab:char}
+
+\small
+\begin{tabularx}{\linewidth}{l Y Y Y}
+\toprule
+ & Constructed items & Mozilla ($n{=}202$, triage) & Kernel ($n{=}240$, reporter) \\
+\midrule
+\choice{} & High-confidence error subgroup: mean confidence 0.915, accuracy 0.333 ($n{=}6$)
+ & 85\% at $\geq0.90$, agreeing 0.96; AUROC 0.90 [0.83, 0.96]; ECE 0.05
+ & 96\% at $\geq0.90$, agreeing 0.99; AUROC 0.98 [0.95, 1.00]; ECE 0.02 \\
+\addlinespace
+\noul{} & 24/24 correct, confidence below accuracy in every bin
+ & Agreement flat across bands (0.71--0.84); AUROC 0.53 [0.42, 0.65]; ECE 0.36
+ & Non-monotonic (0.58--0.93); AUROC 0.41 [0.32, 0.50]; ECE 0.36 \\
+\addlinespace
+\score{} & Tracks the most severe sentence (6/6); confidence varies by 0.173 with sentence order alone (1 of 3 items)
+ & Confidence $\approx$0.6 at every true level; AUROC 0.58 [0.50, 0.66]
+ & Confidence 0.65 / 0.62 / 0.61 by true level; AUROC 0.57 [0.50, 0.64] \\
+\bottomrule
+\end{tabularx}
+
+\end{table*}
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=4 by 1, horizontal sep=0.75cm},
+  width=0.27\linewidth, height=4.0cm, xmin=0, xmax=1, ymin=0, ymax=1.05,
+  xtick={0,0.5,1}, ytick={0,0.5,1}, grid=major, grid style={gray!20},
+  xlabel={\scriptsize confidence}, title style={font=\small},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}]
+\nextgroupplot[title={Mozilla \choice{}}, ylabel={\scriptsize agreement}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[blue, thick, mark=*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=north west}] table[x=conf, y=acc, meta=n] {fig_rel_mozilla_choice.dat};
+\nextgroupplot[title={Mozilla \noul{}}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[orange, thick, mark=square*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=south}] table[x=conf, y=acc, meta=n] {fig_rel_mozilla_noul.dat};
+\nextgroupplot[title={Kernel \choice{}}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[blue, thick, mark=*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=north west}] table[x=conf, y=acc, meta=n] {fig_rel_kernel_choice.dat};
+\nextgroupplot[title={Kernel \noul{}}]
+\addplot[gray, dashed, domain=0:1] {x};
+\addplot[orange, thick, mark=square*, nodes near coords, point meta=explicit symbolic,
+  nodes near coords style={font=\tiny, anchor=south}] table[x=conf, y=acc, meta=n] {fig_rel_kernel_noul.dat};
+\end{groupplot}
+\end{tikzpicture}
+\caption{Reliability diagrams (five equal-width confidence bins, bins with
+$n \geq 5$; the label is $n$; dashed line: perfect calibration). \choice{}
+puts nearly all bugs in its top bin, and that bin is accurate. \noul{}'s
+confidence-like value $2|\bar p - 0.5|$ sits far \emph{below} its agreement
+(underconfidence), and agreement does not rise with it.}
+\label{fig:reliability}
+\end{figure*}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[ybar, bar width=7pt, width=0.9\linewidth, height=4.6cm,
+  symbolic x coords={Pilot,Mozilla,Kernel}, xtick=data, ymin=0, ymax=110,
+  ylabel={\% of instances}, enlarge x limits=0.25, ytick={0,25,50,75,100},
+  grid=major, grid style={gray!20}, tick label style={font=\scriptsize},
+  label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.5,1.02)}, anchor=south, legend columns=3, draw=none},
+  nodes near coords, nodes near coords style={font=\tiny, rotate=90, anchor=west},
+  point meta=y, every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0}]
+\addplot[fill=blue!55] table[x=set, y=trigger] {fig_transfer.dat};
+\addplot[fill=orange!70] table[x=set, y=cut] {fig_transfer.dat};
+\addplot[fill=gray!45] table[x=set, y=target] {fig_transfer.dat};
+\legend{\choice{} $\geq$0.90 fires, 0.5 cut escalates, target share}
+\end{axis}
+\end{tikzpicture}
+\caption{Selectivity of the two fixed-threshold rules, set on constructed
+data and measured on each rule's own input signals. The trigger fires on
+85--96\% of instances everywhere. The product cut is near its target on
+the constructed pilot and far above it on real text.}
+\label{fig:transfer}
+\end{figure}
+
+
+
+Severity labels: Mozilla S1--S4 map to levels 2/2/1/0 (triage); kernel
+blocking/high/normal/low map to 2/2/1/0 (reporter). With Mozilla's own
+severity definitions in place of ours, agreement moves only from 0.53 to
+0.56, so the compression persists. \noul{}'s errors change direction
+between trackers: on Mozilla it mostly misses regressions (23 misses
+vs.\ 17 false alarms); on the kernel it over-flags them (63 false alarms
+vs.\ 3 misses).
+
+\section{Exploratory composition analyses}
+\label{app:exploratory}
+All analyses here were specified after the Mozilla results had been seen
+and are hypothesis-generating.
+
+\para{The naive comparison is confounded} On Mozilla, decision
+composition (S1) beats confidence composition (S2) by 0.17 [0.08, 0.27]
+in $P(Y_{\text{decision}})$, with 61 vs.\ 27 discordant pairs (exact
+McNemar $p = 0.0004$). But S2 never reads the node decisions, while
+$\astar$ escalates on the severity \emph{decision}. To be right on a
+serious bug, S2 needs low confidence to \emph{mean} high severity, so the
+comparison mostly measures whether confidence can stand in for severity.
+On the kernel the difference is smaller and inconclusive: 0.06
+[$-0.03$, 0.15], 66 vs.\ 51 discordant pairs, $p = 0.20$. The difference
+between trackers is 0.11 [$-0.01$, 0.24]. Its interval covers zero, so we
+have \emph{no evidence that the effect differs} between trackers, only a
+weaker estimate on one of them.
+
+
+\para{Budgeted overrides, scored by cost} At a fixed budget of
+$k = \lceil 0.1n \rceil$ overrides ($k = 21$ on Mozilla, 24 on the kernel),
+let $T$ be the total cost of the confidence-ranked overrides and $\mu$ the
+exact expected total under $k$ overrides drawn uniformly from the same
+candidates. Two analyses answer two different questions.
+\begin{itemize}
+  \item \textbf{Randomization test, conditional on the evaluated bugs.}
+  This asks whether the ranking selected worse or better overrides than
+  random selection \emph{on these bugs}. The statistic is $|T - \mu|$.
+  The null distribution comes from 10{,}000 random $k$-subsets of the
+  candidates, and the test is two-sided.
+  \item \textbf{Bootstrap over bugs.} This asks how stable the per-bug
+  difference $(T - \mu)/n$ is under resampling of the bugs, with rankings
+  and $\mu$ recomputed in each resample.
+\end{itemize}
+On Mozilla, $T = 390$ against $\mu = 357.2$. The observed value sits at
+the edge of the null distribution (2.5--97.5\% range 323--388), so
+$p = 0.05$. The per-bug difference is $+0.16$ [$-0.01$, 0.24], and 97\% of
+resamples are positive. That is borderline evidence that the product
+ranking chose \emph{worse} overrides than random on Mozilla. On the
+kernel, $T = 338$ against $\mu = 358.6$ ($p = 0.18$), a per-bug difference
+of $-0.09$ [$-0.23$, 0.06]: inconclusive, and in the opposite direction.
+These analyses are exploratory and uncorrected for multiplicity. We read
+them as no consistent benefit from confidence-ranked overrides, with one
+borderline harmful estimate that did not replicate, and not as an
+established harm.
+
+
+
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm},
+  width=0.47\linewidth, height=5.2cm, xlabel={overrides $k$}, ymin=0.40, ymax=0.68,
+  grid=major, grid style={gray!20}, legend style={font=\scriptsize, at={(0.02,0.02)}, anchor=south west}]
+\nextgroupplot[title={Mozilla ($n{=}202$)}, ylabel={$P(Y_{\text{decision}})$}]
+\addplot[thick, blue] table[x=k, y=conf] {fig_override_mozilla.dat};
+\addplot[thick, orange, dashed] table[x=k, y=u5] {fig_override_mozilla.dat};
+\addplot[thick, black, dotted] table[x=k, y=rand] {fig_override_mozilla.dat};
+\legend{confidence product, per-primitive ranks, random (exact)}
+\nextgroupplot[title={Kernel ($n{=}240$)}]
+\addplot[thick, blue] table[x=k, y=conf] {fig_override_kernel.dat};
+\addplot[thick, orange, dashed] table[x=k, y=u5] {fig_override_kernel.dat};
+\addplot[thick, black, dotted] table[x=k, y=rand] {fig_override_kernel.dat};
+\end{groupplot}
+\end{tikzpicture}
+\caption{Adding confidence-ranked escalations on top of decision
+composition. At $k = 0$ the curve is S1. Neither ranking consistently
+improves on random selection of the same number of cases: deviations are
+a few points at most and change sign between rankings and trackers. For
+example, per-primitive ranks run slightly above random on Mozilla for
+$k \approx 15$--$35$, and the confidence product runs below.}
+\label{fig:override}
+\end{figure*}
+
+\para{A structural reason} In this workflow the only
+discriminative confidence (\choice{}, AUROC 0.90--0.98) belongs to the
+one node that $F$ does not use. The informative signal never reaches the
+action, and the two signals that do reach it are close to uninformative.
+
+
+\section{Pre-registration deviations}
+\label{app:deviations}
+\begin{itemize}
+  \item \textbf{Cross-model, amendment 1:} OpenJev was added before any of
+  its outputs existed.
+  \item \textbf{Amendment 2:} OLMo-2 needed a newer \texttt{transformers}
+  release.
+  \item \textbf{Amendment 3:} a readout bug, in which a SentencePiece
+  word-start token was shared by all digit labels, was found after interim
+  results had been seen. All three general models were re-run under one
+  corrected readout; the conclusions did not change. On 3\% of OLMo-2's
+  requests most probability fell outside the allowed labels; excluding
+  them does not change its result.
+  \item \textbf{Protocol revisions:} the development protocol went
+  through twelve dated revisions, each made before the data it affects
+  existed.
+\end{itemize}
+
+
+
+\section{Audits that caught defects}
+\label{app:audits}
+\begin{table*}[t]
+\centering
+\caption{Defects found by the study's own audits.}
+\label{tab:audits}
+
+\small
+\begin{tabularx}{\linewidth}{Y l l}
+\toprule
+Defect & Detected by & When \\
+\midrule
+A ``primitive-aware'' arm structurally identical to the baseline & inspecting the action rule & before evaluation \\ \addlinespace
+A trigger firing on $\approx$90\% of inputs & selectivity on input signals only & before evaluation \\ \addlinespace
+A threshold sensitive to the data distribution & smoke test vs.\ pilot & before the full run \\ \addlinespace
+Four silent runner defects (e.g.\ the literal ``None'' shown to the model; partial data analyzed) & adversarial probing & before the live run \\ \addlinespace
+The confidence-vs-decisions confound & post-hoc review & after the Mozilla result \\ \addlinespace
+Template content whose labels were recoverable from punctuation alone (100\%) and whose sentences leaked cross-label cues & independent review (separate AI agent) & before the controlled study \\
+\bottomrule
+\end{tabularx}
+
+\end{table*}
+
+\Cref{tab:audits} lists defects the study's own audits caught, most
+before the data that would have exposed them existed. We recommend asking,
+for every strategy and target class, \emph{can this strategy be right
+here, and through what information?}, and measuring each trigger's
+selectivity on pilot inputs before freezing an escalation policy.
+
+\section{Reproducibility}
+\label{app:repro}
+All calls used \texttt{jev-1.13.0}: 4{,}584 in the development runs and
+4{,}500 on the held-out bugs; each open model served 2{,}826 requests.
+Every dataset, raw response, manifest and analysis is hash-locked, as are
+the pre-registration documents and their revision history. An anonymized
+code and data archive accompanies the submission; report texts are
+replaced by identifiers and hashes and can be regenerated from the public
+trackers.

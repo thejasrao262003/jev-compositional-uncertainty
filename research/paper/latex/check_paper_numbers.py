@@ -12,7 +12,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 RES = HERE.parents[1] / "results"
 # shared content used by main.tex, ieee.tex and springer.tex
-tex = re.sub(r"\s+", " ", " ".join((HERE / f).read_text() for f in ("abstract.tex", "body.tex", "appendix.tex")))
+ACL = "--acl" in sys.argv
+_files = [HERE.parent / "acl" / f for f in ("acl_abstract.tex", "acl_body.tex", "acl_appendix.tex")] if ACL else \
+    [HERE / f for f in ("abstract.tex", "body.tex", "appendix.tex")]
+tex = re.sub(r"\s+", " ", " ".join(f.read_text() for f in _files))
 st = json.loads((HERE / "paper_statistics.json").read_text())
 
 

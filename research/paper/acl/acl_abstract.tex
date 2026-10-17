@@ -1,0 +1,19 @@
+Typed decision models such as Jev return a label with a numeric
+confidence, and their primitives have been benchmarked on single tasks.
+We ask what single-task benchmarks leave open: when a workflow chains
+heterogeneous typed decisions, which signals identify its failures, and
+can they identify the costly errors for which human review is worthwhile?
+We chain Jev's categorical, binary and ordinal primitives into a
+dependent bug-triage workflow and evaluate it on Mozilla and Linux kernel
+bugs. In pre-registered tests on 500 new bugs, a frozen estimator built
+on what the workflow decided ranked wrong actions better than final-step
+confidence (AUROC 0.76 vs.\ 0.55). The gap replicated across five models
+from four sources, and Jev's estimator transferred unchanged to an
+independently trained Jev-style model; the signal was mostly the chosen
+action's historical error rate. Yet it did not yield a cost-effective
+review policy: at a 10\% review budget no strategy cost less than no
+review. An oracle shows the expensive errors exist, but the signals
+tested could not isolate them, and a case-level score failed a
+pre-registered feasibility check (power at most 0.20), so the
+confirmatory study was stopped before new data. Predicting which
+decisions are wrong is not knowing which are worth correcting.

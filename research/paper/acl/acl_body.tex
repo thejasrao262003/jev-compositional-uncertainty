@@ -1,0 +1,539 @@
+% ACL body: condensed from ../latex/body.tex around the main argument.
+\section{Introduction}
+
+A model can return a valid, well-typed decision and still be wrong. When
+several such decisions are chained into a workflow, errors propagate, and
+a common hope is that the steps' reported confidence can say when to hand
+a case to a human. Typed decision models make this hope concrete. Jev,
+TypeSafe's decision API, answers closed questions through three
+primitives: a categorical \choice{}, a binary \noul{} and an ordinal
+\score{}, each with a number between 0 and 1. Prior work has benchmarked
+these primitives and their calibration on single requests
+\citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and argued in
+general that error risk is not review value \citep{park2026riskreview}.
+
+We study an operational question that single-request benchmarks leave
+open. \emph{When a workflow chains heterogeneous typed decisions, which
+signals identify the cases where it fails, and can those signals identify
+the specific costly errors for which human review is worthwhile?} The two
+halves can come apart: a signal can rank failures well and still not say
+which reviews pay.
+
+We chain Jev's three primitives into a dependent bug-triage workflow
+(route, assess regression, rate severity) and study it on 202 Mozilla
+bugs labeled by triage and 240 Linux kernel bugs labeled by their
+reporters, followed by pre-registered tests on 500 new bugs and four
+further models. Our contributions:
+\begin{enumerate}
+  \item \textbf{Workflow failure prediction} (\cref{sec:heldout,sec:crossmodel}).
+  A frozen decision-feature estimator ranks wrong workflow actions better
+  than final-step confidence on 500 new bugs, and the gap replicates
+  across five models from four sources. Most of the signal is the chosen
+  action's historical error rate.
+  \item \textbf{Prediction is not intervention utility} (\cref{sec:intervention}).
+  At a fixed review budget that signal does not reduce cost; an oracle
+  locates the value in wrongly accepted cases that the signals cannot
+  isolate, and a case-level score fails a pre-registered feasibility
+  check, so the confirmatory study is stopped by rule before new data.
+  \item \textbf{Supporting evidence} (\cref{sec:primitives}). Inside the
+  workflow the three primitives' confidence signals behave differently,
+  thresholds set on constructed data do not transfer, and \score{}
+  compresses severity on both trackers. These results agree with the
+  single-request audits and explain the workflow-level findings.
+\end{enumerate}
+All data collection and confirmatory analyses were pre-registered: each
+protocol was committed, with its SHA-256 hash, before the data it governs
+existed. The anonymized supplementary archive lists the commit dates and
+hashes, and deviations are disclosed (\cref{app:deviations}).
+
+\section{Related work}
+
+\para{Evaluations of Jev and open decision models} Jev has been
+benchmarked zero-shot on 37 datasets, where its \choice{} probabilities
+were well calibrated and its binary probabilities ranked well but sat
+poorly relative to a 0.5 threshold \citep{deusser2026jev}. A calibration
+audit (described by its author as exploratory) found that calibration
+changed with the question form, that 71.6\% of four-class answers sat at
+exactly 1.00, leaving a top-class threshold only 53 operating points, and
+that no threshold certified a 5\% automatic tier on the four-class task
+\citep{meng2026jevaudit}. On political-science replications Jev's
+calibration advantage was not consistent \citep{denney2026jev}, and an
+early evidence audit found no independent accuracy advantage yet for the
+typed readout \citep{tang2026typed}. Open instruction-tuned models give
+Jev-like decisions by reading label logits in one forward pass
+\citep{geuter2026innerjev}, the readout we use for the general models.
+These studies evaluate single requests; none studies \score{} inside a
+workflow, composition of dependent decisions, or the cost of human review.
+
+\para{Review value and deferral} Learning to defer
+\citep{madras2018predict}, selective prediction
+\citep{geifman2017selective}, cost-sensitive deferral under workload
+limits \citep{alves2024defer} and cascades with escalation
+\citep{jung2025trust,bouchard2026escalation} address deferral of single
+decisions. Closest to our intervention result, \citet{park2026riskreview}
+argue that review priority should depend on wrongness, repairability,
+impact and cost rather than risk alone, and show on a QA benchmark that
+review-value ranking leaves less residual error than risk ranking. Our
+result is an instance of that distinction in a dependent typed-decision
+workflow, with a frozen cost table, pre-registered tests and a
+feasibility check for a case-level policy.
+
+\para{Composition and trajectories} Errors compound across pipeline
+stages, and independently calibrated stages lack joint guarantees
+\citep{kotte2026pasc,chowdhury2019error}; step-level calibration need not
+imply trajectory-level calibration for LLM agents \citep{lin2026uqagents};
+and the product rule for combining confidences assumes conditional
+independence \citep{kittler1998combining}. LLM raters compress ordinal
+scores toward the middle \citep{zhang2026centraltendency}.
+
+\para{Positioning} We are not aware of prior work that tests, in a
+dependent workflow of structurally different typed decisions with real
+labels, held-out data and several models, which signals predict workflow
+failure and whether they identify the reviews worth paying for. We make
+no priority claim: our search was web-based, and the cited Jev studies
+appeared in September and October 2026.
+
+\section{Setting}
+\label{sec:setting}
+
+\begin{figure}[t]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[node distance=0.55cm, every node/.style={font=\small},
+  box/.style={draw, rounded corners, minimum width=1.6cm, minimum height=0.9cm, align=center},
+  arr/.style={-{Stealth[length=2mm]}, thick}]
+\node[box, fill=blue!6] (ev) {bug\\ text $x$};
+\node[box, right=of ev] (c) {\choice{}\\ route $c_1$};
+\node[box, right=of c] (n) {\noul{}\\ regression $c_2$};
+\node[box, right=of n] (s) {\score{}\\ severity $c_3$};
+\node[box, below=0.6cm of n, fill=orange!8] (f) {action $a = F(c_2, c_3)$};
+\draw[arr] (ev) -- (c);
+\draw[arr] (c) -- (n);
+\draw[arr] (n) -- (s);
+\draw[arr] (n) -- (f);
+\draw[arr] (s) |- (f);
+\end{tikzpicture}}
+\caption{The workflow. Each node reads the bug text plus all upstream
+decisions and is called three times. The action rule $F$ uses $c_2$ and
+$c_3$; a review replaces the action with \emph{escalate}.}
+\label{fig:workflow}
+\end{figure}
+
+\para{Workflow} Node~1 (\choice{}) routes a bug to the network or storage
+subsystem; node~2 (\noul{}) assesses whether it is a regression; node~3
+(\score{}) rates severity on three levels. Each node reads the bug text
+plus the upstream decisions, appended by a fixed adapter
+(\cref{fig:workflow}), and is called three times; the answers are reduced to the modal decision (mean
+probability for \noul{}). All calls used \texttt{jev-1.13.0}.
+
+\para{Target action and cost} The action rule $F(c_2, c_3)$ maps an
+unclear regression answer to \emph{request evidence}, severity 2 to
+\emph{escalate}, severity 1 with a regression to \emph{defer}, and
+everything else to \emph{accept} (\cref{tab:F}). The target is
+$\astar = F$ applied to the reference labels. It is a construct we
+defined, and every strategy result is conditional on it. Costs come from a
+frozen matrix (\cref{tab:cost}): a wrong \emph{accept} costs 6--10, any
+other mismatch 1, and each escalation an extra 1 for human time. A review
+turns a case's action into \emph{escalate}, so reviewing a wrongly
+accepted case saves 6 or 9, and any other review loses 1--2.
+
+\para{Data} \emph{Mozilla:} 202 fixed Firefox networking and storage
+bugs; severity is assigned by triage and the regression flag is a
+keyword. \emph{Linux kernel:} 240 fixed networking and storage bugs;
+severity is set by the reporter and the regression flag is a field. Both
+development samples are balanced across (subsystem, level) cells. The
+pre-registered tests use 500 \emph{new} bugs, 250 per tracker, sampled at
+each tracker's natural mix. Agreement is with reference labels, not
+ground truth.
+
+\para{Statistics} AUROCs use the Mann--Whitney estimator with percentile
+bootstrap intervals over bugs ($B = 2{,}000$, stratified by tracker).
+Confirmatory tests are one-sided paired bootstrap tests with Holm
+correction within each pre-registered family.
+
+\section{Supporting evidence: the primitives inside the workflow}
+\label{sec:primitives}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{lcc}
+\toprule
+ & Mozilla (triage) & Kernel (reporter) \\
+\midrule
+\choice{} at $\geq 0.90$ & 85\% & 96\% \\
+\choice{} conf. AUROC & 0.90 [0.83, 0.96] & 0.98 [0.95, 1.00] \\
+\noul{} value AUROC & 0.53 [0.42, 0.65] & 0.41 [0.32, 0.50] \\
+\score{} conf.\ AUROC & 0.58 [0.50, 0.66] & 0.57 [0.50, 0.64] \\
+\midrule
+Agreement: \choice{} & 0.89 [0.83, 0.92] & 0.975 [0.95, 0.99] \\
+\phantom{Agreement:} \noul{} & 0.80 [0.74, 0.85] & 0.725 [0.67, 0.78] \\
+\phantom{Agreement:} \score{} & 0.53 [0.46, 0.60] & 0.44 [0.38, 0.50] \\
+\bottomrule
+\end{tabular}
+\caption{Each primitive's confidence signal, as AUROC for predicting the
+node's own agreement with the reference label (95\% bootstrap CI), and
+node agreement. Full table and reliability diagrams in \cref{app:primitives}.}
+\label{tab:prim}
+\end{table}
+
+The three primitives' signals are not one kind of quantity
+(\cref{tab:prim}). \choice{} confidence is saturated (85--96\% of bugs at
+$\geq 0.90$) yet discriminative, because its rare low-confidence answers
+are where its errors are. \noul{}'s confidence-like value $2|\bar p - 0.5|$
+carries no usable information about its own correctness. \score{}'s
+confidence is flat across true severity levels, so it gives no warning of
+a systematic bias (\cref{fig:sev}): on both trackers most minor bugs are rated higher than
+their label (79\% [0.67, 0.88] and 75\% [0.65, 0.83]) and many serious bugs lower (43\% and 56\%), a
+central-tendency pattern reported for LLM raters elsewhere
+\citep{zhang2026centraltendency}. These findings agree with the
+single-request audits where they overlap: \choice{} is saturated yet
+discriminative, and thresholds must be validated on target data. On
+\noul{}, the audits report accurate, recalibratable yes/no answers on
+sentiment, whereas on our regression question its probability did not
+discriminate its own correctness, so binary-probability quality looks
+task-dependent.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=0.35cm, y descriptions at=edge left},
+  width=0.5\linewidth, height=4.2cm, view={0}{90}, enlargelimits=false, axis on top,
+  colormap={sev}{rgb255=(255,255,255) rgb255=(107,174,214) rgb255=(33,113,181)},
+  point meta min=0, point meta max=0.8,
+  xtick={0,1,2}, ytick={0,1,2}, y dir=reverse,
+  yticklabels={minor,normal,serious}, xticklabels={0,1,2},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}, title style={font=\small},
+  xlabel={\score{} output},
+  nodes near coords={\pgfmathprintnumber[fixed,fixed zerofill,precision=2]{\pgfplotspointmeta}},
+  nodes near coords style={font=\scriptsize, anchor=center}]
+\nextgroupplot[title={Mozilla (triage)}, ylabel={true level}]
+\addplot[matrix plot*, mesh/cols=3, point meta=explicit] table[meta=v] {fig_heat_mozilla.dat};
+\nextgroupplot[title={Kernel (reporter)}]
+\addplot[matrix plot*, mesh/cols=3, point meta=explicit] table[meta=v] {fig_heat_kernel.dat};
+\end{groupplot}
+\end{tikzpicture}
+\caption{Row-normalized confusion of \score{} against reference severity
+(repeat-unstable outputs excluded). On both trackers the middle column
+absorbs mass from both extremes: minor bugs are rated up, serious bugs
+down.}
+\label{fig:sev}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.78\linewidth, height=5.0cm, xmin=0.25, xmax=1.05, ymin=0.4, ymax=5.6,
+  ytick={1,2,3,4,5}, yticklabels={(B) any error, (A) missed serious, \score{} own, \noul{} own, \choice{} own},
+  xlabel={AUROC (95\% bootstrap interval)}, grid=major, grid style={gray!20},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.98,0.02)}, anchor=south east}]
+\draw[dashed, gray] (axis cs:0.5,0.4) -- (axis cs:0.5,5.6);
+\addplot[blue, only marks, mark=*, error bars/.cd, x dir=both, x explicit]
+  table[x=x, y=y, x error minus=lo, x error plus=hi] {fig_forest_mozilla.dat};
+\addplot[orange, only marks, mark=square*, error bars/.cd, x dir=both, x explicit]
+  table[x=x, y=y, x error minus=lo, x error plus=hi] {fig_forest_kernel.dat};
+\legend{Mozilla, Kernel}
+\end{axis}
+\end{tikzpicture}
+\caption{Development-set AUROCs with 95\% intervals; dashed line: chance.
+Only \choice{}'s confidence discriminates its own errors. Composed
+confidence is at chance for both escalation targets, (A) and (B).}
+\label{fig:forest}
+\end{figure}
+
+\para{Fixed thresholds do not transfer} Two escalation thresholds designed
+on constructed data lost their selectivity on real text: a \choice{}
+trigger fired on 85--96\% of bugs everywhere, and a confidence-product cut
+that escalated 73\% of constructed items (target 67\%) escalated 88\% and
+78\% of real bugs (targets 41--42\%), because real text pulls \noul{}
+toward 0.5.
+
+\para{Composed confidence does not pick escalations (exploratory)}
+Escalating, on top of the decision-based action, the bugs with the lowest
+composed confidence did no better than random selection on either tracker.
+Composed confidence ranked missed serious bugs at AUROC 0.49 [0.37, 0.61]
+and 0.50 [0.40, 0.60], and any decision error at 0.54 [0.45, 0.63] and
+0.47 [0.40, 0.54] (\cref{fig:forest}). Only \choice{}'s confidence
+discriminates, and it belongs to the one node the action rule does not
+use. The obvious comparison, decision-based against
+confidence-based composition, is confounded, because the target is itself
+a function of the decisions. These analyses were specified after the
+Mozilla results and motivated the pre-registered tests below
+(\cref{app:exploratory}).
+
+\section{A pre-registered held-out test}
+\label{sec:heldout}
+
+We trained one decision-feature estimator ($E_{\text{dec}}$:
+$L_2$-regularized logistic regression on the \score{} level, the \noul{}
+decision and the workflow action) on all 442 development bugs and froze it
+by hash before any new data existed. We then collected the 500 new bugs
+(4{,}500 Jev calls). Pre-registered hypotheses: HR1, $E_{\text{dec}}$ ranks
+wrong workflow actions better than low final-step confidence; HR2, it
+ranks above chance on each tracker.
+
+Both are supported. HR1: $E_{\text{dec}}$ reaches AUROC 0.763 against 0.549
+for final-step confidence, a difference of $+0.214$ (one-sided 95\% lower
+bound $+0.158$). HR2: AUROC is 0.811 on Mozilla (lower bound 0.761) and
+0.697 on the kernel (lower bound 0.643). The estimator's predicted failure
+rate matches the observed rate overall, but it outputs only 7--8 distinct
+risk levels (ECE 0.18--0.20), so it is a ranking, not a calibrated
+probability. Held-out and development bugs share no bug IDs, no exact
+texts and no near-duplicates (word 5-gram Jaccard $\geq 0.8$; the highest
+similarity of any held-out bug to a development bug is 0.58).
+
+\section{Cross-model replication}
+\label{sec:crossmodel}
+
+We ran the same 942 bugs, questions and adapter through four further
+models. \textbf{OpenJev 27B} \citep{openjev2026} is an independently
+trained Jev-style decision model (Hugging Face \texttt{openjev/openjev},
+commit \texttt{b4a89f5}; unrelated projects share the name), served on
+one H100 exactly as its authors specify. \textbf{Qwen2.5-7B}
+\citep{qwen2024qwen25}, \textbf{OLMo-2-7B} \citep{olmo2024olmo2} and
+\textbf{Phi-3.5-mini} \citep{abdin2024phi3} run behind a Jev-compatible
+readout: next-token probabilities over the allowed labels, with
+TypeSafe's documented confidence formulas. Each model's estimator was
+fitted on its own outputs for the 442 development bugs and tested on the
+500 held-out bugs; the tests mirror HR1 and HR2, Holm-corrected across
+all 8. Three amendments are disclosed in \cref{app:deviations}, including
+a readout bug fixed after interim results, with all general models re-run.
+
+\begin{table*}[t]
+\centering
+\resizebox{\textwidth}{!}{\input{table_crossmodel.tex}}
+\caption{Per-model results on the same 500 held-out bugs. AUROC columns
+rank wrong workflow actions (95\% bootstrap CI): the decision-feature
+estimator fitted on each model's own development outputs, the model's
+final-step confidence, the action-conditional error-rate rule, and Jev's
+frozen estimator applied unchanged. Cost columns are from the
+pre-registered intervention test (\cref{sec:intervention}); the oracle is
+an upper bound that must spend all 50 reviews, and ``wrong accepts'' is
+their share of no-review cost. Absolute failure rates are not a clean
+quality comparison, because the Jev-style and general models use
+different interfaces.}
+\label{tab:crossmodel}
+\end{table*}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.8\linewidth, height=4.4cm, xmin=0.3, xmax=0.9, ymin=0.4, ymax=5.6,
+  ytick={1,2,3,4,5}, yticklabels={OLMo-2, Phi-3.5, Qwen2.5, OpenJev, Jev 1.13},
+  xlabel={held-out AUROC for wrong actions (95\% CI)}, grid=major, grid style={gray!20},
+  tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.02,0.02)}, anchor=south west}]
+\draw[dashed, gray] (axis cs:0.5,0.4) -- (axis cs:0.5,5.6);
+\addplot[blue, only marks, mark=*, error bars/.cd, x dir=both, x explicit]
+  table[x=dec, y expr=\thisrow{y}+0.12, x error minus=declo, x error plus=dechi] {fig_crossmodel.dat};
+\addplot[orange, only marks, mark=square*, error bars/.cd, x dir=both, x explicit]
+  table[x=conf, y expr=\thisrow{y}-0.12, x error minus=conflo, x error plus=confhi] {fig_crossmodel.dat};
+\legend{decision estimator, final-step confidence}
+\end{axis}
+\end{tikzpicture}
+\caption{Across five models, the decision-feature estimator ranks wrong
+workflow actions better than the model's own final-step confidence. The
+intervals overlap only for OLMo-2.}
+\label{fig:crossmodel}
+\end{figure}
+
+All 8 pre-registered tests are supported (\cref{fig:crossmodel,tab:crossmodel}).
+Decision estimators reach AUROC 0.64--0.76 and final-step confidence
+0.40--0.58; the weakest model is OLMo-2 (0.637 vs.\ 0.551; one-sided
+$p = 0.037$, passing at the last Holm step). Jev's frozen estimator, never
+refitted, reaches 0.76 [0.72, 0.80] on OpenJev's outputs, as well as
+OpenJev's own estimator does. The $E_{\text{dec}}$ intervals of Jev,
+OpenJev and Qwen2.5 overlap, so the models cannot be ranked against each
+other; only the within-model contrast is the finding.
+
+\para{The signal is simple} A class-frequency rule, the historical error
+rate of the action the workflow chose, estimated on development bugs only,
+matches the estimator for Jev (0.76) and OpenJev (0.75) and comes close
+for the others (0.58--0.70). The predictive information is mostly
+\emph{which action was chosen} and how often that action has been wrong.
+Part of this is structural: the action and the target are both outputs of
+the same rule $F$, so an action's error rate is a property of the
+workflow as much as of the model. We therefore do not read the result as
+the estimator being sophisticated, but as evidence that per-step
+confidence misses information the workflow itself already exposes.
+
+\para{Failure modes differ by model family} Jev and OpenJev both pull
+severity to the middle level. The general instruct models push severity
+to ``blocking'' for 67--100\% of bugs whatever the true level, and are
+wrong far more often (72--80\% vs.\ 43--47\%).
+
+\section{Prediction is not intervention utility}
+\label{sec:intervention}
+
+\para{Design} Before computing any cost outcome, we pre-registered a
+review test on the held-out bugs: 50 reviews (10\%) per model, each
+escalating a case to a human and priced by the frozen matrix. The primary
+arm (A1) ranks candidates by the \emph{action-level expected saving} of a
+review, estimated on development bugs; it is cost-aware rather than
+error-rate-based, because reviewing a wrong \emph{defer} never saves
+anything. Comparators: confidence-ranked review (B) and random review (C);
+Holm across 10 tests.
+
+\begin{table}[t]
+\centering
+\small
+\resizebox{\linewidth}{!}{\input{table_intervention_tests.tex}}
+\caption{Pre-registered intervention tests: difference in total cost
+(A1 minus comparator; negative favors A1) at a 10\% budget, with 95\%
+bootstrap intervals. $^{*}$Supported after Holm correction across all
+10 tests.}
+\label{tab:itests}
+\end{table}
+
+\para{Result} Two of ten pre-registered tests are supported (\cref{tab:itests}): A1 beats
+random for Jev and OpenJev, by about 10--12 cost units. A1 is not shown to
+beat confidence for any model (for Jev its point estimate is 4 units
+lower, with an interval spanning zero). Every review arm costs more than
+no review at all; for Jev, 658 with no review against 681--714 with review
+(\cref{fig:intervention}).
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[ybar, bar width=2.6pt, width=\linewidth, height=4.2cm,
+  symbolic x coords={Jev,OpenJev,Qwen2.5,Phi-3.5,OLMo-2}, xtick=data, ymin=0, ymax=960,
+  ylabel={total cost (500 bugs)}, enlarge x limits=0.12,
+  grid=major, grid style={gray!20}, tick label style={font=\scriptsize}, label style={font=\scriptsize},
+  legend image code/.code={\draw[#1] (0cm,-0.08cm) rectangle (0.18cm,0.12cm);},
+  legend style={font=\scriptsize, at={(0.5,1.02)}, anchor=south, legend columns=3, draw=none}]
+\addplot[fill=gray!40] table[x=model, y=noreview] {fig_intervention.dat};
+\addplot[fill=blue!55] table[x=model, y=A1] {fig_intervention.dat};
+\addplot[fill=orange!70] table[x=model, y=B] {fig_intervention.dat};
+\addplot[fill=gray!75] table[x=model, y=C] {fig_intervention.dat};
+\addplot[fill=green!55!black] table[x=model, y=oracle] {fig_intervention.dat};
+\legend{no review, action rule, confidence, random, oracle}
+\end{axis}
+\end{tikzpicture}
+\caption{Total cost at a 10\% review budget. No feasible strategy beats
+no review. A perfect reviewer (oracle, an upper bound using held-out
+outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%; for the
+general models, which escalate most cases themselves, it saves little or
+nothing.}
+\label{fig:intervention}
+\end{figure}
+
+\para{Where the cost is} For the Jev-style models, 40--52\% of no-review
+cost comes from wrongly \emph{accepted} serious or regression bugs. An
+oracle that picked the right 50 cases would save 33--44\%. But those cases
+are 15--16\% of accepted cases. The action rule cannot separate them,
+because every accept looks alike to it, and confidence cannot either. The
+value exists; the identification fails. For the general models, cost is
+dominated by over-escalation, which more review cannot reduce. Ranking
+which actions are wrong is therefore not the same as finding which
+reviews save money: frequent errors and expensive errors differ, the
+distinction \citet{park2026riskreview} draw in general.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\resizebox{\linewidth}{!}{\input{table_budget.tex}}
+\caption{Pre-registered feasibility check for the case-level score:
+simulated power to show lower cost than no review (one-sided
+$\alpha = 0.05$), and the median and 80\% range of the projected cost
+change, over 400 simulated studies per cell under the natural label mix.
+Viability required power $\geq 0.80$; no cell met it.}
+\label{tab:budget}
+\end{table}
+
+\para{A case-level score, and a stopping decision} We then asked whether a
+per-case score could find the expensive errors. Under a plan committed
+before any score was computed, a parameter-free plug-in score was selected
+on the 442 development bugs over a small logistic model and frozen. It
+ranks accepted cases by expected saving from review,
+$9p_2 + 6p_1q - 2(1 - p_2 - p_1q)$, using \score{}'s mass on levels 1 and 2
+($p_1, p_2$) and \noul{}'s probability $q$. On the development mix it cut
+cost by 12\% against no review (630 vs.\ 713) and captured 22\% of the
+oracle saving. But the development bugs were quota-sampled; reweighted to
+the natural label mix, a 10\% budget was projected to cost \emph{more}
+than no review. Before generating any fresh case, we pre-registered a
+feasibility check that varied only the budget (1--10\%), with a binding
+stop rule: viability required power $\geq 0.80$ to show lower cost than no
+review with at most 1{,}000 fresh bugs, and a negative median projected
+cost change, with uncertainty in error prevalence and ranking propagated
+by resampling. No budget was viable. The highest power was 0.20 (1\%
+budget, 1{,}000 bugs), with a median change of $-2$ and an 80\% range of
+$[-46, +20]$; every budget of 2\% or more had a positive median cost change
+(\cref{tab:budget}). The confirmatory study was therefore not run, no
+further designs were searched, and no fresh API calls were made. This is a
+feasibility assessment, not evidence that review cannot help: a good
+selector would save substantially, but the signals available here cannot
+identify the cases well enough to pay for the reviews.
+
+\section{Discussion}
+
+\para{Relation to prior work} The single-request audits
+\citep{deusser2026jev,meng2026jevaudit} establish that Jev's scores must
+be validated per task and question form; our primitive-level results add
+that, once chained, the only discriminative confidence can sit on a node
+the action never reads, and that \score{}'s confidence is silent about its
+own systematic bias. \citet{park2026riskreview} show that risk ranking
+and review-value ranking differ when errors differ in repairability. Our
+setting isolates a different source of the same gap, cost asymmetry
+\emph{within} an action: wrongly accepted serious bugs are expensive, but
+they share the action, the error history and largely the confidence of
+the correctly accepted ones, so no action-level or confidence-level
+signal can separate them.
+
+\para{Lessons for practitioners} First, a per-step confidence is not a
+workflow-level risk signal; the workflow's own action and that action's
+error history predicted failures better for every model we evaluated.
+Second, a better failure ranking should not be deployed as a review policy
+without scoring it in cost: here the most error-prone action was a cheap
+one, and ranking by error rate spent reviews where they saved nothing.
+Third, where review value exists it may sit in errors that no available
+signal separates; a pre-registered feasibility check can establish this
+before data are spent. Simple process checks also caught most of our own
+design defects before data existed (\cref{app:audits}).
+
+\para{What would make review pay} The oracle bounds the prize at 33--44\%
+of cost for the Jev-style models. Capturing it needs a signal that
+separates serious from minor bugs \emph{among accepted cases}, for example
+evidence the workflow does not currently read, or a primitive whose
+severity confidence tracks severity. Whether such a signal exists is an
+open question that our data cannot answer.
+
+\section{Conclusion}
+
+What a typed-decision workflow \emph{decided} predicted its failures
+better than how confident it was, on 500 new bugs and across five
+models. That prediction did not become a cheaper review policy: the
+expensive errors are real, but they hide inside actions that look alike,
+and a case-level score that targeted them failed a pre-registered
+feasibility check, so we stopped by rule. Workflow uncertainty has to be
+evaluated against the decision it is meant to improve.
+
+\section*{Limitations}
+
+Five models in one domain (bug triage) and one workflow; Jev was version
+1.13.0, and later versions or other domains may behave differently. The
+general instruct models use our prompt and readout, not a trained
+decision interface, so their absolute failure rates are not a clean
+comparison. Reference labels are not ground truth: Mozilla's sample
+excludes re-triaged bugs, and kernel severity is the reporter's claim with
+``normal'' as a default. The target action is a construct we defined, and
+all strategy results are conditional on it. Old public bugs may appear in
+the models' training data. The cross-model study has three disclosed
+amendments, including a readout bug fixed after interim results were seen.
+The intervention test used one budget and one cost table, both frozen in
+advance; reviewers are assumed correct, and the oracle is an upper bound,
+not a strategy. The feasibility check is a simulation on development
+data and is not confirmatory evidence in either direction. The protocol
+went through twelve dated revisions, each made before the data it
+affects existed.
+
+\section*{Ethical considerations}
+
+All bug reports are public; texts were privacy-scrubbed, and the released
+data will contain identifiers and hashes rather than report text. No
+human subjects were involved. API and GPU costs were modest. AI
+assistants were used for code, analysis scripts and drafting; the authors
+reviewed all claims, and every reported number is regenerated from
+committed results by a traceability script.

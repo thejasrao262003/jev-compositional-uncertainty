@@ -1,0 +1,41 @@
+% ACL Rolling Review submission (provisional target: ACL 2027).
+% Official style files from github.com/acl-org/acl-style-files at commit
+% d5adc823ff0f80f98c80405ca0ab66c68e684409, unmodified.
+% Build (from this directory): tectonic acl_main.tex
+% Shared with ../latex: macros.tex, references.bib, figure/table data.
+% "review" = anonymous submission; "preprint" = named, with page numbers.
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+
+\makeatletter
+\def\input@path{{../latex/}}
+\makeatother
+\input{macros}
+\pgfplotsset{table/search path={../latex}}
+\usepackage{float}
+\usepackage[capitalise]{cleveref}
+\newcommand{\para}[1]{\paragraph{#1.}}
+
+\title{Jev in a Multi-Step Workflow:\\ Decisions Predict Failures, Not Which Reviews Pay}
+\author{Anonymous ACL submission}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+\input{acl_abstract}
+\end{abstract}
+
+\input{acl_body}
+
+\bibliography{../latex/references}
+
+\appendix
+\input{acl_appendix}
+
+\end{document}
