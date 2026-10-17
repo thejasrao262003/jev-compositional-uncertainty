@@ -84,9 +84,16 @@ benchmarked zero-shot on 37 datasets (346{,}009 requests), where its
 \choice{} probabilities were well calibrated and supported selective
 prediction, while its binary probabilities ranked well but sat poorly
 relative to a 0.5 threshold, and thresholds tuned on training data
-improved F1 \citep{deusser2026jev}. A pre-registered calibration audit
-compared Jev with open and general-purpose classifiers on two public
-classification tasks \citep{meng2026jevaudit}, and a comparison on seven
+improved F1 \citep{deusser2026jev}. A calibration audit with released per-item
+outputs (described by its author as exploratory) compared Jev with open
+and general-purpose classifiers on SST-2 and AG News
+\citep{meng2026jevaudit}. It found that calibration changed with the
+question form (a yes/no form was underconfident, a choice form close to
+calibrated), that 71.6\% of four-class answers sat at exactly 1.00, so
+a threshold on the top-class probability had only 53 operating points,
+that one fitted temperature removed most miscalibration, and that no
+threshold on Jev's scores certified a 5\% automatic tier on the
+four-class task under its procedure; and a comparison on seven
 political-science replications found its calibration advantage over
 other models not consistent \citep{denney2026jev}. An early evidence
 audit of 28 papers on typed decision models found no independent
@@ -96,10 +103,15 @@ label-probability readouts, and proposed an evaluation checklist
 Jev-like decisions by reading answer-label logits in one forward pass
 \citep{geuter2026innerjev}, the same kind of readout we use for the
 general models in \cref{sec:crossmodel}. These studies evaluate single
-requests. Our results agree with them where they overlap: \choice{}
-confidence discriminates, and thresholds must be set on one's own data.
-On our task, \noul{}'s probability was uninformative about its own
-correctness, which suggests that binary-probability quality is
+requests; none studies \score{} inside a workflow, composition of
+dependent decisions, or the cost of human review. Our results agree with
+them where they overlap: \choice{} confidence is saturated yet
+discriminative, and thresholds must be validated on the target data,
+which our transfer result shows directly. On \noul{} the measures
+differ. The audits report calibration and accuracy on sentiment, where
+the yes/no form was accurate and recalibratable; on our regression
+question, \noul{}'s probability did not discriminate its own correctness
+(AUROC near or below 0.5). Binary-probability quality therefore looks
 task-dependent.
 
 \para{Calibration of single decisions} Post-hoc calibration
