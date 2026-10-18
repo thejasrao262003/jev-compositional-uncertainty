@@ -30,18 +30,19 @@ further models. Our contributions:
   than final-step confidence on 500 new bugs, and the gap replicates
   across five models from four sources. Most of the signal is the chosen
   action's historical error rate.
-  \item \textbf{Prediction is not intervention utility} (\cref{sec:intervention}).
-  At a fixed review budget and the pre-registered costs, that signal does
-not reduce cost, though an exploratory sensitivity analysis shows that
-whether review pays depends on the cost ratio; an oracle
-  locates the value in wrongly accepted cases that the signals cannot
-  isolate, and a case-level score fails a pre-registered feasibility
-  check, so the confirmatory study is stopped by rule before new data.
+  \item \textbf{Prediction is not review value} (\cref{sec:intervention}).
+  Under the pre-registered costs, no review strategy built on that signal
+  beats no review at a 10\% budget. An oracle locates the value in wrongly
+  accepted cases that the tested signals do not isolate, and an
+  exploratory sensitivity analysis shows that whether review pays at all
+  depends on the ratio of wrong-accept cost to review cost. A case-level
+  score failed a pre-registered feasibility check, so its confirmatory
+  study was stopped by rule before new data.
   \item \textbf{Supporting evidence} (\cref{sec:primitives}). Inside the
   workflow the three primitives' confidence signals behave differently,
   thresholds set on constructed data do not transfer, and \score{}
   compresses severity on both trackers. These results agree with the
-  single-request audits and explain the workflow-level findings.
+  single-request audits and help explain the workflow-level findings.
 \end{enumerate}
 All data collection and confirmatory analyses were pre-registered: each
 protocol was committed, with its SHA-256 hash, before the data it governs
@@ -372,7 +373,7 @@ severity to the middle level. The general instruct models push severity
 to ``blocking'' for 67--100\% of bugs whatever the true level, and are
 wrong far more often (72--80\% vs.\ 43--47\%).
 
-\section{Prediction is not intervention utility}
+\section{Does prediction make review pay?}
 \label{sec:intervention}
 
 \para{Design} Before computing any cost outcome, we pre-registered a
@@ -398,8 +399,8 @@ bootstrap intervals. $^{*}$Supported after Holm correction across all
 \para{Result} Two of ten pre-registered tests are supported (\cref{tab:itests}): A1 beats
 random for Jev and OpenJev, by about 10--12 cost units. A1 is not shown to
 beat confidence for any model (for Jev its point estimate is 4 units
-lower, with an interval spanning zero). Every review arm costs more than
-no review at all; for Jev, 658 with no review against 681--714 with review
+lower, with an interval spanning zero). Under the frozen table, every
+review arm costs more than no review at all; for Jev, 658 with no review against 681--714 with review
 (\cref{fig:intervention}).
 
 \begin{table}[t]
@@ -446,8 +447,8 @@ made under the frozen table and, by its rule, is not reopened.
 \legend{no review, action rule, confidence, random, oracle}
 \end{axis}
 \end{tikzpicture}
-\caption{Total cost at a 10\% review budget. No feasible strategy beats
-no review. A perfect reviewer (oracle, an upper bound using held-out
+\caption{Total cost at a 10\% review budget under the pre-registered
+cost table. No feasible strategy beats no review. A perfect reviewer (oracle, an upper bound using held-out
 outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%; for the
 general models, which escalate most cases themselves, it saves little or
 nothing.}
@@ -499,8 +500,9 @@ $[-46, +20]$; every budget of 2\% or more had a positive median cost change
 (\cref{tab:budget}). The confirmatory study was therefore not run, no
 further designs were searched, and no fresh API calls were made. This is a
 feasibility assessment, not evidence that review cannot help: a good
-selector would save substantially, but the signals available here cannot
-identify the cases well enough to pay for the reviews.
+selector would save substantially, but under the pre-registered costs the
+signals tested here did not identify the cases well enough to pay for the
+reviews.
 
 \section{Discussion}
 
@@ -514,8 +516,8 @@ and review-value ranking differ when errors differ in repairability. Our
 setting isolates a different source of the same gap, cost asymmetry
 \emph{within} an action: wrongly accepted serious bugs are expensive, but
 they share the action, the error history and largely the confidence of
-the correctly accepted ones, so no action-level or confidence-level
-signal can separate them.
+the correctly accepted ones, so neither the action-level rule nor the
+confidence signals we tested separated them.
 
 \para{Lessons for practitioners} First, a per-step confidence is not a
 workflow-level risk signal; the workflow's own action and that action's
@@ -540,33 +542,47 @@ open question that our data cannot answer.
 \section{Conclusion}
 
 What a typed-decision workflow \emph{decided} predicted its failures
-better than how confident it was, on 500 new bugs and across five
-models. Under the pre-registered costs, that prediction did not become a
-cheaper review policy, and whether review pays at all depends on the cost
-ratio: the expensive errors are real, but they hide inside actions that look alike,
-and a case-level score that targeted them failed a pre-registered
+better than how confident it was, on 500 new bugs and across five models.
+That signal ranks errors by how often they happen, not by what they cost.
+Under the pre-registered costs it did not make review pay, because the
+expensive errors hide inside actions that look alike; whether review pays
+at all turned on the ratio of wrong-accept cost to review cost; and a
+case-level score aimed at the expensive errors failed a pre-registered
 feasibility check, so we stopped by rule. Workflow uncertainty has to be
-evaluated against the decision it is meant to improve.
+evaluated against the decision it is meant to improve, in that decision's
+costs.
 
 \section*{Limitations}
 
-Five models in one domain (bug triage) and one workflow; Jev was version
-1.13.0, and later versions or other domains may behave differently. The
-general instruct models use our prompt and readout, not a trained
-decision interface, so their absolute failure rates are not a clean
-comparison. Reference labels are not ground truth: Mozilla's sample
-excludes re-triaged bugs, and kernel severity is the reporter's claim with
-``normal'' as a default. The target action is a construct we defined, and
-all strategy results are conditional on it. Old public bugs may appear in
-the models' training data. The cross-model study has three disclosed
-amendments, including a readout bug fixed after interim results were seen.
-The intervention test used one budget and one cost table, both frozen in
-advance; the cost-sensitivity analysis is exploratory, uses point
-estimates, and real operational costs are unknown; reviewers are assumed correct, and the oracle is an upper bound,
-not a strategy. The feasibility check is a simulation on development
-data and is not confirmatory evidence in either direction. The protocol
-went through twelve dated revisions, each made before the data it
-affects existed.
+\para{Scope} Five models in one domain (bug triage) and one workflow. Jev
+was version 1.13.0; later versions and other domains may behave
+differently. The general instruct models use our prompt and readout, not a
+trained decision interface, so their absolute failure rates are not a
+clean comparison.
+
+\para{Labels and target} Reference labels are not ground truth: Mozilla's
+sample excludes re-triaged bugs, and kernel severity is the reporter's
+claim, with ``normal'' as a default. The target action is a construct we
+defined, and all strategy results are conditional on it. Old public bugs
+may appear in the models' training data.
+
+\para{Reuse of the held-out set} The 500 held-out bugs were fresh for the
+prediction tests only. The intervention test was pre-registered after
+their prediction results were known (no cost outcome had been computed),
+and the cost-sensitivity analysis is post hoc on the same bugs, so neither
+is an independent confirmation.
+
+\para{Intervention and costs} One budget and one cost table were frozen in
+advance. The sensitivity analysis is exploratory and reports point
+estimates; real operational costs are unknown. Reviewers are assumed
+correct, and the oracle is an upper bound, not a strategy. The feasibility
+check is a simulation on development data and is not confirmatory evidence
+in either direction.
+
+\para{Protocol} The cross-model study has three disclosed amendments,
+including a readout bug fixed after interim results were seen. The
+development protocol went through twelve dated revisions, each made
+before the data it affects existed.
 
 \section*{Ethical considerations}
 

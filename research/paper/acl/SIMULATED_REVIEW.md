@@ -245,3 +245,32 @@ review *never* pays.
    commit first.
 4. **The ACL 2027 call page did not load.** Confirm the exact ARR deadline
    from the official site.
+
+---
+
+# Third pass (2026-10-18): changes made for rc2
+
+- **N1, resolved.** The new title is "Jev in a Multi-Step Workflow:
+  Predicting Failures Is Not Knowing Which Reviews Pay", applied in all
+  versions. It states the distinction the evidence supports and no longer
+  implies that review never pays.
+- **Overclaims removed.** These statements contradicted the sensitivity
+  grid:
+  - the section title is now "Does prediction make review pay?" (it was
+    "Prediction is not intervention utility");
+  - the Fig. 5 caption, "every review arm costs more", the case-level
+    conclusion and the Discussion are each qualified to the
+    pre-registered costs or to the signals tested.
+- **New limitation: reuse of the held-out set.** The intervention test was
+  pre-registered after the held-out prediction results were known, and the
+  sensitivity analysis is post hoc on the same 500 bugs. Neither is an
+  independent confirmation.
+- **Prose.** Contribution 2 and the conclusion are rewritten.
+  Limitations is split into labelled paragraphs.
+- **Checks.** 59 of 59 numbers trace. All four builds are clean.
+  Limitations starts on page 7.
+
+No open content decisions remain. Before submission:
+- fill in the Responsible NLP checklist;
+- upload the supplementary zips;
+- confirm the ARR deadline.

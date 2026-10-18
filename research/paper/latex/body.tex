@@ -47,7 +47,7 @@ and its decision utility.
   frozen estimator transfers unchanged to an independently trained
   Jev-style model. Most of the signal is the chosen action's historical
   error rate.
-  \item \textbf{Prediction is not intervention utility} (\cref{sec:intervention},
+  \item \textbf{Prediction is not review value} (\cref{sec:intervention},
   pre-registered). At a 10\% review budget and the pre-registered costs,
   that predictive signal does not yield a lower cost than
   confidence-ranked review, and no strategy beat no review; an
@@ -795,7 +795,7 @@ outcome.
 \para{Result} Two of ten pre-registered tests are supported: A1 beats
 random for Jev and OpenJev, by about 10--12 cost units. A1 is not shown
 to beat confidence for any model (for Jev its point estimate is 4 units
-lower, with an interval spanning zero). Every review arm costs more than no review at all; for Jev,
+lower, with an interval spanning zero). Under the frozen table, every review arm costs more than no review at all; for Jev,
 658 with no review against 681--714 with review (\cref{fig:intervention}).
 
 \begin{coltable}
@@ -841,7 +841,8 @@ made under the frozen table and, by its rule, is not reopened.
 \legend{no review, action rule, confidence, random, oracle}
 \end{axis}
 \end{tikzpicture}
-\caption{Total cost at a 10\% review budget. No feasible strategy beats
+\caption{Total cost at a 10\% review budget under the pre-registered
+cost table. No feasible strategy beats
 no review. A perfect reviewer (oracle, an upper bound using held-out
 outcomes) would cut Jev's cost by 44\% and OpenJev's by 33\%. For the general
 models it saves little or nothing: they escalate most cases themselves,
@@ -894,9 +895,9 @@ no review, with power near zero.
   calls were made.
 \end{itemize}
 This is a feasibility assessment, not evidence that review cannot help.
-The oracle shows that a good selector would save substantially; the
-signals available here cannot identify the cases well enough to pay for
-the reviews.
+The oracle shows that a good selector would save substantially; under
+the pre-registered costs the signals tested here did not identify the
+cases well enough to pay for the reviews.
 
 %======================================================================
 \section{Method: audits that caught defects}
@@ -956,6 +957,11 @@ selectivity on pilot inputs, before freezing any escalation policy.
   interim results were seen. On 3\% of OLMo-2's requests, most of the
   probability fell outside the allowed labels; excluding them does not
   change its result.
+  \item \textbf{Reuse of the held-out set.} The 500 held-out bugs were
+  fresh for the prediction tests only. The intervention test was
+  pre-registered after their prediction results were known (no cost
+  outcome had been computed), and the cost-sensitivity analysis is post
+  hoc on the same bugs, so neither is an independent confirmation.
   \item \textbf{Intervention scope.} One budget and one cost table, both
   frozen in advance; the cost-sensitivity analysis is exploratory, uses
   point estimates, and real operational costs are unknown. Reviewers are assumed correct, and the oracle is an
