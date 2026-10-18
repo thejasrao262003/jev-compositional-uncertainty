@@ -163,3 +163,85 @@ moderate).**
   two tracked files contain a local `/Users/...` path
   (`research/data/characterization/stage{0,1}_run_metadata.json`). Scrub
   them in the archive.
+
+---
+
+# Second pass (2026-10-18), after the cost-sensitivity analysis
+
+**State reviewed:** `acl_main.pdf`.
+- **Length:** Limitations starts on page 7, so the content is within the
+  8-page limit.
+- **Anonymity:** no identifying text in the PDF and no author metadata.
+- **Numbers:** 59 of 59 trace to result files.
+- **Supplement:** builds, and its self-audit passes.
+
+## Status of the first-pass weaknesses
+
+| | First-pass issue | Now |
+|---|---|---|
+| W1 | Prediction result close to structural | Acknowledged in §6. The confidence ablation is now reported (+0.004 to +0.078). Confidence is redundant with the decisions for the Jev-style models and adds a little for the weaker general models. **Resolved as far as text can resolve it.** |
+| W2 | Single cost table | Exploratory grid added (Table 4). **The answer is not reassuring for the headline.** Within a factor of 2 of the frozen costs, review pays for Jev, OpenJev and Qwen2.5 (and marginally for Phi-3.5). Only OLMo-2 is cost-robust. The paper now says this in the abstract, intro, §7, conclusion and Limitations. |
+| W3 | Incremental on Park et al. | Unchanged. The sensitivity result *strengthens* the link: review value is governed by the cost ratio relative to achievable precision, which is Park et al.'s point made quantitatively for a typed workflow. |
+| W4–W9 | | Unchanged; all disclosed. |
+| W6 | Pre-registration not verifiable | The supplement now carries a manifest. It lists the commit and date of each protocol, verifies both `.sha256` locks, and shows that each protocol precedes its results and the first held-out API call. |
+
+## New issue found in this pass
+
+**N1. The title now overstates (major).**
+- "Decisions Predict Failures, **Not Which Reviews Pay**" reads as a
+  general claim.
+- In the sensitivity grid at m = 2, the decision-based action rule is the
+  *best* arm for Jev and saves 44–69 units against no review. There, the
+  decisions *do* identify reviews that pay.
+- Under the pre-registered costs the title is true. Across reasonable
+  costs it is not.
+- A reviewer who reads Table 4 will flag the mismatch.
+
+Options:
+- **(a, recommended)** "Jev in a Multi-Step Workflow: Predicting Failures
+  Is Not the Same as Knowing Which Reviews Pay". This states the
+  conceptual distinction the evidence supports, since error-rate rankings
+  were the worst way to spend reviews.
+- **(b)** Keep the title and rely on the qualified abstract. This carries
+  more reviewer risk.
+
+**N2. Small reversals could be over-read (minor).** Some grid cells
+reverse by only a few units, for example Jev −2. The text says these lie
+inside the original intervals. No change is needed.
+
+**N3. The intervention section is now the densest part of the paper
+(minor).** It holds three tables and a figure. If space is needed later,
+the per-test table (Table 3) could move to the appendix. It is not needed
+at the current length.
+
+## Verdict, second pass
+
+- **Soundness:** 3.5 → 4 out of 5. The sensitivity analysis and the
+  manifest answer the two most likely soundness objections, even though
+  one of the answers is unfavorable to the original framing.
+- **Excitement:** about 2.5 out of 5, unchanged. The paper is now more
+  honest, but no more surprising.
+- **Overall:** borderline main track. Findings remains the most likely
+  outcome.
+
+The contribution that survives is this:
+- in a dependent typed-decision workflow, the signals that predict
+  failure rank errors by frequency, not cost;
+- under the pre-registered economics they did not make review pay;
+- whether review pays at all is set by the cost ratio relative to the
+  precision those signals can reach.
+
+That is coherent and defensible, provided the title stops implying that
+review *never* pays.
+
+## Remaining actions before submission
+
+1. **Title decision (N1).** This is the only open content decision.
+2. **Responsible NLP checklist.** Filled in on the submission form.
+   Answers are available from the paper: models and versions, data
+   licenses (public trackers), compute (one H100; API calls), AI-assistant
+   use (declared under Ethical considerations), and the supplement.
+3. **Upload the two supplementary zips.** Rebuild them from the final
+   commit first.
+4. **The ACL 2027 call page did not load.** Confirm the exact ARR deadline
+   from the official site.
