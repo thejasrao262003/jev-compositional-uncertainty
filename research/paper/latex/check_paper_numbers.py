@@ -124,6 +124,21 @@ need("budget check best power", f"highest power was {best[2]['power']:.2f} (1\\%
 need("budget check range", f"[{best[2]['central_80pct'][0]:.0f}, +{best[2]['central_80pct'][1]:.0f}]")
 need("not viable", "No budget was viable") if not bc["decision"]["viable"] else None
 
+# Exploratory cost sensitivity and confidence ablation (added 2026-10-18)
+cs = json.loads((RES / "intervention_cost_sensitivity.json").read_text())
+jv = lambda c: cs["cells"][c]["models"]["Jev 1.13"]["best_minus_no_review"]
+need("sens Jev m=2 range", f"for Jev, {-round(jv('m=2,h=1'))}--{-round(jv('m=2,h=0.5'))} units")
+need("sens Jev small reversal", f"(Jev ${round(jv('m=1,h=0.5'))}$ at $m = 1$")
+need("sens only OLMo robust", "cost-robust only for OLMo-2") if [m for m, v in cs["summary"].items() if v["verdict"] == "cost-robust"] == ["allenai/OLMo-2-1124-7B-Instruct"] else None
+need("sens A1>C 12/16", f"in {cs['summary']['Jev 1.13']['cells_A1_beats_C']} of 16 cells") if cs['summary']['Jev 1.13']['cells_A1_beats_C'] == cs['summary']['openjev/openjev-27B']['cells_A1_beats_C'] else None
+rev = [m for m, v in cs["summary"].items() if "m=2,h=1" in v["all_cells_where_review_pays"]]
+need("sens three of five", f"{['zero','one','two','three','four','five'][len(rev)]} of five models when wrong accepts")
+cmx = json.loads((RES / "openjev_crossmodel_analysis.json").read_text())["models"]
+ho2 = json.loads((RES / "heldout_analysis.json").read_text())["secondary_descriptive"]["pooled"]
+gains = [round(ho2["E_all"] - ho2["E_dec"], 3)] + [round(cmx[k]["X3_X4_descriptive"]["E_all"] - cmx[k]["X3_X4_descriptive"]["E_dec"], 3)
+         for k in ("openjev/openjev-27B", "Qwen/Qwen2.5-7B-Instruct", "microsoft/Phi-3.5-mini-instruct", "allenai/OLMo-2-1124-7B-Instruct")]
+need("E_all-E_dec", f"by +{gains[0]:.3f} (Jev), +{gains[1]:.3f} (OpenJev) and +{gains[2]:.3f} (Qwen2.5), but by +{gains[3]:.3f} (Phi-3.5) and +{gains[4]:.3f} (OLMo-2)")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")

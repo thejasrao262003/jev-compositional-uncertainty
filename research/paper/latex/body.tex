@@ -48,9 +48,11 @@ and its decision utility.
   Jev-style model. Most of the signal is the chosen action's historical
   error rate.
   \item \textbf{Prediction is not intervention utility} (\cref{sec:intervention},
-  pre-registered). At a 10\% review budget, that predictive signal does
-  not yield a lower cost than confidence-ranked review, and no strategy
-  beat no review. An oracle shows the reason: the expensive errors exist,
+  pre-registered). At a 10\% review budget and the pre-registered costs,
+  that predictive signal does not yield a lower cost than
+  confidence-ranked review, and no strategy beat no review; an
+  exploratory sensitivity analysis shows that whether review pays depends
+  on the cost ratio. An oracle shows the reason: the expensive errors exist,
   but the signals we tested could not isolate them within an action. A
   case-level score developed on training bugs did not meet a
   pre-registered feasibility criterion under the natural bug mix, so the
@@ -749,7 +751,16 @@ sit at chance for workflow failure:
   \item severity entropy: 0.40--0.55.
 \end{itemize}
 The predictive information is therefore mostly \emph{which action was
-chosen} and how often that action has been wrong before.
+chosen} and how often that action has been wrong before. Part of this is
+structural: the action and the target are both outputs of the same rule
+$F$, so an action's error rate is a property of the workflow as much as of
+the model. Confidence is not useless, though: adding the uncertainty
+features to the decision features raises held-out AUROC by +0.006 (Jev),
++0.004 (OpenJev) and +0.012 (Qwen2.5), but by +0.054 (Phi-3.5) and +0.078
+(OLMo-2). These are point estimates without paired intervals. For the
+Jev-style models confidence is largely redundant with the decisions; for
+the weaker general models raw token probabilities carry some extra
+information.
 
 \para{Failure modes differ by model family}
 \begin{itemize}
@@ -786,6 +797,33 @@ random for Jev and OpenJev, by about 10--12 cost units. A1 is not shown
 to beat confidence for any model (for Jev its point estimate is 4 units
 lower, with an interval spanning zero). Every review arm costs more than no review at all; for Jev,
 658 with no review against 681--714 with review (\cref{fig:intervention}).
+
+\begin{coltable}
+\centering
+\caption{Exploratory cost sensitivity: best feasible arm minus no review
+(negative, in bold: review pays), with rankings frozen as pre-registered.
+$m$ scales wrong-accept costs, $h$ is the human cost per escalation, and
+$p^{*}$ is the break-even precision for reviewing an accepted case whose
+target is \emph{escalate}. $^{\dagger}$The pre-registered table. Point
+estimates only.}
+\label{tab:costsens}
+\small
+\resizebox{\linewidth}{!}{\input{table_cost_sensitivity.tex}}
+\end{coltable}
+
+\para{Sensitivity to costs (exploratory)} The pre-registered result holds
+under one frozen cost table. In a post-hoc analysis planned before
+computing it, we re-scored the same frozen rankings on a grid of cost
+ratios within a factor of 2 of that table (\cref{tab:costsens}). The
+conclusion is cost-robust only for OLMo-2. For Jev, OpenJev and Qwen2.5,
+review pays when wrong accepts cost twice as much (for Jev, 44--69 units
+below no review) or when review costs half as much, because the
+break-even precision $p^{*}$ then falls to about the 14--16\% share of
+wrongly accepted cases. Some reversals are small (Jev $-2$ at $m = 1$,
+$h = 0.5$) and lie well inside the intervals of the original tests. The
+ordering is more stable than the sign: the action rule beats random for
+both Jev-style models in 12 of 16 cells. The stopping decision below was
+made under the frozen table and, by its rule, is not reopened.
 
 \begin{colfigure}
 \centering
@@ -919,7 +957,8 @@ selectivity on pilot inputs, before freezing any escalation policy.
   probability fell outside the allowed labels; excluding them does not
   change its result.
   \item \textbf{Intervention scope.} One budget and one cost table, both
-  frozen in advance. Reviewers are assumed correct, and the oracle is an
+  frozen in advance; the cost-sensitivity analysis is exploratory, uses
+  point estimates, and real operational costs are unknown. Reviewers are assumed correct, and the oracle is an
   upper bound, not a strategy.
   \item \textbf{Protocol revisions.} The protocol went through twelve
   revisions. All are dated and disclosed, and each was made before the
@@ -970,7 +1009,10 @@ driven mostly by the chosen action's historical error rate. Jev-style
 decision models and general instruct models failed in different ways:
 compression versus over-escalation.
 
-That prediction did not become a cheaper review policy. The expensive
+Under the pre-registered costs, that prediction did not become a
+cheaper review policy, and an exploratory sensitivity analysis shows that
+whether review pays at all depends on the ratio of wrong-accept cost to
+review cost. The expensive
 errors are real, but they hide inside actions that look alike. Knowing
 which decisions are likely wrong is different from knowing which are
 worth correcting. Workflow uncertainty has to be evaluated against the

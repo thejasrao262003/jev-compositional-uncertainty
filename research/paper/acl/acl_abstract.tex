@@ -10,9 +10,11 @@ on what the workflow decided ranked wrong actions better than final-step
 confidence (AUROC 0.76 vs.\ 0.55). The gap replicated across five models
 from four sources, and Jev's estimator transferred unchanged to an
 independently trained Jev-style model; the signal was mostly the chosen
-action's historical error rate. Yet it did not yield a cost-effective
-review policy: at a 10\% review budget no strategy cost less than no
-review. An oracle shows the expensive errors exist, but the signals
+action's historical error rate. Yet under the pre-registered costs it did
+not yield a cost-effective review policy: at a 10\% review budget no
+strategy cost less than no review, though an exploratory sensitivity
+analysis shows this reverses for three of five models when wrong accepts
+cost twice as much. An oracle shows the expensive errors exist, but the signals
 tested could not isolate them, and a case-level score failed a
 pre-registered feasibility check (power at most 0.20), so the
 confirmatory study was stopped before new data. Predicting which

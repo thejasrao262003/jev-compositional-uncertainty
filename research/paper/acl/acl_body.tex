@@ -31,7 +31,9 @@ further models. Our contributions:
   across five models from four sources. Most of the signal is the chosen
   action's historical error rate.
   \item \textbf{Prediction is not intervention utility} (\cref{sec:intervention}).
-  At a fixed review budget that signal does not reduce cost; an oracle
+  At a fixed review budget and the pre-registered costs, that signal does
+not reduce cost, though an exploratory sensitivity analysis shows that
+whether review pays depends on the cost ratio; an oracle
   locates the value in wrongly accepted cases that the signals cannot
   isolate, and a case-level score fails a pre-registered feasibility
   check, so the confirmatory study is stopped by rule before new data.
@@ -358,6 +360,12 @@ the same rule $F$, so an action's error rate is a property of the
 workflow as much as of the model. We therefore do not read the result as
 the estimator being sophisticated, but as evidence that per-step
 confidence misses information the workflow itself already exposes.
+Confidence is not useless, though: adding the uncertainty features to the
+decision features raises held-out AUROC by +0.006 (Jev), +0.004 (OpenJev)
+and +0.012 (Qwen2.5), but by +0.054 (Phi-3.5) and +0.078 (OLMo-2). These
+are point estimates without paired intervals. For the Jev-style models
+confidence is largely redundant with the decisions; for the weaker general
+models raw token probabilities carry some extra information.
 
 \para{Failure modes differ by model family} Jev and OpenJev both pull
 severity to the middle level. The general instruct models push severity
@@ -393,6 +401,33 @@ beat confidence for any model (for Jev its point estimate is 4 units
 lower, with an interval spanning zero). Every review arm costs more than
 no review at all; for Jev, 658 with no review against 681--714 with review
 (\cref{fig:intervention}).
+
+\begin{table}[t]
+\centering
+\small
+\resizebox{\linewidth}{!}{\input{table_cost_sensitivity.tex}}
+\caption{Exploratory cost sensitivity: best feasible arm minus no review
+(negative, in bold: review pays), with rankings frozen as pre-registered.
+$m$ scales wrong-accept costs, $h$ is the human cost per escalation, and
+$p^{*}$ is the break-even precision for reviewing an accepted case whose
+target is \emph{escalate}. $^{\dagger}$The pre-registered table. Point
+estimates only.}
+\label{tab:costsens}
+\end{table}
+
+\para{Sensitivity to costs (exploratory)} The pre-registered result holds
+under one frozen cost table. In a post-hoc analysis planned before
+computing it, we re-scored the same frozen rankings on a grid of cost
+ratios within a factor of 2 of that table (\cref{tab:costsens}). The
+conclusion is cost-robust only for OLMo-2. For Jev, OpenJev and Qwen2.5,
+review pays when wrong accepts cost twice as much (for Jev, 44--69 units
+below no review) or when review costs half as much, because the
+break-even precision $p^{*}$ then falls to about the 14--16\% share of
+wrongly accepted cases. Some reversals are small (Jev $-2$ at $m = 1$,
+$h = 0.5$) and lie well inside the intervals of the original tests. The
+ordering is more stable than the sign: the action rule beats random for
+both Jev-style models in 12 of 16 cells. The stopping decision below was
+made under the frozen table and, by its rule, is not reopened.
 
 \begin{figure}[t]
 \centering
@@ -487,7 +522,9 @@ workflow-level risk signal; the workflow's own action and that action's
 error history predicted failures better for every model we evaluated.
 Second, a better failure ranking should not be deployed as a review policy
 without scoring it in cost: here the most error-prone action was a cheap
-one, and ranking by error rate spent reviews where they saved nothing.
+one, ranking by error rate spent reviews where they saved nothing, and
+whether any review paid depended on the ratio of wrong-accept cost to
+review cost.
 Third, where review value exists it may sit in errors that no available
 signal separates; a pre-registered feasibility check can establish this
 before data are spent. Simple process checks also caught most of our own
@@ -504,8 +541,9 @@ open question that our data cannot answer.
 
 What a typed-decision workflow \emph{decided} predicted its failures
 better than how confident it was, on 500 new bugs and across five
-models. That prediction did not become a cheaper review policy: the
-expensive errors are real, but they hide inside actions that look alike,
+models. Under the pre-registered costs, that prediction did not become a
+cheaper review policy, and whether review pays at all depends on the cost
+ratio: the expensive errors are real, but they hide inside actions that look alike,
 and a case-level score that targeted them failed a pre-registered
 feasibility check, so we stopped by rule. Workflow uncertainty has to be
 evaluated against the decision it is meant to improve.
@@ -523,7 +561,8 @@ all strategy results are conditional on it. Old public bugs may appear in
 the models' training data. The cross-model study has three disclosed
 amendments, including a readout bug fixed after interim results were seen.
 The intervention test used one budget and one cost table, both frozen in
-advance; reviewers are assumed correct, and the oracle is an upper bound,
+advance; the cost-sensitivity analysis is exploratory, uses point
+estimates, and real operational costs are unknown; reviewers are assumed correct, and the oracle is an upper bound,
 not a strategy. The feasibility check is a simulation on development
 data and is not confirmatory evidence in either direction. The protocol
 went through twelve dated revisions, each made before the data it

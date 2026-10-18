@@ -18,9 +18,11 @@ Second, this held across five evaluated models from four sources,
 including an independently trained Jev-style model, to which Jev's frozen
 estimator transferred unchanged; the signal was mostly the chosen
 action's historical error rate.
-Third, that predictive signal did not become a cost-effective review
-policy. At a 10\% review budget no review strategy cost less than no
-review at all; the action-based rule beat random selection for the two
+Third, under the pre-registered costs that predictive signal did not
+become a cost-effective review policy. At a 10\% review budget no review
+strategy cost less than no review at all (an exploratory sensitivity
+analysis shows this reverses for three of five models when wrong accepts
+cost twice as much); the action-based rule beat random selection for the two
 Jev-style models but was not shown to beat confidence-ranked review. An
 oracle shows the expensive errors exist, but the signals we tested could
 not isolate them within an action. A case-level score developed on

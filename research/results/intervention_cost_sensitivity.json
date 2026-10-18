@@ -1,0 +1,1479 @@
+{
+  "status": "EXPLORATORY / POST HOC; rankings frozen under the original table; point estimates only",
+  "grid": {
+    "m_accept_error_multiplier": [
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "h_human_cost_per_escalation": [
+      0.25,
+      0.5,
+      1,
+      2
+    ]
+  },
+  "cells": {
+    "m=0.5,h=0.25": {
+      "break_even_precision_escalate_target": 0.208,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 383.25,
+          "arms": {
+            "A1": 406.57,
+            "A2": 401.68,
+            "E": 401.68,
+            "B": 400.75,
+            "B2": 399.75,
+            "C": 404.98
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": 16.5,
+          "A1_minus_C": 1.59,
+          "A1_minus_B": 5.82,
+          "oracle": 229.75
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 524.0,
+          "arms": {
+            "A1": 533.92,
+            "A2": 533.92,
+            "E": 532.09,
+            "B": 535.5,
+            "B2": 534.5,
+            "C": 534.62
+          },
+          "best_arm": "E",
+          "best_minus_no_review": 8.09,
+          "A1_minus_C": -0.7,
+          "A1_minus_B": -1.58,
+          "oracle": 503.5
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 525.75,
+          "arms": {
+            "A1": 541.0,
+            "A2": 541.0,
+            "E": 541.0,
+            "B": 541.0,
+            "B2": 541.0,
+            "C": 541.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 15.25,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 541.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 485.25,
+          "arms": {
+            "A1": 529.16,
+            "A2": 529.16,
+            "E": 528.89,
+            "B": 524.75,
+            "B2": 524.75,
+            "C": 529.5
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 39.5,
+          "A1_minus_C": -0.34,
+          "A1_minus_B": 4.41,
+          "oracle": 524.75
+        },
+        "openjev/openjev-27B": {
+          "no_review": 387.5,
+          "arms": {
+            "A1": 412.12,
+            "A2": 411.64,
+            "E": 411.64,
+            "B": 400.0,
+            "B2": 412.0,
+            "C": 411.94
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 12.5,
+          "A1_minus_C": 0.18,
+          "A1_minus_B": 12.12,
+          "oracle": 264.0
+        }
+      }
+    },
+    "m=0.5,h=0.5": {
+      "break_even_precision_escalate_target": 0.25,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 417.5,
+          "arms": {
+            "A1": 453.32,
+            "A2": 448.43,
+            "E": 448.43,
+            "B": 447.5,
+            "B2": 446.5,
+            "C": 451.73
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": 29.0,
+          "A1_minus_C": 1.59,
+          "A1_minus_B": 5.82,
+          "oracle": 276.5
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 629.0,
+          "arms": {
+            "A1": 651.42,
+            "A2": 651.42,
+            "E": 649.59,
+            "B": 653.0,
+            "B2": 652.0,
+            "C": 652.12
+          },
+          "best_arm": "E",
+          "best_minus_no_review": 20.59,
+          "A1_minus_C": -0.7,
+          "A1_minus_B": -1.58,
+          "oracle": 621.0
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 646.5,
+          "arms": {
+            "A1": 666.0,
+            "A2": 666.0,
+            "E": 666.0,
+            "B": 666.0,
+            "B2": 666.0,
+            "C": 666.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 19.5,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 666.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 594.5,
+          "arms": {
+            "A1": 650.91,
+            "A2": 650.91,
+            "E": 650.64,
+            "B": 646.5,
+            "B2": 646.5,
+            "C": 651.25
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 52.0,
+          "A1_minus_C": -0.34,
+          "A1_minus_B": 4.41,
+          "oracle": 646.5
+        },
+        "openjev/openjev-27B": {
+          "no_review": 434.0,
+          "arms": {
+            "A1": 471.12,
+            "A2": 470.64,
+            "E": 470.64,
+            "B": 459.0,
+            "B2": 471.0,
+            "C": 470.94
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 25.0,
+          "A1_minus_C": 0.18,
+          "A1_minus_B": 12.12,
+          "oracle": 323.0
+        }
+      }
+    },
+    "m=0.5,h=1": {
+      "break_even_precision_escalate_target": 0.333,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 486.0,
+          "arms": {
+            "A1": 546.82,
+            "A2": 541.93,
+            "E": 541.93,
+            "B": 541.0,
+            "B2": 540.0,
+            "C": 545.23
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": 54.0,
+          "A1_minus_C": 1.59,
+          "A1_minus_B": 5.82,
+          "oracle": 370.0
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 839.0,
+          "arms": {
+            "A1": 886.42,
+            "A2": 886.42,
+            "E": 884.59,
+            "B": 888.0,
+            "B2": 887.0,
+            "C": 887.12
+          },
+          "best_arm": "E",
+          "best_minus_no_review": 45.59,
+          "A1_minus_C": -0.7,
+          "A1_minus_B": -1.58,
+          "oracle": 856.0
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 888.0,
+          "arms": {
+            "A1": 916.0,
+            "A2": 916.0,
+            "E": 916.0,
+            "B": 916.0,
+            "B2": 916.0,
+            "C": 916.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 28.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 916.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 813.0,
+          "arms": {
+            "A1": 894.41,
+            "A2": 894.41,
+            "E": 894.14,
+            "B": 890.0,
+            "B2": 890.0,
+            "C": 894.75
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 77.0,
+          "A1_minus_C": -0.34,
+          "A1_minus_B": 4.41,
+          "oracle": 890.0
+        },
+        "openjev/openjev-27B": {
+          "no_review": 527.0,
+          "arms": {
+            "A1": 589.12,
+            "A2": 588.64,
+            "E": 588.64,
+            "B": 577.0,
+            "B2": 589.0,
+            "C": 588.94
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 50.0,
+          "A1_minus_C": 0.18,
+          "A1_minus_B": 12.12,
+          "oracle": 441.0
+        }
+      }
+    },
+    "m=0.5,h=2": {
+      "break_even_precision_escalate_target": 0.5,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 623.0,
+          "arms": {
+            "A1": 733.82,
+            "A2": 728.93,
+            "E": 728.93,
+            "B": 728.0,
+            "B2": 727.0,
+            "C": 732.23
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": 104.0,
+          "A1_minus_C": 1.59,
+          "A1_minus_B": 5.82,
+          "oracle": 557.0
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1259.0,
+          "arms": {
+            "A1": 1356.42,
+            "A2": 1356.42,
+            "E": 1354.59,
+            "B": 1358.0,
+            "B2": 1357.0,
+            "C": 1357.12
+          },
+          "best_arm": "E",
+          "best_minus_no_review": 95.59,
+          "A1_minus_C": -0.7,
+          "A1_minus_B": -1.58,
+          "oracle": 1326.0
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 1371.0,
+          "arms": {
+            "A1": 1416.0,
+            "A2": 1416.0,
+            "E": 1416.0,
+            "B": 1416.0,
+            "B2": 1416.0,
+            "C": 1416.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 45.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 1416.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 1250.0,
+          "arms": {
+            "A1": 1381.41,
+            "A2": 1381.41,
+            "E": 1381.14,
+            "B": 1377.0,
+            "B2": 1377.0,
+            "C": 1381.75
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 127.0,
+          "A1_minus_C": -0.34,
+          "A1_minus_B": 4.41,
+          "oracle": 1377.0
+        },
+        "openjev/openjev-27B": {
+          "no_review": 713.0,
+          "arms": {
+            "A1": 825.12,
+            "A2": 824.64,
+            "E": 824.64,
+            "B": 813.0,
+            "B2": 825.0,
+            "C": 824.94
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 100.0,
+          "A1_minus_C": 0.18,
+          "A1_minus_B": 12.12,
+          "oracle": 677.0
+        }
+      }
+    },
+    "m=1,h=0.25": {
+      "break_even_precision_escalate_target": 0.114,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 555.25,
+          "arms": {
+            "A1": 543.46,
+            "A2": 573.68,
+            "E": 573.68,
+            "B": 547.75,
+            "B2": 540.75,
+            "C": 553.29
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -14.5,
+          "A1_minus_C": -9.83,
+          "A1_minus_B": -4.29,
+          "oracle": 229.75
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 588.0,
+          "arms": {
+            "A1": 560.96,
+            "A2": 560.96,
+            "E": 557.5,
+            "B": 559.5,
+            "B2": 558.5,
+            "C": 558.62
+          },
+          "best_arm": "E",
+          "best_minus_no_review": -30.5,
+          "A1_minus_C": 2.34,
+          "A1_minus_B": 1.46,
+          "oracle": 503.5
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 530.75,
+          "arms": {
+            "A1": 541.0,
+            "A2": 541.0,
+            "E": 541.0,
+            "B": 541.0,
+            "B2": 541.0,
+            "C": 541.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 10.25,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 541.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 503.25,
+          "arms": {
+            "A1": 533.12,
+            "A2": 533.12,
+            "E": 532.61,
+            "B": 524.75,
+            "B2": 524.75,
+            "C": 533.21
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 21.5,
+          "A1_minus_C": -0.09,
+          "A1_minus_B": 8.37,
+          "oracle": 524.75
+        },
+        "openjev/openjev-27B": {
+          "no_review": 520.5,
+          "arms": {
+            "A1": 511.54,
+            "A2": 544.64,
+            "E": 544.64,
+            "B": 497.0,
+            "B2": 524.0,
+            "C": 523.76
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -23.5,
+          "A1_minus_C": -12.22,
+          "A1_minus_B": 14.54,
+          "oracle": 264.0
+        }
+      }
+    },
+    "m=1,h=0.5": {
+      "break_even_precision_escalate_target": 0.136,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 589.5,
+          "arms": {
+            "A1": 590.21,
+            "A2": 620.43,
+            "E": 620.43,
+            "B": 594.5,
+            "B2": 587.5,
+            "C": 600.04
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -2.0,
+          "A1_minus_C": -9.83,
+          "A1_minus_B": -4.29,
+          "oracle": 276.5
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 693.0,
+          "arms": {
+            "A1": 678.46,
+            "A2": 678.46,
+            "E": 675.0,
+            "B": 677.0,
+            "B2": 676.0,
+            "C": 676.12
+          },
+          "best_arm": "E",
+          "best_minus_no_review": -18.0,
+          "A1_minus_C": 2.34,
+          "A1_minus_B": 1.46,
+          "oracle": 621.0
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 651.5,
+          "arms": {
+            "A1": 666.0,
+            "A2": 666.0,
+            "E": 666.0,
+            "B": 666.0,
+            "B2": 666.0,
+            "C": 666.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 14.5,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 666.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 612.5,
+          "arms": {
+            "A1": 654.87,
+            "A2": 654.87,
+            "E": 654.36,
+            "B": 646.5,
+            "B2": 646.5,
+            "C": 654.96
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 34.0,
+          "A1_minus_C": -0.09,
+          "A1_minus_B": 8.37,
+          "oracle": 646.5
+        },
+        "openjev/openjev-27B": {
+          "no_review": 567.0,
+          "arms": {
+            "A1": 570.54,
+            "A2": 603.64,
+            "E": 603.64,
+            "B": 556.0,
+            "B2": 583.0,
+            "C": 582.76
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -11.0,
+          "A1_minus_C": -12.22,
+          "A1_minus_B": 14.54,
+          "oracle": 323.0
+        }
+      }
+    },
+    "m=1,h=1": {
+      "break_even_precision_escalate_target": 0.182,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 658,
+          "arms": {
+            "A1": 683.71,
+            "A2": 713.93,
+            "E": 713.93,
+            "B": 688.0,
+            "B2": 681.0,
+            "C": 693.54
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": 23.0,
+          "A1_minus_C": -9.83,
+          "A1_minus_B": -4.29,
+          "oracle": 370
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 903,
+          "arms": {
+            "A1": 913.46,
+            "A2": 913.46,
+            "E": 910.0,
+            "B": 912.0,
+            "B2": 911.0,
+            "C": 911.12
+          },
+          "best_arm": "E",
+          "best_minus_no_review": 7.0,
+          "A1_minus_C": 2.34,
+          "A1_minus_B": 1.46,
+          "oracle": 856
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 893,
+          "arms": {
+            "A1": 916.0,
+            "A2": 916.0,
+            "E": 916.0,
+            "B": 916.0,
+            "B2": 916.0,
+            "C": 916.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 23.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 916
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 831,
+          "arms": {
+            "A1": 898.37,
+            "A2": 898.37,
+            "E": 897.86,
+            "B": 890.0,
+            "B2": 890.0,
+            "C": 898.46
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 59.0,
+          "A1_minus_C": -0.09,
+          "A1_minus_B": 8.37,
+          "oracle": 890
+        },
+        "openjev/openjev-27B": {
+          "no_review": 660,
+          "arms": {
+            "A1": 688.54,
+            "A2": 721.64,
+            "E": 721.64,
+            "B": 674.0,
+            "B2": 701.0,
+            "C": 700.76
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 14.0,
+          "A1_minus_C": -12.22,
+          "A1_minus_B": 14.54,
+          "oracle": 441
+        }
+      }
+    },
+    "m=1,h=2": {
+      "break_even_precision_escalate_target": 0.273,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 795,
+          "arms": {
+            "A1": 870.71,
+            "A2": 900.93,
+            "E": 900.93,
+            "B": 875.0,
+            "B2": 868.0,
+            "C": 880.54
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": 73.0,
+          "A1_minus_C": -9.83,
+          "A1_minus_B": -4.29,
+          "oracle": 557
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1323,
+          "arms": {
+            "A1": 1383.46,
+            "A2": 1383.46,
+            "E": 1380.0,
+            "B": 1382.0,
+            "B2": 1381.0,
+            "C": 1381.12
+          },
+          "best_arm": "E",
+          "best_minus_no_review": 57.0,
+          "A1_minus_C": 2.34,
+          "A1_minus_B": 1.46,
+          "oracle": 1326
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 1376,
+          "arms": {
+            "A1": 1416.0,
+            "A2": 1416.0,
+            "E": 1416.0,
+            "B": 1416.0,
+            "B2": 1416.0,
+            "C": 1416.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 40.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 1416
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 1268,
+          "arms": {
+            "A1": 1385.37,
+            "A2": 1385.37,
+            "E": 1384.86,
+            "B": 1377.0,
+            "B2": 1377.0,
+            "C": 1385.46
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 109.0,
+          "A1_minus_C": -0.09,
+          "A1_minus_B": 8.37,
+          "oracle": 1377
+        },
+        "openjev/openjev-27B": {
+          "no_review": 846,
+          "arms": {
+            "A1": 924.54,
+            "A2": 957.64,
+            "E": 957.64,
+            "B": 910.0,
+            "B2": 937.0,
+            "C": 936.76
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 64.0,
+          "A1_minus_C": -12.22,
+          "A1_minus_B": 14.54,
+          "oracle": 677
+        }
+      }
+    },
+    "m=2,h=0.25": {
+      "break_even_precision_escalate_target": 0.06,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 899.25,
+          "arms": {
+            "A1": 817.26,
+            "A2": 917.68,
+            "E": 917.68,
+            "B": 841.75,
+            "B2": 822.75,
+            "C": 849.9
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -81.99,
+          "A1_minus_C": -32.64,
+          "A1_minus_B": -24.49,
+          "oracle": 229.75
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 716.0,
+          "arms": {
+            "A1": 615.05,
+            "A2": 615.05,
+            "E": 608.32,
+            "B": 607.5,
+            "B2": 606.5,
+            "C": 606.62
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -109.5,
+          "A1_minus_C": 8.43,
+          "A1_minus_B": 7.55,
+          "oracle": 503.5
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 540.75,
+          "arms": {
+            "A1": 541.0,
+            "A2": 541.0,
+            "E": 541.0,
+            "B": 541.0,
+            "B2": 541.0,
+            "C": 541.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 0.25,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 541.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 539.25,
+          "arms": {
+            "A1": 541.06,
+            "A2": 541.06,
+            "E": 540.06,
+            "B": 524.75,
+            "B2": 524.75,
+            "C": 540.64
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -14.5,
+          "A1_minus_C": 0.42,
+          "A1_minus_B": 16.31,
+          "oracle": 524.75
+        },
+        "openjev/openjev-27B": {
+          "no_review": 786.5,
+          "arms": {
+            "A1": 710.36,
+            "A2": 810.64,
+            "E": 810.64,
+            "B": 691.0,
+            "B2": 748.0,
+            "C": 747.41
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -95.5,
+          "A1_minus_C": -37.05,
+          "A1_minus_B": 19.36,
+          "oracle": 264.0
+        }
+      }
+    },
+    "m=2,h=0.5": {
+      "break_even_precision_escalate_target": 0.071,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 933.5,
+          "arms": {
+            "A1": 864.01,
+            "A2": 964.43,
+            "E": 964.43,
+            "B": 888.5,
+            "B2": 869.5,
+            "C": 896.65
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -69.49,
+          "A1_minus_C": -32.64,
+          "A1_minus_B": -24.49,
+          "oracle": 276.5
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 821.0,
+          "arms": {
+            "A1": 732.55,
+            "A2": 732.55,
+            "E": 725.82,
+            "B": 725.0,
+            "B2": 724.0,
+            "C": 724.12
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -97.0,
+          "A1_minus_C": 8.43,
+          "A1_minus_B": 7.55,
+          "oracle": 621.0
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 661.5,
+          "arms": {
+            "A1": 666.0,
+            "A2": 666.0,
+            "E": 666.0,
+            "B": 666.0,
+            "B2": 666.0,
+            "C": 666.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 4.5,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 666.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 648.5,
+          "arms": {
+            "A1": 662.81,
+            "A2": 662.81,
+            "E": 661.81,
+            "B": 646.5,
+            "B2": 646.5,
+            "C": 662.39
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -2.0,
+          "A1_minus_C": 0.42,
+          "A1_minus_B": 16.31,
+          "oracle": 646.5
+        },
+        "openjev/openjev-27B": {
+          "no_review": 833.0,
+          "arms": {
+            "A1": 769.36,
+            "A2": 869.64,
+            "E": 869.64,
+            "B": 750.0,
+            "B2": 807.0,
+            "C": 806.41
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -83.0,
+          "A1_minus_C": -37.05,
+          "A1_minus_B": 19.36,
+          "oracle": 323.0
+        }
+      }
+    },
+    "m=2,h=1": {
+      "break_even_precision_escalate_target": 0.095,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 1002,
+          "arms": {
+            "A1": 957.51,
+            "A2": 1057.93,
+            "E": 1057.93,
+            "B": 982.0,
+            "B2": 963.0,
+            "C": 990.15
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -44.49,
+          "A1_minus_C": -32.64,
+          "A1_minus_B": -24.49,
+          "oracle": 370
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1031,
+          "arms": {
+            "A1": 967.55,
+            "A2": 967.55,
+            "E": 960.82,
+            "B": 960.0,
+            "B2": 959.0,
+            "C": 959.12
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -72.0,
+          "A1_minus_C": 8.43,
+          "A1_minus_B": 7.55,
+          "oracle": 856
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 903,
+          "arms": {
+            "A1": 916.0,
+            "A2": 916.0,
+            "E": 916.0,
+            "B": 916.0,
+            "B2": 916.0,
+            "C": 916.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 13.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 916
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 867,
+          "arms": {
+            "A1": 906.31,
+            "A2": 906.31,
+            "E": 905.31,
+            "B": 890.0,
+            "B2": 890.0,
+            "C": 905.89
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 23.0,
+          "A1_minus_C": 0.42,
+          "A1_minus_B": 16.31,
+          "oracle": 890
+        },
+        "openjev/openjev-27B": {
+          "no_review": 926,
+          "arms": {
+            "A1": 887.36,
+            "A2": 987.64,
+            "E": 987.64,
+            "B": 868.0,
+            "B2": 925.0,
+            "C": 924.41
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -58.0,
+          "A1_minus_C": -37.05,
+          "A1_minus_B": 19.36,
+          "oracle": 441
+        }
+      }
+    },
+    "m=2,h=2": {
+      "break_even_precision_escalate_target": 0.143,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 1139,
+          "arms": {
+            "A1": 1144.51,
+            "A2": 1244.93,
+            "E": 1244.93,
+            "B": 1169.0,
+            "B2": 1150.0,
+            "C": 1177.15
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 5.51,
+          "A1_minus_C": -32.64,
+          "A1_minus_B": -24.49,
+          "oracle": 557
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1451,
+          "arms": {
+            "A1": 1437.55,
+            "A2": 1437.55,
+            "E": 1430.82,
+            "B": 1430.0,
+            "B2": 1429.0,
+            "C": 1429.12
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -22.0,
+          "A1_minus_C": 8.43,
+          "A1_minus_B": 7.55,
+          "oracle": 1326
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 1386,
+          "arms": {
+            "A1": 1416.0,
+            "A2": 1416.0,
+            "E": 1416.0,
+            "B": 1416.0,
+            "B2": 1416.0,
+            "C": 1416.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 30.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 1416
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 1304,
+          "arms": {
+            "A1": 1393.31,
+            "A2": 1393.31,
+            "E": 1392.31,
+            "B": 1377.0,
+            "B2": 1377.0,
+            "C": 1392.89
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 73.0,
+          "A1_minus_C": 0.42,
+          "A1_minus_B": 16.31,
+          "oracle": 1377
+        },
+        "openjev/openjev-27B": {
+          "no_review": 1112,
+          "arms": {
+            "A1": 1123.36,
+            "A2": 1223.64,
+            "E": 1223.64,
+            "B": 1104.0,
+            "B2": 1161.0,
+            "C": 1160.41
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -8.0,
+          "A1_minus_C": -37.05,
+          "A1_minus_B": 19.36,
+          "oracle": 677
+        }
+      }
+    },
+    "m=4,h=0.25": {
+      "break_even_precision_escalate_target": 0.03,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 1587.25,
+          "arms": {
+            "A1": 1364.85,
+            "A2": 1605.68,
+            "E": 1605.68,
+            "B": 1429.75,
+            "B2": 1386.75,
+            "C": 1443.14
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -222.4,
+          "A1_minus_C": -78.29,
+          "A1_minus_B": -64.9,
+          "oracle": 229.75
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 972.0,
+          "arms": {
+            "A1": 723.22,
+            "A2": 723.22,
+            "E": 709.97,
+            "B": 703.5,
+            "B2": 702.5,
+            "C": 702.62
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -269.5,
+          "A1_minus_C": 20.6,
+          "A1_minus_B": 19.72,
+          "oracle": 503.5
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 560.75,
+          "arms": {
+            "A1": 541.0,
+            "A2": 541.0,
+            "E": 541.0,
+            "B": 541.0,
+            "B2": 541.0,
+            "C": 541.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -19.75,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 541.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 611.25,
+          "arms": {
+            "A1": 556.92,
+            "A2": 556.92,
+            "E": 554.96,
+            "B": 524.75,
+            "B2": 524.75,
+            "C": 555.5
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -86.5,
+          "A1_minus_C": 1.42,
+          "A1_minus_B": 32.17,
+          "oracle": 524.75
+        },
+        "openjev/openjev-27B": {
+          "no_review": 1318.5,
+          "arms": {
+            "A1": 1108.02,
+            "A2": 1342.64,
+            "E": 1342.64,
+            "B": 1079.0,
+            "B2": 1196.0,
+            "C": 1194.69
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -239.5,
+          "A1_minus_C": -86.67,
+          "A1_minus_B": 29.02,
+          "oracle": 264.0
+        }
+      }
+    },
+    "m=4,h=0.5": {
+      "break_even_precision_escalate_target": 0.037,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 1621.5,
+          "arms": {
+            "A1": 1411.6,
+            "A2": 1652.43,
+            "E": 1652.43,
+            "B": 1476.5,
+            "B2": 1433.5,
+            "C": 1489.89
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -209.9,
+          "A1_minus_C": -78.29,
+          "A1_minus_B": -64.9,
+          "oracle": 276.5
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1077.0,
+          "arms": {
+            "A1": 840.72,
+            "A2": 840.72,
+            "E": 827.47,
+            "B": 821.0,
+            "B2": 820.0,
+            "C": 820.12
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -257.0,
+          "A1_minus_C": 20.6,
+          "A1_minus_B": 19.72,
+          "oracle": 621.0
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 681.5,
+          "arms": {
+            "A1": 666.0,
+            "A2": 666.0,
+            "E": 666.0,
+            "B": 666.0,
+            "B2": 666.0,
+            "C": 666.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -15.5,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 666.0
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 720.5,
+          "arms": {
+            "A1": 678.67,
+            "A2": 678.67,
+            "E": 676.71,
+            "B": 646.5,
+            "B2": 646.5,
+            "C": 677.25
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -74.0,
+          "A1_minus_C": 1.42,
+          "A1_minus_B": 32.17,
+          "oracle": 646.5
+        },
+        "openjev/openjev-27B": {
+          "no_review": 1365.0,
+          "arms": {
+            "A1": 1167.02,
+            "A2": 1401.64,
+            "E": 1401.64,
+            "B": 1138.0,
+            "B2": 1255.0,
+            "C": 1253.69
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -227.0,
+          "A1_minus_C": -86.67,
+          "A1_minus_B": 29.02,
+          "oracle": 323.0
+        }
+      }
+    },
+    "m=4,h=1": {
+      "break_even_precision_escalate_target": 0.049,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 1690,
+          "arms": {
+            "A1": 1505.1,
+            "A2": 1745.93,
+            "E": 1745.93,
+            "B": 1570.0,
+            "B2": 1527.0,
+            "C": 1583.39
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -184.9,
+          "A1_minus_C": -78.29,
+          "A1_minus_B": -64.9,
+          "oracle": 370
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1287,
+          "arms": {
+            "A1": 1075.72,
+            "A2": 1075.72,
+            "E": 1062.47,
+            "B": 1056.0,
+            "B2": 1055.0,
+            "C": 1055.12
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -232.0,
+          "A1_minus_C": 20.6,
+          "A1_minus_B": 19.72,
+          "oracle": 856
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 923,
+          "arms": {
+            "A1": 916.0,
+            "A2": 916.0,
+            "E": 916.0,
+            "B": 916.0,
+            "B2": 916.0,
+            "C": 916.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -7.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 916
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 939,
+          "arms": {
+            "A1": 922.17,
+            "A2": 922.17,
+            "E": 920.21,
+            "B": 890.0,
+            "B2": 890.0,
+            "C": 920.75
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -49.0,
+          "A1_minus_C": 1.42,
+          "A1_minus_B": 32.17,
+          "oracle": 890
+        },
+        "openjev/openjev-27B": {
+          "no_review": 1458,
+          "arms": {
+            "A1": 1285.02,
+            "A2": 1519.64,
+            "E": 1519.64,
+            "B": 1256.0,
+            "B2": 1373.0,
+            "C": 1371.69
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -202.0,
+          "A1_minus_C": -86.67,
+          "A1_minus_B": 29.02,
+          "oracle": 441
+        }
+      }
+    },
+    "m=4,h=2": {
+      "break_even_precision_escalate_target": 0.073,
+      "models": {
+        "Jev 1.13": {
+          "no_review": 1827,
+          "arms": {
+            "A1": 1692.1,
+            "A2": 1932.93,
+            "E": 1932.93,
+            "B": 1757.0,
+            "B2": 1714.0,
+            "C": 1770.39
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": -134.9,
+          "A1_minus_C": -78.29,
+          "A1_minus_B": -64.9,
+          "oracle": 557
+        },
+        "Qwen/Qwen2.5-7B-Instruct": {
+          "no_review": 1707,
+          "arms": {
+            "A1": 1545.72,
+            "A2": 1545.72,
+            "E": 1532.47,
+            "B": 1526.0,
+            "B2": 1525.0,
+            "C": 1525.12
+          },
+          "best_arm": "B2",
+          "best_minus_no_review": -182.0,
+          "A1_minus_C": 20.6,
+          "A1_minus_B": 19.72,
+          "oracle": 1326
+        },
+        "allenai/OLMo-2-1124-7B-Instruct": {
+          "no_review": 1406,
+          "arms": {
+            "A1": 1416.0,
+            "A2": 1416.0,
+            "E": 1416.0,
+            "B": 1416.0,
+            "B2": 1416.0,
+            "C": 1416.0
+          },
+          "best_arm": "A1",
+          "best_minus_no_review": 10.0,
+          "A1_minus_C": 0.0,
+          "A1_minus_B": 0.0,
+          "oracle": 1416
+        },
+        "microsoft/Phi-3.5-mini-instruct": {
+          "no_review": 1376,
+          "arms": {
+            "A1": 1409.17,
+            "A2": 1409.17,
+            "E": 1407.21,
+            "B": 1377.0,
+            "B2": 1377.0,
+            "C": 1407.75
+          },
+          "best_arm": "B",
+          "best_minus_no_review": 1.0,
+          "A1_minus_C": 1.42,
+          "A1_minus_B": 32.17,
+          "oracle": 1377
+        },
+        "openjev/openjev-27B": {
+          "no_review": 1644,
+          "arms": {
+            "A1": 1521.02,
+            "A2": 1755.64,
+            "E": 1755.64,
+            "B": 1492.0,
+            "B2": 1609.0,
+            "C": 1607.69
+          },
+          "best_arm": "B",
+          "best_minus_no_review": -152.0,
+          "A1_minus_C": -86.67,
+          "A1_minus_B": 29.02,
+          "oracle": 677
+        }
+      }
+    }
+  },
+  "summary": {
+    "Jev 1.13": {
+      "verdict": "cost-dependent",
+      "near_cells_where_review_pays": [
+        "m=1,h=0.5",
+        "m=2,h=0.5",
+        "m=2,h=1"
+      ],
+      "all_cells_where_review_pays": [
+        "m=1,h=0.25",
+        "m=1,h=0.5",
+        "m=2,h=0.25",
+        "m=2,h=0.5",
+        "m=2,h=1",
+        "m=4,h=0.25",
+        "m=4,h=0.5",
+        "m=4,h=1",
+        "m=4,h=2"
+      ],
+      "cells_A1_beats_C": 12,
+      "cells_A1_beats_B": 12,
+      "n_cells": 16
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "verdict": "cost-dependent",
+      "near_cells_where_review_pays": [
+        "m=1,h=0.5",
+        "m=2,h=0.5",
+        "m=2,h=1",
+        "m=2,h=2"
+      ],
+      "all_cells_where_review_pays": [
+        "m=1,h=0.25",
+        "m=1,h=0.5",
+        "m=2,h=0.25",
+        "m=2,h=0.5",
+        "m=2,h=1",
+        "m=2,h=2",
+        "m=4,h=0.25",
+        "m=4,h=0.5",
+        "m=4,h=1",
+        "m=4,h=2"
+      ],
+      "cells_A1_beats_C": 4,
+      "cells_A1_beats_B": 4,
+      "n_cells": 16
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "verdict": "cost-robust",
+      "near_cells_where_review_pays": [],
+      "all_cells_where_review_pays": [
+        "m=4,h=0.25",
+        "m=4,h=0.5",
+        "m=4,h=1"
+      ],
+      "cells_A1_beats_C": 0,
+      "cells_A1_beats_B": 0,
+      "n_cells": 16
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "verdict": "cost-dependent",
+      "near_cells_where_review_pays": [
+        "m=2,h=0.5"
+      ],
+      "all_cells_where_review_pays": [
+        "m=2,h=0.25",
+        "m=2,h=0.5",
+        "m=4,h=0.25",
+        "m=4,h=0.5",
+        "m=4,h=1"
+      ],
+      "cells_A1_beats_C": 8,
+      "cells_A1_beats_B": 0,
+      "n_cells": 16
+    },
+    "openjev/openjev-27B": {
+      "verdict": "cost-dependent",
+      "near_cells_where_review_pays": [
+        "m=1,h=0.5",
+        "m=2,h=0.5",
+        "m=2,h=1",
+        "m=2,h=2"
+      ],
+      "all_cells_where_review_pays": [
+        "m=1,h=0.25",
+        "m=1,h=0.5",
+        "m=2,h=0.25",
+        "m=2,h=0.5",
+        "m=2,h=1",
+        "m=2,h=2",
+        "m=4,h=0.25",
+        "m=4,h=0.5",
+        "m=4,h=1",
+        "m=4,h=2"
+      ],
+      "cells_A1_beats_C": 12,
+      "cells_A1_beats_B": 0,
+      "n_cells": 16
+    }
+  }
+}
