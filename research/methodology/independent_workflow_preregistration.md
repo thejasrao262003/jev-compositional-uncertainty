@@ -809,3 +809,30 @@ call.
   so its codes cannot collide with earlier packets. The packet asks for
   verbatim quotes, and those quotes are checked by script against the
   K-coded texts before the read is accepted.
+
+**Third read, K01–K40: accepted** (2026-10-24; `blind_log_third_read_K.tsv`).
+- **Verbatim cues:** all 22 quoted cues appear in their own K-coded text
+  (script check).
+- **"No cue" notes:** 13 of 13 spot-checked notes describe the correct
+  issue.
+- **Damaged texts:** 0.
+- **The 22 cues are natural reporter language** and stay in. Their rate
+  is reported.
+  - One SIG cue is `[sig-node]` inside a pasted e2e test name. Such
+    test-name tags occur in 17 of 1,232 issues and are reported as a
+    natural cue rate.
+- **No cleaning-rule gap was found.**
+- **Disclosure.** The AI assistant stated that it could not certify it
+  ran in a fresh conversation. Isolation was meant to prevent judging
+  the wrong packet's text, and that is verified directly by the
+  verbatim-quote check. The read is accepted on that basis, under
+  Amendment 5.
+
+**Gate status before the smoke test:**
+- feasibility: pass;
+- leakage hard checks: pass;
+- power at n = 582: d\* = +0.10;
+- cap: 10,300 (Amendment 3);
+- blinded read: accepted.
+
+**The 270-call smoke test still needs its own explicit authorization.**

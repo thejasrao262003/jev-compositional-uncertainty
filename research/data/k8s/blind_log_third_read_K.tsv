@@ -1,0 +1,41 @@
+code	label_recoverable_from_explicit_cue(yes/no)	which_label_and_cue	text_damaged(yes/no)	damage_type	notes
+K01	yes	kind=bug; cue: This vulnerability allows	no	none	Explicit “vulnerability” wording cues bug/problem kind. Link placeholders and omitted URL details are systematic redactions, not damage.
+K02	yes	kind=feature/support; cue: Support for 1:N mapping between hostPort and containerPort in Deployment Spec	no	none	The title explicitly frames a support request; feature/request cue.
+K03	yes	kind=feature; cue: Add DNS test suite for Conformance E2E	no	none	“Add” explicitly cues a requested addition/feature.
+K04	no		no	none	Describes stale CPU state and a possible problem, but contains no explicit target-label cue for SIG, kind, or priority.
+K05	yes	kind=bug; cue: this is the bug	no	none	The text literally calls it “the bug.”
+K06	no		no	none	The title describes a segfault and the body asks whether behavior is expected; no explicit target-label cue.
+K07	yes	priority; cue: This is a good to have.	no	none	“good to have” is an explicit desirability/priority cue; it does not explicitly identify a target SIG.
+K08	yes	kind=bug; cue: I was able to fix this issue	no	none	“fix this issue” explicitly frames the described behavior as an issue needing correction.
+K09	no		no	none	Race condition/data corruption are described, but no explicit target-label phrase or SIG label appears.
+K10	yes	kind=feature; cue: add e2e tests for ipBlock	no	none	Explicit “add … tests” feature/task cue. “[network-policy]” is not itself an explicit SIG-network label.
+K11	yes	kind=feature; cue: Provide an easy way to view the detailed HTTP-response	no	none	Explicit request for a capability (“Provide an easy way”).
+K12	yes	priority; cue: Critical priority pods	no	none	Explicit priority wording; system-node-critical/system-cluster-critical are also named in the text.
+K13	yes	kind=feature; cue: should present some "progress status"	no	none	Explicit request for additional status/progress functionality.
+K14	no		no	none	Describes an unexpected failure and expected behavior, but no explicit target-label cue.
+K15	yes	SIG=node; cue: [sig-node]	no	none	Explicit SIG-node marker in the “Failed Test” line. It does not appear to disclose a kind label beyond that.
+K16	yes	kind=feature; cue: wouldn't it be reasonable for the scheduler to schedule pods	no	none	Explicit proposal phrasing requesting behavior; feature cue.
+K17	no		no	none	Describes a node NotReady failure mode, but no explicit target-label cue for kind or target SIG.
+K18	no		no	none	The feature-gate marker is not one of the target labels; the rest describes a test-verification concern without an explicit target-label cue.
+K19	yes	kind=bug; cue: I'd ideally expect this bug to be fixed as part of beta.	no	none	The text explicitly uses “bug.”
+K20	no		no	none	“cleanup” refers to the kube-proxy cleanup operation/job, not an explicit cleanup issue category.
+K21	no		no	none	Asks whether behavior is a known issue and says it would be good to get it working, but does not explicitly identify a target label.
+K22	no		no	none	Describes omitted pod-level resources in events but has no explicit target-label cue.
+K23	yes	kind=bug; cue: records incorrect (near-zero) latency values	no	none	“incorrect” explicitly cues an incorrect behavior/bug.
+K24	no		no	none	The title describes a failed image pull and the body asks for help, but no explicit target-label cue.
+K25	yes	kind=bug; cue: correctness/consistency issue	no	none	The author explicitly characterizes the behavior as a correctness/consistency issue.
+K26	yes	kind=cleanup; cue: Remove ResizePolicy defaulting	no	none	Explicit “Remove …” wording cues a cleanup/removal task.
+K27	no		no	none	Describes unexpected phase behavior, but no explicit target-label cue.
+K28	yes	kind=bug; cue: Pod startup latency regression	no	none	“regression” explicitly cues a bug/regression.
+K29	no		no	none	Contains an error report and reproduction steps, but no explicit target-label cue.
+K30	no		no	none	Describes inconsistent status, but no explicit target-label cue.
+K31	yes	kind=feature; cue: Add a new `--write-config-to` flag to kubelet	no	none	Explicit “Add a new … flag” feature cue.
+K32	no		no	none	Describes an incorrect storage-zone outcome, but no explicit target-label cue or target SIG marker.
+K33	yes	kind=bug; cue: incorrectly creates volume in chunks of GiB	no	none	“incorrectly” explicitly cues incorrect behavior/bug.
+K34	yes	kind=cleanup; cue: Clean up e2e pods in parallel	no	none	Explicit cleanup task in the title.
+K35	no		no	none	Describes missing ShareID API support and a workaround, but lacks an explicit target-label cue.
+K36	yes	kind=feature; cue: Expose container's own identity to the container	no	none	Explicit “Expose …” feature/capability cue.
+K37	no		no	none	Describes labels not updating after restart, but no explicit target-label cue.
+K38	no		no	none	Describes a checksum/startup problem and proposes possible behavior, but no explicit target-label cue.
+K39	no		no	none	Describes missing metrics, but no explicit target-label cue.
+K40	yes	kind=cleanup; cue: Simplify grace period related code in NodeController	no	none	Explicit simplification/refactoring cue.
