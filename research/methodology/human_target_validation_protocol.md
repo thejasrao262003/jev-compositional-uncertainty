@@ -16,7 +16,9 @@ right action? And where they disagree, which link is responsible:
 - or a **genuine ambiguity**?
 
 This is a validation **pilot** (n = 50). It is not definitive proof of
-target validity.
+target validity, least of all for the rare escalate action. The
+sampling method is preserved, and every estimate is reported with its
+uncertainty, not as ground truth.
 
 ## Sample (fixed)
 
@@ -96,6 +98,16 @@ inter-rater agreement is reported separately for each rater.
   - rule-driven (F of the evaluator's own judgments differs from their
     direct action);
   - ambiguity (can't tell, or the raters disagree).
+- **Disagreement by action type:** whether mismatches with a\*
+  concentrate in accept, defer or escalate. Escalate is rare in a natural
+  50-bug sample, so its cell is reported with its count and is not
+  interpreted alone.
+- **Reasons for disagreement,** coded from the free-text reasons and the
+  label comparison into:
+  - label interpretation;
+  - the mapping rule;
+  - missing evidence in the text;
+  - genuine ambiguity.
 - **Failure-label check.** On the 50 bugs, how often Jev's "wrong action"
   label (a ≠ a\*) agrees with "wrong action" defined against the
   consensus action.

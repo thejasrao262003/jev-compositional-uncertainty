@@ -865,7 +865,12 @@ then dominated by middle-level bugs, as the natural-mix set is, so the
 decision-to-error relationship takes the right direction even though the
 other levels are effectively dropped. Where the estimate points the
 wrong way, the repair fails: for Phi-3.5 it puts no weight on the middle
-level. And the constructed-target
+level, and ranking does not improve. To be explicit: what worked is the
+ranking, for Jev, OpenJev and Qwen2.5; what did not work is the estimate
+of the deployment mix; and what remains open is whether the ranking gain
+survives deployment mixes in which the middle level is not dominant, since
+it may depend on that coincidence. The correction improved a downstream
+metric while failing to estimate the quantity it targets. And the constructed-target
 result itself is not fragile to how labels are mapped: with Mozilla's S2
 counted as level 1, or kernel bugs with default severity or unset
 regression excluded, decisions still beat confidence for every model,
@@ -977,7 +982,9 @@ leaving few reviewable errors (Phi-3.5's oracle exceeds no review because
   With so few positives this shows that the tested signals did not
   establish useful discrimination for Jev, not that none is possible; for
   OpenJev, \score{}'s top-level probability does carry a weak
-  within-action signal (0.68 [0.56, 0.78], above confidence).
+  within-action signal (0.68 [0.56, 0.78]); a paired comparison puts it
+  above confidence by $+0.14$ (95\% interval [$+0.04$, $+0.22$]). The
+  conclusion is therefore model- and signal-specific, not universal.
   The value exists; for Jev the identification fails.
   \item \textbf{General models:} cost is dominated by over-escalation
   (\emph{escalate} when the target is \emph{accept}). More review cannot

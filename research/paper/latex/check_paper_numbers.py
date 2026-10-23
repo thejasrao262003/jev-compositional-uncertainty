@@ -189,6 +189,9 @@ need("J5 OpenJev p2", f"({po['auroc']:.2f} [{po['ci95'][0]:.2f}, {po['ci95'][1]:
 assert j5i["openjev/openjev-27B"]["p2_minus_conf"]["ci95"][0] > 0
 assert all(j5i["Jev 1.13"][k]["ci95"][0] < 0.5 < j5i["Jev 1.13"][k]["ci95"][1] for k in ("E_dec", "conf", "p2")) or j5i["Jev 1.13"]["E_dec"]["ci95"][1] < 0.53
 
+po2 = j5i["openjev/openjev-27B"]
+need("J5 OpenJev paired", f"above confidence by $+{po2['p2']['auroc'] - po2['conf']['auroc']:.2f}$ (95\\% interval [$+{po2['p2_minus_conf']['ci95'][0]:.2f}$, $+{po2['p2_minus_conf']['ci95'][1]:.2f}$])")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")
