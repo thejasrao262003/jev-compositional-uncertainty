@@ -206,3 +206,97 @@ Also reported: the estimated vs true held-out level mix.
 - BBSE "recovers" the correction for a model and target if its AUROC is
   at least halfway from (i) to (ii).
 - Exploratory either way.
+
+## Addendum J (2026-10-23): second external audit
+
+**Status:** written before any item below is computed. Everything here
+is exploratory on previously analysed data, and no API calls are made.
+None of it replaces a pre-registered result.
+
+### J1. Independent re-implementation of the primary result
+
+A new script imports no project analysis code. It works directly from
+the raw response files, the dataset files and the frozen estimator JSON.
+It re-implements:
+- modal reduction (tie tolerance 0.02);
+- the `noul` threshold;
+- the action rule F;
+- the targets;
+- the frozen estimator's features from its stored feature names.
+
+It then recomputes:
+- HR1 (AUROC of `E_dec` and of final-step confidence, and their paired
+  difference with a one-sided 95% lower bound, using a tracker-stratified
+  bootstrap with B = 2,000);
+- HR2.
+
+**Pass:** every number matches the paper to three decimals, or the
+discrepancy is reported and traced.
+
+### J2. Per-tracker headline contrast
+
+The `E_dec` − final-step-confidence paired difference with its 95% CI,
+computed within Mozilla and within the kernel separately.
+
+### J3. Grouped split refit
+
+- **Groups:** connected components of the tracker-link graph (C), over
+  development and held-out bugs.
+- **Refit:** remove every development bug in a component that contains
+  a held-out bug, refit `E_dec` (project fitter) on the remaining
+  development bugs, and evaluate on held-out bugs outside those
+  components.
+- **Reported for:** all five models.
+
+### J4. Alternative label mappings (target sensitivity)
+
+Each mapping recomputes the target. The action-rule score and `E_dec`
+are refit on development bugs under the same mapping, then compared with
+final-step confidence on the held-out bugs:
+- **(m1)** Mozilla S2 mapped to level 1 instead of 2 (S1 → 2; S2, S3 →
+  1; S4 → 0);
+- **(m2)** kernel bugs whose severity is the default "normal" excluded
+  from both sets;
+- **(m3)** kernel bugs with `cf_regression` unset ("---") excluded from
+  both sets.
+
+**Reading:** if decisions beat confidence under every mapping (paired
+95% CI above 0), the result is not fragile to these choices. Otherwise,
+the mappings where it fails are reported.
+
+### J5. Within-action identification of costly errors
+
+Among held-out *accepted* cases, compute the AUROC for "wrongly
+accepted" (target escalate or defer) of:
+- `E_dec`;
+- the action rule (constant within an action, so 0.5);
+- final-step confidence;
+- `score` P(level 2).
+
+This is for all five models. It tests directly whether any score
+separates the expensive errors within an action.
+
+### J6. BBSE under synthetic, known label shift
+
+- **Setup:** for Jev and OpenJev, resample the held-out bugs (with
+  replacement, 500 per draw) to target severity mixes on a grid: level-2
+  share 5% / 10% / 20% / 35% / 50%, with the rest split 1 : 0.3 between
+  levels 1 and 0.
+- **Estimate:** apply BBSE with the development confusion matrix, 200
+  draws per mix.
+- **Report:** the estimation error of the level-2 share (bias and RMSE)
+  and the share of draws with cond(C) ≤ 100.
+- **Repeat** with the confusion matrix degraded toward uninformative by
+  mixing it with a uniform matrix (λ = 0 / 0.25 / 0.5 / 0.75).
+
+### J7. Reviewer accuracy
+
+Re-score the frozen intervention rankings with reviewer accuracy
+ρ ∈ {1.0, 0.9, 0.8}:
+- a reviewed case reaches the correct target action with probability ρ;
+- otherwise it keeps the workflow's action;
+- human cost is charged either way;
+- expected cost is computed exactly.
+
+This is at the frozen cost table and at the m = 2 cell, for all five
+models.
