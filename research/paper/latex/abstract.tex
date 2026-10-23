@@ -18,7 +18,10 @@ errors on a natural-mix set below chance for targets that bypass our
 rule. Re-weighting to the deployment label mix repairs the ranking, even
 with the mix estimated from the model's own predictions without test
 labels for models whose predictions discriminate the label, although
-that estimated mix is itself biased. Prediction did not
+that estimated mix is itself biased and the same correction made ranking
+worse in an independent workflow. That independent pre-registered
+replication, on Kubernetes issue triage across a five-year chronological
+split, confirmed the predictive finding (AUROC 0.78 vs.\ 0.63). Prediction did not
 become review value: under the pre-registered costs no 10\% review
 policy beat no review, an oracle locates the value in wrongly accepted
 cases the tested signals do not isolate, and whether review pays depends on

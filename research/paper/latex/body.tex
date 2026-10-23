@@ -888,6 +888,49 @@ The absolute failure rates are not a clean quality comparison, because
 the two groups use different interfaces. The within-model contrast is.
 
 %======================================================================
+\section{An independent workflow: Kubernetes issue triage}
+\label{sec:k8s}
+%======================================================================
+
+\para{Design} To test whether the predictive finding is a property of
+our bug-triage setup, we pre-registered a replication in an independent
+workflow before any of its data existed: issue triage in the Kubernetes
+GitHub repository. It differs in platform, labelling process
+(triager-applied priority and SIG labels, reporter-chosen bug/feature
+forms), three-way routing (network, storage, node), the binary question
+(bug or not) and the ordinal question (priority). The split is
+chronological: development on 500 issues from 2015--2019, test on the
+582 latest eligible issues from 2021--2026, with linked issues removed
+across the split. Leakage of labels into the text (bot commands, template
+headings, team mentions) was removed and audited, and \texttt{jev-1.13.0}
+was pinned. All of the protocol's seven amendments, including a one-time
+widening of the test window after the first feasibility check failed,
+were written before any model output existed. Development and test differ
+at once in period, issue-form use and label prevalence, so this is a
+combined test of temporal and distribution shift, not of label shift
+alone.
+
+\para{Result} The primary hypothesis is supported: the chosen action's
+historical error rate ranks test-set failures better than final-step
+confidence, 0.776 against 0.628, a paired difference of $+0.148$
+[$+0.091$, $+0.207$], above chance as well. As in the original study,
+the signal is almost entirely the action: the decision estimator adds a
+little ($+0.004$ to $+0.017$) and confidence adds nothing. The contrast
+holds for the any-node target, within SIG Node, and on issues triaged
+within 30 days.
+
+\para{The label-free correction did not transfer} The pre-registered
+label-shift test is inconclusive by its frozen rule, with a negative
+estimate: re-weighting a deliberately mismatched fit by BBSE lowered its
+AUROC from 0.699 to 0.348 ($-0.350$ [$-0.428$, $-0.271$]). The mechanism
+is the one identified above. BBSE was numerically stable (condition
+number 39) but again estimated the deployment mix as entirely middle
+level, $[0, 1, 0]$, whereas the true mix was $[0.69, 0.26, 0.05]$,
+dominated by the lowest level, so the weighting pushed the fit the wrong
+way. The original BBSE gains therefore depended on the middle level
+being dominant.
+
+%======================================================================
 \section{Does the predictive signal reduce cost?}
 \label{sec:intervention}
 %======================================================================
@@ -1087,6 +1130,12 @@ selectivity on pilot inputs, before freezing any escalation policy.
   interim results were seen. On 3\% of OLMo-2's requests, most of the
   probability fell outside the allowed labels; excluding them does not
   change its result.
+  \item \textbf{Independent replication.} The Kubernetes study is one
+  further workflow; its development and test sets differ in period,
+  format and label mix at once, its leakage read was performed by an AI
+  assistant at the authors' direction rather than by a human author as
+  pre-registered, and its protocol has seven dated amendments, all
+  written before any model output existed.
   \item \textbf{Label-prior shift.} Decision-conditioned error
   estimators fitted on the quota-sampled development bugs can invert on a
   natural-mix set (\cref{tab:targets}). The label-free correction (BBSE)
@@ -1144,8 +1193,11 @@ confident it was, on 500 new bugs and for five models, with failure
 measured against a target we constructed. Almost all of that signal is
 the historical error rate of the chosen action. Those error rates depend
 on the label distribution they were estimated under and can invert when
-it changes; re-weighting to the deployment mix repairs them, without test
-labels where the models' answers discriminate the label. Under the
+it changes. Re-weighting to a known deployment mix repairs them; the
+label-free estimate of that mix did so only when the middle level
+dominated, and made ranking worse in an independent workflow where it did
+not. The predictive finding itself replicated in that independent
+Kubernetes workflow across a five-year chronological shift. Under the
 pre-registered costs, no review policy built on these signals beat no
 review.
 
@@ -1155,8 +1207,8 @@ accepted ones, so neither signal separates them; whether review pays at
 all is set by the ratio of wrong-accept cost to review cost relative to
 the precision the signals reach.
 
-\para{What remains open} Whether these findings hold for other workflows
-and independently established outcomes, whether a signal exists that
+\para{What remains open} Whether these findings hold for further
+workflows and independently established outcomes, whether a signal exists that
 separates expensive errors within an action, and how review value
 behaves under measured rather than assumed costs. Failure prediction,
 uncertainty estimation and review value are three different problems,

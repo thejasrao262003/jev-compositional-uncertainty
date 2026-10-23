@@ -192,6 +192,14 @@ assert all(j5i["Jev 1.13"][k]["ci95"][0] < 0.5 < j5i["Jev 1.13"][k]["ci95"][1] f
 po2 = j5i["openjev/openjev-27B"]
 need("J5 OpenJev paired", f"above confidence by $+{po2['p2']['auroc'] - po2['conf']['auroc']:.2f}$ (95\\% interval [$+{po2['p2_minus_conf']['ci95'][0]:.2f}$, $+{po2['p2_minus_conf']['ci95'][1]:.2f}$])")
 
+# Kubernetes replication (added 2026-10-24)
+k8 = json.loads((RES / "k8s_analysis.json").read_text())["primary"]
+K1 = k8["K1"]; K3 = k8["K3"]
+need("K8s K1", f"{K1['auroc_rule']:.3f} against {K1['auroc_conf']:.3f}, a paired difference of $+{K1['auroc_rule'] - K1['auroc_conf']:.3f}$\n[$+{K1['ci95'][0]:.3f}$, $+{K1['ci95'][1]:.3f}$]".replace("\n", " "))
+assert K1["status"] == "supported" and k8["K2"]["status"] == "supported"
+need("K8s K3", f"AUROC from {K3['auroc_arm_a']:.3f} to {K3['auroc_arm_b']:.3f} (${K3['auroc_arm_b'] - K3['auroc_arm_a']:.3f}$ [${K3['ci95'][0]:.3f}$, ${K3['ci95'][1]:.3f}$])")
+need("K8s abstract", f"(AUROC {K1['auroc_rule']:.2f} vs.\\ {K1['auroc_conf']:.2f})")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")
