@@ -836,3 +836,19 @@ call.
 - blinded read: accepted.
 
 **The 270-call smoke test still needs its own explicit authorization.**
+
+## Smoke test, stopped by the version rule (2026-10-24)
+
+**Authorization:** the authors authorized the 270-call smoke test on
+2026-10-24.
+
+**What happened:**
+- **Calls made: 9** (1 issue × 3 nodes × 3 repeats).
+- **All HTTP 200 and parsed; no retries.**
+- **`jev-latest` resolved to `jev-1.14.0`.** By the §5 stop rule
+  ("stop if the resolved model is not `jev-1.13.0`"), the runner stopped.
+- **No model output was inspected** beyond version, HTTP status and
+  parse status.
+
+**Status:** stopped. No further call is made until the authors decide
+how to treat the model version. That decision will be a new amendment.
