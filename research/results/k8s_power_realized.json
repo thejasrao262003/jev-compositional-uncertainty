@@ -1,0 +1,135 @@
+{
+  "n": 582,
+  "d_star": 0.1,
+  "rule": "smallest simulated effect with power >= 0.80 in every setting at nominal alpha",
+  "cells": [
+    {
+      "diff": 0.03,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 0.217,
+      "power_alpha_0.0167_holm_worst": 0.123
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 0.273,
+      "power_alpha_0.0167_holm_worst": 0.13
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 0.283,
+      "power_alpha_0.0167_holm_worst": 0.14
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 0.317,
+      "power_alpha_0.0167_holm_worst": 0.133
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 0.553,
+      "power_alpha_0.0167_holm_worst": 0.35
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 0.697,
+      "power_alpha_0.0167_holm_worst": 0.49
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 0.64,
+      "power_alpha_0.0167_holm_worst": 0.46
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 0.75,
+      "power_alpha_0.0167_holm_worst": 0.55
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 0.92,
+      "power_alpha_0.0167_holm_worst": 0.777
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 0.97,
+      "power_alpha_0.0167_holm_worst": 0.907
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 0.943,
+      "power_alpha_0.0167_holm_worst": 0.887
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 0.993,
+      "power_alpha_0.0167_holm_worst": 0.97
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 582,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 582,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    }
+  ]
+}
