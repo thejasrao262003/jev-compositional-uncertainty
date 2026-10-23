@@ -695,10 +695,10 @@ this prospectively, as follows.
   \item \textbf{Per tracker:} the difference is $+0.279$ [$+0.191$,
   $+0.374$] on Mozilla and $+0.124$ [$+0.023$, $+0.225$] on the kernel,
   weaker but excluding zero.
-  \item \textbf{Independent recomputation:} a script that shares no code
-  with the analysis, re-implementing reduction, action rule, features,
-  AUROC and bootstrap from the raw responses, reproduces every point
-  estimate above exactly.
+  \item \textbf{Independent recomputation:} a separate script that shares
+  no code with the analysis rebuilds the reduction, action rule, features,
+  AUROC and bootstrap from the raw responses, and it reproduces every
+  point estimate above exactly.
   \item \textbf{Calibration:} the estimator's predicted failure rate
   matches the observed rate overall. But it outputs only 7--8 distinct
   risk levels (ECE 0.18--0.20).
