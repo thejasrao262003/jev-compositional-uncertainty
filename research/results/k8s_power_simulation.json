@@ -1,0 +1,266 @@
+{
+  "design": {
+    "auc_conf": 0.55,
+    "rule_levels": "3 tied levels (60/25/15%)",
+    "sims": 300,
+    "B": 400
+  },
+  "cells": [
+    {
+      "diff": 0.03,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 0.193,
+      "power_alpha_0.0167_holm_worst": 0.113
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.153,
+      "power_alpha_0.0167_holm_worst": 0.077
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 0.267,
+      "power_alpha_0.0167_holm_worst": 0.113
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 0.197,
+      "power_alpha_0.0167_holm_worst": 0.103
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 0.29,
+      "power_alpha_0.0167_holm_worst": 0.133
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.18,
+      "power_alpha_0.0167_holm_worst": 0.077
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 0.323,
+      "power_alpha_0.0167_holm_worst": 0.187
+    },
+    {
+      "diff": 0.03,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 0.237,
+      "power_alpha_0.0167_holm_worst": 0.107
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 0.457,
+      "power_alpha_0.0167_holm_worst": 0.31
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.35,
+      "power_alpha_0.0167_holm_worst": 0.177
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 0.65,
+      "power_alpha_0.0167_holm_worst": 0.43
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 0.437,
+      "power_alpha_0.0167_holm_worst": 0.28
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 0.553,
+      "power_alpha_0.0167_holm_worst": 0.363
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.407,
+      "power_alpha_0.0167_holm_worst": 0.243
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 0.763,
+      "power_alpha_0.0167_holm_worst": 0.593
+    },
+    {
+      "diff": 0.06,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 0.593,
+      "power_alpha_0.0167_holm_worst": 0.42
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 0.857,
+      "power_alpha_0.0167_holm_worst": 0.733
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.61,
+      "power_alpha_0.0167_holm_worst": 0.45
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 0.92,
+      "power_alpha_0.0167_holm_worst": 0.803
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 0.837,
+      "power_alpha_0.0167_holm_worst": 0.697
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 0.95,
+      "power_alpha_0.0167_holm_worst": 0.857
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.8,
+      "power_alpha_0.0167_holm_worst": 0.623
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 0.98,
+      "power_alpha_0.0167_holm_worst": 0.937
+    },
+    {
+      "diff": 0.1,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 0.917,
+      "power_alpha_0.0167_holm_worst": 0.783
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.25,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 0.997,
+      "power_alpha_0.0167_holm_worst": 0.99
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.25,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 0.997
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 500,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.45,
+      "rho": 0.2,
+      "n": 300,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 0.997
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 500,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    },
+    {
+      "diff": 0.2,
+      "prevalence": 0.45,
+      "rho": 0.5,
+      "n": 300,
+      "power_alpha_0.05": 1.0,
+      "power_alpha_0.0167_holm_worst": 1.0
+    }
+  ]
+}
