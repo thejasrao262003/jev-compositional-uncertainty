@@ -852,3 +852,24 @@ call.
 
 **Status:** stopped. No further call is made until the authors decide
 how to treat the model version. That decision will be a new amendment.
+
+## Amendment 7 (2026-10-24, approved by the authors): pin `jev-1.13.0`
+
+**Change.**
+- **Requests:** `"model": "jev-1.13.0"` replaces `"model": "jev-latest"`
+  (§4.1). Everything else in the request body is unchanged.
+- **Why:** the replication tests the finding with the same model as the
+  original study, which used `jev-1.13.0`.
+- **The stop rule is unchanged:** any resolved model other than
+  `jev-1.13.0` stops the run.
+
+**The 9 earlier calls** resolved to `jev-1.14.0`.
+- They are moved to `research/data/k8s/superseded_jev_1_14_0/` and are
+  never analysed.
+- They count toward the overall budget, so the runner's cap is 10,291
+  (10,300 − 9).
+
+**Before the smoke test:** one probe call checks that the pinned version
+is served. It counts toward the budget, and the cap becomes 10,290. If
+the version is not served, nothing more runs, and the authors choose
+between running on `jev-1.14.0` (disclosed) and stopping.

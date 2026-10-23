@@ -36,7 +36,7 @@ RAW = DATA / "k8s_raw_responses.jsonl"
 META = DATA / "k8s_run_meta.json"
 ARMS = ("choice", "noul", "score")
 REPEATS = 3
-CAP = 10300  # Amendment 3 (approved 2026-10-23, budget only)
+CAP = 10290  # Amendment 3 cap 10,300 minus 9 superseded jev-1.14.0 calls and 1 probe (Amendment 7)
 SMOKE_N = 30
 EXPECTED_MODEL = "jev-1.13.0"
 FAIL_RATE_STOP = 0.01
@@ -192,7 +192,7 @@ def main():
         print("Dry run only. No Jev calls were made.")
         return
     from jev_client import ClientConfig, JevClient  # live path only
-    client = JevClient(config=ClientConfig(max_retries=2))
+    client = JevClient(config=ClientConfig(model=EXPECTED_MODEL, max_retries=2))  # Amendment 7: pinned
     dev, test = load()
     if a.smoke:
         if not (a.live and a.confirm_smoke):
