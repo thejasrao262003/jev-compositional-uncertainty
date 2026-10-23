@@ -61,6 +61,14 @@ FORM_HEADINGS = FORM_KEEP + FORM_DROP
 
 PROW_LINE = re.compile(r"^\s*>?\s*/[a-z][\w-]*(\s.*)?$", re.I | re.M)  # Amendment 1: quoted commands too
 OLD_KIND_Q = re.compile(r"^.*Is this a BUG REPORT or FEATURE REQUEST\?.*?(?=^\s*\*\*What|\Z)", re.I | re.M | re.S)
+OLD_BOLD_HEADS = ["What happened", "What you expected to happen", "How to reproduce it (as minimally and precisely as possible)",
+                  "How to reproduce it", "Anything else we need to know?", "Anything else we need to know",
+                  "What would you like to be added", "Why is this needed", "How to categorize this issue?",
+                  "How to categorize this issue"]  # Amendment 4: pre-form markdown templates
+OLD_BOLD_RE = re.compile(r"^\s*\*\*(" + "|".join(re.escape(h) for h in OLD_BOLD_HEADS) + r")\*\*\s*:?\s*", re.I | re.M)
+OLD_ENV_BLOCK = re.compile(r"^\s*\*\*Environment\*\*\s*:?.*?(?=^\s*\*\*[^*\n]+\*\*|\Z)", re.I | re.M | re.S)
+RELEVANT_SIG_BLOCK = re.compile(r"^\s*#+\s*Relevant SIG\(s\).*?(?=^\s*#+\s*\S|\Z)", re.I | re.M | re.S)
+EMPTY_HASH = re.compile(r"^\s*#+\s*$", re.M)
 OLD_UNCOMMENT = re.compile(r"^.*Uncomment only one, leave it on its own line.*$", re.I | re.M)
 LABEL_STR = re.compile(r"\b(sig|kind|priority|triage|area)/[\w.-]+", re.I)
 TEAM_MENTION = re.compile(r"@kubernetes/sig-[\w-]+", re.I)
@@ -139,6 +147,10 @@ def strip_form_headings(text: str) -> str:
 def prestep(text: str) -> str:
     text = HTML_COMMENT.sub(" ", text)
     text = OLD_KIND_Q.sub("", text)
+    text = OLD_ENV_BLOCK.sub("", text)
+    text = RELEVANT_SIG_BLOCK.sub("", text)
+    text = OLD_BOLD_RE.sub("", text)
+    text = EMPTY_HASH.sub("", text)
     text = OLD_UNCOMMENT.sub("", text)
     text = NO_RESPONSE.sub("", text)
     text = PROW_LINE.sub("", text)
@@ -167,6 +179,8 @@ def hard_leaks(text: str) -> list[str]:
         p.append("form_heading")
     if re.search(r"(?i)bug report or feature request|uncomment only one", text):
         p.append("old_template_kind_question")
+    if OLD_BOLD_RE.search(text) or re.search(r"(?im)^\s*\*\*Environment\*\*", text) or re.search(r"(?i)relevant sig\(s\)", text):
+        p.append("old_markdown_template")
     return p
 
 
@@ -311,7 +325,7 @@ def build():
     ds_hash = hashlib.sha256(ds.read_bytes()).hexdigest()
 
     # blinded sample: 20 development + 20 test, opaque codes, text only
-    rng = random.Random(zlib.crc32(b"k8s-blind"))
+    rng = random.Random(zlib.crc32(b"k8s-blind-2"))  # Amendment 4: new seed for the repeated read
     pick = rng.sample([r for r in final if r["split"] == "development"], 20) + \
         rng.sample([r for r in final if r["split"] == "test"], 20)
     rng.shuffle(pick)
@@ -404,6 +418,13 @@ def selftest():
     t3, _ = model_text("Title", old)
     assert "BUG REPORT" not in t3 and "/kind" not in t3 and "kubelet panics" in t3, t3
     assert hard_leaks(t3) == [], hard_leaks(t3)
+    old2 = ("Svc invalid\n\n**What happened**:\nexport adds fields.\n\n**What you expected to happen**:\nno error\n\n"
+            "**Environment**:\n- Kubernetes version: 1.9\n- OS: ubuntu\n\n**Anything else we need to know?**:\nclusterIP breaks it")
+    t4, _ = model_text("Svc invalid", old2)
+    assert "What happened" not in t4 and "Environment" not in t4 and "1.9" not in t4 and "export adds fields" in t4 and "clusterIP breaks it" in t4, t4
+    t5, _ = model_text("Crash", "PoC here\n\n###\n\n### Relevant SIG(s)\n\nsig-node\n")
+    assert "Relevant SIG" not in t5 and "sig-node" not in t5, t5
+    assert hard_leaks(t4) == [] and hard_leaks(t5) == []
     print("selftest OK")
 
 

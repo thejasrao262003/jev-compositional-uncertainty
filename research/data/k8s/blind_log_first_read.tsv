@@ -1,0 +1,41 @@
+code	label_recoverable_from_explicit_cue(yes/no)	which_label_and_cue	text_damaged(yes/no)	damage_type	notes
+B01	yes	kind=support: “anything else I should do to make it work?”	no		Natural help-seeking question; no specific SIG or priority label.
+B02	yes	kind=cleanup: “Remove Set() method” / “get rid of it completely”	no		Explicit removal/refactoring intent; no SIG or priority cue.
+B03	no		yes	Possible missing example: “2. Example:” is followed by no example content.	Could be an omission in the source or cleaning; cannot determine from the cleaned packet alone.
+B04	no		no		Detailed allocator failure is described, but no explicit SIG, kind, or priority label is stated.
+B05	no		no		Describes incomplete event data; no explicit label cue.
+B06	yes	kind=feature: title prefix “[Feature]”	no		Direct, explicit feature cue in the title.
+B07	yes	kind=support/question: “Do you have some list of blockers…?”	no		Explicit request for information; no specific SIG or priority cue.
+B08	no		no		Describes CPU/GPU NUMA misalignment; no explicit label cue.
+B09	yes	kind=cleanup: “Create a cleaner interface”; “messy” / “move a backend out of tree”	no		Explicit cleaner-interface/refactoring intent; no SIG or priority cue.
+B10	no		no		Image/link placeholders are present, but there is no clear text damage or label-specific cue.
+B11	no		no		Memory-leak concern is described without an explicit label cue.
+B12	yes	kind=bug likely indicated by template-like fields: “What happened”, “What you expected to happen”, “How to reproduce”, “Environment”	yes	Potential form/template field headings remain in the cleaned text.	Confirm whether these are source-authored headings or template remnants; no SIG or priority label is named.
+B13	yes	kind=bug likely indicated by form heading “What you expected to happen” plus reproduction/environment fields	yes	Markdown-style form headings remain; some environment fields are blank.	Potential template remnants; check against the frozen cleaning rule before any calls.
+B14	yes	kind=bug likely indicated by template-like fields: “What happened”, “What you expected to happen”, “How to reproduce”	yes	Potential form/template field headings remain in the cleaned text.	The headings may be reporter-authored, but they resemble issue-form fields and need human adjudication.
+B15	no		yes	Expected request and actual-response examples appear absent after “The following request…” and “Actual response:”.	Possible omitted code/request snippets; verify only under the approved offline protocol. No explicit kind/SIG/priority label.
+B16	no		no		Describes kubelet informer behavior; no explicit label cue or obvious damage.
+B17	yes	kind=feature: “Provide output of Pod-Healthcheck per API” / “Provide an easy way to view…”	no		Direct request for added functionality; no specific SIG or priority cue.
+B18	yes	kind=bug likely indicated by template-like heading “What happened” and report that tests started to panic	yes	Potential form/template heading remains.	“Testgrid” and “Logs” are diagnostic sections; main concern is the surviving “What happened” field heading.
+B19	no		no		Failure scenario and reproduction steps are present; no explicit label cue.
+B20	yes	kind=bug likely indicated by template-like fields: “What happened”, “What you expected to happen”, “How to reproduce”, “Environment”	yes	Potential form/template field headings remain; several fields are empty or contain dashes.	Confirm whether these headings are legitimate free-form text or template remnants.
+B21	no		yes	Empty “###” and “Relevant SIG(s)” headings; PoC/result content is referenced but absent.	The SIG heading does not identify which SIG. Possible template remnants or omitted content.
+B22	yes	kind=bug likely indicated by form headings “What you expected to happen”, “How to reproduce”, “Environment” and “Don’t panic!”	yes	Markdown-style form headings remain; environment fields are blank.	Potential template remnants; no specific SIG or priority label.
+B23	yes	kind=feature: “We would like to support this in Kubernetes 1.31”	no		Directly states a desired capability; no SIG or priority cue.
+B24	yes	kind=bug likely indicated by template-like fields: “What happened”, “What you expected to happen”, “How to reproduce”, “Environment”	yes	Potential form/template field headings remain in the cleaned text.	Confirm whether these headings are reporter-authored or template remnants.
+B25	yes	kind=feature: “What would you like to be added” / “Why is this needed?”	yes	Feature-form headings remain; “How to categorize this issue?” also remains.	The wording directly signals a feature-request form and should be checked against the cleaning rules.
+B26	no		no		A metrics/KEP proposal is described, but no explicit bug/feature/support/cleanup label token appears.
+B27	yes	kind=feature: “What would you like to be added” / “Why is this needed?” and an E2E addition request	yes	Feature-form headings remain in the cleaned text.	Potential form/template remnants; no specific SIG or priority cue.
+B28	yes	kind=feature: “support non-builtin container runtimes” / “issues we need to address to fully support…”	no		Direct request to add runtime-integration support; no SIG or priority cue.
+B29	yes	kind=support/question: “Is this already reported… or is my setting up of aws wrong?”	no		Explicit troubleshooting/help question; no specific SIG or priority cue.
+B30	no		no		“@user” and “[team]” appear as generic redaction placeholders; they do not identify a specific SIG.
+B31	no		no		Describes image-pull/layer corruption behavior and references another issue; no explicit label cue.
+B32	yes	kind=feature: title “Expose container’s own identity to the container” and stated need for built-in identity	no		Direct request for additional functionality; “[team]” is a generic placeholder, not a specific SIG.
+B33	no		no		OOM/eviction sequence and anonymized mentions; no specific label cue or obvious text damage.
+B34	yes	kind=bug likely indicated by form heading “What you expected to happen” in a failure report	yes	Markdown-style form heading remains; additional environment fields appear blank.	Potential template remnants; check before model calls.
+B35	no		no		“Problem”, “Repro steps”, “Logs”, “Workarounds” and “Proposed Fix” appear to be content-specific section labels, not explicit SIG/priority cues.
+B36	yes	kind=bug likely indicated by template-like fields “What happened” and “What you expected to happen”	yes	Potential form/template field headings remain.	The text is otherwise readable; confirm whether these headings are template remnants or reporter-authored.
+B37	no		no		Explains misleading CLI/config output; no explicit SIG, kind, or priority label.
+B38	no		no		Reproduction steps are present; no explicit label cue or obvious cleaning damage.
+B39	no		yes	The phrase “A probe defined like this:” is followed by no probe definition.	Possible omitted example content; source-versus-cleaning cause cannot be established from this packet alone.
+B40	no		no		Discusses alternative designs for HostNetwork pod visibility; no explicit label token or named SIG/priority.

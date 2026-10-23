@@ -1,19 +1,19 @@
 {
   "protocol": "independent_workflow_preregistration.md v1 (frozen 2026-10-23)",
-  "snapshot_utc": "2026-10-23T17:54:37.382680+00:00",
+  "snapshot_utc": "2026-10-23T18:21:45.435836+00:00",
   "template_commit": "fbd477a8bfe5631a43293b59aa4f8d0f941ca480",
   "cutoff": "2026-10-01T00:00:00Z",
   "candidates_fetched": 12535,
   "exclusions": {
     "not_exactly_one_kind": 2093,
     "not_exactly_one_sig": 187,
-    "too_short_after_cleaning": 30,
+    "too_short_after_cleaning": 32,
     "pull_request": 8738,
     "not_exactly_one_priority": 36,
     "excluded_label": 120,
     "after_cutoff": 11
   },
-  "eligible": 1320,
+  "eligible": 1318,
   "split_sizes_before_link_removal": {
     "development": 500,
     "calibration": 150,
@@ -47,48 +47,48 @@
   },
   "date_ranges": {
     "development": [
-      "2015-06-02T15:30:03Z",
-      "2019-07-18T23:57:30Z"
+      "2015-06-01T21:18:35Z",
+      "2019-07-16T01:45:23Z"
     ],
     "calibration": [
-      "2019-07-19T03:50:25Z",
-      "2021-04-09T15:14:20Z"
+      "2019-07-18T23:57:30Z",
+      "2021-04-07T19:57:33Z"
     ],
     "test": [
-      "2021-04-16T08:58:42Z",
+      "2021-04-09T15:14:20Z",
       "2026-09-30T18:38:10Z"
     ]
   },
   "distributions": {
     "development": {
       "sig": {
-        "network": 62,
+        "network": 63,
         "node": 320,
-        "storage": 118
+        "storage": 117
       },
       "kind": {
-        "bug": 293,
+        "bug": 291,
         "cleanup": 55,
-        "feature": 129,
+        "feature": 131,
         "support": 23
       },
       "priority_label": {
-        "backlog": 119,
+        "backlog": 121,
         "critical-urgent": 103,
         "important-longterm": 56,
-        "important-soon": 222
+        "important-soon": 220
       },
       "level": {
-        "0": 175,
-        "1": 222,
+        "0": 177,
+        "1": 220,
         "2": 103
       }
     },
     "calibration": {
       "sig": {
-        "network": 39,
+        "network": 38,
         "node": 85,
-        "storage": 26
+        "storage": 27
       },
       "kind": {
         "bug": 101,
@@ -97,79 +97,79 @@
       },
       "priority_label": {
         "backlog": 30,
-        "critical-urgent": 20,
+        "critical-urgent": 19,
         "important-longterm": 38,
-        "important-soon": 62
+        "important-soon": 63
       },
       "level": {
         "0": 68,
-        "1": 62,
-        "2": 20
+        "1": 63,
+        "2": 19
       }
     },
     "test": {
       "sig": {
-        "network": 24,
-        "node": 522,
+        "network": 25,
+        "node": 521,
         "storage": 36
       },
       "kind": {
-        "bug": 429,
-        "cleanup": 30,
+        "bug": 430,
+        "cleanup": 29,
         "feature": 123
       },
       "priority_label": {
-        "backlog": 190,
-        "critical-urgent": 25,
+        "backlog": 189,
+        "critical-urgent": 26,
         "important-longterm": 215,
         "important-soon": 152
       },
       "level": {
-        "0": 405,
+        "0": 404,
         "1": 152,
-        "2": 25
+        "2": 26
       }
     }
   },
   "joint_bug_by_level": {
     "development": {
-      "bug=0,level=0": 129,
+      "bug=0,level=0": 131,
       "bug=1,level=0": 46,
-      "bug=1,level=1": 149,
+      "bug=1,level=1": 147,
       "bug=0,level=1": 73,
       "bug=1,level=2": 98,
       "bug=0,level=2": 5
     },
     "calibration": {
+      "bug=1,level=1": 50,
       "bug=0,level=0": 36,
-      "bug=1,level=1": 49,
       "bug=1,level=0": 32,
-      "bug=1,level=2": 20,
+      "bug=1,level=2": 19,
       "bug=0,level=1": 13
     },
     "test": {
+      "bug=1,level=2": 26,
       "bug=1,level=1": 116,
       "bug=1,level=0": 288,
-      "bug=0,level=0": 117,
-      "bug=0,level=1": 36,
-      "bug=1,level=2": 25
+      "bug=0,level=0": 116,
+      "bug=0,level=1": 36
     }
   },
   "target_action_prevalence": {
     "development": {
-      "accept": 248,
-      "defer": 149,
+      "accept": 250,
+      "defer": 147,
       "escalate": 103
     },
     "calibration": {
+      "defer": 50,
       "accept": 81,
-      "defer": 49,
-      "escalate": 20
+      "escalate": 19
     },
     "test": {
+      "escalate": 26,
       "defer": 116,
-      "accept": 441,
-      "escalate": 25
+      "accept": 440
     }
   },
   "feasibility_rule": "each of accept/defer/escalate n>=20 in development AND test",
@@ -177,14 +177,14 @@
   "form_share": {
     "development": 0.0,
     "calibration": 0.0,
-    "test": 0.725
+    "test": 0.723
   },
   "priority_label_lag_days": {
-    "n": 1050,
+    "n": 1048,
     "median": 4,
     "p90": 468
   },
-  "early_triage_subset_n": 732,
+  "early_triage_subset_n": 730,
   "leakage_hard_failures": {},
   "leakage_hard_pass": true,
   "soft_flag_counts": {
@@ -223,6 +223,6 @@
   },
   "api_log_pages": 1639,
   "hashes": {
-    "dataset_sha256": "60aa4120c2e51b3c5bbc0554cf8b4833df6905e763c655606693fb69089372ba"
+    "dataset_sha256": "25d4785db0480e6187115ae95d40c56db63c07ac41b0919f274f16c258236581"
   }
 }

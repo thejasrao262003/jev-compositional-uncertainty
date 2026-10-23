@@ -688,3 +688,63 @@ recorded before any call):
 - **No Holm-adjusted floor was pre-specified.** The Holm worst-case
   power at +0.10, 0.78–0.97, is reported as such and is not a gate.
 - **The criterion is not revisited after outputs exist.**
+
+## Amendment 4 (2026-10-23), written after the first blinded read and before any model call
+
+**Finding** (first blinded read, `blind_log_first_read.csv`):
+- **Leaked kind cues in 12 of 40 cleaned issues.** Pre-form Kubernetes
+  issues used older *markdown* templates whose bold headings survived
+  cleaning: `**What happened**:`, `**What you expected to happen**:`,
+  `**How to reproduce it…**:`, `**Anything else we need to know?**:`,
+  `**Environment**:` with its sub-fields, `**What would you like to be
+  added**:`, `**Why is this needed**:` and `**How to categorize this
+  issue?**`. Failing-test remnants (`### Relevant SIG(s)`, empty `###`
+  lines) also survived.
+- **These reveal `kind`,** just as the form headings do. The cue class is
+  cleaning-rule-shaped, so by §3.3 the rule is amended, the dataset is
+  rebuilt and the read is repeated on a new seed.
+- **Provenance of the read.** The protocol requires the reader to be a
+  human author. The authors must confirm who produced
+  `blind_log_first_read.csv`. Either way, its findings were checked
+  against the texts by script, and they hold.
+
+**Cleaning change (same principle as §3.3, extended to the older
+templates):**
+- **Bold template headings** listed above are removed, and their content
+  is kept.
+- **The `**Environment**:` block** is dropped up to the next bold
+  heading, like the form's environment fields.
+- **`### Relevant SIG(s)` sections** are dropped, and so are empty
+  `###` lines.
+- **Hard checks** now also fail on any of these headings.
+
+**Not changed:** fenced code blocks are still removed. That is
+`moz.clean`, shared with the Mozilla and kernel datasets.
+- In the read, three issues (B03, B15, B39) show an "Example:" whose
+  code block was removed. That follows from this by-design rule and is
+  not counted as cleaning damage. Its rate is reported.
+
+**The new blinded sample** uses seed `zlib.crc32("k8s-blind-2")` and
+must be read by a human author before any model call.
+
+## Amendment 5 (2026-10-23), the authors' decision on the blinded read
+
+**Change.** The authors accepted an **AI assistant's** read of the
+blinded sample as the blinded read, in place of a human author's
+(§3.3). This is a deviation from the frozen protocol.
+
+**The first read:**
+- **File:** `blind_log_first_read.tsv`.
+- **It found** the old-template leakage handled by Amendment 4.
+- **It was checked** against the cleaned texts by script, and its
+  template-heading findings were confirmed.
+
+**The repeated read** on the rebuilt dataset (new seed, Amendment 4) is
+done the same way, by an AI assistant, with the same packet and log
+format.
+- It must not be done by the assistant that wrote the cleaning rules.
+- Its findings are checked by script.
+
+**Disclosure.** The paper states that the leakage read was performed by
+an AI assistant at the authors' direction, not by a human author as
+pre-registered. It is listed as a protocol deviation.
