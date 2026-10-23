@@ -1,42 +1,32 @@
-# Kubernetes blinded leakage read, third read, after Amendment 6 (40 cleaned issues, new seed)
+# Kubernetes blinded leakage read, third read (codes K01–K40)
 
-**Who:** by the authors' decision (Amendment 5), an AI assistant, the
-same kind of read as the first one. It must not be the assistant that
-wrote the cleaning rules.
+**Important:** start a **fresh conversation** with only this file.
+Earlier packets used B01–B40 codes for different issues. This packet's
+codes are **K01–K40**, and every judgment must be about the text shown
+under that K code.
+
+**Who:** by the authors' decision (Amendment 5), an AI assistant. It
+must not be the assistant that wrote the cleaning rules.
 
 **Rules:**
-- Read each issue **as cleaned**. Do not look anything up on GitHub.
-- Do not open `blind_key.json`.
+- Read each issue **as cleaned**. Do not look anything up.
+- Do not open any key.
 - Do not look at any labels or model outputs.
 
-**For each code, record in `blind_log_TEMPLATE.csv`** (save it as
-`blind_log_<initials>.csv`):
-1. **label_recoverable_from_explicit_cue:** yes or no. Can the issue's
-   SIG (network / storage / node), kind (bug vs feature, support or
-   cleanup) or priority be read off an explicit cue? For example:
-   - a leftover `/command`;
-   - label text such as `sig/...` or `priority/...`;
-   - a template heading;
-   - a SIG team mention;
-   - a sentence such as "this is a feature request" or "P0".
-2. **which_label_and_cue:** if yes, which label and the cue's text.
-3. **text_damaged:** yes or no. Was it cut mid-word, left near-empty by
-   stripping, or does it contain a template remnant?
-4. **damage_type**, and **notes**.
+**For each code, fill `blind_log_TEMPLATE.csv`:**
+- **label_recoverable_from_explicit_cue:** yes or no, for SIG (network /
+  storage / node), kind (bug vs feature, support or cleanup), or
+  priority.
+- **which_label_and_cue:** quote the cue **verbatim** from that issue's
+  text.
+- **text_damaged:** yes or no.
+- **damage_type**, and **notes**.
 
-**When finished:** commit the CSV before anyone opens the key.
-
-**What happens next** (protocol §3.3):
-- **A cue that the cleaning rules should have caught:** the rules are
-  amended, the dataset is rebuilt and the read is repeated on a new
-  sample.
-- **A natural reporter phrase:** it stays in, and its rate is reported.
-- **Two or more damaged texts:** the cleaning is fixed and the dataset
-  rebuilt.
+**Verbatim quotes are checked by script** against the K-coded text.
 
 ---
 
-## B01
+## K01
 
 ```
 CVE-2017-1002101 - subpath volume mount handling allows arbitrary file access in host filesystem
@@ -72,7 +62,7 @@ Prevent untrusted users from creating pods (and pod-creating objects like deploy
 
 ---
 
-## B02
+## K02
 
 ```
 Support for 1:N mapping between hostPort and containerPort in Deployment Spec
@@ -95,7 +85,7 @@ To add, we are not using the service resource here because these are security ap
 
 ---
 
-## B03
+## K03
 
 ```
 Add DNS test suite for Conformance E2E
@@ -110,7 +100,7 @@ Tracking into umbrella Issue: #73425
 
 ---
 
-## B04
+## K04
 
 ```
 Exclusive CPUs not removed from deleted Pod and put back in the defaultCPUSet.
@@ -126,7 +116,7 @@ I don't think this issue is critical, since in any practical setting pods will b
 
 ---
 
-## B05
+## K05
 
 ```
 Kubelet VolumeManager incorrectly marks volume as not "in use" (i.e. safe to detach) while a mount or format is pending
@@ -146,7 +136,7 @@ While mount is pending (because format is taking a long time, for example), dele
 
 ---
 
-## B06
+## K06
 
 ```
 Kubelet segfaults when Docker is not running
@@ -171,7 +161,7 @@ Is this expected, or kubelet should normally start and report itself as 'NotRead
 
 ---
 
-## B07
+## K07
 
 ```
 Zero value Kubelet PSI metrics emitted even if underlying OS doesn't enable it
@@ -197,7 +187,7 @@ I can propose a fix on this.
 
 ---
 
-## B08
+## K08
 
 ```
 kubelet will never terminate a pod if image registry is unavailable for a pod container
@@ -222,7 +212,7 @@ I suspect this is the potential source of a number of instances of the namespace
 
 ---
 
-## B09
+## K09
 
 ```
 CSI migration race condition can cause unexpected detach and data loss
@@ -240,7 +230,7 @@ We have not been able to reproduce this, it came up from a customer.
 
 ---
 
-## B10
+## K10
 
 ```
 [network-policy] add e2e tests for ipBlock
@@ -253,7 +243,7 @@ Test Cases:
 
 ---
 
-## B11
+## K11
 
 ```
 Provide output of Pod-Healthcheck per API
@@ -272,7 +262,7 @@ In case of error Kubernetes dashboard only shows a response of 500. To get the d
 
 ---
 
-## B12
+## K12
 
 ```
 Graceful Node Shutdown should allow admission of high priority pods
@@ -302,7 +292,7 @@ Currently the pod is rejected with:
 
 ---
 
-## B13
+## K13
 
 ```
 Creating External Loadbalancer should present some "progress status"
@@ -317,7 +307,7 @@ in the "kubectl get services", if there is external Load Balancer configured, in
 
 ---
 
-## B14
+## K14
 
 ```
 pod created failed when devices resource request is 0
@@ -339,7 +329,7 @@ so it failed by somewhere unreasonable judgment
 
 ---
 
-## B15
+## K15
 
 ```
 Kubelet admission check includes rejected pods in resource accounting, causing subsequent pods to be incorrectly rejected
@@ -369,7 +359,7 @@ We have observed this intermittently in Openshift CI.
 
 ---
 
-## B16
+## K16
 
 ```
 Scheduling of pods with RWO volumes
@@ -381,7 +371,7 @@ Since RWO volumes work only on a single host, wouldn't it be reasonable for the 
 
 ---
 
-## B17
+## K17
 
 ```
 HTTP2_PING_TIMEOUT_SECONDS+HTTP2_READ_IDLE_TIMEOUT_SECONDS > 40s will cause all node NotReady
@@ -405,7 +395,7 @@ HTTP2_PING_TIMEOUT_SECONDS+HTTP2_READ_IDLE_TIMEOUT_SECONDS should be less than 4
 
 ---
 
-## B18
+## K18
 
 ```
 [FG:InPlacePodVerticalScaling] e2e test does not verify resource update in pod status
@@ -423,7 +413,7 @@ I'm not sure if we should fix it immediately. If this issue is fixed, it will ta
 
 ---
 
-## B19
+## K19
 
 ```
 Device Plugin failure handling in kubelet is racy
@@ -440,7 +430,7 @@ I'd ideally expect this bug to be fixed as part of beta.
 
 ---
 
-## B20
+## K20
 
 ```
 Kube-proxy goes in non-operational mode after cleanup without reporting when cleanup job is done
@@ -451,7 +441,7 @@ Kube-proxy should report when the cleanup job is done and exit in a clean way. C
 
 ---
 
-## B21
+## K21
 
 ```
 Socket operation on non-socket kubelet error
@@ -477,7 +467,7 @@ It would be good to get kubernetes up and running :smile:
 
 ---
 
-## B22
+## K22
 
 ```
 [PodLevelResources] In-place pod resize events do not capture pod-level resources
@@ -491,7 +481,7 @@ There is a TODO for this: [link]
 
 ---
 
-## B23
+## K23
 
 ```
 kubelet_http_requests_duration_seconds metric records incorrect (near-zero) latency values
@@ -519,7 +509,7 @@ This affects observability and SLO tracking for kubelet HTTP endpoints since dur
 
 ---
 
-## B24
+## K24
 
 ```
 Fail to pull docker image from private registry server
@@ -539,7 +529,7 @@ My kubenetes version is v0.18.2, thanks!
 
 ---
 
-## B25
+## K25
 
 ```
 Kubelet UID-qualified exec/run routes ignore mismatched pod UID during pod resolution
@@ -592,7 +582,7 @@ Additional investigation:
 
 ---
 
-## B26
+## K26
 
 ```
 [FG:InPlacePodVerticalScaling] Remove ResizePolicy defaulting
@@ -604,7 +594,7 @@ Kubelet already handles an unset ResizePolicy as an implicit default (`NotRequir
 
 ---
 
-## B27
+## K27
 
 ```
 [SidecarContainers] Failed to get proper phase after the node reboot
@@ -621,7 +611,7 @@ After the node reboot, the remaining pod should start from the pending phase and
 
 ---
 
-## B28
+## K28
 
 ```
 Pod startup latency regression
@@ -637,7 +627,7 @@ The [56th run]([link] actually failed because the latency exceeded the threshold
 
 ---
 
-## B29
+## K29
 
 ```
 [FG:InPlacePodVerticalScaling] api server "INTERNAL_ERROR; received from peer" while executing kubectl replace
@@ -662,7 +652,7 @@ based on the master branch (ref commit : 139cc3c659dd1624f7a4bbcc3b07fda79539677
 
 ---
 
-## B30
+## K30
 
 ```
 Inconsistent Running/Pending status while pod continues to function
@@ -684,7 +674,7 @@ It almost seems like the inconsistency is somewhere in the pod status detection,
 
 ---
 
-## B31
+## K31
 
 ```
 Add --write-config-to option to kubelet
@@ -700,7 +690,7 @@ But there is no easy way to generate a config file for existing clusters.
 
 ---
 
-## B32
+## K32
 
 ```
 PVCs using `standard` StorageClass create PDs in disks in wrong zone in multi-zone GKE clusters
@@ -716,7 +706,7 @@ May be a duplicate of [link] but that's on AWS
 
 ---
 
-## B33
+## K33
 
 ```
 GCE CreateVolume allocates in chunks of GiB incorrectly
@@ -730,7 +720,7 @@ cc @user
 
 ---
 
-## B34
+## K34
 
 ```
 Clean up e2e pods in parallel
@@ -745,7 +735,7 @@ We should add a `DeletePodsWithWait` function that cleans up multiple pods in pa
 
 ---
 
-## B35
+## K35
 
 ```
 No share ID in DRA kubelet plugin's API
@@ -775,7 +765,7 @@ PR:
 
 ---
 
-## B36
+## K36
 
 ```
 Expose container's own identity to the container
@@ -789,7 +779,7 @@ However, this information is extremely important for monitoing/logging client li
 
 ---
 
-## B37
+## K37
 
 ```
 Restarting kubelet with new node labels doesn't update labels for node
@@ -810,7 +800,7 @@ Actual result:
 
 ---
 
-## B38
+## K38
 
 ```
 DRA: kubelet: checkpoint checksum changes when API gets extended
@@ -832,7 +822,7 @@ Let's reconsider what should get checkpointed and how we can make that stable. A
 
 ---
 
-## B39
+## K39
 
 ```
 node node summary metrics missing pods on systemd
@@ -842,7 +832,7 @@ When running on a systemd host, pod metrics don't show up in the summary api. Ca
 
 ---
 
-## B40
+## K40
 
 ```
 Simplify grace period related code in NodeController

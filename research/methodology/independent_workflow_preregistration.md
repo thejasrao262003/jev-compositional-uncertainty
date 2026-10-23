@@ -797,3 +797,15 @@ call.
   - "[sig-node]"-style title prefixes (5);
   - one old-era "P0" label mentioned in prose;
   - "priority: 0" as a YAML field.
+
+**Third read, rejected** (2026-10-24).
+- **Why:** the AI-assistant log for the third packet quoted cues that do
+  not appear in the issues they were attributed to. 14 of 26 quoted cues
+  matched the second packet's issues under the same B codes. The log
+  therefore does not describe the third packet.
+- **Kept as:** `blind_log_third_read_REJECTED_cues.tsv` (the extracted
+  quotes and the check).
+- **Fix:** the same sample (seed `k8s-blind-3`) is relabelled K01–K40,
+  so its codes cannot collide with earlier packets. The packet asks for
+  verbatim quotes, and those quotes are checked by script against the
+  K-coded texts before the read is accepted.
