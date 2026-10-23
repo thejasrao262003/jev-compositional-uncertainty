@@ -1,6 +1,6 @@
 # Pre-registration: independent-workflow replication (Kubernetes issue triage)
 
-**Status:** DRAFT 2.3 for review, 2026-10-23.
+**Status:** DRAFT 2.4 for review, 2026-10-23.
 - Draft 1 (commit `7c692be`) is superseded; Draft 2 responds to its
   review, issues A–F plus the smaller items.
 - **Draft 2.1** fixes four problems found in a line-by-line read of
@@ -20,6 +20,11 @@
   - a pre-committed stop rule for too-rare actions;
   - a qualified K2 power claim;
   - the exact model-facing input, traced to code and commits.
+- **Draft 2.4** answers the review of Draft 2.3:
+  - states the extra BBSE assumption (stable-answer mix re-weights all
+    rows) and adds a per-label instability diagnostic;
+  - removes the K1-derived equivalence threshold for K2 (a non-supported
+    K2 is inconclusive).
 - No issue has been fetched for this study.
 - No model call has been made.
 - No outcome exists.
@@ -410,7 +415,19 @@ subsample with equal counts per priority level (seed fixed,
     the quota subsample and for the test set.
   - **Weights apply to all quota-subsample issues by label,** including
     those with an unstable answer. Those issues stay in the fit, with the
-    weight of their label.
+    weight of their label, so all three arms use the same training rows
+    and the comparison stays controlled.
+  - **Additional assumption (stated, not tested as a gate):** the label
+    mix estimated among stable-answer issues is used to re-weight *all*
+    quota-subsample issues. That requires the stable-answer conditional
+    label mix to represent the full sample's label mix, which holds if
+    instability is unrelated to the priority label.
+  - **Diagnostic (reported, not used to select a method):**
+    - the unstable-answer rate **by true priority label** in the quota
+      subsample and in the development set;
+    - the overall unstable-answer rate in the test set (test labels are
+      not used for weighting).
+    - Whatever these rates show, the method is not changed.
   - Solve C v = μ. If cond(C) > 100 or the solve fails, K3 is
     **"not evaluable"** and counted as not supported. Negative v are
     clipped to 0.
@@ -483,9 +500,11 @@ K1–K3, family-wise α = 0.05.
     score's own AUROC (0.58–0.75 for the K1 effects simulated) is
     expected to be easier to distinguish from 0.5 than the paired
     difference is from 0.
-  - **The power of K2 was not directly evaluated.** A non-supported K2
-    is read with the same equivalence-style rule as K1, with d\* taken
-    from the K1 table as an approximation, and is labelled as such.
+  - **The power of K2 was not directly evaluated.** K2 measures one
+    AUROC's distance above 0.5, a different effect size from K1's paired
+    difference, so K1's d\* does not apply to it.
+  - **A non-supported K2 is reported as inconclusive,** with its 95% CI,
+    and no equivalence claim is made.
 - **K3 was not simulated.** Its effect size cannot be planned from the
   original study, because that study had no quota-vs-natural mismatch on
   a priority target. A non-supported K3 is therefore always reported as
