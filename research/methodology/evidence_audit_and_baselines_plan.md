@@ -165,3 +165,44 @@ repair?
 - The paper then states that decision-conditioned error rates must be
   estimated under the deployment label mix.
 - Either way the result is exploratory.
+
+## Addendum I (2026-10-23)
+
+**Status:** written before I is computed. This addendum answers an
+external review point: the re-weighting in H uses the held-out label
+counts, so it is not deployment-feasible.
+
+**Question.** Can the label-mix correction be done without any test
+labels?
+
+**Method: black-box shift estimation (BBSE; Lipton et al., 2018).** Per
+model and tracker, the label is the reference severity level (3 classes)
+and the predictor is the model's `score` decision.
+- **Confusion matrix:** C[i, j] = P_dev(ŷ = i, y = j), estimated on the
+  development bugs. These have labels.
+- **Target prediction mix:** μ = P_held(ŷ = i), the share of held-out
+  bugs given each `score` answer. This uses held-out *predictions* only,
+  never held-out labels.
+- **Weights:** solve C w = μ, clip w at 0, and normalise so the
+  development bugs keep their total weight. If C is singular or a
+  weight goes negative before clipping, that is reported.
+- **Unstable answers:** bugs with a repeat-unstable `score` answer
+  (ŷ = None) are excluded from C and μ, on the assumption that the
+  instability is unrelated to the label.
+- **Applying the weights:** the development bugs are re-weighted by
+  w[level]. The group dimension is not corrected; that is disclosed.
+
+**Comparison** on the held-out bugs, all three targets, all 5 models:
+
+| | Weighting | Uses test labels? |
+|---|---|---|
+| (i) | Unweighted development fit | No |
+| (ii) | Oracle weights (section H) | Label counts |
+| (iii) | BBSE weights | No |
+
+Also reported: the estimated vs true held-out level mix.
+
+**Reading (fixed now):**
+- BBSE "recovers" the correction for a model and target if its AUROC is
+  at least halfway from (i) to (ii).
+- Exploratory either way.
