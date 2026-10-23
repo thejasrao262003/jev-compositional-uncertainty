@@ -37,40 +37,53 @@ calibration claim. They are a measurement of how these documented
 concentration statistics behave as escalation signals when Jev's
 primitives are chained, which the documentation leaves open.
 
-\para{Contributions} The main findings concern workflow-level prediction
-and its decision utility.
+\para{Research questions} Failure here means disagreement between the
+workflow's action and a target action we construct from reference labels
+(\cref{sec:setting}); we return to targets that do not depend on that
+construction in \cref{sec:crossmodel}.
+\begin{itemize}
+  \item \textbf{RQ1.} Which signals rank workflow failures: the models'
+  confidence, or what the workflow decided?
+  \item \textbf{RQ2.} Are those signals stable when the label
+  distribution changes between development and deployment?
+  \item \textbf{RQ3.} Do signals that rank failures also identify the
+  reviews that reduce cost?
+\end{itemize}
+
+\para{Contributions}
 \begin{enumerate}
-  \item \textbf{Workflow failure prediction} (\cref{sec:heldout,sec:crossmodel},
-  pre-registered). A frozen decision-feature estimator ranks wrong workflow
-  actions better than final-step confidence on 500 new bugs. The gap
-  replicates across five evaluated models from four sources, and Jev's
-  frozen estimator transfers unchanged to an independently trained
-  Jev-style model. Most of the signal is the chosen action's historical
-  error rate.
-  \item \textbf{Prediction is not review value} (\cref{sec:intervention},
-  pre-registered). At a 10\% review budget and the pre-registered costs,
-  that predictive signal does not yield a lower cost than
-  confidence-ranked review, and no strategy beat no review; an
-  exploratory sensitivity analysis shows that whether review pays depends
-  on the cost ratio. An oracle shows the reason: the expensive errors exist,
-  but the signals we tested could not isolate them within an action. A
-  case-level score developed on training bugs did not meet a
-  pre-registered feasibility criterion under the natural bug mix, so the
-  planned confirmatory study was stopped before any new data.
-  \item \textbf{Supporting evidence on the primitives}
-  (\cref{sec:char,sec:transfer,sec:real,sec:comp}). Inside this workflow,
-  the three primitives' confidence signals behave differently; fixed
-  thresholds set on constructed content lose their selectivity on real
-  text; \score{} compresses severity on two trackers with different
-  labeling processes; and confidence-based escalation rules did not
-  consistently beat random selection (exploratory, with a confound we
-  identify). Primitive-level calibration of Jev has been studied
-  elsewhere on single tasks
-  \citep{deusser2026jev,meng2026jevaudit}; these results are the
-  foundation for the workflow study rather than its main claim.
-  \item \textbf{Method} (\cref{sec:method}). A pre-registration and audit
-  process that caught six design or implementation defects, most of them
-  before any evaluation data existed.
+  \item \textbf{The action's historical error rate predicts failure}
+  (RQ1; \cref{sec:heldout,sec:crossmodel}, pre-registered). A frozen
+  decision-feature estimator ranks failures better than final-step
+  confidence on 500 new bugs, and the gap replicates across five models
+  from four sources. Paired ablations show what carries it: the
+  historical error rate of the chosen action. For the two Jev-style models
+  the estimator adds nothing detectable to that rate, and confidence adds
+  little except for the weakest general models.
+  \item \textbf{Those error rates are not portable across label mixes}
+  (RQ2; \cref{sec:crossmodel}, exploratory). Fitted on a quota-sampled
+  development set, decision-conditioned error rates can rank a
+  natural-mix set's errors below chance on targets that bypass our
+  construction. Re-weighting to the deployment label mix repairs this,
+  including with weights estimated from the models' own predictions
+  without any test labels, for the models whose predictions discriminate
+  the label.
+  \item \textbf{Ranking failures is not finding valuable reviews}
+  (RQ3; \cref{sec:intervention}, pre-registered). Under the
+  pre-registered costs no 10\% review policy beat no review; an oracle
+  locates the value in wrongly accepted cases that the tested signals do
+  not isolate; and an exploratory sensitivity analysis shows that
+  whether review pays depends on the ratio of wrong-accept cost to review
+  cost. A case-level score failed a pre-registered feasibility check, so
+  its confirmatory study was stopped before new data.
+  \item \textbf{Supporting evidence and method}
+  (\cref{sec:char,sec:transfer,sec:real,sec:comp,sec:method}). Inside the
+  workflow the primitives' confidence signals behave differently, fixed
+  thresholds set on constructed content do not transfer, and \score{}
+  compresses severity on two trackers, consistent with single-task audits
+  of Jev \citep{deusser2026jev,meng2026jevaudit}. A pre-registration and
+  audit process caught seven defects, five of them before the data that
+  would have exposed them existed.
 \end{enumerate}
 
 \para{Non-claims} We make no claim about general calibration, other
@@ -124,8 +137,12 @@ confidence estimation for language models has been surveyed in
 
 \para{Selective prediction and deferral} Risk--coverage trade-offs
 and reject options \citep{elyaniv2010selective,geifman2017selective,geifman2019selectivenet},
-learning to defer \citep{madras2018predict} and prediction sets in
-human--AI teams \citep{babbar2022predsets} address \emph{one} decision.
+learning to defer \citep{madras2018predict,mozannar2020defer} and
+prediction sets in human--AI teams \citep{babbar2022predsets} address
+\emph{one} decision. In human--AI teaming, the most accurate model need
+not give the best team: optimizing expected team utility, which accounts
+for verification cost and both parties' accuracy, beats optimizing
+accuracy \citep{bansal2021teammate}.
 Closest to our intervention result, recent work argues that error risk is
 not review value under bounded review budgets: review priority should
 depend on wrongness, repairability, impact and cost, and ranking by
@@ -134,6 +151,25 @@ question-answering benchmark \citep{park2026riskreview}. Our
 intervention finding is an instance of that distinction in a dependent
 typed-decision workflow, with a frozen cost table and pre-registered
 tests.
+
+\para{Label shift} When class priors change between training and
+deployment, posteriors can be re-adjusted to the new priors
+\citep{saerens2002adjusting}, and the new priors can be estimated from a
+black-box predictor's confusion matrix and its predictions on unlabeled
+deployment data, provided that matrix is invertible
+\citep{lipton2018bbse}. Our RQ2 finding is a consequence of this for
+reliability estimates: an error rate conditioned on a decision is itself
+a function of the label prior, and we use the second method to correct it
+without test labels.
+
+\para{Reliability of multi-stage software systems} Component-based
+reliability models treat the probability that an error propagates from
+one component to the next as an architectural attribute that shapes where
+to place detection and recovery \citep{cortellessa2007errorprop}. Bug
+severity prediction from report text is a long-studied triage task
+\citep{lamkanfi2010severity}. We study a related propagation problem for
+chained model decisions, with the escalation point as the recovery
+mechanism.
 
 \para{Conformal methods and composition} Conformal prediction
 \citep{angelopoulos2021gentle} and conformal risk control
@@ -191,8 +227,9 @@ evaluated models, we test which signals predict workflow failure and
 whether they identify the costly errors that make human review
 worthwhile. We are not aware of prior work with this specific design, but
 we make no priority claim. Our literature search was web-based, did not
-systematically cover reliability engineering or HCI escalation research,
-and the Jev literature is growing quickly: the studies cited above
+systematically cover reliability engineering or HCI escalation research
+(we added the closest work on error propagation, human--AI teaming,
+deferral and label shift in a targeted pass), and the Jev literature is growing quickly: the studies cited above
 appeared in September and October 2026.
 
 %======================================================================
@@ -745,7 +782,7 @@ different interfaces.}
 \resizebox{\textwidth}{!}{\input{table_crossmodel.tex}}
 \end{widetable}
 
-\para{The signal is simple} A class-frequency rule, ``the historical
+\para{The action's historical error rate carries the signal} A class-frequency rule, ``the historical
 error rate of the action the workflow chose'' (estimated on training
 bugs only), matches the estimator for Jev (0.76) and OpenJev (0.75), and
 comes close for the others (0.58--0.70). Single uncertainty signals each
@@ -794,9 +831,20 @@ held-out set, where most bugs are level 1, they are 20\% wrong. Re-weighting
 the development bugs to the natural label mix repairs this: the decision
 estimator then beats final-step confidence on both targets for four of
 five models (Jev 0.79 vs.\ 0.61 on severity), the exception being OLMo-2
-on any node. Decision-conditioned error rates are therefore informative
-beyond the constructed target, but only when estimated under the
-deployment label distribution.
+on any node. These oracle weights use the held-out sample's label counts.
+A deployment-feasible version uses no test labels: black-box shift
+estimation \citep{lipton2018bbse} infers the deployment severity mix from
+the development confusion matrix of each model's \score{} answers and
+the distribution of its answers on the new bugs. It recovers almost all
+of the oracle gain for Jev (0.74 on severity, 0.78 on any node), OpenJev
+(0.78, 0.80) and Qwen2.5 (0.74 on severity), and none for Phi-3.5 and
+OLMo-2, whose severity answers are nearly all ``blocking'', so their
+confusion matrices are near-singular and their answers carry no
+information about the label mix. Decision-conditioned error rates are
+therefore informative beyond the constructed target, but only when
+estimated under the deployment label distribution, which can be
+estimated without labels only for models whose answers discriminate the
+label.
 
 \para{Failure modes differ by model family}
 \begin{itemize}
@@ -955,15 +1003,18 @@ A trigger firing on $\approx$90\% of inputs & selectivity on input signals only 
 A threshold sensitive to the data distribution & smoke test vs.\ pilot & before the full run \\ \addlinespace
 Four silent runner defects (e.g.\ the literal ``None'' shown to the model; partial data analyzed) & adversarial probing & before the live run \\ \addlinespace
 The confidence-vs-decisions confound & post-hoc review & after the Mozilla result \\ \addlinespace
-Template content whose labels were recoverable from punctuation alone (100\%) and whose sentences leaked cross-label cues & independent review (separate AI agent) & before the controlled study \\
+Template content whose labels were recoverable from punctuation alone (100\%) and whose sentences leaked cross-label cues & independent review (separate AI agent) & before the controlled study \\ \addlinespace
+A bootstrap seed derived from Python's salted string hash, making two reported lower bounds vary between runs & clean-checkout re-run of all analyses & after publication of the bounds \\
 \bottomrule
 \end{tabularx}
 
 \end{widetable}
 
-\Cref{tab:audits} lists the defects the study's own audits caught. Most
-were found before the data that would have exposed them existed. The
-exception is the confound, found after a result. It would have been
+\Cref{tab:audits} lists the defects the study's own audits caught. Five of
+seven were found before the data that would have exposed them existed.
+The exceptions are the confound, found after a result, and the bootstrap
+seed, found by re-running every analysis from a clean checkout; it moved
+two lower bounds by at most 0.005 and changed no test outcome. It would have been
 caught earlier by asking, for every strategy and every target class:
 \emph{can this strategy be right here, and through what information?}
 We recommend this check, together with measuring each trigger's
@@ -995,9 +1046,10 @@ selectivity on pilot inputs, before freezing any escalation policy.
   change its result.
   \item \textbf{Label-prior shift.} Decision-conditioned error
   estimators fitted on the quota-sampled development bugs can invert on a
-  natural-mix set (\cref{tab:targets}). The re-weighting that repairs
-  this uses the held-out sample's label counts (not per-bug labels or
-  model outputs), which is optimistic: a deployer has to estimate the mix.
+  natural-mix set (\cref{tab:targets}). The label-free correction (BBSE)
+  corrects only the severity dimension, assumes pure label shift, and
+  fails by construction for models whose answers do not discriminate the
+  label; these analyses are exploratory and on the same held-out bugs.
   \item \textbf{Reuse of the held-out set.} The 500 held-out bugs were
   fresh for the prediction tests only. The intervention test was
   pre-registered after their prediction results were known (no cost
@@ -1043,27 +1095,27 @@ the follow-up.
 \section{Conclusion}
 %======================================================================
 
-Structured outputs make uncertainty \emph{look} uniform: every Jev
-primitive returns a number between 0 and 1. In the evaluated workflow,
-Jev's three primitives showed distinct confidence failure modes, fixed
-thresholds on them did not transfer, and severity compression appeared
-on two trackers while the primitive's own confidence gave no sign of it.
+\para{What the evidence shows} In a dependent workflow of typed
+decisions, what the workflow decided ranked its failures better than how
+confident it was, on 500 new bugs and for five models, with failure
+measured against a target we constructed. Almost all of that signal is
+the historical error rate of the chosen action. Those error rates depend
+on the label distribution they were estimated under and can invert when
+it changes; re-weighting to the deployment mix repairs them, without test
+labels where the models' answers discriminate the label. Under the
+pre-registered costs, no review policy built on these signals beat no
+review.
 
-Pre-registered tests then showed that what the workflow \emph{decided}
-predicts its failures better than how confident it was. This held on 500
-new bugs and across five evaluated models from four sources, and it was
-driven mostly by the chosen action's historical error rate. Jev-style
-decision models and general instruct models failed in different ways:
-compression versus over-escalation.
+\para{What explains it} The expensive errors, wrongly accepted serious
+bugs, share their action and largely their confidence with correctly
+accepted ones, so neither signal separates them; whether review pays at
+all is set by the ratio of wrong-accept cost to review cost relative to
+the precision the signals reach.
 
-Under the pre-registered costs, that prediction did not become a
-cheaper review policy, and an exploratory sensitivity analysis shows that
-whether review pays at all depends on the ratio of wrong-accept cost to
-review cost. The expensive
-errors are real, but they hide inside actions that look alike. Knowing
-which decisions are likely wrong is different from knowing which are
-worth correcting. Workflow uncertainty has to be evaluated against the
-decision it is meant to improve. A case-level score that targeted the
-expensive errors directly helped on the training mix, but it failed our
-pre-registered feasibility check under the natural mix, and we stopped
-there by rule rather than search for a design that would pass.
+\para{What remains open} Whether these findings hold for other workflows
+and independently established outcomes, whether a signal exists that
+separates expensive errors within an action, and how review value
+behaves under measured rather than assumed costs. Failure prediction,
+uncertainty estimation and review value are three different problems,
+and a workflow's uncertainty has to be evaluated against the decision it
+is meant to improve.

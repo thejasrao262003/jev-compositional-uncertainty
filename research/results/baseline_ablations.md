@@ -120,3 +120,38 @@ Bootstrap CIs for each cell are in `prior_shift_reweighting.json`.
 - **Target robustness:** with matched label mix, the decisions-beat-
   confidence result extends to two targets independent of `F`, with one
   exception (OLMo-2, any node).
+
+## I. Deployment-feasible correction: BBSE (addendum I, `label_shift_bbse.json`)
+
+**Method.** Weights come from black-box shift estimation (Lipton et al.,
+2018).
+- **Development side:** a confusion matrix of the model's `score`
+  decision against the reference level, from development labels.
+- **Held-out side:** the prediction mix of `score` decisions only.
+- **Held-out labels are never used.**
+
+Held-out AUROC of the decision-only estimator:
+
+| Model | Severity wrong: unweighted / oracle / **BBSE** | Any node wrong: unweighted / oracle / **BBSE** | Recovered (pre-stated: ≥ halfway to oracle) |
+|---|---|---|---|
+| Jev | 0.282 / 0.793 / **0.739** | 0.559 / 0.758 / **0.778** | yes / yes |
+| OpenJev | 0.277 / 0.794 / **0.779** | 0.619 / 0.805 / **0.799** | yes / yes |
+| Qwen2.5 | 0.620 / 0.740 / **0.739** | 0.755 / 0.731 / 0.753 | yes / n.a. (no gap) |
+| Phi-3.5 | 0.307 / 0.673 / 0.306 | 0.668 / 0.772 / 0.668 | no / no |
+| OLMo-2 | 0.498 / 0.621 / 0.498 | 0.425 / 0.425 / 0.425 | no / n.a. |
+
+**Reading:**
+- **For the Jev-style models and Qwen2.5, the correction needs no test
+  labels.** BBSE recovers almost all of the oracle gain.
+- **It fails for Phi-3.5 and OLMo-2, and the failure is diagnosable.**
+  Their severity answers are nearly all "blocking", so their `score`
+  confusion matrices are near-singular (condition numbers 370–905 for
+  Phi, about 10^16 for OLMo). Their predictions therefore carry almost no
+  information about the label mix.
+- **The precondition is checkable in advance.** BBSE can only correct
+  shift for a model whose predictions discriminate the shifted label.
+- **The estimated mixes are crude, but ranking is still repaired.** For
+  example, the kernel level mix was estimated as [0, 1, 0] against a true
+  [0.02, 0.73, 0.25].
+- **Scope.** The group dimension was not corrected, and weights were
+  clipped at 0 where the solve went negative (see the json).

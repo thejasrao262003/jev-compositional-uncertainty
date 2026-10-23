@@ -41,6 +41,12 @@ remain unverified.
 | geuter2026innerjev | Open instruction-tuned models give Jev-like decisions by reading answer-letter logits in one forward pass; LoRA recipe; OpenDecisions | arXiv abstract 2610.17205, fetched 2026-10-17 | Consistent. **Not** the source of the OpenJev checkpoint we ran (that model card links no paper) |
 | park2026riskreview | Error risk is not review value under bounded review budgets; review-value ranking left less post-repair residual exposure than risk ranking at a 20% budget (TAT-QA/SciFact) | arXiv abstract 2609.07095 (SeT-LLM @ KDD 2026), fetched 2026-10-17 | Consistent |
 | openjev2026 (updated) | Checkpoint provenance | HF download metadata on our Modal volume: commit b4a89f5884f3482a5e894b2e7ff01db8ea033726 for all files; model card read 2026-10-17 (org `openjev`, Apache-2.0 base, CC BY-NC weights, no paper, states independence from TypeSafe) | Pinned. Distinct from other projects named OpenJev |
+| saerens2002adjusting | Posterior re-adjustment to new class priors | Library records + DOI 10.1162/089976602753284446 (Neural Computation 14(1):21–41), checked 2026-10-23 | Consistent |
+| lipton2018bbse | BBSE: estimate deployment label distribution by inverting a black-box predictor's confusion matrix; needs invertibility | arXiv 1802.03916 abstract (ICML 2018), checked 2026-10-23 | Consistent |
+| bansal2021teammate | Most accurate AI is not necessarily the best teammate; optimize expected team utility | arXiv 2004.13102 + AAAI OJS record 35(13):11405–11414, checked 2026-10-23 | Consistent |
+| mozannar2020defer | Consistent estimators for learning to defer | PMLR v119:7076–7087 page, checked 2026-10-23 | Consistent |
+| cortellessa2007errorprop | Error propagation probability as an architectural attribute of component-based reliability | Institutional record + CBSE 2007 slides; LNCS 4608 pp. 140–156, DOI 10.1007/978-3-540-73551-9_10, checked 2026-10-23 | Consistent (abstract-level) |
+| lamkanfi2010severity | Text-mining prediction of bug severity (Mozilla, Eclipse, GNOME) | MSR 2010 records, DOI 10.1109/MSR.2010.5463284, checked 2026-10-23 | Consistent |
 
 **Not established by this record:**
 - that the literature review is exhaustive;

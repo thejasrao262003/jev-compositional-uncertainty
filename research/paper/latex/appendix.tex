@@ -59,3 +59,57 @@ one-sided lower bounds varied between runs (0.640--0.644 for the kernel,
 0.759--0.763 for Mozilla); point estimates and test outcomes never changed.
 The seed is now deterministic (bounds 0.762 and 0.648), and every other
 analysis, re-run under a different hash seed, was byte-identical.
+
+%======================================================================
+\section{Claims and the evidence behind them}
+%======================================================================
+
+\begin{widetable}
+\centering
+\caption{Each main claim, its status and its test. Confirmatory claims
+were specified before the data they use existed; exploratory claims were
+not, or reuse previously analysed bugs.}
+\label{tab:claims}
+\small
+\begin{tabularx}{\linewidth}{Y l Y}
+\toprule
+Claim & Status & Test and outcome \\
+\midrule
+Decision estimator ranks failures above final-step confidence (Jev, new bugs) & Confirmatory (HR1) & One-sided paired bootstrap, Holm; supported \\ \addlinespace
+Decision estimator above chance on each tracker & Confirmatory (HR2) & One-sided bootstrap, Holm; supported \\ \addlinespace
+Same contrast for four further models & Confirmatory, three amendments (X1, X2) & 8 tests, Holm; all supported \\ \addlinespace
+Estimator adds nothing beyond the action's error rate (Jev-style) & Exploratory & Paired bootstrap CI of AUROC difference \\ \addlinespace
+Error rates invert under label shift; re-weighting and BBSE repair it & Exploratory & AUROC with bootstrap CI on held-out bugs \\ \addlinespace
+Action rule beats random review (Jev, OpenJev) & Confirmatory (I1) & One-sided paired bootstrap, Holm; supported \\ \addlinespace
+Action rule beats confidence-ranked review & Confirmatory (I2) & Not supported for any model \\ \addlinespace
+No 10\% review policy beats no review & Descriptive, pre-registered design & Point estimates under the frozen cost table \\ \addlinespace
+Whether review pays depends on the cost ratio & Exploratory (post hoc, planned) & Frozen rankings re-scored on a cost grid \\ \addlinespace
+Case-level score not viable & Pre-registered feasibility check & Simulation on development data; stop rule applied \\ \addlinespace
+Primitive confidence profiles, threshold transfer, severity compression & Exploratory / descriptive & Development bugs, bootstrap and Wilson intervals \\
+\bottomrule
+\end{tabularx}
+\end{widetable}
+
+%======================================================================
+\section{Data provenance and release}
+%======================================================================
+
+\para{Sources} Bug reports come from the public Mozilla Bugzilla and
+Linux kernel Bugzilla, fetched through their REST interfaces. Texts were
+cleaned, privacy-scrubbed (names and e-mail addresses removed) and
+truncated to 2{,}000 characters; exclusion rules are applied by the
+dataset builders and recorded in manifests with SHA-256 hashes.
+
+\para{What is released} Bug identifiers, tracker URLs, reference labels,
+text hashes, every model output, every protocol with its commit history,
+all analysis code and every result file. Report texts are not
+redistributed: the builders regenerate them from the public trackers, and
+the hashes verify the regeneration. Bug-tracker links used in the
+split-integrity check are released as identifiers only.
+
+\para{What needs access} Re-running model calls needs a TypeSafe API key
+for Jev and a GPU for the open models (OpenJev at Hugging Face commit
+\texttt{b4a89f5} under vLLM 0.29.0; Qwen2.5, Phi-3.5 and OLMo-2 under
+\texttt{transformers}). Every table and figure in this paper can be
+regenerated offline from the released outputs, and a script checks every
+reported number against the result files.

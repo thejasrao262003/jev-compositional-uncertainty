@@ -132,7 +132,10 @@ need("sens Jev small reversal", f"(Jev ${round(jv('m=1,h=0.5'))}$ at $m = 1$")
 need("sens only OLMo robust", "cost-robust only for OLMo-2") if [m for m, v in cs["summary"].items() if v["verdict"] == "cost-robust"] == ["allenai/OLMo-2-1124-7B-Instruct"] else None
 need("sens A1>C 12/16", f"in {cs['summary']['Jev 1.13']['cells_A1_beats_C']} of 16 cells") if cs['summary']['Jev 1.13']['cells_A1_beats_C'] == cs['summary']['openjev/openjev-27B']['cells_A1_beats_C'] else None
 rev = [m for m, v in cs["summary"].items() if "m=2,h=1" in v["all_cells_where_review_pays"]]
-need("sens three of five", f"{['zero','one','two','three','four','five'][len(rev)]} of five models when wrong accepts")
+SHORTN = {"Jev 1.13": "Jev", "openjev/openjev-27B": "OpenJev", "Qwen/Qwen2.5-7B-Instruct": "Qwen2.5",
+          "microsoft/Phi-3.5-mini-instruct": "Phi-3.5", "allenai/OLMo-2-1124-7B-Instruct": "OLMo-2"}
+names = [SHORTN[m] for m in SHORTN if m in rev]
+need("sens reversing models at m=2", f"For {', '.join(names[:-1])} and {names[-1]},\nreview pays when wrong accepts cost twice as much".replace("\n", " "))
 cmx = json.loads((RES / "openjev_crossmodel_analysis.json").read_text())["models"]
 ho2 = json.loads((RES / "heldout_analysis.json").read_text())["secondary_descriptive"]["pooled"]
 gains = [round(ho2["E_all"] - ho2["E_dec"], 3)] + [round(cmx[k]["X3_X4_descriptive"]["E_all"] - cmx[k]["X3_X4_descriptive"]["E_dec"], 3)
@@ -155,6 +158,12 @@ need("OpenJev E_dec-rule CI", f"$+{c2['diff']:.3f}$ [${c2['ci95'][0]:.3f}$, $+{c
 rw = json.loads((RES / "prior_shift_reweighting.json").read_text())["models"]["Jev 1.13"]["severity_wrong"]
 need("Jev severity reweighted", f"(Jev {rw['E_dec_w']['auroc']:.2f} vs.\\ {rw['conf']['auroc']:.2f} on severity)")
 need("Jev severity dev-fit", f"(0.{round(100 * ab['Jev 1.13']['severity_wrong']['scores']['E_dec']['auroc'])} for Jev and OpenJev)") if round(100 * ab['Jev 1.13']['severity_wrong']['scores']['E_dec']['auroc']) == round(100 * ab['openjev/openjev-27B']['severity_wrong']['scores']['E_dec']['auroc']) else None
+
+# BBSE (addendum I, added 2026-10-23)
+bb = json.loads((RES / "label_shift_bbse.json").read_text())["models"]
+need("BBSE Jev", f"Jev ({bb['Jev 1.13']['severity_wrong']['bbse']:.2f} on severity, {bb['Jev 1.13']['any_node_wrong']['bbse']:.2f} on any node)")
+need("BBSE OpenJev", f"OpenJev\n({bb['openjev/openjev-27B']['severity_wrong']['bbse']:.2f}, {bb['openjev/openjev-27B']['any_node_wrong']['bbse']:.2f})".replace("\n", " "))
+need("BBSE Qwen", f"Qwen2.5 ({bb['Qwen/Qwen2.5-7B-Instruct']['severity_wrong']['bbse']:.2f} on severity)")
 
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:

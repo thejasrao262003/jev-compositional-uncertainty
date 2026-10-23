@@ -1,0 +1,382 @@
+{
+  "status": "EXPLORATORY (addendum I); weights use no held-out labels",
+  "models": {
+    "Jev 1.13": {
+      "bbse": {
+        "mozilla": {
+          "cond": 15.116362545208004,
+          "negative_before_clip": false,
+          "w": [
+            0.597,
+            1.64,
+            0.57
+          ],
+          "est_level_mix": [
+            0.158,
+            0.648,
+            0.194
+          ],
+          "true_level_mix_reported_only": [
+            0.085,
+            0.83,
+            0.085
+          ]
+        },
+        "kernel": {
+          "cond": 28.032423278586318,
+          "negative_before_clip": true,
+          "w": [
+            0.0,
+            5.134,
+            0.0
+          ],
+          "est_level_mix": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "true_level_mix_reported_only": [
+            0.02,
+            0.726,
+            0.254
+          ]
+        }
+      },
+      "wrong_action": {
+        "unweighted": 0.763,
+        "oracle_weights": 0.77,
+        "bbse": 0.793,
+        "bbse_ci95": [
+          0.756,
+          0.832
+        ],
+        "final_step_conf": 0.549,
+        "recovered": null
+      },
+      "severity_wrong": {
+        "unweighted": 0.282,
+        "oracle_weights": 0.793,
+        "bbse": 0.739,
+        "bbse_ci95": [
+          0.69,
+          0.785
+        ],
+        "final_step_conf": 0.613,
+        "recovered": true
+      },
+      "any_node_wrong": {
+        "unweighted": 0.559,
+        "oracle_weights": 0.758,
+        "bbse": 0.778,
+        "bbse_ci95": [
+          0.739,
+          0.816
+        ],
+        "final_step_conf": 0.56,
+        "recovered": true
+      }
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "bbse": {
+        "mozilla": {
+          "cond": 36.88213717101028,
+          "negative_before_clip": true,
+          "w": [
+            0.136,
+            3.121,
+            0.0
+          ],
+          "est_level_mix": [
+            0.029,
+            0.971,
+            0.0
+          ],
+          "true_level_mix_reported_only": [
+            0.085,
+            0.83,
+            0.085
+          ]
+        },
+        "kernel": {
+          "cond": 21.07532166538209,
+          "negative_before_clip": false,
+          "w": [
+            0.003,
+            1.879,
+            1.105
+          ],
+          "est_level_mix": [
+            0.001,
+            0.629,
+            0.37
+          ],
+          "true_level_mix_reported_only": [
+            0.02,
+            0.728,
+            0.252
+          ]
+        }
+      },
+      "wrong_action": {
+        "unweighted": 0.736,
+        "oracle_weights": 0.731,
+        "bbse": 0.721,
+        "bbse_ci95": [
+          0.67,
+          0.771
+        ],
+        "final_step_conf": 0.473,
+        "recovered": null
+      },
+      "severity_wrong": {
+        "unweighted": 0.62,
+        "oracle_weights": 0.74,
+        "bbse": 0.739,
+        "bbse_ci95": [
+          0.688,
+          0.786
+        ],
+        "final_step_conf": 0.46,
+        "recovered": true
+      },
+      "any_node_wrong": {
+        "unweighted": 0.755,
+        "oracle_weights": 0.731,
+        "bbse": 0.753,
+        "bbse_ci95": [
+          0.692,
+          0.812
+        ],
+        "final_step_conf": 0.401,
+        "recovered": null
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "bbse": {
+        "mozilla": {
+          "cond": 6.567343500910105e+16,
+          "singular": true,
+          "negative_before_clip": false,
+          "w": [
+            2.626,
+            0.437,
+            0.371
+          ],
+          "est_level_mix": [
+            0.702,
+            0.173,
+            0.125
+          ],
+          "true_level_mix_reported_only": [
+            0.084,
+            0.832,
+            0.084
+          ]
+        },
+        "kernel": {
+          "cond": 2.3411426214427864e+16,
+          "singular": true,
+          "negative_before_clip": false,
+          "w": [
+            0.54,
+            1.153,
+            1.306
+          ],
+          "est_level_mix": [
+            0.18,
+            0.384,
+            0.435
+          ],
+          "true_level_mix_reported_only": [
+            0.02,
+            0.727,
+            0.253
+          ]
+        }
+      },
+      "wrong_action": {
+        "unweighted": 0.637,
+        "oracle_weights": 0.637,
+        "bbse": 0.637,
+        "bbse_ci95": [
+          0.581,
+          0.695
+        ],
+        "final_step_conf": 0.551,
+        "recovered": null
+      },
+      "severity_wrong": {
+        "unweighted": 0.498,
+        "oracle_weights": 0.621,
+        "bbse": 0.498,
+        "bbse_ci95": [
+          0.436,
+          0.559
+        ],
+        "final_step_conf": 0.57,
+        "recovered": false
+      },
+      "any_node_wrong": {
+        "unweighted": 0.425,
+        "oracle_weights": 0.425,
+        "bbse": 0.425,
+        "bbse_ci95": [
+          0.347,
+          0.499
+        ],
+        "final_step_conf": 0.488,
+        "recovered": null
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "bbse": {
+        "mozilla": {
+          "cond": 371.4743833755887,
+          "negative_before_clip": true,
+          "w": [
+            5.439,
+            0.0,
+            4.1
+          ],
+          "est_level_mix": [
+            0.513,
+            0.0,
+            0.487
+          ],
+          "true_level_mix_reported_only": [
+            0.084,
+            0.832,
+            0.084
+          ]
+        },
+        "kernel": {
+          "cond": 905.391065647028,
+          "negative_before_clip": true,
+          "w": [
+            0.0,
+            3.068,
+            0.0
+          ],
+          "est_level_mix": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "true_level_mix_reported_only": [
+            0.02,
+            0.727,
+            0.253
+          ]
+        }
+      },
+      "wrong_action": {
+        "unweighted": 0.677,
+        "oracle_weights": 0.698,
+        "bbse": 0.677,
+        "bbse_ci95": [
+          0.625,
+          0.729
+        ],
+        "final_step_conf": 0.401,
+        "recovered": false
+      },
+      "severity_wrong": {
+        "unweighted": 0.307,
+        "oracle_weights": 0.673,
+        "bbse": 0.306,
+        "bbse_ci95": [
+          0.259,
+          0.356
+        ],
+        "final_step_conf": 0.415,
+        "recovered": false
+      },
+      "any_node_wrong": {
+        "unweighted": 0.668,
+        "oracle_weights": 0.772,
+        "bbse": 0.668,
+        "bbse_ci95": [
+          0.611,
+          0.725
+        ],
+        "final_step_conf": 0.289,
+        "recovered": false
+      }
+    },
+    "openjev/openjev-27B": {
+      "bbse": {
+        "mozilla": {
+          "cond": 15.555229794326012,
+          "negative_before_clip": true,
+          "w": [
+            0.0,
+            2.368,
+            0.325
+          ],
+          "est_level_mix": [
+            0.0,
+            0.896,
+            0.104
+          ],
+          "true_level_mix_reported_only": [
+            0.086,
+            0.829,
+            0.086
+          ]
+        },
+        "kernel": {
+          "cond": 13.058402056275897,
+          "negative_before_clip": true,
+          "w": [
+            0.0,
+            3.456,
+            0.0
+          ],
+          "est_level_mix": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "true_level_mix_reported_only": [
+            0.021,
+            0.724,
+            0.255
+          ]
+        }
+      },
+      "wrong_action": {
+        "unweighted": 0.748,
+        "oracle_weights": 0.757,
+        "bbse": 0.772,
+        "bbse_ci95": [
+          0.731,
+          0.814
+        ],
+        "final_step_conf": 0.575,
+        "recovered": null
+      },
+      "severity_wrong": {
+        "unweighted": 0.277,
+        "oracle_weights": 0.794,
+        "bbse": 0.779,
+        "bbse_ci95": [
+          0.735,
+          0.821
+        ],
+        "final_step_conf": 0.627,
+        "recovered": true
+      },
+      "any_node_wrong": {
+        "unweighted": 0.619,
+        "oracle_weights": 0.805,
+        "bbse": 0.799,
+        "bbse_ci95": [
+          0.759,
+          0.836
+        ],
+        "final_step_conf": 0.564,
+        "recovered": true
+      }
+    }
+  }
+}

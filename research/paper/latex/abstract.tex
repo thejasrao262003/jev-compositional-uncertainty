@@ -1,43 +1,25 @@
 % Shared abstract (included by main.tex, ieee.tex, springer.tex)
-Structured decision models such as Jev, TypeSafe's typed decision API,
-return well-typed answers with numeric confidence, and Jev's primitives
-have been benchmarked on single tasks. We study an operational question
-that single-task benchmarks leave open: when a workflow chains
-heterogeneous typed decisions, which signals identify the cases where it
-fails, and can those signals identify the specific costly errors for
-which human review is worthwhile? We chain Jev's three primitives, a
-categorical \choice{}, a binary \noul{} and an ordinal \score{}, into a
-dependent bug-triage workflow (route, assess, rate severity) and evaluate
-it on 202 Mozilla bugs labeled by triage and 240 Linux kernel bugs
-labeled by their reporters, then in pre-registered tests on 500 new bugs
-and four further models.
-Three pre-registered findings carry the paper.
-First, a frozen estimator built on what the model decided ranked wrong
-workflow actions better than final-step confidence (AUROC 0.76 vs.\ 0.55).
-Second, this held across five evaluated models from four sources,
-including an independently trained Jev-style model, to which Jev's frozen
-estimator transferred unchanged; the signal was mostly the chosen
-action's historical error rate, and it extends to targets independent of
-the workflow's rule once error rates are estimated under the deployment
-label mix.
-Third, under the pre-registered costs that predictive signal did not
-become a cost-effective review policy. At a 10\% review budget no review
-strategy cost less than no review at all (an exploratory sensitivity
-analysis shows this reverses for three of five models when wrong accepts
-cost twice as much); the action-based rule beat random selection for the two
-Jev-style models but was not shown to beat confidence-ranked review. An
-oracle shows the expensive errors exist, but the signals we tested could
-not isolate them within an action. A case-level score developed on
-training bugs failed a pre-registered feasibility check (power at most
-0.20 under the natural bug mix), so the confirmatory study was stopped
-before collecting new data.
-Supporting results characterize the primitives inside the workflow:
-\choice{} confidence is saturated yet discriminative (AUROC 0.90
-[0.83, 0.96] and 0.98 [0.95, 1.00]), \noul{}'s value is uninformative
-about its own correctness (AUROC 0.53 [0.42, 0.65] and 0.41
-[0.32, 0.50]), fixed thresholds designed on constructed data lose their
-selectivity on real text (73\% escalated on constructed items, 88\% and
-78\% on real bugs, against targets of 41--42\%), and \score{} compresses
-severity toward the middle level without its confidence indicating it.
-Predicting which decisions are wrong is not the same as knowing which
-are worth correcting.
+When a workflow chains typed AI decisions, which signals identify the
+cases where it fails, and do they identify the errors worth sending to a
+human? We chain the three primitives of Jev, TypeSafe's typed decision
+model (a categorical \choice{}, a binary \noul{} and an ordinal
+\score{}), into a dependent bug-triage workflow and study it on 442
+Mozilla and Linux kernel bugs, then in pre-registered tests on 500 new
+bugs and four further models. Failure is disagreement with a target
+action we construct from reference labels. A frozen decision-feature
+estimator ranks failures better than the model's final-step confidence
+(pre-registered; AUROC 0.76 vs.\ 0.55 on the new bugs, and supported for
+all five models), but its signal is almost entirely one simple quantity,
+the historical error rate of the action the workflow chose: for the two
+Jev-style models the estimator adds nothing detectable to that rate, and
+confidence adds little except for the weakest general models. These error rates are not portable across label
+distributions: fitted on a quota-sampled development set, they rank
+errors on a natural-mix set below chance for targets that bypass our
+rule, and re-weighting to the deployment label mix, estimated from the
+model's own predictions without test labels, repairs this for the
+models whose predictions discriminate the label. Prediction did not
+become review value: under the pre-registered costs no 10\% review
+policy beat no review, an oracle locates the value in wrongly accepted
+cases the signals cannot isolate, and whether review pays depends on
+the cost ratio. Knowing which decisions are likely wrong is not knowing
+which are worth correcting.
