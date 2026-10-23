@@ -1,0 +1,202 @@
+{
+ "H01": {
+  "tracker": "mozilla",
+  "bug_id": 1839818
+ },
+ "H02": {
+  "tracker": "mozilla",
+  "bug_id": 2009204
+ },
+ "H03": {
+  "tracker": "kernel",
+  "bug_id": 60665
+ },
+ "H04": {
+  "tracker": "kernel",
+  "bug_id": 9954
+ },
+ "H05": {
+  "tracker": "mozilla",
+  "bug_id": 2067502
+ },
+ "H06": {
+  "tracker": "kernel",
+  "bug_id": 205417
+ },
+ "H07": {
+  "tracker": "mozilla",
+  "bug_id": 1824091
+ },
+ "H08": {
+  "tracker": "mozilla",
+  "bug_id": 1987021
+ },
+ "H09": {
+  "tracker": "kernel",
+  "bug_id": 203517
+ },
+ "H10": {
+  "tracker": "kernel",
+  "bug_id": 12567
+ },
+ "H11": {
+  "tracker": "kernel",
+  "bug_id": 816
+ },
+ "H12": {
+  "tracker": "mozilla",
+  "bug_id": 1746846
+ },
+ "H13": {
+  "tracker": "mozilla",
+  "bug_id": 1695717
+ },
+ "H14": {
+  "tracker": "mozilla",
+  "bug_id": 2023302
+ },
+ "H15": {
+  "tracker": "mozilla",
+  "bug_id": 2049334
+ },
+ "H16": {
+  "tracker": "mozilla",
+  "bug_id": 1757427
+ },
+ "H17": {
+  "tracker": "mozilla",
+  "bug_id": 2036909
+ },
+ "H18": {
+  "tracker": "mozilla",
+  "bug_id": 2045511
+ },
+ "H19": {
+  "tracker": "kernel",
+  "bug_id": 192601
+ },
+ "H20": {
+  "tracker": "mozilla",
+  "bug_id": 1903169
+ },
+ "H21": {
+  "tracker": "mozilla",
+  "bug_id": 1735309
+ },
+ "H22": {
+  "tracker": "kernel",
+  "bug_id": 10591
+ },
+ "H23": {
+  "tracker": "mozilla",
+  "bug_id": 2044951
+ },
+ "H24": {
+  "tracker": "kernel",
+  "bug_id": 9157
+ },
+ "H25": {
+  "tracker": "kernel",
+  "bug_id": 365
+ },
+ "H26": {
+  "tracker": "mozilla",
+  "bug_id": 1820408
+ },
+ "H27": {
+  "tracker": "kernel",
+  "bug_id": 11703
+ },
+ "H28": {
+  "tracker": "mozilla",
+  "bug_id": 1951536
+ },
+ "H29": {
+  "tracker": "mozilla",
+  "bug_id": 1984876
+ },
+ "H30": {
+  "tracker": "kernel",
+  "bug_id": 217699
+ },
+ "H31": {
+  "tracker": "mozilla",
+  "bug_id": 2071485
+ },
+ "H32": {
+  "tracker": "mozilla",
+  "bug_id": 2066852
+ },
+ "H33": {
+  "tracker": "kernel",
+  "bug_id": 196571
+ },
+ "H34": {
+  "tracker": "kernel",
+  "bug_id": 483
+ },
+ "H35": {
+  "tracker": "mozilla",
+  "bug_id": 1752270
+ },
+ "H36": {
+  "tracker": "kernel",
+  "bug_id": 207025
+ },
+ "H37": {
+  "tracker": "kernel",
+  "bug_id": 13537
+ },
+ "H38": {
+  "tracker": "kernel",
+  "bug_id": 16183
+ },
+ "H39": {
+  "tracker": "mozilla",
+  "bug_id": 1724896
+ },
+ "H40": {
+  "tracker": "kernel",
+  "bug_id": 14863
+ },
+ "H41": {
+  "tracker": "kernel",
+  "bug_id": 53381
+ },
+ "H42": {
+  "tracker": "mozilla",
+  "bug_id": 1965648
+ },
+ "H43": {
+  "tracker": "kernel",
+  "bug_id": 202801
+ },
+ "H44": {
+  "tracker": "mozilla",
+  "bug_id": 1966610
+ },
+ "H45": {
+  "tracker": "kernel",
+  "bug_id": 32942
+ },
+ "H46": {
+  "tracker": "mozilla",
+  "bug_id": 1695917
+ },
+ "H47": {
+  "tracker": "kernel",
+  "bug_id": 78691
+ },
+ "H48": {
+  "tracker": "kernel",
+  "bug_id": 16118
+ },
+ "H49": {
+  "tracker": "kernel",
+  "bug_id": 2971
+ },
+ "H50": {
+  "tracker": "kernel",
+  "bug_id": 57911
+ }
+}
