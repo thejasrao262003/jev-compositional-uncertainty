@@ -1,8 +1,14 @@
 # Pre-registration: independent-workflow replication (Kubernetes issue triage)
 
-**Status:** DRAFT 2 for review, 2026-10-23.
-- Draft 1 (commit `7c692be`) is superseded; this draft responds to its
+**Status:** DRAFT 2.1 for review, 2026-10-23.
+- Draft 1 (commit `7c692be`) is superseded; Draft 2 responds to its
   review, issues A–F plus the smaller items.
+- **Draft 2.1** fixes four problems found in a line-by-line read of
+  Draft 2 (`bc4ee9e`):
+  1. an inconclusive-null rule that could never yield "not replicated";
+  2. model-facing questions that were not pre-registered;
+  3. no power statement for K2 and K3;
+  4. an unspecified (human) blinded reader.
 - No issue has been fetched for this study.
 - No model call has been made.
 - No outcome exists.
@@ -145,7 +151,8 @@ boundary, using the existing builders' functions.
   are authorized.
   - **Sample:** 40 cleaned issues (seed `zlib.crc32("k8s-blind")`),
     stratified 20 development and 20 test.
-  - **Reader:** an author reads each one without its labels.
+  - **Reader:** a human author (not an AI assistant) reads each one
+    without its labels.
   - **What the reader records**, per issue:
     1. Is any of the three labels stated or recoverable from an explicit
        cue (a prow command, label text, form heading, SIG team mention,
@@ -176,6 +183,41 @@ and `c3 = 1` with `c2 = 1` means defer. The semantics in this workflow:
 - **accept** = normal SIG queue handling.
 
 `F` ignores routing (`c1`), as in the original study.
+
+### 4.1 Model-facing questions (frozen at approval)
+
+The questions use the original study's format and adapter. The option
+criteria for routing are the authors' summaries of each SIG's scope, and
+they must be checked against the SIG charters at approval. Priority
+criteria quote the label descriptions (§3.1). **No wording may change
+after approval**, including after the smoke test.
+
+```json
+{"routing": {"type": "choice",
+  "instructions": "Which Kubernetes special interest group (SIG) should own this issue?",
+  "criteria": {
+    "network": "Cluster networking: Services, kube-proxy, DNS, Ingress and Gateway, NetworkPolicy, endpoints, CNI integration",
+    "storage": "Storage: volumes, PersistentVolumes and claims, StorageClasses, CSI, snapshots, attach and mount",
+    "node": "The node and kubelet: pod lifecycle on the node, container runtime (CRI), resource management, cgroups, node status"}}}
+```
+```json
+{"bug": {"type": "noul",
+  "instructions": "Does this issue report a bug (behaviour that is incorrect or broken), as opposed to a feature request, a support question, or a cleanup task?"}}
+```
+```json
+{"priority": {"type": "score",
+  "instructions": "How urgently must this issue be worked on?",
+  "criteria": [
+    "Important over the long term or backlog; not needed for the next release",
+    "Must be staffed and worked on soon, ideally in time for the next release",
+    "Must be actively worked on as someone's top priority right now"]}}
+```
+
+**Adapter (appended to the issue text, as in the original):**
+- after node 1: `Routing determination: <sig>.`
+- after node 2: `Bug assessment: a bug.` or `Bug assessment: not a bug.`
+
+### 4.2 Truth tables
 
 **Reference (target) side.** `c2*` = 1 if `kind/bug`, else 0. `c3*` is
 the priority level (§3.1). `c2*` is never unclear.
@@ -382,26 +424,37 @@ K1–K3, family-wise α = 0.05.
 - **+0.03 is undetectable:** power ≤ 0.32.
 - **Correction of Draft 1:** Draft 1's "minimum detectable difference
   about 0.06" was wrong. It is about 0.10.
-- **Inconclusive nulls:** in the interpretation rule below, "effects the
-  design had less than 80% power to detect" means the following.
-  - **n = 500:** differences below +0.10.
-  - **n = 300:** even +0.10 is not reliably detected (power 0.61–0.92).
-    The threshold lies between +0.10 and +0.20, and the grid does not
-    resolve it more finely, so the threshold is taken as +0.20 to be
-    conservative.
+- **d\* (used by the interpretation rule below)** is the smallest
+  simulated effect with power ≥ 0.80 in every setting at nominal α.
+  - **n = 500:** d\* = +0.10.
+  - **n = 300:** +0.10 is not reliably detected (power 0.61–0.92), so
+    d\* = +0.20. The grid does not resolve it more finely.
 - **If fewer than 500 test issues survive,** the table for the realized
   n is recomputed with the same script before any model call. The
   realized-n power is reported.
+
+**K2 and K3:**
+- **K2** (above chance) is a one-sample contrast against 0.5. It is
+  strictly easier than K1 at the same n and effect, so it is not
+  simulated separately.
+- **K3 was not simulated.** Its effect size cannot be planned from the
+  original study, because that study had no quota-vs-natural mismatch on
+  a priority target. A non-supported K3 is therefore always reported as
+  **inconclusive about the correction**, never as evidence that it does
+  not work.
 
 **Interpretation (fixed):**
 - **The 300-test-issue floor is a protocol decision, not a power
   guarantee.**
 - **K1 supported:** the finding replicates in an independent workflow.
-- **K1 not supported:** read against the power table (§7).
-  - If the observed difference's 95% CI includes effects that the design
-    had less than 80% power to detect, the result is reported as
-    **inconclusive**, not as evidence of no effect.
-  - Otherwise it is reported as **not replicated**.
+- **K1 not supported.** Read the two-sided 95% percentile CI of the
+  paired difference, from the same bootstrap, against d\*. Here d\* is
+  the smallest effect the design reliably detects (§7: +0.10 at n = 500,
+  +0.20 at n = 300; recomputed for the realized n).
+  - **Upper bound < d\*:** reported as **not replicated**. Effects the
+    design could detect are excluded.
+  - **Upper bound ≥ d\*:** reported as **inconclusive**. An effect of
+    detectable size remains compatible with the data.
   - Either way, this is stated in the paper's abstract.
 - **K3 supported:** the label-free correction transfers.
 - **K3 not supported or not evaluable:** it does not, with the reason.
