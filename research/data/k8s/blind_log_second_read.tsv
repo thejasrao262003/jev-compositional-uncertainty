@@ -1,0 +1,41 @@
+code	label_recoverable_from_explicit_cue(yes/no)	which_label_and_cue	text_damaged(yes/no)	damage_type	notes
+B01	no		no		No direct SIG/kind/priority label cue. Feature is mentioned generically in the rationale; this does not explicitly identify this issue's kind.
+B02	yes	kind/cleanup: title says Remove Set() method and body says get rid of it completely	no		Natural cleanup request; not leaked label metadata.
+B03	no		no		Code/config and event examples are absent under the shared code-block removal policy; per protocol this alone is not treated as cleaning damage.
+B04	yes	kind/feature-request: We'd like to change the ... default and happy to send a PR	no		Natural request for a behavior change; not a leftover form heading or label string.
+B05	no		no		Reproduction details are sparse; but no evidence the cleaner damaged the prose. Missing code/example content is consistent with the documented shared cleaner.
+B06	yes	kind/bug: we found a bug if these layers are on the same disk	no		Natural reporter language; leave in and report as a natural cue.
+B07	no		no		Generic @user placeholder remains; it does not disclose a target label; but compare with the committed rule for removing @-mentions.
+B08	yes	kind/feature-request: Implement container log rotation and We want to allow...	no		Natural capability proposal; not a leftover label or form heading.
+B09	yes	kind/cleanup: we should clean up this	no		Natural reporter language; generic @user placeholders also remain and should be checked against the mention-removal rule.
+B10	no		no		Generic @user placeholder remains; it does not disclose a target label; but compare with the committed rule for removing @-mentions.
+B11	no		no		Critical and high priority refer to pods/workloads; not explicitly to this issue's own triage-priority label.
+B12	yes	kind/bug: unclear if this will be fixed as a bug	no		Natural reporter language; example/config snippets being absent is consistent with documented code-block removal.
+B13	yes	routing/SIG: title contains [SIG NODE Discussion]	no		Natural title phrase explicitly names SIG Node; report as a natural reporter cue rather than a leftover team mention.
+B14	no		no		Redacted image URL leaves visible/malformed HTML image markup. It appears to be a redaction/markup artifact; not a form heading or truncated prose; consider whether the cleaner should normalize it.
+B15	no		yes	possible orphaned placeholder text	Trailing 'N/A. N/A.' looks potentially like orphaned form-field answers after headings were removed; uncertain whether these are intentional reporter text. Human review recommended.
+B16	no		no		No direct SIG/kind/priority cue identified. Blank example/config areas are consistent with the documented code-block removal policy.
+B17	yes	kind/bug: there is a bug where kubelet only stores the state	no		Natural reporter language; leave in and report as a natural cue.
+B18	yes	kind/bug: Is this intentional or a bug?	no		Natural reporter language; leave in and report as a natural cue.
+B19	no		no		Detailed technical diagnosis implies a defect but does not explicitly state a kind label.
+B20	no		no		Describes a failure and proposed fix; but no explicit target-label cue identified.
+B21	no		no		Generic @user placeholder remains in the text; no target label is disclosed by it.
+B22	yes	kind/cleanup: Deduplicate NFS server containers and propose removing the examples version	no		Natural cleanup request; leave in and report as a natural cue. Generic team/user placeholders are not label cues.
+B23	no		no		Support-style question is implied by the content; but no explicit support/kind label cue is present.
+B24	no		no		Discussion of whether to change a requirement; no explicit target-label cue identified.
+B25	yes	kind/bug: This is a regression introduced by...	no		Natural reporter language; leave in and report as a natural cue.
+B26	no		no		Expected behavior and reproduction details are present; no explicit target-label cue identified.
+B27	no		no		Crash/panic symptoms are described; but the issue does not explicitly name its kind label.
+B28	no		no		Image placeholders and repetitive wording appear in the source text; no explicit label cue or clear cleaning-induced damage identified.
+B29	yes	kind/cleanup: title Remove docker references... and They should be replaced...	no		Natural cleanup/refactor request; not leaked label metadata.
+B30	no		no		Request for additional tests is clear; but no explicit target kind label is stated. Generic @user placeholder remains; check against mention-removal rule.
+B31	yes	kind/feature-request: The image, repository & tag should be configurable at deployment time	no		Natural request for configurable behavior; not a leftover label string.
+B32	no		no		Proposed liveness probing is described; but the target kind label is not explicitly stated.
+B33	yes	kind/cleanup: title says Remove deprecated built-in CSI RBAC roles	no		Natural cleanup request; leave in and report as a natural cue.
+B34	yes	kind/cleanup/refactor: title says Move dockershim code into a separate CRI	no		Natural refactoring proposal; no label metadata or form remnant identified.
+B35	no		no		Generic @user and @user/goog-node placeholders remain; they do not clearly reveal one of the target labels; but check against mention-removal rules.
+B36	no		no		Requests a message improvement; but does not explicitly identify the target kind label.
+B37	yes	kind/feature/proposal: title says E2E Proposal: Verify... and body proposes adding an E2E test	no		Natural proposal wording; no form-heading residue identified.
+B38	no		no		Failure and expected behavior are described; but no explicit target-label cue identified.
+B39	no		no		Stack-trace/log details are missing or represented by placeholders in line with the shared code-block/link cleanup; this alone is not counted as damage.
+B40	yes	kind/feature-request: it would be beneficial ... to add events	no		Natural proposal wording. Generic [team] placeholder remains; it does not itself name a SIG but should be checked against the mention-removal rule.

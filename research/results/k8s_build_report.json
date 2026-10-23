@@ -1,19 +1,19 @@
 {
   "protocol": "independent_workflow_preregistration.md v1 (frozen 2026-10-23)",
-  "snapshot_utc": "2026-10-23T18:21:45.435836+00:00",
+  "snapshot_utc": "2026-10-23T18:32:59.268687+00:00",
   "template_commit": "fbd477a8bfe5631a43293b59aa4f8d0f941ca480",
   "cutoff": "2026-10-01T00:00:00Z",
   "candidates_fetched": 12535,
   "exclusions": {
     "not_exactly_one_kind": 2093,
     "not_exactly_one_sig": 187,
-    "too_short_after_cleaning": 32,
+    "too_short_after_cleaning": 33,
     "pull_request": 8738,
     "not_exactly_one_priority": 36,
     "excluded_label": 120,
     "after_cutoff": 11
   },
-  "eligible": 1318,
+  "eligible": 1317,
   "split_sizes_before_link_removal": {
     "development": 500,
     "calibration": 150,
@@ -47,7 +47,7 @@
   },
   "date_ranges": {
     "development": [
-      "2015-06-01T21:18:35Z",
+      "2015-05-28T20:11:30Z",
       "2019-07-16T01:45:23Z"
     ],
     "calibration": [
@@ -73,14 +73,14 @@
         "support": 23
       },
       "priority_label": {
-        "backlog": 121,
+        "backlog": 122,
         "critical-urgent": 103,
         "important-longterm": 56,
-        "important-soon": 220
+        "important-soon": 219
       },
       "level": {
-        "0": 177,
-        "1": 220,
+        "0": 178,
+        "1": 219,
         "2": 103
       }
     },
@@ -133,9 +133,9 @@
   },
   "joint_bug_by_level": {
     "development": {
+      "bug=1,level=0": 47,
       "bug=0,level=0": 131,
-      "bug=1,level=0": 46,
-      "bug=1,level=1": 147,
+      "bug=1,level=1": 146,
       "bug=0,level=1": 73,
       "bug=1,level=2": 98,
       "bug=0,level=2": 5
@@ -157,8 +157,8 @@
   },
   "target_action_prevalence": {
     "development": {
-      "accept": 250,
-      "defer": 147,
+      "accept": 251,
+      "defer": 146,
       "escalate": 103
     },
     "calibration": {
@@ -223,6 +223,6 @@
   },
   "api_log_pages": 1639,
   "hashes": {
-    "dataset_sha256": "25d4785db0480e6187115ae95d40c56db63c07ac41b0919f274f16c258236581"
+    "dataset_sha256": "59113ed8f178fe58a8502e404e305ab902c8ce7178a80dc9ea9f6f7d44902519"
   }
 }

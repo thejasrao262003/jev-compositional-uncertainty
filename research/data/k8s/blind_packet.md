@@ -1,4 +1,4 @@
-# Kubernetes blinded leakage read, repeated after Amendment 4 (40 cleaned issues, new seed)
+# Kubernetes blinded leakage read, third read, after Amendment 6 (40 cleaned issues, new seed)
 
 **Who:** by the authors' decision (Amendment 5), an AI assistant, the
 same kind of read as the first one. It must not be the assistant that
@@ -39,11 +39,35 @@ wrote the cleaning rules.
 ## B01
 
 ```
-Kubelet doc.go
+CVE-2017-1002101 - subpath volume mount handling allows arbitrary file access in host filesystem
 
-I think we should write doc.go files for packages in Kubelet, like we do for the rest of Kubernetes. In some cases, it's not obvious what the code in a package does (for example, without spending some time reading the code, it's not clear what kind of "container" files are in kubelet/container - some "container" source files are outside the folder). In some cases, I think the doc.go files need to be expanded upon (kubelet/types/types.go says "Common types in the Kubelet.", but there's also a kubelet/types.go file).
+[CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H]([link]
 
-I think having clear doc files will help structure the code better - contributors will know how they should organize their code when introducing a feature.
+This vulnerability allows containers using [subpath volume mounts]([link] with any volume type (including non-privileged pods, subject to file permissions) to access files/directories outside of the volume, including the host’s filesystem.
+
+Thanks to Maxim Ivanov for reporting this problem.
+
+**Vulnerable versions:**
+* Kubernetes 1.3.x-1.6.x
+* Kubernetes 1.7.0-1.7.13
+* Kubernetes 1.8.0-1.8.8
+* Kubernetes 1.9.0-1.9.3
+
+**Vulnerable configurations:**
+* Clusters that allow untrusted users to control pod spec content, and prevent host filesystem access via hostPath volumes (or other volume types) using PodSecurityPolicy (or custom admission plugins)
+* Clusters that make use of [subpath volume mounts]([link] with untrusted containers or containers that can be compromised
+
+**Vulnerability impact:**
+A specially crafted pod spec combined with malicious container behavior can allow read/write access to arbitrary files outside volumes specified in the pod, including the host’s filesystem. This can be accomplished with any volume type, including emptyDir, and can be accomplished with a non-privileged pod (subject to file permissions).
+
+**Mitigations prior to upgrading:**
+Prevent untrusted users from creating pods (and pod-creating objects like deployments, replicasets, etc), or [disable all volume types]([link] with PodSecurityPolicy (note that this prevents use of service account tokens in pods, and requires use of [`automountServiceAccountToken: false`]([link]
+
+**Fixed versions:**
+* Fixed in v1.7.14 by #61047
+* Fixed in v1.8.9 by #61046
+* Fixed in v1.9.4 by #61045
+* Fixed in master by #61044 (included in v1.10.0-beta.3, will be in v1.10.0)
 ```
 
 ---
@@ -51,19 +75,22 @@ I think having clear doc files will help structure the code better - contributor
 ## B02
 
 ```
-Each time a pod exits, kubelet cpu usage increases with cgroups v2
+Support for 1:N mapping between hostPort and containerPort in Deployment Spec
 
-When a pod exits, there is some problem in the cgroup cleanup. The containerd cgroup within the kubelet cgroup does not get deleted, and then the kubelet keeps trying to delete the kubelet cgroup, which fails because of the child cgroup. The kubelet continues to try to delete the cgroup every 1 second or so. As pods start and stop, the number of cgroups in this state grows, and the kubelet process itself gradually consumes more and more cpu, until it gets to 100% of available.
+Currently when we specify a deployment spec with hostNetwork is true and the application in a container listens to multiple ports, the hostPort should be assigned for each of those port.
 
-Here are snippets of the /var/log/syslog for a single example. This is for the case of kubelet cgroup /sys/fs/cgroup/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-podde737447_24b2_4f9e_a805_ad1161a169fb.slice which contains a sub-cgroup cri-containerd-67620447e632a1b3edb19fe05a2b44211cffb996bf6ba5ff52811a8bf32eb8b7.scope.
+ports:
+- containerPort: 8090
+hostPort: 8090
+- containerPort: 8091
+hostPort : 8091
 
-First, logs of the containerd startup/shutdown:
+It would be nice to have range of containerPort for a given hostPort. Something like this below:
+ports:
+- hostPort: 8090
+containerPort: 8090-8200
 
-After this, the following logs keep appearing over and over again:
-
-Not use 100% cpu
-
-Not sure
+To add, we are not using the service resource here because these are security applications where it should need host network namespace and avoid SNAT/DNATing. Currently `externalTrafficPolicy: Local` provides such functionality but when run in `hostNetwork: true` it does not matter as the application is directly accessible via pods.
 ```
 
 ---
@@ -71,15 +98,14 @@ Not sure
 ## B03
 
 ```
-liveness/readiness probe is executed and failed while pod is terminated
+Add DNS test suite for Conformance E2E
 
-liveness/readiness probe fails while pod is terminated. Also it happened only once during the pod termination. The issue started happening after upgrading version to v1.7 from v1.6.X
-execute `kubectl delete pod nginx-A1` to delete pod, so status of the nginx-podA1 is changed to `Terminating`, right after that it seems Liveness and Readiness Probe is executed and failed, but only once.
-Nginx reverse proxy is running in the pod. so I just use `httpGet`method for liveness and readiness
+This test suite provide a baseline for commonality between various DNS implementations as mentioned in the [specification document ]([link]
+holds various E2E testing DNS functionality and they should adhere to provided specification.
 
-Here is my Deployment config.
+Issue is sourced from [link]
 
-Here is Events log by `kubectl describe pod nginx-A1`
+Tracking into umbrella Issue: #73425
 ```
 
 ---
@@ -87,16 +113,15 @@ Here is Events log by `kubectl describe pod nginx-A1`
 ## B04
 
 ```
-Expose kube-proxy metrics on 0.0.0.0
+Exclusive CPUs not removed from deleted Pod and put back in the defaultCPUSet.
 
-We'd like to change the Kube Proxy MetricsBindAddress default from 127.0.0.1 to 0.0.0.0.
-Currently the kube-proxy metrics are exposed by default on 127.0.0.1 interface. It makes it impossible to export kube proxy metrics to prometheus server via prometheus operator.
-I've sent [link] to change the bind address in tests, but we believe that changing the default might be actually a better idea.
+The `CPUManager` has logic to periodically cleanup stale state and reclaim exclusive CPUs from pods that have recently terminated. It does this by querying the system for a list of `activePods()` and reclaiming CPUs from any pods it is tracking that are not in this list.
 
-Other components (e.g. [kube-scheduler]([link] use 0.0.0.0 as the default metrics bind address.
+This works fine for most pods, but special care needs to be taken to ensure that CPUs are not accidentally reclaimed from pods that have not started yet. Allocation of CPUs to the containers of a pod happens during pod admission (i.e. before the pod is added to the `activePods()` list), so a simple state variable (`pendingAdmissionPod`) is used to indicate which pod is currently being admitted and exclude it from cleanup. Since pod admission is serialized, only one pod will ever be pending admission at a given time, and only a single variable is necessary to track this (i.e. whenever a new pod enters the admission loop to have exclusive CPUs granted to it, `pendingAdmissionPod` is overwritten to point to the new pod, clearing way for the previous one to have its state cleaned up when appropriate).
 
-<br />
-I'm happy to send a PR to do that, but would like to get your opinion first.
+Unfortunately, this simple procedure can cause problems because `pendingAdmissionPod` is never reset to `nil` after the **last** pod is admitted. This is usually fine, because the next time a pod comes in for admission, it will be overwritten to point to the new pod. But if no new pods come in, then it continues to point to the last pod that we attempted to admit (forever essentially), making it so that we can never cleanup its state if it gets deleted at some point in the future (because it is always treated as an "active" pod so long as it is pointed to by `pendingAdmissionPod`).
+
+I don't think this issue is critical, since in any practical setting pods will be started and stopped all the time, clearing way for the state of previously admitted pods to be cleaned up.
 ```
 
 ---
@@ -104,16 +129,19 @@ I'm happy to send a PR to do that, but would like to get your opinion first.
 ## B05
 
 ```
-RuntimeHandlerResolver: interface invalid nil checking
+Kubelet VolumeManager incorrectly marks volume as not "in use" (i.e. safe to detach) while a mount or format is pending
 
-the nil checking for interface RuntimeHandlerResolver in #L109 will never check whether the underlying struct is nil.
-A reflect nil checking is needed to avoid panic in running 'rcManager.LookupRuntimeHandler'(#L111)
-[link]
+While debugging an issue with a volume getting detached prematurely, @user discovered an issue: the Kubelet VolumeManager incorrectly marks volume as not "in use" (i.e. safe to detach) while a mount or format is pending.
 
-Add reflect nil checking for rcManager
+For context, attach/detach controller will not proceed with a detach (after pod referencing a volume is deleted) while the volume is still marked as "in use" by kubelet. Kubelet marks a volume as "in use" before it starts mounting or formating the volume.
 
-1. kubelet enable standaloneMode
-2. pod.Spec.SecurityContext not nil
+The problem is:
+
+* If a pod referencing a volume is deleted while a mount (or format) is pending, then kubelet will go ahead and remove that pod from its "desired state of the world" cache (normally this waits for pod's containers to terminate, but in this case the containers never even started because mount is still pending, i.e. format, is still pending).
+* Kubelet volume_manager's `GetVolumesInUse()` method ([link] reports the volume as no longer in use because it is not in desired or actual state (it does not check pending operations <-- this is the bug).
+* Attach/detach controller sees the pod delete, checks and sees the volume is not marked as "in use" and proceeds with the detach (incorrectly), but a mount (or format) operation may be pending.
+Kubelet volume_manager's `GetVolumesInUse()` method ([link] should count volumes that have pending operations (mount or otherwise) as "in use" (even if they are not in actual or desired state).
+While mount is pending (because format is taking a long time, for example), delete the pod referencing the attachable volume.
 ```
 
 ---
@@ -121,15 +149,24 @@ Add reflect nil checking for rcManager
 ## B06
 
 ```
-[KEP-4191] Support case when writeable layer and readable layers are on same mount but in different locations
+Kubelet segfaults when Docker is not running
 
-In KEP-4191, we wanted to support a case where writable layers and readonly layers are on a separate disk.
+I was running an experiment to verify that Taints are correctly updated when Condition changes from Unreachable to NotReady and found out that Kubelet can't start when the docker is not running.
 
-This works fine but we found a bug if these layers are on the same disk but in different locations.
+I did an experiment on CVM and:
+- made `/usr/sbin/kubelet-checker.sh` no op
+- made `/usr/sbin/docker-checker.sh` no op
+- `service kubelet stop`
+- `service docker stop`
+- wait
+- reverted changes to `kubelet-checker`
+- `service kubelet start`
 
-You can reproduce this by setting `graphRoot` and `imagestore` in crio storage to different locations.
+The result is following:
 
-Kubelet should react to container storage configurations.
+Is this expected, or kubelet should normally start and report itself as 'NotReady'?
+
+[team] @user @user
 ```
 
 ---
@@ -137,16 +174,25 @@ Kubelet should react to container storage configurations.
 ## B07
 
 ```
-Node e2e serial local storage capacity isolation tests are failing
+Zero value Kubelet PSI metrics emitted even if underlying OS doesn't enable it
+
+In Kubernetes 1.34, the KubeletPSI feature gate was set to true. However, when running Kubernetes on an OS that does not have PSI enabled, the PSI metrics are not expected to be generated. Here are the counts of the metrics observed during a test:
+
+I suspect this part of the code:
 
 [link]
 
-Example failure: [link]
+and prometheus does this: [link]
 
-Pods that should be using less than their limits are being evicted for exceeding them. These tests were passing before being moved to the serial suite from the flaky suite.
+cc: @user @user
 
-The only thing I can think of off the top of my head is that the GPU test adds something to containers that takes disk space.
-cc @user is that a possibility?
+There should be no PSI metrics when underlying OS never enables it.
+
+Run k8s 1.34 and above and use grafana to monitor PSI metrics
+
+This is a good to have. Doesn't really impact anything as cardinality is also negligible. This zero value confuses the end-user as it gives a visual impression that PSI is enabled when looking at grafana charts.
+
+I can propose a fix on this.
 ```
 
 ---
@@ -154,15 +200,24 @@ cc @user is that a possibility?
 ## B08
 
 ```
-CRI: Implement container log rotation
+kubelet will never terminate a pod if image registry is unavailable for a pod container
 
-TL;DR: We want to allow kubelet to rotate the container stdout/stderr logs, and add a CRI call to ask the runtime to reopen the log file.
+After an unbelievable amount of time debugging the following this past week:
 
-kubelet decides the log directory structure and passes to the runtime the path where container log should be stored. Given the level of knowledge and control kubelet has, it is currently the best candidate to rotate the logs (vs. runtime or a separate daemon). The detailed evaluation is in the [proposal doc]([link]
+[link]
+[link]
 
-IMO, the initial version should target a simple policy of size limit per file. We can iterate and add more advanced features based on disk management in the future. The stretch goal for this release will be supporting reading logs (`kubectl logs`) from rotated log files.
+I discovered that I could reliably cause the `kubelet` to never delete a pod that was `Terminating` if the pod had never been started correctly because the docker image pull returned a `RegistryUnavailable` error.
 
-As for the docker integration (i.e., `--container-runtime=docker`) that does not fully implement CRI logging, kubelet should skip log rotation.
+I verified this by modifying the kubelet to always return `RegistryUnavailable` for a particular image name. I then created a namespace, added a replication controller that referenced the image, and then watched as the pods got stuck in "Waiting" state but never actually reported a reason. I then deleted the namespace, and was able to see that in-fact the `kubelet` never properly handled the `terminated` response.
+
+I was able to fix this issue by modifying:
+
+[link]
+
+to return `ErrImagePull` when the repository was not available. This change resulted in letting my `kubelet` properly terminate the pod. I think this is the correct behavior to not special case `RegistryUnavailable` since in many cases the registry may never become available (its most definitely not a temporary situation).
+
+I suspect this is the potential source of a number of instances of the namespace failed to delete flake because pods remained.
 ```
 
 ---
@@ -170,11 +225,17 @@ As for the docker integration (i.e., `--container-runtime=docker`) that does not
 ## B09
 
 ```
-Containers within a pod don't share the same UTS namespace
+CSI migration race condition can cause unexpected detach and data loss
 
-During reviewing container runtime interface proposal, I surprisingly found that containers within a pod today only share both network and IPC namespace, not uts one. I don't think there are any production issues caused by this, but we should clean up this.
+After the cluster was updated to enable PD CSI Driver, there was a race condition where AD Controller (kube-controller-manager) started to [populate the desired state of world]([link] BEFORE the PD CSI Driver was up, thus AD Controller gave us the error
 
-cc/ @user @user
+Then AD Controller triggered the disk detach because the disk/volume was not populated in the desired state of world.
+
+Unfortunately the disk was in use during this detach and got corrupted.
+
+Since cluster upgrades can cause the controller manager and CSI drivers to start at different times, the AD controller needs to be more conservative when detaching
+
+We have not been able to reproduce this, it came up from a customer.
 ```
 
 ---
@@ -182,18 +243,36 @@ cc/ @user @user
 ## B10
 
 ```
-pod logging broken with journald logging driver
+[network-policy] add e2e tests for ipBlock
 
-Warning starting pod when using the journald docker logging driver
-
-This breaks container-level logging
-
-@user
+Test Cases:
+- [ ] Ingress blocking based on cidr from a given set of pods
+- [ ] Test egress blocking based on cidr to a set of pods
+- [ ] Consider an using this cidr feature to fix [Set owner references in pods owned by ProwJobs #3409]([link]
 ```
 
 ---
 
 ## B11
+
+```
+Provide output of Pod-Healthcheck per API
+
+Provide an easy way to view the detailed HTTP-response of a httpGet liveness/readyness-check of pods, in case of error 500.
+
+This can then be used in the dashboard: [link]
+
+If you use a web-framework with a health-endpoint like springboot or dropwizard, the endpoint will provide you with detailed information of what makes the healthcheck fail.
+
+In case of error Kubernetes dashboard only shows a response of 500. To get the details you have to
+
+* Have logging configured correctly which might not always be the case
+* Disable the liveness-probe to be able to start the container, then call the healthcheck-endpoint yourself, where you also have to go into the container if the service is not yet setup correctly.
+```
+
+---
+
+## B12
 
 ```
 Graceful Node Shutdown should allow admission of high priority pods
@@ -223,62 +302,17 @@ Currently the pod is rejected with:
 
 ---
 
-## B12
-
-```
-When containers use memory backed tmpfs and hit a OOM limit they will keep OOM on restarts.
-
-While aiming to promote SizeMemoryBackedVolumes to stable, tim brought up a point about what would happen if a pod that hit a OOM due to tmpfs memory limits would keep OOM as the pages are still kept around.
-
-He is correct. If a pod hits a OOM limit with tmpfs it will keep OOM and never purge that memory
-
-I would expect the tmpfs to be empty on a restart of the container.
-
-I used kind 1.30.
-
-kubectl exec -it example -- sh
-cd /dev/shm/
-dd if=/dev/zero of=filename bs=1024 count=2GB
-command terminated with exit code 137
-
-In this case, the pod is unable to start again and it gets stuck with:
-
-This is probably a long outstanding issue so its unclear if this will be fixed as a bug.
-```
-
----
-
 ## B13
 
 ```
-[SIG NODE Discussion] Metrics and dashboards for monitoring SIG-Node CI test failures and bug triage health
+Creating External Loadbalancer should present some "progress status"
 
-### Context
-In the recent SIG-Node CI subgroup meetings (6/10/2026), we discussed the need to better track our CI stability and test degradation over time.
+Creating an external loadbalancer takes minutes.
 
-Currently, we are manually tracking the status of our Testgrid dashboards in a [Spreadsheet Tracker]([link] before every meeting. We document the current status (Passing/Flaky/Failing) of the jobs and link them to tracking GitHub issues, but doing this manually makes it hard to see historic data and trends.
+At the same time, the user doesn't know waht is happening, and whether it failed, is in progress, or just the user made a typo in the "externalLoadBalancer"
 
-### Goals
-We would like to gather community input on what metrics, tooling, and dashboards we should use to automate this monitoring. For starters, we can try to answer questions like:
-* How long has a specific test or job been failing?
-* Is a recurring failure caused by the same error or a new regression?
-* How long do SIG-Node CI bugs remain open?
-* How many `important-soon` bugs do we currently have, and what is their average resolution time?
-Please recommend any more you think of, open to all suggestions!!
-
-### Existing Efforts & Ideas
-* We dug up an [existing dashboard started by dims]([link] but we need to determine how persistent this data is, how it's generated, and how we can best utilize or adapt it.
-* Could we leverage existing Kubernetes `test-infra` tooling (like BigQuery metrics/[Kettle]([link] `k8s-triage` in the [aggregated failures dashboard]([link] to automate the data we currently put in our manual spreadsheet?
-
-### Call to Action
-We are opening this issue to invite ideas from the CI/CD community.
-1. What metrics do you think are most important for us to track?
-2. Are there existing dashboards or tools in the Kubernetes ecosystem we should be leveraging?
-3. Any volunteers interested in helping build out or maintain this reporting?
-
-Please drop your thoughts and suggestions below!
-
-cc: @user
+What we could do for example is:
+in the "kubectl get services", if there is external Load Balancer configured, in the place of "external IP" show "status of the load balancer creation".
 ```
 
 ---
@@ -286,29 +320,21 @@ cc: @user
 ## B14
 
 ```
-Incorrect PodMemory usage after container termination
+pod created failed when devices resource request is 0
 
-PodMemory metric continued to be available for few minutes after pod was removed from the node.
+1 create deployment by yaml below
 
-PodMemory metric should have been removed from the old pod instance as soon as new pod was destroyed or new pod was created.
+2 create pod failed, the reason is
 
-From initial understanding, kubelet/cAdvisor housekeepingInterval seems to be the static interval at which housekeeping should occur. If allowDynamicHousekeeping is enabled, cAdvisor determines the actual housekeeping interval based on houseKeepingInterval and maxHousekeepingInterval as shown in [manager/container.go#L481C1-L505C2]([link] with some jitter.
+node resource info
 
-Need to understand the behaviour of [statsCacheDuration]([link] and maxHousekeepingInterval when kubelet is restarted. Does kubelet dump the cache data to disk before the package upgrade?
+expect the pod create success, the request resource is 0, and it must not exceed
 
-Moreover, since these maintenance are happening for kubelet upgrades, does time to upgrade and bootstrap kubelet could lead to additional delay in housekeeping. One more weird observation I could find is, node uuid has changed twice, once while upgrading at 11 AM(which is relevant for this issue) and then again at 2 PM(which is unrelated).
+so it failed by somewhere unreasonable judgment
 
-<img width="1600" height="959" alt="Image" src="[link] />
-
-This was observed during kubernetes upgrade.
-Node was drained and kubelet was upgraded.
-
-**Context**
-In case of Kubernetes Upgrade related maintenances, pods are rescheduled or temporarily evicted from the node. It has been observed that the newly formed pod consumes approximately double the memory of the original pod at startup. Multiple alerts are raised due to this as it can violate set alerting thresholds.
-
-Below is the original query raising PodMemory alert for workload. We can notice the query is granular at pod level.
-
-From the graph view, we can see a sudden spike in memory usage before 11 AM when the pod got rescheduled.
+1 create pod `a` which use hot pluggable device in resource.request, and the resource is 1
+2 remove device
+3 create pod `b` which use hot pluggable device in resource.request, and the ressource is 0
 ```
 
 ---
@@ -316,21 +342,29 @@ From the graph view, we can see a sudden spike in memory usage before 11 AM when
 ## B15
 
 ```
-DRA-backed extended resources do not report ResourceHealthStatus in PodStatus
+Kubelet admission check includes rejected pods in resource accounting, causing subsequent pods to be incorrectly rejected
 
-When a Pod uses an extended resource backed by Dynamic Resource Allocation, kubelet prepares the generated special ResourceClaim and injects the CDI devices, but it does not populate `pod.status.containerStatuses[].allocatedResourcesStatus` for those resources.
-﻿
-For DRA-backed extended resources, the container request is in `container.Resources.Requests`, not in `container.Resources.Claims`, so the health status update path never considers `pod.Status.ExtendedResourceClaimStatus.RequestMappings`.
-﻿
-As a result, DRA-backed extended resources can be prepared and passed into the container, but their health is not reflected in PodStatus.
+The kubelet has a race condition in pod admission logic where rejected pods pollute the resource accounting for subsequent pod admissions.
 
-When `ResourceHealthStatus` is enabled and a DRA plugin reports health for a device allocated via a DRA-backed extended resource, kubelet should publish that health in `pod.status.containerStatuses[].allocatedResourcesStatus`.
-﻿
-The reported status should correspond to the generated special ResourceClaim and request from `pod.status.extendedResourceClaimStatus.requestMappings`.
+From Openshift CI logs:
+- Pod 1 (pod-out-of-cpu) requested 1000000000000000 millicores (intentionally absurd for testing)
+- Rejected at 03:12:06.086 with used: 759 millicores
+- Pod 2 (resize-test-kngwb) requested 20 millicores
+- Rejected at 03:12:06.220 (134ms later) with used: 1000000000000759 millicores
+- This is exactly: 1000000000000000 + 759
 
-N/A.
+The rejected Pod 1's CPU request was incorrectly included in the "used" calculation for Pod 2.
 
-N/A.
+From kubelet logs (worker-2):
+
+CI Run: [link]
+
+Failed Test:
+[sig-node] Pod InPlace Resize Container [FeatureGate:InPlacePodVerticalScaling] [Beta]
+
+Rejected pods should not affect resource accounting for subsequent pod admission checks
+
+We have observed this intermittently in Openshift CI.
 ```
 
 ---
@@ -338,30 +372,11 @@ N/A.
 ## B16
 
 ```
-GracefulNodeShutdown produces multiple “ContainerStatusUnknown” pods if the node is shut down with pods having not-ready tolerations
+Scheduling of pods with RWO volumes
 
-When having pods that have the following toleration:
+Since RWO volumes work only on a single host, wouldn't it be reasonable for the scheduler to schedule pods for a {RC,RS,D,etc.} that uses such a volume on the same node? Otherwise, pods that land on different nodes are essentially blocked. Deployments are the most affected since you can have a Deployment with just one pod and maxSurge=1 (which is actually the default currently) and with a RWO volume, it will block.
 
-Shutting down the pod's node configured with GracefulNodeShutdown will leave a number of replicas of the pods in a `ContainerStatusUnknown` status after restarting the node where the pod originally was.
-
-According to `kubectl get po -w`:
-
-I was expecting that there will be no pods with `ContainerStatusUnknown`.
-
-Minimal Env:
-1 Cluster with 1 control plane and 1 worker node
-
-Reproduction:
-1. Enable GracefulNodeShutdown feature in your node.
-
-2. Create the following Deployment:
-
-3. Create the deployment
-
-4. Reboot the worker node (in this example, localmachine2.localdomain)
-
-5. Wait for a few minutes until the node shuts down and starts up again.
-6. Check the pod list
+[team] [team] [team]
 ```
 
 ---
@@ -369,22 +384,23 @@ Reproduction:
 ## B17
 
 ```
-kubelet: Device plugin fails to connect to new instance of plugin if previous one is terminated
+HTTP2_PING_TIMEOUT_SECONDS+HTTP2_READ_IDLE_TIMEOUT_SECONDS > 40s will cause all node NotReady
 
-The kubelet fails to connect to the device plugin if a previously running device plugin was running on the node with the same resource name.
+The controller-manager node-lifecycle-controller watches node lease and update `nodeHealthMap` probeTimestamp , and it check node probeTimestamp is before `now - node-monitor-grace-period`. The node-monitor-grace-period default value is 40s.
 
-Kubelets can get into a situation of running two pods advertising the same device plugin for a brief short period of time. For example, consider the following situation of a vendor hypothetically "upgrading" the device plugin:
+When the client connection lost, the lease watcher cannot receive new event. With the http2 health check, HTTP2_PING_TIMEOUT_SECONDS default is 30s, HTTP2_READ_IDLE_TIMEOUT_SECONDS default is 15s, it will delay 45s to kill http2 connection.
 
-1. kubelet runs`first-device-plugin` advertising resource `example.com/resource`
-2. device vendor upgrades device-plugin to `second-plugin` and user deploys it
-3. kubelet switches to use `second-device-plugin` advertising resource `example.com/resource`
-4. user deletes `first-device-plugin`
+During this period, node-lifecycle-controller will mark all nodes NotReady.
 
-Prior to v1.25.0, kubelet would handle this situation, and on step 4, disconnect of `first-device-plugin` would ensure that `first-device-plugin` would be disconnected, and maintain connection to `second-device-plugin` (since it was most recently connected).
+Here are some logs
 
-This regressed as part of [link] where as part of the deletion of the `first-device-plugin` (step 4), kubelet would disconnect from "the most recently" connected plugin, namely `second-device-plugin`, and thus would get into a situation where neither the first or second device plugin would be connected. This would result in kubelet failing to adverting resources for the device. This is because of a bug where kubelet only stores the state of the most recently connected plugin and on disconnect, disconnects the most recently connected plugin.
+When the http2 connection lost, the watch should stop as soon as possible. The reflector should relist resource, and node-lifecycle-controller should not mark all node NotReady.
 
-I expected kubelet to either maintain the same behavior as pre 1.25: when deleting a device plugin pod, to disconnect from the device plugin that was deleted rather then the most recently connected plugin.
+HTTP2_PING_TIMEOUT_SECONDS+HTTP2_READ_IDLE_TIMEOUT_SECONDS should be less than 40s.
+
+1. Find the controller-manager node-lifecycle-controller watch client srcIP:srcPort. Drop all tcp package send into srcIP:srcPort.
+2. Wait for more than 40 seconds, all node will be marked NotReady
+3. All node will be Ready after some seconds.
 ```
 
 ---
@@ -392,19 +408,17 @@ I expected kubelet to either maintain the same behavior as pre 1.25: when deleti
 ## B18
 
 ```
-The allocatable and capacity values ​​for "ephemeral-storage" under node.status are not displayed in the same format.
+[FG:InPlacePodVerticalScaling] e2e test does not verify resource update in pod status
 
-I'm checking the status of a node and noticed that the base of the **"ephemeral-storage"** field in the allocatable and capacity fields is inconsistent. The "ephemeral-storage" field under allocatable is in **binary format**, while the "ephemeral-storage" field under capacity is in **decimal format**. Is this intentional or a bug?
+e2e tests for pod resizing does not verify if resources in a pod status is updated to the same values in a pod spec after resizing is actuated. This is caused because the result of the runtime support check is reversed:
 
-<img width="2346" height="162" alt="Image" src="[link] />
+[link]
 
-I think they should be in the same format.
+Resources in pod status are verified.
 
-kubectl get node xxx -ojsonpath='{.status.allocatable}'
+Run e2e test with enabling InPlacePodVerticalScaling.
 
-kubectl get node xxx -ojsonpath='{.status.capacity}'
-
-Then, compare them.
+I'm not sure if we should fix it immediately. If this issue is fixed, it will take much longer to finish the tests because there are some issues that it takes much time (60-90s) till resources in a pod status is updated after resizing is actuated such as #123940 and #125559. In addition, pod resize e2e tests are being migrated to e2e node tests in PR #124296.
 ```
 
 ---
@@ -412,19 +426,16 @@ Then, compare them.
 ## B19
 
 ```
-DRA: allocator should fail closed (per-node) on a malformed ResourceSlice nodeSelector term count
+Device Plugin failure handling in kubelet is racy
 
-Follow-up to #141212 and #141213. The validation fix in #141213 stops a new or modified ResourceSlice from carrying a per-device `nodeSelector` whose term count is not exactly one. It ratchets the new constraint, so a slice with a multi-term selector that was stored before the fix, or accepted by an older API server during a version-skewed rolling upgrade, is still admitted on an unchanged update.
+As of now Kubelet removes a resource owned by device plugins as soon as it notices that a plugin has failed (plugin socket is removed, or ListWatch fails). This behavior is undesirable because trivial plugin restarts would result in Node Capacity changes which is most likely going to be monitored in production clusters resulting in alerts.
 
-Those already-stored multi-term slices can still reach the structured allocator. `createNodeSelector` handles the term count like this:
+As discussed in [link] we should have kubelet reduce the capacity and allocatable to `0` if a device plugin has failed and then after a timeout remove the resource completely from the Node object.
+This timeout ensures that random restarts do not raise alerts for production cluster admins, while continue failure does raise an alert. It also let's us track scenarios where all devices fail while the device plugin stays healthy.
+Similarly, during startup, kubelet should wait to known plugins to re-register prior to declaring a plugin to be unavailable.
+I'd ideally expect this bug to be fixed as part of beta.
 
-- `len == 0`: no-op. This is not reachable through a normal allocation. `ValidateNodeSelector` already rejects a zero-term selector ("must have at least one node selector term"), and even a stored one matches no node, because `nodeaffinity`'s `Match` returns false when there are no terms, so `isSelectable` filters the device through `NodeMatches` before `createNodeSelector` runs. Rejecting zero terms here would be defense in depth, not a fix for a demonstrated available-everywhere allocation.
-- `len == 1`: merged.
-- `len > 1`: returns `fmt.Errorf("unsupported ResourceSlice.NodeSelector with %d terms", ...)`.
-
-The `> 1` error is not wrapped with `internal.ErrFailedAllocationOnNode`, so the DynamicResources Filter plugin treats it as a framework error rather than an `Unschedulable` result for that node. A framework error from Filter cancels the remaining node search and aborts the scheduling cycle, and it recurs on retry while the malformed slice stays in place. #141212 has a v1.36.2 reproducer.
-
-There is also an ordering edge. `createNodeSelector` returns as soon as it sees a result with a `nodeName`, so a multi-term selector on a device that appears after a `nodeName` device is never inspected, while the same selector before it returns the hard error. Whether a malformed slice aborts the cycle therefore depends on result order.
+@user @user @user [team] @user
 ```
 
 ---
@@ -432,24 +443,10 @@ There is also an ordering edge. `createNodeSelector` returns as soon as it sees 
 ## B20
 
 ```
-kubelet will never terminate a pod if image registry is unavailable for a pod container
+Kube-proxy goes in non-operational mode after cleanup without reporting when cleanup job is done
 
-After an unbelievable amount of time debugging the following this past week:
-
-[link]
-[link]
-
-I discovered that I could reliably cause the `kubelet` to never delete a pod that was `Terminating` if the pod had never been started correctly because the docker image pull returned a `RegistryUnavailable` error.
-
-I verified this by modifying the kubelet to always return `RegistryUnavailable` for a particular image name. I then created a namespace, added a replication controller that referenced the image, and then watched as the pods got stuck in "Waiting" state but never actually reported a reason. I then deleted the namespace, and was able to see that in-fact the `kubelet` never properly handled the `terminated` response.
-
-I was able to fix this issue by modifying:
-
-[link]
-
-to return `ErrImagePull` when the repository was not available. This change resulted in letting my `kubelet` properly terminate the pod. I think this is the correct behavior to not special case `RegistryUnavailable` since in many cases the registry may never become available (its most definitely not a temporary situation).
-
-I suspect this is the potential source of a number of instances of the namespace failed to delete flake because pods remained.
+After removing auto-cleanup logic for non-current kube-proxy modes, kube-proxy has to be called manual with flag(see, [link] After switching the proxy mode from to , kube-proxy gets called with the flag and goes in a non-operational loop after [link] When a new svc is created it is non-functional until kube-proxy gets restarted without the flag.
+Kube-proxy should report when the cleanup job is done and exit in a clean way. Currently it is hanging in an infinite loop.
 ```
 
 ---
@@ -457,31 +454,25 @@ I suspect this is the potential source of a number of instances of the namespace
 ## B21
 
 ```
-After replication controller is deleted, some nodes do not kill running containers
+Socket operation on non-socket kubelet error
 
-Discovered this while debugging with @user
+Hello everyone,
 
-Some nodes do not kill containers after associated replication controller is deleted.
+I'm trying to make a Raspberry Pi 2 Kubernetes cluster. I've installed etcd, merged the patches (coreos/etcd#2308), cloned kubernetes and started hack/local-up-cluster.sh (with some modifications, e.g. I built my own kubernetes/pause, removed sudo, because of arch linux).
 
-**Repro steps:**
-- You may use a standard GCE 4 node cluster `n1-standard-1 (1 vCPU, 3.8 GB memory)`
-- Download [sleepypod.yaml]([link]
-- It defines a replication controller with 300 replicas with 10 containers per pod using a _tiny_ container which contains a statically compiled C program that just starts up and goes to sleep for a very long time.
-- Execute `./cluster/kubectl.sh create -f sleepypod.yaml` to create the replica controller
-- Execute `./cluster/kubectl.sh describe rc sleepypod` repeatedly to check how many pods are scheduled.
-- Monitor `Pods Status`
-- Wait until the number of scheduled pods stops increasing (depending on the size of your cluster, you will not be able to schedule all 300 replicas, that's ok).
-- Call `./cluster/kubectl.sh delete -f sleepypod.yaml` to delete the replica controller
-- Call `./cluster/kubectl.sh get pods` verify there are no `sleepypod-...` in the response
-- SSH into each node machine and execute `sudo ps | grep sleepy`
+I'm using arch linux arm.
+**_Everything start up fine if I start it via plain docker, e. g. my alpine image or resin/rpi-raspbian, but not if I start via kubernetes**_
 
-**Expected result:**
-- All nodes should have no running `sleepypod-...` containers
+Some system info:
 
-**Actual result:**
-- One or more nodes will not terminate the `sleepypod:` and associated `pause` containers running on it:
+But, if I run this
 
-Restarting kubelet (`service kubelet restart`) or restarting docker causes the running containers to all get killed.
+it won't start the pod
+
+When I check the events it says:
+
+Is this a known issue with kubelet?
+It would be good to get kubernetes up and running :smile:
 ```
 
 ---
@@ -489,15 +480,13 @@ Restarting kubelet (`service kubelet restart`) or restarting docker causes the r
 ## B22
 
 ```
-Deduplicate NFS server containers
+[PodLevelResources] In-place pod resize events do not capture pod-level resources
 
-There are two NFS server containers in the kubernetes code:
-- [kubernetes/examples/volumes/nfs/nfs-data/Dockerfile]([link]
-- [test/images/volumes-tester/nfs/Dockerfile]([link]
+When issuing in-place pod resize requests, you can view the progress of resizes via events:
 
-Instead of maintaining both (nearly identical), I propose removing the `examples` version and having the NFS example point to the `test` version.
+but the [podResourceSummary object]([link] that gets marshaled for these events doesn't include pod-level resources, meaning that the allocation emitted is incomplete as it does not contain pod-level resources.
 
-CC [team] @user/rh-storage
+There is a TODO for this: [link]
 ```
 
 ---
@@ -505,13 +494,27 @@ CC [team] @user/rh-storage
 ## B23
 
 ```
-When external source IP matters
+kubelet_http_requests_duration_seconds metric records incorrect (near-zero) latency values
 
-I have not found any documentation describing scenarios where the external source ip of the routed pods matter.
+The `kubelet_http_requests_duration_seconds` histogram metric always records near-zero values (~2 microseconds) regardless of actual request processing time.
 
-I want to kuberialize our SMTP servers using a service and a replication controller. Problem is that the world expect these servers to communicate from a specific external ip.
+Below is a screenshot from a downstream CI run showing the average latency of kubetet's /metrics/cadvisor endpoint:
 
-Is it a "right way" of doing this? I will contribute a .md for this scenario if I find the right solution :)
+<img width="1858" height="842" alt="Image" src="[link] />
+
+The metric should record the actual time taken to handle each HTTP request, from when it's received until the response is sent.
+
+1. Make an HTTP request to the kubelet that takes a measurable amount of time (e.g., `/pods/` endpoint)
+2. Query the `kubelet_http_requests_duration_seconds` metric
+3. Observe that the recorded duration is always ~2 microseconds instead of the actual processing time
+
+**Root cause:**
+
+In `pkg/kubelet/server/server.go`, the defer statement evaluates `SinceInSeconds(startTime)` immediately when the defer is declared, not when it executes:
+
+In Go, arguments to deferred function calls are evaluated immediately at the defer statement. This means `SinceInSeconds(startTime)` computes the duration at the start of the request (~5µs after `startTime` was set), rather than at the end when the defer actually runs.
+
+This affects observability and SLO tracking for kubelet HTTP endpoints since duration data is meaningless.
 ```
 
 ---
@@ -519,23 +522,19 @@ Is it a "right way" of doing this? I will contribute a .md for this scenario if 
 ## B24
 
 ```
-Determine whether we should continue to require UID in node config source reference
+Fail to pull docker image from private registry server
 
-#### Reposted from [link]
+Hi, I'm facing the issue below when kubelet tried to pull image from a private registry, and need user authentication:
 
-This has been a requirement of dynamic Kubelet config since the original proposal, to require users to be completely explicit (time and space) about which ConfigMap to use. If the UID in the config source doesn't match the UID of the ConfigMap, the Kubelet currently rejects it.
+And I followed the document below, in section "Configuring Nodes to Authenticate to a Private Repository"
 
-IIRC there were concerns along the lines of ConfigMaps being deleted and recreated with the same name but different content... though this is less of an issue today now that we have the --append-hash option in kubectl (obviously the potential for in-place ConfigMap mutation still exists, but if users are using --append-hash I wouldn't expect them to mutate the ConfigMap after creation).
+[link]
 
-The Kubelet also checkpoints by UID, so it was convenient to already have this specified in the object ref, though I guess if we relaxed this requirement it could just resolve the UID and stick it in the local copy of the config source when it first downloads the ConfigMap.
+But the issue still exist, seems .dockercfg file didn't take effect when kubelet tried to pull the image, anything else I should do to make it work?
 
-I can't remember other reasons to require UID, if any.
+BTW, if I manually do the "docker pull <index_server>/nkwanglei/nodejssample" on the same node, then the image can be pulled successfully.
 
----
-
-A massive downside of requiring the UID is that you cannot fully-statically-specify the configuration of a cluster; the UID is assigned by the API server at creation time.
-
-This *must* be resolved before dynamic Kubelet config ([link] goes beta.
+My kubenetes version is v0.18.2, thanks!
 ```
 
 ---
@@ -543,35 +542,52 @@ This *must* be resolved before dynamic Kubelet config ([link] goes beta.
 ## B25
 
 ```
-DRA resource claim controller: fails to clean up deleted ResourceClaims on startup
+Kubelet UID-qualified exec/run routes ignore mismatched pod UID during pod resolution
 
-* kube-controller-manager is stopped.
-* A allocated claim with one pod in ReservedFor is marked as deleted (but not removed yet because of the finalizer).
-* That pod gets deleted, terminates and gets removed.
-* kube-controller-manager is restarted.
+While investigating kubelet streaming endpoints, I noticed that the UID-qualified `exec` and `run` routes do not appear to enforce the supplied pod UID during pod resolution.
 
-The ResourceClaim controllers logs:
+Routes:
 
-It does not do anything, so the claim remains pending.
+parse and forward the UID, but the underlying lookup prefers the pod full name whenever it is available.
 
-This was triggered while working on upgrade/downgrade scenarios.
+As a result, a request using a stale or mismatched UID can still resolve successfully to the currently running pod with the same namespace/name.
 
-The ResourceClaim controller should remove the pod from ReservedFor, the allocation, and the finalizer, thus unblocking the removal of the ResourceClaim.
+I initially treated this as a potential security concern and performed a deeper investigation of the authorization path.
 
-Not easy, needs WIP test.
+After tracing the complete request flow multiple times, I could not identify any authorization bypass or privilege escalation. Authorization is already enforced before these handlers, so the observed behavior appears to be a correctness/consistency issue rather than a security issue.
 
-This is a regression introduced by [link]
+I have reproduced and re-verified this behavior twice using the existing runtime tests and local code tracing.
 
-The logic here is inverted:
-[link]
+When a UID-qualified kubelet route is used and a non-empty pod UID is supplied, the request should require both:
 
-The correct expression is `deleted := newObj == nil`.
+- pod full name
+- pod UID
 
-This causes the enqueuing of the claim for processing to get skipped in
+to match the current pod.
 
-[link]
+For example:
 
-Normally, this gets mitigated by pod removal which also has the desired effect, but in this particular case that removal is never observed - the pod is already gone when the kube-controller-manager starts.
+should be rejected instead of resolving to the recreated pod.
+
+This would also make the behavior consistent with the existing `attach` and `port-forward` implementations, which explicitly reject UID mismatches.
+
+The existing runtime test already documents the lookup precedence.
+
+Run:
+
+The test demonstrates that:
+
+returns the pod identified by its full name even when the supplied UID belongs to a different pod.
+
+Relevant request flow:
+
+I reproduced this behavior twice during investigation and obtained the same result both times.
+
+Additional investigation:
+
+- Traced the complete kubelet exec/run request path.
+- Compared behavior with `attach` and `port-forward`.
+- Verified that authorization occurs before the streaming handlers.
 ```
 
 ---
@@ -579,21 +595,11 @@ Normally, this gets mitigated by pod removal which also has the desired effect, 
 ## B26
 
 ```
-Liveness probe failure container restart leads to container starting up with started=true and liveness probes starting before startup probes have run
+[FG:InPlacePodVerticalScaling] Remove ResizePolicy defaulting
 
-The full details of the repro can be seen in the Bash script below, but roughly:
+Prior to Kubernetes v1.31, any defaulted change to the pod API could trigger running pods to restart on apiserver upgrade (fixed by [link] Since v1.30 is still within the valid version we cannot set a default ResizePolicy.
 
-1. Start a container with startup and liveness probe.
-2. Wait for both to succeed. All normal so far.
-3. Flip liveness probe to fail.
-4. Container restarts.
-5. New container sees liveness probe before startup probe.
-
-I would expect the new container to first need to pass its startup probes before liveness probes begin, as per the docs here: [link]
-
-Reproduction bash script:
-
-Save as repro.sh and here are the results of me running it:
+Kubelet already handles an unset ResizePolicy as an implicit default (`NotRequired`), so all that is needed here is to remove the defaulting logic. This is probably the preferred behavior even without the version skew issue.
 ```
 
 ---
@@ -601,20 +607,16 @@ Save as repro.sh and here are the results of me running it:
 ## B27
 
 ```
-kubelet crash loop panic with SIGSEGV
+[SidecarContainers] Failed to get proper phase after the node reboot
 
-I was running some pods on my node as usual.
-At some point (23:41:35.127989 in the log), the kubelet crashed and then went into a crash loop.
+If a pod has an init container with restartPolicy "Always" (sidecar), it may lose the pending phase after the node reboot and start the regular containers before initializing the init containers.
 
-Log showing the first crash and several thereafter: [kubelet-crash.txt]([link]
+This is similar to [link] but separated as it only affects the pod with restartable init containers.
 
-The errors I see shortly before the crash are:
+After the node reboot, the remaining pod should start from the pending phase and run the init containers one by one to initialize.
 
-Stack trace from the first crash (later stack traces are a bit different):
-
-Ideally no crash, but at least a useful error message.
-
-Really not sure.
+1. Create and initialize the pod with an init container with "Always" container restart policy.
+2. Restart the node.
 ```
 
 ---
@@ -622,27 +624,15 @@ Really not sure.
 ## B28
 
 ```
-Timeout waiting for systemd to create kubepods-burstable-***.slice
+Pod startup latency regression
 
-When I **frequently** increase and decrease the **replica count** (with python api)to adjust the number of pods over a period of time:
-![image]([link]
+In 5k node cluster tests pod startup latency has roughly doubled at all (50th, 90th, 99th, 100th) percentiles, apparently due to some change merged between Oct 16th and 20th. The following graph (for the ci-kubernetes-e2e-gce-scale-performance job) makes it obvious (note values are capped at 10s for readability):
 
-The cluster **cost some more** memory but with the same count of services(and pods), and at this point, continuing to adjust replicas will result in a significantly longer time (possibly even more than **600 seconds**, normal is 1.5-3s) required for creating new pods.
+![0jjh2pnsh7p]([link]
 
-As title: Timeout waiting for systemd to create kubepods-burstable-***.slice
-![image]([link]
-
-And also: Timed out while waiting for systemd to remove kubepods-burstable-***.slice
-![image]([link]
-
-normally start new pod without timeout
-![image]([link]
-
-frequent replica adjustments (roughly over 500 times within 15 hours, **up to 40 one by one and reduce to 1 one by one**) for a same service, use python api
-
-I continuously adjust the replica count using a Python program. Under normal circumstances, the startup time of pods is shown in the left graph (where the left side represents the pod count, and the right side represents the startup time of new pods). However, after an extended period of frequent replica adjustments (roughly over 500 times within 15 hours), the duration is shown as depicted in the right graph.
-**Even Kubernetes' API timeouts in the end.**
-![image]([link]
+The last run with good latency (3.2s@99%) was 49, on October 16th.
+Since then it's been between 4.7s and ~5s at 99th %ile.
+The [56th run]([link] actually failed because the latency exceeded the threshold (5s). Since we're so close to the threshold, the test is now more flaky.
 ```
 
 ---
@@ -650,9 +640,24 @@ I continuously adjust the replica count using a Python program. Under normal cir
 ## B29
 
 ```
-Remove docker references in pod_worker_test.go
+[FG:InPlacePodVerticalScaling] api server "INTERNAL_ERROR; received from peer" while executing kubectl replace
 
-We should not be testing docker-specific logic outside of docker package. pod_worker_test.go still imports go-dockerclient directly and uses a fakeDockerClient. They should be replaced with the generic FakeContainerRuntime, etc.
+error on kubectl replace cmd : error: error when replacing "pod-updated-example.yaml": Put "[link] stream error: stream ID 5; INTERNAL_ERROR; received from peer
+
+On api server logs :
+
+api server return this error : The Pod "XXX" is invalid: spec.containers: Forbidden: pod updates may not add or remove containers
+
+1-start the cluster with FEATURE_GATE ENABLED (InPlacePodVerticalScaling)
+2- create a pod with one container , for example :
+
+3- try to replace (without force) with ( + container) :
+
+kubectl replace -f pod-updated-example.yaml
+
+**ERROR** : Put "[link] stream error: stream ID 5; INTERNAL_ERROR; received from peer
+
+based on the master branch (ref commit : 139cc3c659dd1624f7a4bbcc3b07fda79539677a )
 ```
 
 ---
@@ -660,21 +665,21 @@ We should not be testing docker-specific logic outside of docker package. pod_wo
 ## B30
 
 ```
-Add e2e test(s) for volume scheduling limits
+Inconsistent Running/Pending status while pod continues to function
 
-Right now, we have e2e test for [volume scheduling limits]([link] that executes only CSI mock driver with artificial limit of 2 volumes per node.
+My pods appear to change, randomly but repeatedly, from "Running" to "Pending" status and back, according to "kubectl describe pods". The restart count remains at zero, and I can't find any corresponding errors in any of the kubernetes or docker logs. The pod names (mything-1jq7j, mything-rdd7e) are stable. The restart count remains zero. And during the seeming "pending" periods, I can still _use_ my project -- that is, the "mything" image within the kubernetes pods continues to actively process MQ requests, I don't see any downtime.
 
-We need a test with real CSI driver(s).
+Additionally -- I happened to open a second terminal ssh'ed into the same host (which is my kube master host) and watched the describe output in both terminals using:
 
-Proposal:
+... which showed me that the "Pending" status would only appear in one terminal window at a time, for 10-20 seconds, during which time the other terminal window (still updating every 1 second) would continue to show the same pod as "Running". Pursuing this further, I made a batch script to run "describe pods" in a background process 1000 times rapid-fire -- within a span of several seconds, I indeed saw the status for one of the pods cycle from "Running" to "Pending" and back. (When I sort the results by order of execution, all of the "Pending" results are together -- that is, only one cycle, not 500 flickers.)
 
-* Allow individual test storage drivers to specify if they support CSI limits.
-* Add a test that picks a random node and creates as many pods with a PV that the volume can handle (128 on GCE!).
-* Check that the node can't handle any other volume.
-* Make this test part of [CSI external test suite]([link]
+Additionally, when my second pod cycles to "Pending" status like this, the first pod also changes ever so slightly -- specifically the "Node:" output of "describe pods" changes from "10.0.0.4/10.0.0.4" to simply "/10.0.0.4".
 
-* Add similar test(s) for in-tree volume plugins.
-* Make sure the tests work with in-tree volume plugins migrated to CSI.
+**== Output when both pods are "Running" ==**
+
+**== Output when one pod is back to "Pending" ==**
+
+It almost seems like the inconsistency is somewhere in the pod status detection, rather than any actual instability in the pods.
 ```
 
 ---
@@ -682,16 +687,15 @@ Proposal:
 ## B31
 
 ```
-PersistentVolumeController should not hardcode recycler image
+Add --write-config-to option to kubelet
 
-The recycler pod image used by the NFS & HostPath persistent volume plugins is hardcoded to `gcr.io/google_containers/busybox`, here:
-[link]
+Add a new `--write-config-to` flag to kubelet, similar to [kube-scheduler]([link] and [kube-proxy]([link]
 
-There are several problems with this approach:
+This flag can be used to render the kubelet configuration file from a set of command-line arguments. For example:
 
-1. No way to run a deployment off a custom repository. E.g. if an organization wanted full control of every image running in their cluster.
-2. The hardcoded image is unversioned, meaning there is no way to ensure you're getting the latest version (and if latest is updated, there is no way to safely roll out the updates).
-The image, repository & tag should be configurable at deployment time, e.g. with a command-line flag. The default image should use a versioned tag (not latest).
+In existing Kubernetes clusters we get lots of warnings like:
+
+But there is no easy way to generate a config file for existing clusters.
 ```
 
 ---
@@ -699,11 +703,15 @@ The image, repository & tag should be configurable at deployment time, e.g. with
 ## B32
 
 ```
-DRA: detect stale DRA plugin sockets
+PVCs using `standard` StorageClass create PDs in disks in wrong zone in multi-zone GKE clusters
 
-@user observed that after uninstalling his DRA driver *without* removing the Unix Domain socket used for gRPC towards the kubelet, kubelet didn't unregister the driver. We may have to add some liveness probing to `pkg/kubelet/cm/dra/plugin/registration.go`.
-
-The kubelet needs to remove ResourceSlices on behalf of a defunct DRA driver.
+- Created single-zone cluster in `us-central1-c`
+- Expanded to multiple zones after creation using `gcloud container clusters update ... --additional-zones` to `b` and `a`
+- Deployed PVC with `storageClassName: standard`, which is a StorageClass included with GKE.
+- PV is created in `us-central1-f`, a zone with no nodes from this cluster in it
+- PV created in one of the zones that the cluster has nodes in
+See `What Happened`. I'm not sure the expansion after creation step is necessary.
+May be a duplicate of [link] but that's on AWS
 ```
 
 ---
@@ -711,15 +719,13 @@ The kubelet needs to remove ResourceSlices on behalf of a defunct DRA driver.
 ## B33
 
 ```
-Remove deprecated built-in CSI RBAC roles in 1.17
+GCE CreateVolume allocates in chunks of GiB incorrectly
 
-The built-in `system:csi-external-provisioner` and `system:csi-external-attacher` cluster roles here
-[link]
+GCE PDs are allocated in chunks of GBs (not GiB) but `CreateVolume` function incorrectly creates volume in chunks of GiB - [link]
 
-are deprecated in 1.13
-[link]
+cc @user
 
-when this issue was resolved: [link]
+[team]
 ```
 
 ---
@@ -727,16 +733,14 @@ when this issue was resolved: [link]
 ## B34
 
 ```
-Move dockershim code into a separate CRI
+Clean up e2e pods in parallel
 
-We currently have a flag `experimental-dockershim` in kubelet here:
-[link]
+There are a couple tests that delete pods in serial, for example:
 
-Backed by the code here:
-[link]
+- [link]
+- [link]
 
-There is a `TODO` as well:
-[link]
+We should add a `DeletePodsWithWait` function that cleans up multiple pods in parallel. This can be done by simply deleting each pod before waiting (the waits can be done in serial).
 ```
 
 ---
@@ -744,17 +748,29 @@ There is a `TODO` as well:
 ## B35
 
 ```
-kube-proxy pods are not getting deleted after grace period
+No share ID in DRA kubelet plugin's API
 
-I have an ordinary GCE e2e cluster running on flannel (NETWORK_PROVIDER=“flannel”). After starting the 500 Node cluster some kube-proxy pods are pending (I've seen 1 and 3) with "ErrImagePull" errors. I tried to delete them normally (`kubectl --namespace=kube-system delete pod kube-proxy-blablabla`)
+kubelet plugin API does not support ShareID information. The ShareID is an additional identifier to the device name which may be generated by DRAConsumableCapacity feature ( that is introduced in [link]
 
-and waited for 10 minutes.
+The DRA driver which refers to this API for preparing resource needs to pass ShareID to CDI spec's device ID. Otherwise, the same node will fail to create a container according to the duplicate ID.
 
-In the end I had to force deletion (`kubectl --namespace=kube-system delete pod kube-proxy-blablabla --grace-period=0`) which worked.
+Pods can be successfully created when sharing the same device with DRAConsumableCapacity.
 
-cc @user @user @user @user/goog-node
+Enable DRAConsumableCapacity feature, Enable DRA driver with allowMultipleAllocations device, Create two pods allocating the same device.
 
-Assigning to @user to reassing.
+Without the change to k/k, a driver can have a workaround which wrap the plugin API appending with shareID and use it as a PreparedDevice.
+
+From
+
+to
+
+implemented code: [link]
+
+However, it looks cleaner when we do that in the provided API.
+The change needs at driver is only extending the CDI id with share id if not nil: [link]
+
+PR:
+- [link]
 ```
 
 ---
@@ -762,15 +778,13 @@ Assigning to @user to reassing.
 ## B36
 
 ```
-[Sidecar Containers] Eviction message should account for the sidecar containers
+Expose container's own identity to the container
 
-The `evictionMessage` is not accounting for the restartable init containers (sidecars).
+Container can be identified in the cluster at a given point of time by a tuple `(namespace, pod_name, container_name)`. Currently, the only guaranteed way to get this information is Downward API, which requires quite lengthy definition in the container's spec.
 
-When pod is evicted, requests of the sidecar containers must be added to the annotations.
+However, this information is extremely important for monitoing/logging client libraries. They would benefit from being able to out of the box send the information to the backend without querying Kubernetes API or a separate agent. Example issue: [link]
 
-Evict pod with the sidecars and check out annotation.
-
-KEP: [link]
+[team]
 ```
 
 ---
@@ -778,20 +792,20 @@ KEP: [link]
 ## B37
 
 ```
-E2E Proposal: Verify tcpSocket property of v1.Probe along with success and failure threshold.
+Restarting kubelet with new node labels doesn't update labels for node
 
-A E2E to verify `core.v1.tcpSocketAction` resource along with probe's important properties like `successThreshold`, `failureThreshold`, and `periodSeconds`.
+kubelet version: 1.2.4
 
-Note: following default values are in effect `delay=0s timeout=1s period=10s #success=1 #failure=3`
-To improve API coverage based on [label] and their important properties.
-[link]
+Steps to reproduce:
+- start kubelet with some labels using the `--node-labels` flag
+- wait for the node to register itself with the master
+- restart kubelet with a different set of labels
 
-E2E behavior could be:
-Create a pod with a container having `tcpSocket` based readiness and liveness probes provided with successThreshold, failureThreshold and periodSeconds values and container should not accept any connection after ~30 sec of it's start. Container MUST be ready after `successThreshold * periodSeconds` (<~30s) is reached. Container MUST NOT be in ready state after `failureThreshold * periodSeconds` (>~30s) is reached.
+Expected result:
+`kubectl get no --show-labels` shows the node with the updated labels
 
-Note: May need to implement connection closing mechanisam at certain time for `gcr.io/kubernetes-e2e-test-images/liveness:1.1` image to test failureThreshold for `tcp` requests.
-
-[team]
+Actual result:
+`kubectl get no --show-labels` shows the node with the original labels
 ```
 
 ---
@@ -799,25 +813,21 @@ Note: May need to implement connection closing mechanisam at certain time for `g
 ## B38
 
 ```
-A completed status pod which request 1 nvidia.com/gpu resource updated to UnexpectedAdmissionError when restart kubelet service
+DRA: kubelet: checkpoint checksum changes when API gets extended
 
-I have a k8s cluster (version v1.23.6) with a GPU node which has 4 GPUs.
+When adding the `StructuredData` field to `resourcev1alpha2.ResourceHandle`, old checkpoint files became invalid because the checksum that gets calculated by hashing the `spew` output in `pkg/util/hash` no longer matches. This caused kubelet to fail to start with:
 
-Firstly, I submitted a job which request 1 nvidia.com/gpu, and after a while the job successfully finished with a Completed pod status.
+Here's what the checksum in a unit test gets calculcated for:
 
-Secondly, I submitted a deployment which request 4 nvidia.com/gpu, it keeps ruuning on the GPU node.
+Note the new `StructuredData:(*v1alpha2.StructuredResourceHandle)<nil>`.
 
-Thirdly, I restart the kubelet service on the GPU node, then the job pod updated pod status from Completed to UnexpectedAddmissionError.
+Not sure what the right behavior is. Perhaps kubelet should have ignored the invalid checkpoint?
 
-Describing the job pod:
+Revert the pkg/kubelet/cm/dra/state/state_checkpoint_test.go update in [link]
 
-The job has completed successfully and release the gpu resource, kubelet should not try to reallocate a GPU resource to a Completed status pod when the kubelet service is restarted.
+The state.DRAManagerCheckpoint contains a version field, which is set to v1.I think that's where things fall apart: that version must exactly match the type that gets serialized, which is not the case here. The type changes over time, but the version is fixed.
 
-I expect that the job pod should keep Completed status when kubelet service is restarted.
-
-(1) submitted a job which request 1 nvidia.com/gpu resource, waiting for the job completed,pod status is Completed.
-(2) submtted a deployment which request all nvidia.com/gpu resource.
-(3) restart kubelet service on the gpu node, and you can see that the job pod updated pod status to UnexpectedAdmissionError.
+Let's reconsider what should get checkpointed and how we can make that stable. Also, is checkpointing really worth it? What bad things happen if we remove it?
 ```
 
 ---
@@ -825,25 +835,9 @@ I expect that the job pod should keep Completed status when kubelet service is r
 ## B39
 
 ```
-aftert re-allocating DeviceManager panic on Allocate()
+node node summary metrics missing pods on systemd
 
-Based on the following stack trace ,The issue is potentially caused by one goroutine re-allocate device plugin and delete devicesToReuse map [m.devicesToReuse map deleted]
-[link]
-At the same time, another process is allocating resources ,when creating Pods concurrently
-[link]
-Another goroutine is allocating device plugin . The devicesToReuse map will be later used in removeContainerAllocatedResources()
-[link]
-which caused panic. func by itself is not thread-safe
-
-Stack trace:
-`Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 kubelet: I1119 15:07:43.942671 11035 manager.go:956] needs re-allocate device plugin resources for pod dag-process-debug-1858716533183492096-202303328_dag-process(4604c558-bfdd-427c-81c9-f1d8a5aea6e7), container main
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 dockerd: time="2024-11-19T15:07:43.952908939+08:00" level=debug msg="Calling GET /v1.40/images/10.73.150.98:5000/ai-train/onenode:A100_v8/json"
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 dockerd: time="2024-11-19T15:07:43.954568826+08:00" level=debug msg="Downloaded c4221d178521 to tempfile /data1/cce/docker/tmp/GetImageBlob288125387"
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 dockerd: time="2024-11-19T15:07:43.955529075+08:00" level=debug msg="Calling POST /v1.40/containers/create?name=k8s_main_dag-process-debug-1858716533183492096-202303328_dag-process_4604c558-bfdd-427c-81c9-f1d8a5aea6e7_0"
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 dockerd: time="2024-11-19T15:07:43.997696667+08:00" level=debug msg="container mounted via layerStore: &{/data1/cce/docker/overlay2/cf3eea52e7a535afb239d7826d046805c1dfda4fa18eedb3c553ea181d6f7ae5/merged 0x45cc320 0x45cc320}" container=47fdc4b3d17b1d03fcbe58afe8c229ab5132d6d4da237cc9961757a11358cfe6
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 kubelet: panic: assignment to entry in nil map
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 kubelet: goroutine 173 [running]:
-Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 kubelet: k8s.io/kubernetes/p
+When running on a systemd host, pod metrics don't show up in the summary api. Can be tested on ubuntu wily.
 ```
 
 ---
@@ -851,18 +845,11 @@ Nov 19 15:07:43 cce-xa47m89h-5u0nh5pr-1 kubelet: k8s.io/kubernetes/p
 ## B40
 
 ```
-Add events for Volumes
+Simplify grace period related code in NodeController
 
-I think it would be beneficial for debugging to add events about volumes in the system. A couple examples:
-1. A PV should have an event recorded when it is attached / detached from a node.
-2. We should make an event when a mount happens (whether it failed or not)
-3. We should make an event when a volume is formatted (whether the format fails or not)
+The code is hard to understand and debug. Related issue: #14652.
 
-If a volume that requires a cloud provider attach is used directly in a pod, I suggest that event should be generated for that pod where applicable. For example, detach may not be applicable since the pod will necessarily have been deleted or died.
-
-For the record, I think this is probably more applicable to network storage than to things like secrets or configmaps, but it's not strictly PVs, since pods can use volumes directly without using PVs.
-
-[team]
+cc: @user @user @user @user @user
 ```
 
 ---

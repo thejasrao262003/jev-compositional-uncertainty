@@ -69,10 +69,50 @@ OLD_BOLD_RE = re.compile(r"^\s*\*\*(" + "|".join(re.escape(h) for h in OLD_BOLD_
 OLD_ENV_BLOCK = re.compile(r"^\s*\*\*Environment\*\*\s*:?.*?(?=^\s*\*\*[^*\n]+\*\*|\Z)", re.I | re.M | re.S)
 RELEVANT_SIG_BLOCK = re.compile(r"^\s*#+\s*Relevant SIG\(s\).*?(?=^\s*#+\s*\S|\Z)", re.I | re.M | re.S)
 EMPTY_HASH = re.compile(r"^\s*#+\s*$", re.M)
+# Amendment 6b: one normalized matcher for template headings in ANY markdown format (#..., **...**, trailing ':' or '?')
+def _norm_head(h):
+    return re.sub(r"[\s:?*#]+$", "", re.sub(r"^[\s#*]+", "", h)).strip().lower()
+TEMPLATE_HEADS = {_norm_head(h) for h in FORM_KEEP + FORM_DROP + OLD_BOLD_HEADS + ["Environment"]}
+HASH_HEAD = re.compile(r"^\s*#{1,6}\s*(.+?)\s*$")
+BOLD_HEAD = re.compile(r"^\s*\*\*([^*\n]+?)\*\*\s*:?\s*(.*)$")
+ENV_HEAD = {"environment"} | {_norm_head(h) for h in FORM_DROP}
+
+
+def _heading(ln):
+    """(normalized heading text, remainder on the same line) for a markdown heading line, else None."""
+    m = HASH_HEAD.match(ln)
+    if m:
+        return _norm_head(m.group(1)), ""
+    m = BOLD_HEAD.match(ln)
+    if m:
+        return _norm_head(m.group(1)), m.group(2).strip()
+    return None
+
+
+def template_heads_in(text):
+    return [h for ln in text.splitlines() if (hd := _heading(ln)) and (h := hd[0]) in TEMPLATE_HEADS]
+
+
+def strip_template_headings(text):
+    """Remove known template headings in any format; drop environment sections up to the next heading."""
+    out, skipping = [], False
+    for ln in text.splitlines():
+        hd = _heading(ln)
+        if hd and hd[0] in TEMPLATE_HEADS:
+            skipping = hd[0] in ENV_HEAD
+            if hd[1] and not skipping:
+                out.append(hd[1])
+            continue
+        if hd and skipping:          # another (non-template) heading ends an environment section
+            skipping = False
+        if not skipping:
+            out.append(ln)
+    return "\n".join(out)
 OLD_UNCOMMENT = re.compile(r"^.*Uncomment only one, leave it on its own line.*$", re.I | re.M)
 LABEL_STR = re.compile(r"\b(sig|kind|priority|triage|area)/[\w.-]+", re.I)
 TEAM_MENTION = re.compile(r"@kubernetes/sig-[\w-]+", re.I)
 HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
+TEAM_ANY = re.compile(r"(?<![\w.])@[A-Za-z0-9][\w-]*/[\w.-]+")  # Amendment 6: any @org/team mention
 MENTION = re.compile(r"(?<![\w.])@[A-Za-z0-9][A-Za-z0-9-]{0,38}")
 NO_RESPONSE = re.compile(r"^\s*_No response_\s*$", re.M)
 LINK_NUM = re.compile(r"(?<![\w/&])#(\d{3,6})\b")
@@ -150,11 +190,13 @@ def prestep(text: str) -> str:
     text = OLD_ENV_BLOCK.sub("", text)
     text = RELEVANT_SIG_BLOCK.sub("", text)
     text = OLD_BOLD_RE.sub("", text)
+    text = strip_template_headings(text)
     text = EMPTY_HASH.sub("", text)
     text = OLD_UNCOMMENT.sub("", text)
     text = NO_RESPONSE.sub("", text)
     text = PROW_LINE.sub("", text)
     text = TEAM_MENTION.sub("[team]", text)
+    text = TEAM_ANY.sub("[team]", text)
     text = LABEL_STR.sub("[label]", text)
     text = MENTION.sub("@user", text)
     return text
@@ -173,13 +215,14 @@ def hard_leaks(text: str) -> list[str]:
         p.append("prow_command")
     if LABEL_STR.search(text):
         p.append("label_string")
-    if TEAM_MENTION.search(text):
+    if TEAM_MENTION.search(text) or TEAM_ANY.search(text) or "@user/" in text:
         p.append("team_mention")
     if any(re.search(rf"(?im)^\s*#*\s*{re.escape(h)}\s*$", text) for h in FORM_HEADINGS):
         p.append("form_heading")
     if re.search(r"(?i)bug report or feature request|uncomment only one", text):
         p.append("old_template_kind_question")
-    if OLD_BOLD_RE.search(text) or re.search(r"(?im)^\s*\*\*Environment\*\*", text) or re.search(r"(?i)relevant sig\(s\)", text):
+    if OLD_BOLD_RE.search(text) or re.search(r"(?im)^\s*\*\*Environment\*\*", text) or re.search(r"(?i)relevant sig\(s\)", text) \
+            or template_heads_in(text):
         p.append("old_markdown_template")
     return p
 
@@ -325,7 +368,7 @@ def build():
     ds_hash = hashlib.sha256(ds.read_bytes()).hexdigest()
 
     # blinded sample: 20 development + 20 test, opaque codes, text only
-    rng = random.Random(zlib.crc32(b"k8s-blind-2"))  # Amendment 4: new seed for the repeated read
+    rng = random.Random(zlib.crc32(b"k8s-blind-3"))  # Amendment 6: new seed for the repeated read
     pick = rng.sample([r for r in final if r["split"] == "development"], 20) + \
         rng.sample([r for r in final if r["split"] == "test"], 20)
     rng.shuffle(pick)
@@ -425,6 +468,14 @@ def selftest():
     t5, _ = model_text("Crash", "PoC here\n\n###\n\n### Relevant SIG(s)\n\nsig-node\n")
     assert "Relevant SIG" not in t5 and "sig-node" not in t5, t5
     assert hard_leaks(t4) == [] and hard_leaks(t5) == []
+    t7, _ = model_text("x", "lead text\n\n#### What you expected to happen:\n\nDon't panic!\n\n#### Environment:\n- Kubernetes version: 1.20\n\n#### Notes\nkeep me")
+    assert "What you expected" not in t7 and "1.20" not in t7 and "Don't panic!" in t7 and "keep me" in t7, t7
+    t8, _ = model_text("x", "**What happened?**\n\nIt broke.\n\n**Possibly related?**\n- other")
+    assert "What happened" not in t8 and "It broke." in t8 and "Possibly related" in t8, t8
+    assert hard_leaks(t7) == [] and hard_leaks(t8) == []
+    t6, _ = model_text("x", "cc @kubernetes/goog-node @alice and @rh-team/rh-storage please look")
+    assert "goog-node" not in t6 and "rh-storage" not in t6 and "@user/" not in t6, t6
+    assert hard_leaks(t6) == []
     print("selftest OK")
 
 

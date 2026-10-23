@@ -748,3 +748,52 @@ format.
 **Disclosure.** The paper states that the leakage read was performed by
 an AI assistant at the authors' direction, not by a human author as
 pre-registered. It is listed as a protocol deviation.
+
+## Amendment 6 (2026-10-24), written after the second blinded read and before any model call
+
+**Second read** (`blind_log_second_read.tsv`, AI assistant per
+Amendment 5):
+- **No template remnants.**
+- **17 of 40 natural reporter cues** ("we found a bug", "Remove …",
+  "[SIG NODE Discussion]"). These stay in, as task-legitimate content,
+  and their rate is reported.
+- **1 possibly damaged text** (B15, orphaned "N/A" answers), below the
+  threshold of 2.
+- **`@user` and `[team]` placeholders** are the intended replacements
+  (§3.3).
+
+**Cleaning-rule gap found.** The read found `@user/goog-node` in B35.
+- A script found **20 of 1,232 issues** with surviving team names after
+  `@org/`, for example `goog-node`, `rh-storage` and `goog-image`. The
+  team-mention rule removed only `@kubernetes/sig-*`, and the generic
+  mention rule replaced only the `@org` part.
+- Team names can reveal routing, so this cue class is
+  cleaning-rule-shaped.
+
+**Fix.**
+- **Every `@org/team` mention** is replaced by `[team]` before the
+  generic mention rule runs.
+- **New hard check:** the build fails on any `@org/team` or `@user/`
+  remnant.
+
+**Then:** the dataset is rebuilt, and the read is repeated on a new seed
+(`zlib.crc32("k8s-blind-3")`) under Amendment 5.
+
+**Amendment 6b**, same date, before the third read and before any model
+call.
+- **Why:** a script sweep of the whole dataset, run after the team-mention
+  fix, found 5 more issues with old template headings in other markdown
+  formats: `#### What you expected to happen:`, and `**What happened?**`
+  with the `?` inside the bold markers.
+- **Fix:** template headings are now matched after normalization, so any
+  `#` level, bold or not, with or without a trailing `:` or `?`, in any
+  case, against one list of all known form and markdown-template
+  headings. Environment sections are dropped in either format.
+- **The hard check uses the same normalization.** The rebuild has 0
+  template headings in any format, 0 `@org/team` remnants and 0 hard
+  failures.
+- **The sweep also found** natural reporter cues, which stay in and are
+  reported:
+  - "[sig-node]"-style title prefixes (5);
+  - one old-era "P0" label mentioned in prose;
+  - "priority: 0" as a YAML field.
