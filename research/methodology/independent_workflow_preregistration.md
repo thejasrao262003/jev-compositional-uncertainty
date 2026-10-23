@@ -1,6 +1,8 @@
 # Pre-registration: independent-workflow replication (Kubernetes issue triage)
 
-**Status:** DRAFT 2.4 for review, 2026-10-23.
+**Status:** APPROVED and frozen as v1, 2026-10-23.
+- Approved by the authors on 2026-10-23 (Draft 2.4 text, unchanged).
+- Any later change is a dated amendment (§10).
 - Draft 1 (commit `7c692be`) is superseded; Draft 2 responds to its
   review, issues A–F plus the smaller items.
 - **Draft 2.1** fixes four problems found in a line-by-line read of
@@ -30,8 +32,8 @@
 - No outcome exists.
 
 **Gates, in order:**
-1. approval of this draft;
-2. authorization of the GitHub-only dataset build;
+1. approval of this draft (done 2026-10-23);
+2. authorization of the GitHub-only dataset build (done 2026-10-23);
 3. inspection of the build report (§9);
 4. separate authorization of the Jev calls;
 5. separate authorization of GPU replications.
