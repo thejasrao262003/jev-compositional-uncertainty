@@ -615,3 +615,45 @@ counts and the version check are inspected.
 - **No Jev call is made.**
 - Any redesign is a new amendment needing explicit approval before
   calls.
+
+## Amendment 2 (2026-10-23), written after the Amendment 1 rebuild and before any model call
+
+**Why.** The rebuilt test set (the latest 500 eligible issues) failed the
+§9 feasibility gate with 16 *escalate* target actions. The original
+design and its failure remain recorded (`k8s_build_report.md`, commit
+`09ae38a`).
+
+**Change (one-time; chosen by the authors on 2026-10-23).**
+- **Test:** the latest **600** eligible issues, not 500.
+- **Calibration:** the preceding 150.
+- **Development:** the preceding 500.
+- **Everything else is unchanged:** eligibility, cleaning (Amendment 1),
+  linked-issue removal, the action rule, the questions, the scores, the
+  hypotheses, the tests and the interpretation rules.
+
+**How 600 was chosen.** From label counts of the eligible pool only (no
+model output exists). It is the smallest of the sizes examined (500,
+600, 650, 700, 750) that gives at least 20 escalate actions before
+linked-issue removal (28).
+
+**Gates (binding):**
+1. **Feasibility.** After linked-issue removal, the test set must still
+   have ≥ 20 of each action, and the development set too. **If it fails,
+   the study stops for good.** The window is not widened or adjusted
+   again.
+2. **Leakage.** The hard checks must pass.
+3. **Power.** If the final test n differs from 500, the K1 power table
+   is recomputed for that n before any model call, and d\* is set from
+   it.
+4. **Separate approvals.** Passing these gates authorizes neither model
+   calls nor human annotation. The 270-call smoke test and the 40-issue
+   blinded read are separate decisions, and the read needs an available
+   human author.
+
+**Framing (binding on the paper).** Development and test differ at once
+in label prevalence (22% vs about 3–5% escalate) and in input format
+(0% vs about 80% filed through issue forms). The study is therefore a
+**combined test of temporal and distribution shift**, not an isolated
+test of label shift. Any change in performance cannot be attributed to
+label prevalence alone. It is a test of whether the findings transfer
+to a different workflow and period, not a guaranteed replication.

@@ -43,7 +43,7 @@ REPO = "kubernetes/kubernetes"
 API = "https://api.github.com"
 TEMPLATE_COMMIT = "fbd477a8bfe5631a43293b59aa4f8d0f941ca480"
 CUTOFF = "2026-10-01T00:00:00Z"
-N_TEST, N_CAL, N_DEV = 500, 150, 500
+N_TEST, N_CAL, N_DEV = 600, 150, 500  # Amendment 2: test widened from 500 to 600 (one-time)
 MIN_CHARS = 100
 
 SIGS = ["network", "storage", "node"]
