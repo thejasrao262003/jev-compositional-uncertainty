@@ -658,7 +658,7 @@ test of label shift. Any change in performance cannot be attributed to
 label prevalence alone. It is a test of whether the findings transfer
 to a different workflow and period, not a guaranteed replication.
 
-## Amendment 3 (PROPOSED, not approved; 2026-10-23)
+## Amendment 3 (APPROVED 2026-10-23, budget only)
 
 **Finding.** The runner's dry run shows the Amendment 2 design needs
 (500 + 582) × 9 = **9,738** Jev calls before retries. That exceeds the
@@ -673,5 +673,18 @@ past the cap, so no call can start.
   version, > 1% failed issues, cap) and the separate approval of the
   270-call smoke test.
 
-**Status: needs explicit author approval before it takes effect.** Until
-then the 9,500 cap stands, and no call is made.
+**Status: approved by the authors on 2026-10-23, for the budget only.**
+- **Cap:** 10,300 calls. That is 9,738 planned plus about 5% for
+  retries, about 10,225, leaving about 75 calls of headroom.
+- **Unchanged:** the test window, the hypotheses, the analysis and the
+  stop rules.
+- **This approval does not authorize any model call.**
+
+**Power gate at the realized n = 582** (`k8s_power_realized.json`,
+recorded before any call):
+- **The frozen rule** (§7: "smallest simulated effect with power ≥ 0.80
+  in every setting at nominal α") gives **d\* = +0.10**. Power at
+  +0.10 is 0.92–0.99 at nominal α.
+- **No Holm-adjusted floor was pre-specified.** The Holm worst-case
+  power at +0.10, 0.78–0.97, is reported as such and is not a gate.
+- **The criterion is not revisited after outputs exist.**
