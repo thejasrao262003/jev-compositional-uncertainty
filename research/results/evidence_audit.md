@@ -101,3 +101,123 @@ pages.
 report. It is now the canonical chapter in *Advances in Large Margin
 Classifiers* (MIT Press, pp. 61–74). Missing pages and volumes were also
 added (see `CITATION_VERIFICATION.md`).
+
+## Second external audit (addendum J, 2026-10-23)
+
+**Plan:** committed `715883f` before computing.
+
+**Results:** `audit_independent_recompute.json` and
+`audit_second_pass.json`.
+
+**Status:** exploratory; no API calls.
+
+### J1. Independent re-implementation — PASS
+
+The re-implementation imports no project analysis code: reduction,
+action rule, features, AUROC and bootstrap are all written afresh, from
+the raw responses and the frozen estimator's stored numbers.
+- **Point estimates match exactly:** HR1 0.763 vs 0.549 (difference
+  +0.214), HR2 0.811 and 0.697.
+- **Bootstrap bounds differ by 0.001–0.009.** That is Monte Carlo noise
+  from a different random-number stream, consistent with the earlier
+  hash-seed sweep.
+
+### J2. Per-tracker contrast
+
+`E_dec` − final-step confidence:
+
+| Tracker | Difference [95% CI] |
+|---|---|
+| Mozilla | +0.279 [+0.191, +0.374] |
+| Kernel | +0.124 [+0.023, +0.225] |
+
+Both exclude 0. The kernel effect is weaker.
+
+### J3. Grouped split refit
+
+Development and held-out bugs in shared link components (9 each) were
+dropped, and `E_dec` was refit on the remaining 433 development bugs and
+evaluated on 491 held-out bugs:
+
+| Model | `E_dec` − confidence [95% CI] |
+|---|---|
+| Jev | +0.221 [0.154, 0.288] |
+| OpenJev | +0.182 [0.118, 0.244] |
+| Qwen2.5 | +0.270 [0.179, 0.358] |
+| Phi-3.5 | +0.274 [0.175, 0.373] |
+| OLMo-2 | +0.088 [−0.013, +0.183] (includes 0) |
+
+### J4. Alternative label mappings
+
+The mappings were: (m1) Mozilla S2 to level 1; (m2) kernel default
+"normal" bugs dropped; (m3) kernel unset-regression bugs dropped.
+- **Decisions beat confidence under every mapping for every model**
+  (paired CI above 0).
+- **The one exception is OLMo-2 under m2:** +0.020 [−0.067, +0.111].
+- **The result is not fragile to these mapping choices.**
+
+### J5. Within accepted cases: can any score find the costly errors?
+
+AUROC for "wrongly accepted" among accepted held-out cases:
+
+| Model | Accepts (wrong) | `E_dec` | Final-step conf. | `score` P(level 2) |
+|---|---|---|---|---|
+| Jev | 245 (38) | 0.461 | 0.487 | 0.491 |
+| OpenJev | 198 (29) | 0.519 | 0.540 | 0.676 |
+| Qwen2.5 | 71 (14) | 0.526 | 0.509 | 0.550 |
+| Phi-3.5 | 59 (4) | 0.509 | 0.686 | 0.645 |
+| OLMo-2 | 17 (1) | — | — | — |
+
+- **For Jev, no score separates wrong accepts from correct ones.** This
+  confirms "the value exists; the identification fails".
+- **The case-level score's ingredients fall away on held-out data.**
+  The full plug-in score, which combines P(level 2) and the regression
+  probability, had AUROC 0.69 on development bugs for Jev. Its main
+  ingredient, P(level 2), alone reaches only 0.49 on held-out bugs. That
+  independently supports the stopped feasibility decision.
+  - **Not computed here:** the full plug-in score on held-out bugs. That
+    analysis was deliberately not run when the study stopped.
+- **OpenJev** has a weak within-action signal (0.68).
+- **Phi-3.5 and OLMo-2** have too few wrong accepts to interpret.
+
+### J6. BBSE under known synthetic label shift — the paper's claim is narrowed
+
+**Setup.** Held-out bugs were resampled to known severity mixes, and
+BBSE was given the development confusion matrix.
+
+**Result.** The estimated level-2 share is **biased toward the
+development mix**:
+- for Jev, bias −0.06 at a true share of 0.20, and −0.21 at 0.50;
+- RMSE up to 0.24;
+- similar for OpenJev (bias −0.15 at 0.20).
+
+**Conditioning is not the issue.** The condition number stayed at 9–30
+in every setting, so the bias is not ill-conditioning. It indicates that
+the model's answer-given-label behaviour differs between development and
+held-out bugs, which breaks BBSE's pure-label-shift assumption.
+
+**Reading.**
+- The label-free correction *did* repair the ranking (addendum I), but
+  it does **not** recover the deployment label mix accurately.
+- The repair should be described as **directional**, not as an accurate
+  estimate of the mix.
+
+### J7. Reviewer accuracy
+
+With reviewer accuracy ρ, a reviewed case resolves correctly with
+probability ρ. Otherwise the workflow's action stands and the human cost
+is still paid. ρ = 1 reproduces the pre-registered table.
+
+| | At the frozen costs | At 2× wrong-accept cost |
+|---|---|---|
+| Effect of lower accuracy | Review loses more (Jev +23 → +28 at ρ = 0.8) | Savings shrink (Jev −44 → −26; OpenJev −58 → −36) |
+
+The sign does not change for any model in either cell.
+
+### Human adjudication
+
+**Not done; it requires people.**
+- **Proposed:** an independent author adjudicates a random 50-bug
+  held-out sample for "correct action", blind to labels and model
+  outputs, and the agreement with the constructed target `a*` is
+  reported.

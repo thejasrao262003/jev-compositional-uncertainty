@@ -64,10 +64,12 @@ construction in \cref{sec:crossmodel}.
   (RQ2; \cref{sec:crossmodel}, exploratory). Fitted on a quota-sampled
   development set, decision-conditioned error rates can rank a
   natural-mix set's errors below chance on targets that bypass our
-  construction. Re-weighting to the deployment label mix repairs this,
-  including with weights estimated from the models' own predictions
-  without any test labels, for the models whose predictions discriminate
-  the label.
+  construction. Re-weighting to the deployment label mix repairs the
+  ranking, including with weights estimated from the models' own
+  predictions without any test labels for the models whose predictions
+  discriminate the label; under known synthetic shifts, however, that
+  label-free estimate of the mix is biased toward the development mix, so
+  the repair is directional rather than an accurate estimate of the mix.
   \item \textbf{Ranking failures is not finding valuable reviews}
   (RQ3; \cref{sec:intervention}, pre-registered). Under the
   pre-registered costs no 10\% review policy beat no review; an oracle
@@ -687,7 +689,16 @@ this prospectively, as follows.
   blocks, depends-on, regressions) connect 9 held-out bugs to development
   bugs; without them $E_{\text{dec}}$ reaches 0.770 against 0.551. On the
   70 Mozilla bugs filed in the 12 months before sampling, $E_{\text{dec}}$
-  reaches 0.847 against 0.519.
+  reaches 0.847 against 0.519. Refitting the estimator after removing
+  every development bug linked to a held-out bug gives 0.772 against 0.551
+  (difference $+0.221$ [$+0.154$, $+0.288$]).
+  \item \textbf{Per tracker:} the difference is $+0.279$ [$+0.191$,
+  $+0.374$] on Mozilla and $+0.124$ [$+0.023$, $+0.225$] on the kernel,
+  weaker but excluding zero.
+  \item \textbf{Independent recomputation:} a script that shares no code
+  with the analysis, re-implementing reduction, action rule, features,
+  AUROC and bootstrap from the raw responses, reproduces every point
+  estimate above exactly.
   \item \textbf{Calibration:} the estimator's predicted failure rate
   matches the observed rate overall. But it outputs only 7--8 distinct
   risk levels (ECE 0.18--0.20).
@@ -844,7 +855,14 @@ information about the label mix. Decision-conditioned error rates are
 therefore informative beyond the constructed target, but only when
 estimated under the deployment label distribution, which can be
 estimated without labels only for models whose answers discriminate the
-label.
+label. Two caveats bound this. Under known synthetic shifts, the label-free
+estimate of the mix is biased toward the development mix (for Jev it
+underestimates a 50\% share of serious bugs by 0.21), so the repair is
+directional rather than an accurate estimate. And the constructed-target
+result itself is not fragile to how labels are mapped: with Mozilla's S2
+counted as level 1, or kernel bugs with default severity or unset
+regression excluded, decisions still beat confidence for every model,
+except OLMo-2 when default-severity kernel bugs are removed.
 
 \para{Failure modes differ by model family}
 \begin{itemize}
@@ -906,7 +924,10 @@ break-even precision $p^{*}$ then falls to about the 14--16\% share of
 wrongly accepted cases. Some reversals are small (Jev $-2$ at $m = 1$,
 $h = 0.5$) and lie well inside the intervals of the original tests. The
 ordering is more stable than the sign: the action rule beats random for
-both Jev-style models in 12 of 16 cells. The stopping decision below was
+both Jev-style models in 12 of 16 cells. Imperfect reviewers shrink but do
+not reverse these savings: if a review resolves correctly only 80\% of
+the time, Jev's saving at twice the wrong-accept cost falls from 44 to 26
+units. The stopping decision below was
 made under the frozen table and, by its rule, is not reopened.
 
 \begin{colfigure}
@@ -941,7 +962,10 @@ leaving few reviewable errors (Phi-3.5's oracle exceeds no review because
   wrongly \emph{accepted} serious or regression bugs. An oracle that
   picked the right 50 cases would save 33--44\%. But those cases are
   15--16\% of accepted cases. The action rule cannot separate them,
-  because every accept looks alike to it, and confidence cannot either.
+  because every accept looks alike to it, and confidence cannot either:
+  among Jev's 245 accepted held-out cases, the decision estimator,
+  final-step confidence and \score{}'s probability of the top level rank
+  the 38 wrong accepts at AUROC 0.46, 0.49 and 0.49.
   The value exists; the identification fails.
   \item \textbf{General models:} cost is dominated by over-escalation
   (\emph{escalate} when the target is \emph{accept}). More review cannot

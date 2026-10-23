@@ -1,0 +1,86 @@
+{
+  "n": 500,
+  "failure_rate": 0.43,
+  "HR1": {
+    "E_dec": 0.763,
+    "conf": 0.549,
+    "diff": 0.214,
+    "one_sided_95_lower": 0.157
+  },
+  "HR2_moz": {
+    "E_dec": 0.811,
+    "one_sided_95_lower": 0.76
+  },
+  "J2_moz": {
+    "E_dec": 0.811,
+    "conf": 0.532,
+    "diff": 0.279,
+    "diff_ci95": [
+      0.191,
+      0.374
+    ]
+  },
+  "HR2_ker": {
+    "E_dec": 0.697,
+    "one_sided_95_lower": 0.639
+  },
+  "J2_ker": {
+    "E_dec": 0.697,
+    "conf": 0.574,
+    "diff": 0.124,
+    "diff_ci95": [
+      0.023,
+      0.225
+    ]
+  },
+  "comparison_to_paper": {
+    "HR1_E_dec": {
+      "paper": 0.763,
+      "independent": 0.763,
+      "abs_diff": 0.0,
+      "kind": "point estimate"
+    },
+    "HR1_conf": {
+      "paper": 0.549,
+      "independent": 0.549,
+      "abs_diff": 0.0,
+      "kind": "point estimate"
+    },
+    "HR1_diff": {
+      "paper": 0.214,
+      "independent": 0.214,
+      "abs_diff": 0.0,
+      "kind": "point estimate"
+    },
+    "HR1_lower": {
+      "paper": 0.158,
+      "independent": 0.157,
+      "abs_diff": 0.001,
+      "kind": "bootstrap bound (Monte Carlo; different RNG stream)"
+    },
+    "HR2_moz": {
+      "paper": 0.811,
+      "independent": 0.811,
+      "abs_diff": 0.0,
+      "kind": "point estimate"
+    },
+    "HR2_moz_lower": {
+      "paper": 0.762,
+      "independent": 0.76,
+      "abs_diff": 0.002,
+      "kind": "bootstrap bound (Monte Carlo; different RNG stream)"
+    },
+    "HR2_ker": {
+      "paper": 0.697,
+      "independent": 0.697,
+      "abs_diff": 0.0,
+      "kind": "point estimate"
+    },
+    "HR2_ker_lower": {
+      "paper": 0.648,
+      "independent": 0.639,
+      "abs_diff": 0.009,
+      "kind": "bootstrap bound (Monte Carlo; different RNG stream)"
+    }
+  }
+}

@@ -79,7 +79,7 @@ Decision estimator ranks failures above final-step confidence (Jev, new bugs) & 
 Decision estimator above chance on each tracker & Confirmatory (HR2) & One-sided bootstrap, Holm; supported \\ \addlinespace
 Same contrast for four further models & Confirmatory, three amendments (X1, X2) & 8 tests, Holm; all supported \\ \addlinespace
 Estimator adds nothing beyond the action's error rate (Jev-style) & Exploratory & Paired bootstrap CI of AUROC difference \\ \addlinespace
-Error rates invert under label shift; re-weighting and BBSE repair it & Exploratory & AUROC with bootstrap CI on held-out bugs \\ \addlinespace
+Error rates invert under label shift; re-weighting and BBSE repair the ranking (BBSE mix estimate biased) & Exploratory & AUROC with bootstrap CI on held-out bugs; synthetic known-shift test \\ \addlinespace
 Action rule beats random review (Jev, OpenJev) & Confirmatory (I1) & One-sided paired bootstrap, Holm; supported \\ \addlinespace
 Action rule beats confidence-ranked review & Confirmatory (I2) & Not supported for any model \\ \addlinespace
 No 10\% review policy beats no review & Descriptive, pre-registered design & Point estimates under the frozen cost table \\ \addlinespace

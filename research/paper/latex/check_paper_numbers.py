@@ -165,6 +165,22 @@ need("BBSE Jev", f"Jev ({bb['Jev 1.13']['severity_wrong']['bbse']:.2f} on severi
 need("BBSE OpenJev", f"OpenJev\n({bb['openjev/openjev-27B']['severity_wrong']['bbse']:.2f}, {bb['openjev/openjev-27B']['any_node_wrong']['bbse']:.2f})".replace("\n", " "))
 need("BBSE Qwen", f"Qwen2.5 ({bb['Qwen/Qwen2.5-7B-Instruct']['severity_wrong']['bbse']:.2f} on severity)")
 
+# Second audit (addendum J, added 2026-10-23)
+ir = json.loads((RES / "audit_independent_recompute.json").read_text())
+need("J2 mozilla", f"$+{ir['J2_moz']['diff']:.3f}$ [$+{ir['J2_moz']['diff_ci95'][0]:.3f}$,\n  $+{ir['J2_moz']['diff_ci95'][1]:.3f}$] on Mozilla".replace("\n  ", " "))
+need("J2 kernel", f"$+{ir['J2_ker']['diff']:.3f}$ [$+{ir['J2_ker']['diff_ci95'][0]:.3f}$, $+{ir['J2_ker']['diff_ci95'][1]:.3f}$] on the kernel")
+assert all(v["abs_diff"] == 0 for k, v in ir["comparison_to_paper"].items() if v["kind"] == "point estimate"), "independent recompute mismatch"
+sp = json.loads((RES / "audit_second_pass.json").read_text())
+j3 = sp["J3"]["Jev 1.13"]
+need("J3 Jev", f"gives {j3['auroc_E_dec']:.3f} against {j3['auroc_conf']:.3f}\n  (difference $+{j3['diff']:.3f}$ [$+{j3['ci95'][0]:.3f}$, $+{j3['ci95'][1]:.3f}$])".replace("\n  ", " "))
+j5 = sp["J5"]["Jev 1.13"]
+need("J5 Jev", f"the {j5['wrong_accepts']} wrong accepts at AUROC {j5['auroc_E_dec']:.2f}, {j5['auroc_conf']:.2f} and {j5['auroc_p_level2']:.2f}")
+need("J5 Jev n", f"among Jev's {j5['n_accepted']} accepted held-out cases")
+j7a, j7b = sp["J7"]["Jev 1.13"]["m=2,h=1,rho=1.0"], sp["J7"]["Jev 1.13"]["m=2,h=1,rho=0.8"]
+need("J7 Jev", f"falls from {-round(j7a['best_minus_no_review'])} to {-round(j7b['best_minus_no_review'])}\nunits".replace("\n", " "))
+j6 = sp["J6"]["Jev 1.13"]["lambda=0.0,level2_share=0.5"]
+need("J6 Jev bias", f"underestimates a 50\\% share of serious bugs by {-j6['bias']:.2f}")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")
