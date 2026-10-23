@@ -657,3 +657,21 @@ in label prevalence (22% vs about 3–5% escalate) and in input format
 test of label shift. Any change in performance cannot be attributed to
 label prevalence alone. It is a test of whether the findings transfer
 to a different workflow and period, not a guaranteed replication.
+
+## Amendment 3 (PROPOSED, not approved; 2026-10-23)
+
+**Finding.** The runner's dry run shows the Amendment 2 design needs
+(500 + 582) × 9 = **9,738** Jev calls before retries. That exceeds the
+frozen cap of 9,500, which was sized for 1,000 issues. Amendment 2 did
+not update the cap; that was an oversight. The runner refuses to plan
+past the cap, so no call can start.
+
+**Proposed change.**
+- **New cap:** 10,300 calls, including the smoke test and retries
+  (9,738 planned plus about 5% for retries).
+- **Unchanged:** everything else, including the stop rules (model
+  version, > 1% failed issues, cap) and the separate approval of the
+  270-call smoke test.
+
+**Status: needs explicit author approval before it takes effect.** Until
+then the 9,500 cap stands, and no call is made.
