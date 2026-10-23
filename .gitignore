@@ -23,3 +23,6 @@ node_modules/
 # raw predictions and figures should likely be tracked or DVC-managed
 # rather than blanket-ignored; placeholder for now)
 results/raw_predictions/
+
+# Kubernetes build: raw GitHub API cache (full issue bodies, usernames) stays local
+research/data/k8s/raw/
