@@ -1,0 +1,226 @@
+{
+  "protocol": "independent_workflow_preregistration.md v1 (frozen 2026-10-23)",
+  "snapshot_utc": "2026-10-23T17:51:00.031112+00:00",
+  "template_commit": "fbd477a8bfe5631a43293b59aa4f8d0f941ca480",
+  "cutoff": "2026-10-01T00:00:00Z",
+  "candidates_fetched": 12535,
+  "exclusions": {
+    "not_exactly_one_kind": 2093,
+    "not_exactly_one_sig": 187,
+    "too_short_after_cleaning": 30,
+    "pull_request": 8738,
+    "not_exactly_one_priority": 36,
+    "excluded_label": 120,
+    "after_cutoff": 11
+  },
+  "eligible": 1320,
+  "split_sizes_before_link_removal": {
+    "development": 500,
+    "calibration": 150,
+    "test": 500
+  },
+  "linked_test_issues_removed": 17,
+  "linked_removed_numbers": [
+    112228,
+    114207,
+    114268,
+    118559,
+    119248,
+    122912,
+    124797,
+    125375,
+    125409,
+    125579,
+    125983,
+    127339,
+    128854,
+    129402,
+    129982,
+    138446,
+    142230
+  ],
+  "split_sizes_final": {
+    "development": 500,
+    "calibration": 150,
+    "test": 483
+  },
+  "date_ranges": {
+    "development": [
+      "2016-02-03T18:39:05Z",
+      "2020-08-13T19:37:02Z"
+    ],
+    "calibration": [
+      "2020-08-17T20:50:26Z",
+      "2022-04-21T14:09:48Z"
+    ],
+    "test": [
+      "2022-05-09T16:16:25Z",
+      "2026-09-30T18:38:10Z"
+    ]
+  },
+  "distributions": {
+    "development": {
+      "sig": {
+        "network": 83,
+        "node": 294,
+        "storage": 123
+      },
+      "kind": {
+        "bug": 318,
+        "cleanup": 40,
+        "feature": 138,
+        "support": 4
+      },
+      "priority_label": {
+        "backlog": 83,
+        "critical-urgent": 110,
+        "important-longterm": 82,
+        "important-soon": 225
+      },
+      "level": {
+        "0": 165,
+        "1": 225,
+        "2": 110
+      }
+    },
+    "calibration": {
+      "sig": {
+        "network": 16,
+        "node": 110,
+        "storage": 24
+      },
+      "kind": {
+        "bug": 106,
+        "cleanup": 14,
+        "feature": 30
+      },
+      "priority_label": {
+        "backlog": 33,
+        "critical-urgent": 15,
+        "important-longterm": 32,
+        "important-soon": 70
+      },
+      "level": {
+        "0": 65,
+        "1": 70,
+        "2": 15
+      }
+    },
+    "test": {
+      "sig": {
+        "network": 17,
+        "node": 441,
+        "storage": 25
+      },
+      "kind": {
+        "bug": 355,
+        "cleanup": 21,
+        "feature": 107
+      },
+      "priority_label": {
+        "backlog": 165,
+        "critical-urgent": 16,
+        "important-longterm": 193,
+        "important-soon": 109
+      },
+      "level": {
+        "0": 358,
+        "1": 109,
+        "2": 16
+      }
+    }
+  },
+  "joint_bug_by_level": {
+    "development": {
+      "bug=1,level=1": 153,
+      "bug=0,level=0": 105,
+      "bug=1,level=0": 60,
+      "bug=1,level=2": 105,
+      "bug=0,level=1": 72,
+      "bug=0,level=2": 5
+    },
+    "calibration": {
+      "bug=0,level=1": 22,
+      "bug=1,level=0": 43,
+      "bug=1,level=1": 48,
+      "bug=1,level=2": 15,
+      "bug=0,level=0": 22
+    },
+    "test": {
+      "bug=1,level=0": 252,
+      "bug=1,level=1": 87,
+      "bug=0,level=0": 106,
+      "bug=0,level=1": 22,
+      "bug=1,level=2": 16
+    }
+  },
+  "target_action_prevalence": {
+    "development": {
+      "defer": 153,
+      "accept": 237,
+      "escalate": 110
+    },
+    "calibration": {
+      "accept": 87,
+      "defer": 48,
+      "escalate": 15
+    },
+    "test": {
+      "accept": 380,
+      "defer": 87,
+      "escalate": 16
+    }
+  },
+  "feasibility_rule": "each of accept/defer/escalate n>=20 in development AND test",
+  "feasible": false,
+  "form_share": {
+    "development": 0.0,
+    "calibration": 0.22,
+    "test": 0.801
+  },
+  "priority_label_lag_days": {
+    "n": 1046,
+    "median": 4,
+    "p90": 443
+  },
+  "early_triage_subset_n": 729,
+  "leakage_hard_failures": {},
+  "leakage_hard_pass": true,
+  "soft_flag_counts": {
+    "calibration:critical": 2,
+    "calibration:priority": 2,
+    "calibration:regression": 10,
+    "calibration:sig node": 1,
+    "calibration:sig-network": 1,
+    "calibration:sig-node": 2,
+    "calibration:sig-storage": 3,
+    "development:critical": 14,
+    "development:feature request": 3,
+    "development:is a bug": 1,
+    "development:p0": 1,
+    "development:priority": 10,
+    "development:regression": 14,
+    "development:severity": 3,
+    "development:sig storage": 2,
+    "development:sig-network": 1,
+    "development:sig-node": 5,
+    "development:sig-storage": 5,
+    "test:critical": 8,
+    "test:feature request": 1,
+    "test:is a bug": 5,
+    "test:p1": 1,
+    "test:priority": 8,
+    "test:regression": 16,
+    "test:sig node": 2,
+    "test:sig-node": 14
+  },
+  "blind_sample": {
+    "n": 40,
+    "seed": "zlib.crc32('k8s-blind')",
+    "file": "research/data/k8s/blind_sample.jsonl"
+  },
+  "api_log_pages": 1524,
+  "hashes": {
+    "dataset_sha256": "ed30cb7119cc3530f6f5066e452be283b6938ddbe32c36c6e09b793e8f2bc9bd"
+  }
+}

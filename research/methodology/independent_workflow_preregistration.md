@@ -585,3 +585,33 @@ Kubernetes triage and are reported as such.
 Any change after approval is a dated amendment, written before the data
 it affects exist. Between the smoke test and the full run, only failure
 counts and the version check are inspected.
+
+---
+
+## Amendment 1 (2026-10-23), written after the first build and before any model call
+
+**What the first build found** (`k8s_build_report.json`):
+- **Leakage hard check failed for 24 issues.** Pre-2021 issue templates
+  wrote prow commands as block quotes (`> /kind bug`). The pre-step
+  removed command lines *before* `moz.clean` stripped the `> ` prefix,
+  so the commands survived. The same old template asks "Is this a BUG
+  REPORT or FEATURE REQUEST?", and the reporter's answer reveals `kind`.
+- **The feasibility rule (§9) failed.** The test set has 16 *escalate*
+  target actions, below the floor of 20.
+
+**Cleaning fix (applies the §3.3 rule as intended; no other change):**
+- **Prow commands** are also removed when quoted (`^\s*>?\s*/command`).
+- **The old-template kind question is removed:** the line "Is this a BUG
+  REPORT or FEATURE REQUEST?", the line "Uncomment only one, leave it on
+  its own line", and every line between them and the next `**What`
+  heading.
+- **Two new hard checks:** the leakage audit now also fails on "BUG
+  REPORT or FEATURE REQUEST" and "Uncomment only one".
+- **The rebuild uses the cached API responses** (same snapshot).
+
+**Feasibility.** The §9 rule is binding.
+- **If the rebuilt test set still has fewer than 20 escalate actions,
+  the study stops** as infeasible under the pre-registered design.
+- **No Jev call is made.**
+- Any redesign is a new amendment needing explicit approval before
+  calls.

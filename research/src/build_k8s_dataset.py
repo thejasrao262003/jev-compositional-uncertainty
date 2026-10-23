@@ -59,7 +59,9 @@ FORM_DROP = ["Kubernetes version", "Cloud provider", "OS version", "Install tool
              "Related plugins (CNI, CSI, ...) and versions (if applicable)"]
 FORM_HEADINGS = FORM_KEEP + FORM_DROP
 
-PROW_LINE = re.compile(r"^\s*/[a-z][\w-]*(\s.*)?$", re.I | re.M)
+PROW_LINE = re.compile(r"^\s*>?\s*/[a-z][\w-]*(\s.*)?$", re.I | re.M)  # Amendment 1: quoted commands too
+OLD_KIND_Q = re.compile(r"^.*Is this a BUG REPORT or FEATURE REQUEST\?.*?(?=^\s*\*\*What|\Z)", re.I | re.M | re.S)
+OLD_UNCOMMENT = re.compile(r"^.*Uncomment only one, leave it on its own line.*$", re.I | re.M)
 LABEL_STR = re.compile(r"\b(sig|kind|priority|triage|area)/[\w.-]+", re.I)
 TEAM_MENTION = re.compile(r"@kubernetes/sig-[\w-]+", re.I)
 HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
@@ -136,6 +138,8 @@ def strip_form_headings(text: str) -> str:
 
 def prestep(text: str) -> str:
     text = HTML_COMMENT.sub(" ", text)
+    text = OLD_KIND_Q.sub("", text)
+    text = OLD_UNCOMMENT.sub("", text)
     text = NO_RESPONSE.sub("", text)
     text = PROW_LINE.sub("", text)
     text = TEAM_MENTION.sub("[team]", text)
@@ -161,6 +165,8 @@ def hard_leaks(text: str) -> list[str]:
         p.append("team_mention")
     if any(re.search(rf"(?im)^\s*#*\s*{re.escape(h)}\s*$", text) for h in FORM_HEADINGS):
         p.append("form_heading")
+    if re.search(r"(?i)bug report or feature request|uncomment only one", text):
+        p.append("old_template_kind_question")
     return p
 
 
@@ -393,6 +399,11 @@ def selftest():
                           "created_at": "2025-01-01T00:00:00Z"})
     assert why == "excluded_label"
     assert LINK_NUM.findall("fixes #12345 and see #9") == ["12345"]
+    old = ("Title\n\n**Is this a BUG REPORT or FEATURE REQUEST?**:\n\nUncomment only one, leave it on its own line:\n\n"
+           "> /kind bug\n> /kind feature\n\nBUG REPORT\n\n**What happened**:\nthe kubelet panics when the pod starts up")
+    t3, _ = model_text("Title", old)
+    assert "BUG REPORT" not in t3 and "/kind" not in t3 and "kubelet panics" in t3, t3
+    assert hard_leaks(t3) == [], hard_leaks(t3)
     print("selftest OK")
 
 
