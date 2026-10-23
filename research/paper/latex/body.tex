@@ -644,8 +644,13 @@ this prospectively, as follows.
   \item \textbf{HR1:} $E_{\text{dec}}$ reaches AUROC 0.763 against 0.549
   for final-step confidence, a difference of $+0.214$ (one-sided 95\%
   lower bound $+0.158$).
-  \item \textbf{HR2:} AUROC is 0.811 on Mozilla (lower bound 0.761) and
-  0.697 on the kernel (lower bound 0.643).
+  \item \textbf{HR2:} AUROC is 0.811 on Mozilla (lower bound 0.762) and
+  0.697 on the kernel (lower bound 0.648).
+  \item \textbf{Split integrity:} tracker links (duplicates, see-also,
+  blocks, depends-on, regressions) connect 9 held-out bugs to development
+  bugs; without them $E_{\text{dec}}$ reaches 0.770 against 0.551. On the
+  70 Mozilla bugs filed in the 12 months before sampling, $E_{\text{dec}}$
+  reaches 0.847 against 0.519.
   \item \textbf{Calibration:} the estimator's predicted failure rate
   matches the observed rate overall. But it outputs only 7--8 distinct
   risk levels (ECE 0.18--0.20).
@@ -754,13 +759,44 @@ The predictive information is therefore mostly \emph{which action was
 chosen} and how often that action has been wrong before. Part of this is
 structural: the action and the target are both outputs of the same rule
 $F$, so an action's error rate is a property of the workflow as much as of
-the model. Confidence is not useless, though: adding the uncertainty
-features to the decision features raises held-out AUROC by +0.006 (Jev),
-+0.004 (OpenJev) and +0.012 (Qwen2.5), but by +0.054 (Phi-3.5) and +0.078
-(OLMo-2). These are point estimates without paired intervals. For the
-Jev-style models confidence is largely redundant with the decisions; for
-the weaker general models raw token probabilities carry some extra
-information.
+the model. Paired bootstrap contrasts make this precise. For Jev and OpenJev the
+decision estimator adds nothing detectable beyond the action rule
+($+0.000$ [$-0.012$, $+0.011$] and $+0.002$ [$-0.007$, $+0.011$]); for
+Qwen2.5 and OLMo-2 it adds a little ($+0.035$ and $+0.057$, intervals
+excluding 0). Adding the uncertainty features to the decision features
+raises held-out AUROC by +0.006 (Jev), +0.004 (OpenJev) and +0.012
+(Qwen2.5), none distinguishable from 0, but by +0.054 (Phi-3.5) and +0.078
+(OLMo-2), both with intervals excluding 0. For the Jev-style models
+confidence is redundant with the decisions; for the weaker general models
+raw token probabilities carry some extra information.
+
+\begin{coltable}
+\centering
+\caption{Exploratory: held-out AUROC of the decision-only estimator on two
+targets that do not pass through the action rule $F$, fitted on the
+quota-sampled development bugs (``dev fit'') or on the same bugs
+re-weighted to the natural label mix, against final-step confidence. Bold:
+re-weighted estimator above confidence.}
+\label{tab:targets}
+\small
+\resizebox{\linewidth}{!}{\input{table_target_robustness.tex}}
+\end{coltable}
+
+\para{Beyond the constructed target (exploratory)} Because the target
+$\astar$ is a construct, we also asked whether decisions predict failures
+on two targets that bypass $F$: the severity answer being wrong, and any
+node being wrong (\cref{tab:targets}). Fitted on the development bugs,
+several decision estimators rank held-out severity errors far \emph{below}
+chance (0.28 for Jev and OpenJev). The cause is label-prior shift: a
+decision's error rate depends on the label mix. In the quota-sampled
+development set Jev's level-1 answers are 60\% wrong; in the natural-mix
+held-out set, where most bugs are level 1, they are 20\% wrong. Re-weighting
+the development bugs to the natural label mix repairs this: the decision
+estimator then beats final-step confidence on both targets for four of
+five models (Jev 0.79 vs.\ 0.61 on severity), the exception being OLMo-2
+on any node. Decision-conditioned error rates are therefore informative
+beyond the constructed target, but only when estimated under the
+deployment label distribution.
 
 \para{Failure modes differ by model family}
 \begin{itemize}
@@ -957,6 +993,11 @@ selectivity on pilot inputs, before freezing any escalation policy.
   interim results were seen. On 3\% of OLMo-2's requests, most of the
   probability fell outside the allowed labels; excluding them does not
   change its result.
+  \item \textbf{Label-prior shift.} Decision-conditioned error
+  estimators fitted on the quota-sampled development bugs can invert on a
+  natural-mix set (\cref{tab:targets}). The re-weighting that repairs
+  this uses the held-out sample's label counts (not per-bug labels or
+  model outputs), which is optimistic: a deployer has to estimate the mix.
   \item \textbf{Reuse of the held-out set.} The 500 held-out bugs were
   fresh for the prediction tests only. The intervention test was
   pre-registered after their prediction results were known (no cost

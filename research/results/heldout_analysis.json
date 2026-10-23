@@ -14,12 +14,12 @@
   "HR2": {
     "mozilla": {
       "auroc_E_dec": 0.811,
-      "one_sided_95_lower": 0.761,
+      "one_sided_95_lower": 0.762,
       "bootstrap_p_one_sided": 0.0
     },
     "kernel": {
       "auroc_E_dec": 0.697,
-      "one_sided_95_lower": 0.643,
+      "one_sided_95_lower": 0.648,
       "bootstrap_p_one_sided": 0.0
     }
   },

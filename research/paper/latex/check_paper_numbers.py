@@ -137,7 +137,24 @@ cmx = json.loads((RES / "openjev_crossmodel_analysis.json").read_text())["models
 ho2 = json.loads((RES / "heldout_analysis.json").read_text())["secondary_descriptive"]["pooled"]
 gains = [round(ho2["E_all"] - ho2["E_dec"], 3)] + [round(cmx[k]["X3_X4_descriptive"]["E_all"] - cmx[k]["X3_X4_descriptive"]["E_dec"], 3)
          for k in ("openjev/openjev-27B", "Qwen/Qwen2.5-7B-Instruct", "microsoft/Phi-3.5-mini-instruct", "allenai/OLMo-2-1124-7B-Instruct")]
-need("E_all-E_dec", f"by +{gains[0]:.3f} (Jev), +{gains[1]:.3f} (OpenJev) and +{gains[2]:.3f} (Qwen2.5), but by +{gains[3]:.3f} (Phi-3.5) and +{gains[4]:.3f} (OLMo-2)")
+need("E_all-E_dec", f"by +{gains[0]:.3f} (Jev), +{gains[1]:.3f} (OpenJev) and +{gains[2]:.3f} (Qwen2.5), none distinguishable from 0, but by +{gains[3]:.3f} (Phi-3.5) and +{gains[4]:.3f} (OLMo-2)")
+
+# Evidence audit and ablations (added 2026-10-23)
+ea = json.loads((RES / "evidence_audit.json").read_text())
+nl = sum(v["heldout_bugs_linked_to_a_dev_bug"] for k, v in ea["C_linked_reports"].items() if k != "HR1_without_linked")
+w = ea["C_linked_reports"]["HR1_without_linked"]
+need("linked reports", f"connect {nl} held-out bugs")
+need("HR1 without linked", f"reaches {w['auroc_E_dec']:.3f} against {w['auroc_final_step_conf']:.3f}")
+rc = ea["D_recency"]["Jev 1.13"]["mozilla:recent"]
+need("recent mozilla", f"$E_{{\\text{{dec}}}}$ reaches {rc['auroc_E_dec']:.3f} against {rc['auroc_final_step_conf']:.3f}")
+ab = json.loads((RES / "baseline_ablations.json").read_text())["models"]
+c1 = ab["Jev 1.13"]["wrong_action"]["contrasts"]["E_dec-action_rule"]
+c2 = ab["openjev/openjev-27B"]["wrong_action"]["contrasts"]["E_dec-action_rule"]
+need("Jev E_dec-rule CI", f"($+{c1['diff']:.3f}$ [${c1['ci95'][0]:.3f}$, $+{c1['ci95'][1]:.3f}$]")
+need("OpenJev E_dec-rule CI", f"$+{c2['diff']:.3f}$ [${c2['ci95'][0]:.3f}$, $+{c2['ci95'][1]:.3f}$]")
+rw = json.loads((RES / "prior_shift_reweighting.json").read_text())["models"]["Jev 1.13"]["severity_wrong"]
+need("Jev severity reweighted", f"(Jev {rw['E_dec_w']['auroc']:.2f} vs.\\ {rw['conf']['auroc']:.2f} on severity)")
+need("Jev severity dev-fit", f"(0.{round(100 * ab['Jev 1.13']['severity_wrong']['scores']['E_dec']['auroc'])} for Jev and OpenJev)") if round(100 * ab['Jev 1.13']['severity_wrong']['scores']['E_dec']['auroc']) == round(100 * ab['openjev/openjev-27B']['severity_wrong']['scores']['E_dec']['auroc']) else None
 
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:

@@ -16,6 +16,7 @@ CLI:
 from __future__ import annotations
 
 import argparse
+import zlib
 import hashlib
 import json
 import random
@@ -187,7 +188,7 @@ def analyze(data, rows) -> dict:
     pvals = {"HR1": p1}
     for t in TRACKERS:
         St = [r for r in S if r["tracker"] == t]
-        bt = boot(St, lambda rs: _auc(rs, "E_dec"), strat=False, seed=SEED + hash(t) % 1000)
+        bt = boot(St, lambda rs: _auc(rs, "E_dec"), strat=False, seed=SEED + zlib.crc32(t.encode()) % 1000)  # audit fix 2026-10-23: hash(t) was salted per process
         p = sum(v <= 0.5 for v in bt) / len(bt)
         res["HR2"][t] = {"auroc_E_dec": round(_auc(St, "E_dec"), 3), "one_sided_95_lower": round(bt[int(0.05 * len(bt))], 3),
                          "bootstrap_p_one_sided": round(p, 4)}

@@ -231,6 +231,13 @@ action, and the two signals that do reach it are close to uninformative.
   corrected readout; the conclusions did not change. On 3\% of OLMo-2's
   requests most probability fell outside the allowed labels; excluding
   them does not change its result.
+  \item \textbf{Audit-found defect (2026-10-23):} the held-out analysis
+  seeded its per-tracker bootstrap with Python's salted string hash, so
+  the HR2 one-sided lower bounds varied between runs (0.640--0.644 for the
+  kernel and 0.759--0.763 for Mozilla across four hash seeds); point
+  estimates and test outcomes never changed. The seed is now deterministic
+  and the reported bounds are 0.762 and 0.648. All other analyses were
+  re-run under a different hash seed and were byte-identical.
   \item \textbf{Protocol revisions:} the development protocol went
   through twelve dated revisions, each made before the data it affects
   existed.

@@ -1,0 +1,420 @@
+{
+  "status": "EXPLORATORY (addendum H)",
+  "models": {
+    "Jev 1.13": {
+      "wrong_action": {
+        "rule_w": {
+          "auroc": 0.762,
+          "ci95": [
+            0.722,
+            0.802
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.77,
+          "ci95": [
+            0.731,
+            0.811
+          ]
+        },
+        "conf": {
+          "auroc": 0.549,
+          "ci95": [
+            0.496,
+            0.601
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.762,
+          "E_dec": 0.763
+        }
+      },
+      "severity_wrong": {
+        "rule_w": {
+          "auroc": 0.709,
+          "ci95": [
+            0.664,
+            0.754
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.793,
+          "ci95": [
+            0.751,
+            0.833
+          ]
+        },
+        "conf": {
+          "auroc": 0.613,
+          "ci95": [
+            0.563,
+            0.665
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.303,
+          "E_dec": 0.282
+        }
+      },
+      "any_node_wrong": {
+        "rule_w": {
+          "auroc": 0.729,
+          "ci95": [
+            0.688,
+            0.77
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.758,
+          "ci95": [
+            0.718,
+            0.796
+          ]
+        },
+        "conf": {
+          "auroc": 0.56,
+          "ci95": [
+            0.511,
+            0.611
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.414,
+          "E_dec": 0.559
+        }
+      }
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "wrong_action": {
+        "rule_w": {
+          "auroc": 0.696,
+          "ci95": [
+            0.653,
+            0.742
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.731,
+          "ci95": [
+            0.676,
+            0.779
+          ]
+        },
+        "conf": {
+          "auroc": 0.473,
+          "ci95": [
+            0.416,
+            0.533
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.701,
+          "E_dec": 0.736
+        }
+      },
+      "severity_wrong": {
+        "rule_w": {
+          "auroc": 0.709,
+          "ci95": [
+            0.668,
+            0.753
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.74,
+          "ci95": [
+            0.687,
+            0.788
+          ]
+        },
+        "conf": {
+          "auroc": 0.46,
+          "ci95": [
+            0.402,
+            0.518
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.707,
+          "E_dec": 0.62
+        }
+      },
+      "any_node_wrong": {
+        "rule_w": {
+          "auroc": 0.743,
+          "ci95": [
+            0.689,
+            0.797
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.731,
+          "ci95": [
+            0.661,
+            0.796
+          ]
+        },
+        "conf": {
+          "auroc": 0.401,
+          "ci95": [
+            0.332,
+            0.472
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.743,
+          "E_dec": 0.755
+        }
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "wrong_action": {
+        "rule_w": {
+          "auroc": 0.58,
+          "ci95": [
+            0.546,
+            0.618
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.637,
+          "ci95": [
+            0.579,
+            0.692
+          ]
+        },
+        "conf": {
+          "auroc": 0.551,
+          "ci95": [
+            0.484,
+            0.617
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.58,
+          "E_dec": 0.637
+        }
+      },
+      "severity_wrong": {
+        "rule_w": {
+          "auroc": 0.563,
+          "ci95": [
+            0.53,
+            0.6
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.621,
+          "ci95": [
+            0.563,
+            0.679
+          ]
+        },
+        "conf": {
+          "auroc": 0.57,
+          "ci95": [
+            0.505,
+            0.639
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.437,
+          "E_dec": 0.498
+        }
+      },
+      "any_node_wrong": {
+        "rule_w": {
+          "auroc": 0.415,
+          "ci95": [
+            0.361,
+            0.463
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.425,
+          "ci95": [
+            0.351,
+            0.5
+          ]
+        },
+        "conf": {
+          "auroc": 0.488,
+          "ci95": [
+            0.398,
+            0.577
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.415,
+          "E_dec": 0.425
+        }
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "wrong_action": {
+        "rule_w": {
+          "auroc": 0.688,
+          "ci95": [
+            0.647,
+            0.732
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.698,
+          "ci95": [
+            0.645,
+            0.746
+          ]
+        },
+        "conf": {
+          "auroc": 0.401,
+          "ci95": [
+            0.341,
+            0.462
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.688,
+          "E_dec": 0.677
+        }
+      },
+      "severity_wrong": {
+        "rule_w": {
+          "auroc": 0.66,
+          "ci95": [
+            0.618,
+            0.707
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.673,
+          "ci95": [
+            0.618,
+            0.723
+          ]
+        },
+        "conf": {
+          "auroc": 0.415,
+          "ci95": [
+            0.353,
+            0.474
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.32,
+          "E_dec": 0.307
+        }
+      },
+      "any_node_wrong": {
+        "rule_w": {
+          "auroc": 0.725,
+          "ci95": [
+            0.664,
+            0.79
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.772,
+          "ci95": [
+            0.708,
+            0.837
+          ]
+        },
+        "conf": {
+          "auroc": 0.289,
+          "ci95": [
+            0.225,
+            0.351
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.725,
+          "E_dec": 0.668
+        }
+      }
+    },
+    "openjev/openjev-27B": {
+      "wrong_action": {
+        "rule_w": {
+          "auroc": 0.746,
+          "ci95": [
+            0.705,
+            0.787
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.757,
+          "ci95": [
+            0.718,
+            0.798
+          ]
+        },
+        "conf": {
+          "auroc": 0.575,
+          "ci95": [
+            0.524,
+            0.623
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.746,
+          "E_dec": 0.748
+        }
+      },
+      "severity_wrong": {
+        "rule_w": {
+          "auroc": 0.767,
+          "ci95": [
+            0.724,
+            0.806
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.794,
+          "ci95": [
+            0.752,
+            0.835
+          ]
+        },
+        "conf": {
+          "auroc": 0.627,
+          "ci95": [
+            0.577,
+            0.674
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.233,
+          "E_dec": 0.277
+        }
+      },
+      "any_node_wrong": {
+        "rule_w": {
+          "auroc": 0.786,
+          "ci95": [
+            0.747,
+            0.823
+          ]
+        },
+        "E_dec_w": {
+          "auroc": 0.805,
+          "ci95": [
+            0.769,
+            0.84
+          ]
+        },
+        "conf": {
+          "auroc": 0.564,
+          "ci95": [
+            0.514,
+            0.613
+          ]
+        },
+        "unweighted": {
+          "action_rule": 0.712,
+          "E_dec": 0.619
+        }
+      }
+    }
+  }
+}

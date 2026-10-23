@@ -17,7 +17,9 @@ workflow actions better than final-step confidence (AUROC 0.76 vs.\ 0.55).
 Second, this held across five evaluated models from four sources,
 including an independently trained Jev-style model, to which Jev's frozen
 estimator transferred unchanged; the signal was mostly the chosen
-action's historical error rate.
+action's historical error rate, and it extends to targets independent of
+the workflow's rule once error rates are estimated under the deployment
+label mix.
 Third, under the pre-registered costs that predictive signal did not
 become a cost-effective review policy. At a 10\% review budget no review
 strategy cost less than no review at all (an exploratory sensitivity

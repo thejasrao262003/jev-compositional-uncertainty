@@ -53,3 +53,9 @@ Every dataset, raw response, execution manifest and analysis is
 hash-locked in the accompanying repository, as are the pre-registration
 documents and their revision history. The figure data in this paper are
 generated from committed result files by \texttt{make\_figure\_data.py}.
+An audit on 2026-10-23 found one defect: the held-out analysis seeded its
+per-tracker bootstrap with Python's salted string hash, so the HR2
+one-sided lower bounds varied between runs (0.640--0.644 for the kernel,
+0.759--0.763 for Mozilla); point estimates and test outcomes never changed.
+The seed is now deterministic (bounds 0.762 and 0.648), and every other
+analysis, re-run under a different hash seed, was byte-identical.

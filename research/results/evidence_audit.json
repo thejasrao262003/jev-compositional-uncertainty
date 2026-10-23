@@ -1,0 +1,194 @@
+{
+  "status": "AUDIT / EXPLORATORY",
+  "C_linked_reports": {
+    "mozilla": {
+      "held_out": 250,
+      "development": 202,
+      "records_fetched": 452,
+      "heldout_bugs_linked_to_a_dev_bug": 8,
+      "pairs": [
+        [
+          1733938,
+          1719135
+        ],
+        [
+          1830384,
+          1827390
+        ],
+        [
+          1903400,
+          1901325
+        ],
+        [
+          1914723,
+          1909883
+        ],
+        [
+          1927410,
+          1928939
+        ],
+        [
+          1943951,
+          1940765
+        ],
+        [
+          1994314,
+          1976964
+        ],
+        [
+          2002687,
+          2007199
+        ]
+      ]
+    },
+    "kernel": {
+      "held_out": 250,
+      "development": 240,
+      "records_fetched": 490,
+      "heldout_bugs_linked_to_a_dev_bug": 1,
+      "pairs": [
+        [
+          6322,
+          6681
+        ]
+      ]
+    },
+    "HR1_without_linked": {
+      "n": 491,
+      "auroc_E_dec": 0.77,
+      "auroc_final_step_conf": 0.551
+    }
+  },
+  "D_recency": {
+    "Jev 1.13": {
+      "mozilla:recent": {
+        "n": 70,
+        "interpretable": true,
+        "auroc_E_dec": 0.847,
+        "auroc_final_step_conf": 0.519
+      },
+      "mozilla:older": {
+        "n": 180,
+        "interpretable": true,
+        "auroc_E_dec": 0.793,
+        "auroc_final_step_conf": 0.528
+      },
+      "kernel:recent": {
+        "n": 3,
+        "interpretable": false,
+        "auroc_E_dec": 1.0,
+        "auroc_final_step_conf": 0.5
+      },
+      "kernel:older": {
+        "n": 247,
+        "interpretable": true,
+        "auroc_E_dec": 0.694,
+        "auroc_final_step_conf": 0.571
+      }
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "mozilla:recent": {
+        "n": 70,
+        "interpretable": true,
+        "auroc_E_dec": 0.713,
+        "auroc_final_step_conf": 0.67
+      },
+      "mozilla:older": {
+        "n": 180,
+        "interpretable": true,
+        "auroc_E_dec": 0.83,
+        "auroc_final_step_conf": 0.374
+      },
+      "kernel:recent": {
+        "n": 3,
+        "interpretable": false,
+        "auroc_E_dec": 1.0,
+        "auroc_final_step_conf": 0.5
+      },
+      "kernel:older": {
+        "n": 247,
+        "interpretable": true,
+        "auroc_E_dec": 0.637,
+        "auroc_final_step_conf": 0.505
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "mozilla:recent": {
+        "n": 70,
+        "interpretable": true,
+        "auroc_E_dec": 0.765,
+        "auroc_final_step_conf": 0.41
+      },
+      "mozilla:older": {
+        "n": 180,
+        "interpretable": true,
+        "auroc_E_dec": 0.721,
+        "auroc_final_step_conf": 0.447
+      },
+      "kernel:recent": {
+        "n": 3,
+        "interpretable": false,
+        "auroc_E_dec": 1.0,
+        "auroc_final_step_conf": 0.5
+      },
+      "kernel:older": {
+        "n": 247,
+        "interpretable": true,
+        "auroc_E_dec": 0.533,
+        "auroc_final_step_conf": 0.552
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "mozilla:recent": {
+        "n": 70,
+        "interpretable": true,
+        "auroc_E_dec": 0.889,
+        "auroc_final_step_conf": 0.373
+      },
+      "mozilla:older": {
+        "n": 180,
+        "interpretable": true,
+        "auroc_E_dec": 0.828,
+        "auroc_final_step_conf": 0.257
+      },
+      "kernel:recent": {
+        "n": 3,
+        "interpretable": false,
+        "auroc_E_dec": 0.5,
+        "auroc_final_step_conf": 0.5
+      },
+      "kernel:older": {
+        "n": 247,
+        "interpretable": true,
+        "auroc_E_dec": 0.55,
+        "auroc_final_step_conf": 0.496
+      }
+    },
+    "openjev/openjev-27B": {
+      "mozilla:recent": {
+        "n": 70,
+        "interpretable": true,
+        "auroc_E_dec": 0.87,
+        "auroc_final_step_conf": 0.546
+      },
+      "mozilla:older": {
+        "n": 180,
+        "interpretable": true,
+        "auroc_E_dec": 0.817,
+        "auroc_final_step_conf": 0.566
+      },
+      "kernel:recent": {
+        "n": 3,
+        "interpretable": false,
+        "auroc_E_dec": 0.75,
+        "auroc_final_step_conf": 0.0
+      },
+      "kernel:older": {
+        "n": 247,
+        "interpretable": true,
+        "auroc_E_dec": 0.647,
+        "auroc_final_step_conf": 0.583
+      }
+    }
+  }
+}

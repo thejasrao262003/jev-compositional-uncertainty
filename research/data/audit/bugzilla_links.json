@@ -1,0 +1,3826 @@
+{
+ "mozilla": {
+  "1684840": {},
+  "1687264": {},
+  "1692734": {
+   "regressed_by": [
+    1690615
+   ]
+  },
+  "1695597": {
+   "duplicates": [
+    1689820
+   ],
+   "regressed_by": [
+    1690615
+   ]
+  },
+  "1695665": {
+   "blocks": [
+    1634793
+   ]
+  },
+  "1695879": {
+   "regressed_by": [
+    1689554
+   ]
+  },
+  "1696706": {
+   "depends_on": [
+    1699463
+   ]
+  },
+  "1701829": {
+   "see_also": [
+    "https://webcompat.com/issues/67671"
+   ],
+   "blocks": [
+    1158011
+   ]
+  },
+  "1705171": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1706586"
+   ],
+   "blocks": [
+    1158011
+   ]
+  },
+  "1713203": {
+   "duplicates": [
+    1773344
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1491018",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1788080",
+    "https://mozilla-hub.atlassian.net/browse/SP3-93"
+   ],
+   "blocks": [
+    1707955,
+    1484287,
+    1612061
+   ],
+   "regressions": [
+    1787122,
+    1787326
+   ]
+  },
+  "1718520": {
+   "duplicates": [
+    1719312
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1719312",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1754746"
+   ]
+  },
+  "1719135": {
+   "regressed_by": [
+    1713796
+   ],
+   "regressions": [
+    1733938
+   ]
+  },
+  "1720558": {
+   "depends_on": [
+    1720648
+   ],
+   "regressed_by": [
+    1713580
+   ]
+  },
+  "1728073": {},
+  "1731643": {
+   "duplicates": [
+    1731424
+   ]
+  },
+  "1732249": {
+   "blocks": [
+    1732257
+   ],
+   "regressed_by": [
+    1382886
+   ]
+  },
+  "1740914": {},
+  "1747372": {
+   "blocks": [
+    1748572
+   ],
+   "regressions": [
+    1748113
+   ]
+  },
+  "1749910": {
+   "duplicates": [
+    1749908,
+    1749911,
+    1749912,
+    1749913,
+    1749914,
+    1749915,
+    1749916,
+    1749917,
+    1749918,
+    1749919,
+    1749920,
+    1749922,
+    1749923,
+    1749924,
+    1749925,
+    1749926,
+    1749927,
+    1749929,
+    1749930,
+    1749931,
+    1749933,
+    1749936,
+    1749937,
+    1749938,
+    1749939,
+    1749941,
+    1749942,
+    1749943,
+    1749945,
+    1749946,
+    1749947,
+    1750175,
+    1750352
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1633342"
+   ],
+   "depends_on": [
+    1749957
+   ]
+  },
+  "1755877": {
+   "blocks": [
+    1754608
+   ]
+  },
+  "1756709": {
+   "blocks": [
+    1158011
+   ]
+  },
+  "1766251": {},
+  "1767808": {
+   "duplicates": [
+    1770927
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1767918",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1581017"
+   ],
+   "blocks": [
+    1396527
+   ],
+   "regressed_by": [
+    1754004
+   ]
+  },
+  "1771774": {},
+  "1777327": {},
+  "1777848": {
+   "blocks": [
+    1396527
+   ]
+  },
+  "1779005": {
+   "duplicates": [
+    1779850
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1773597"
+   ]
+  },
+  "1780094": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1874444"
+   ]
+  },
+  "1781038": {},
+  "1784851": {},
+  "1787995": {
+   "blocks": [
+    1479513
+   ],
+   "regressed_by": [
+    1781104
+   ]
+  },
+  "1794061": {
+   "duplicates": [
+    1794347,
+    1794355,
+    1794356,
+    1796886
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1796886"
+   ],
+   "blocks": [
+    1794356,
+    1796886
+   ]
+  },
+  "1794785": {
+   "blocks": [
+    1505660
+   ]
+  },
+  "1797235": {
+   "duplicates": [
+    858215,
+    1777206
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1797231"
+   ],
+   "blocks": [
+    1484287,
+    1802057
+   ]
+  },
+  "1814961": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1503259",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1814976"
+   ],
+   "blocks": [
+    1682508,
+    1307504
+   ],
+   "regressed_by": [
+    1392841
+   ],
+   "regressions": [
+    1816466,
+    1818653,
+    1818757
+   ]
+  },
+  "1816677": {
+   "see_also": [
+    "https://github.com/webcompat/web-bugs/issues/118205"
+   ],
+   "blocks": [
+    1158011,
+    1874137
+   ],
+   "regressions": [
+    1837252,
+    1840981,
+    1847066
+   ]
+  },
+  "1817369": {
+   "blocks": [
+    1789857
+   ]
+  },
+  "1822801": {
+   "duplicates": [
+    1822753
+   ],
+   "regressed_by": [
+    1805372
+   ]
+  },
+  "1823172": {},
+  "1823480": {},
+  "1840406": {},
+  "1842754": {
+   "blocks": [
+    1847718
+   ]
+  },
+  "1843001": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1936481",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2067202"
+   ]
+  },
+  "1848694": {},
+  "1851351": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1824651"
+   ],
+   "depends_on": [
+    1356686
+   ]
+  },
+  "1853744": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1723456"
+   ],
+   "blocks": [
+    906714,
+    1815647
+   ]
+  },
+  "1861285": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1900672"
+   ],
+   "blocks": [
+    1649372
+   ]
+  },
+  "1869075": {
+   "duplicates": [
+    1960373
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2074752"
+   ],
+   "blocks": [
+    1634793,
+    1649372,
+    2056195
+   ]
+  },
+  "1875068": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1823770"
+   ],
+   "blocks": [
+    1867907,
+    1824325
+   ]
+  },
+  "1875559": {},
+  "1878506": {
+   "blocks": [
+    1874464
+   ]
+  },
+  "1879952": {},
+  "1883693": {
+   "duplicates": [
+    1882364
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1882364",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1881037",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=680300",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1626068",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1658881"
+   ],
+   "blocks": [
+    1882364
+   ]
+  },
+  "1886929": {
+   "see_also": [
+    "https://github.com/mozilla/neqo/security/advisories/GHSA-hvhj-4r52-8568",
+    "https://github.com/mozilla/neqo-ghsa-hvhj-4r52-8568/pull/1"
+   ],
+   "depends_on": [
+    1890988
+   ]
+  },
+  "1887815": {
+   "blocks": [
+    1886953
+   ],
+   "regressed_by": [
+    1178095
+   ]
+  },
+  "1891349": {
+   "blocks": [
+    1484287,
+    1891941
+   ],
+   "regressions": [
+    1892450
+   ]
+  },
+  "1901325": {
+   "duplicates": [
+    1902576
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1903400",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1920444"
+   ],
+   "regressed_by": [
+    1892748
+   ],
+   "regressions": [
+    1903062
+   ]
+  },
+  "1907726": {
+   "regressed_by": [
+    1820424
+   ]
+  },
+  "1909666": {
+   "duplicates": [
+    1908161,
+    1909271
+   ],
+   "regressed_by": [
+    1865040
+   ]
+  },
+  "1909980": {
+   "regressions": [
+    1915468,
+    1916221,
+    1916244,
+    1916532
+   ]
+  },
+  "1910991": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1914425",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1902931",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1962425"
+   ],
+   "blocks": [
+    1158011,
+    1879387,
+    1889193,
+    1913418
+   ],
+   "depends_on": [
+    1915729
+   ]
+  },
+  "1925667": {
+   "blocks": [
+    1918983
+   ]
+  },
+  "1929622": {
+   "blocks": [
+    1931036
+   ],
+   "regressed_by": [
+    1768724
+   ]
+  },
+  "1940508": {
+   "regressed_by": [
+    1929156
+   ]
+  },
+  "1956448": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1939690"
+   ]
+  },
+  "1959305": {
+   "blocks": [
+    1958496
+   ]
+  },
+  "1965279": {
+   "see_also": [
+    "https://github.com/mozilla/neqo/security/advisories/GHSA-jfv6-x22w-grhf"
+   ],
+   "blocks": [
+    1158011
+   ],
+   "depends_on": [
+    1966980
+   ]
+  },
+  "1971595": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1971020"
+   ]
+  },
+  "1974029": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1974972"
+   ],
+   "blocks": [
+    1481298,
+    1978255
+   ],
+   "regressed_by": [
+    1969837
+   ],
+   "regressions": [
+    1975008
+   ]
+  },
+  "1976964": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1976996",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1994314"
+   ],
+   "blocks": [
+    1649372,
+    1716548,
+    1801530
+   ],
+   "regressions": [
+    1979377
+   ]
+  },
+  "1979758": {
+   "blocks": [
+    1960616
+   ],
+   "regressed_by": [
+    1960627
+   ]
+  },
+  "1984089": {
+   "blocks": [
+    1481298
+   ]
+  },
+  "1984171": {
+   "duplicates": [
+    1974216
+   ],
+   "blocks": [
+    2005047,
+    1974277,
+    1998871
+   ]
+  },
+  "2004918": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2036403"
+   ],
+   "blocks": [
+    1978893
+   ]
+  },
+  "2006291": {
+   "blocks": [
+    1978893
+   ]
+  },
+  "2007159": {
+   "blocks": [
+    1158011,
+    1847294
+   ],
+   "depends_on": [
+    2010796
+   ]
+  },
+  "2007199": {
+   "regressed_by": [
+    2002687
+   ]
+  },
+  "2007927": {
+   "blocks": [
+    1847294,
+    1953459
+   ]
+  },
+  "2012207": {},
+  "2013451": {
+   "duplicates": [
+    2013579
+   ],
+   "depends_on": [
+    2011370
+   ]
+  },
+  "2024255": {
+   "regressions": [
+    2030048
+   ]
+  },
+  "2024367": {},
+  "2024661": {},
+  "2024666": {},
+  "2024671": {},
+  "2025888": {},
+  "2025951": {},
+  "2031647": {
+   "blocks": [
+    2033367
+   ]
+  },
+  "2033246": {},
+  "2036905": {},
+  "2040246": {
+   "blocks": [
+    2033455
+   ],
+   "regressed_by": [
+    2039555
+   ],
+   "regressions": [
+    2042389
+   ]
+  },
+  "2045772": {},
+  "2047604": {
+   "blocks": [
+    2078597
+   ]
+  },
+  "2047920": {
+   "duplicates": [
+    2047921
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2047786"
+   ],
+   "regressed_by": [
+    1915371
+   ]
+  },
+  "2048934": {},
+  "2054882": {
+   "blocks": [
+    1953459,
+    2048673
+   ]
+  },
+  "2063452": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2067488"
+   ],
+   "blocks": [
+    1953459
+   ]
+  },
+  "2067716": {
+   "regressed_by": [
+    1790690
+   ]
+  },
+  "2068870": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2005716"
+   ],
+   "blocks": [
+    1953459
+   ]
+  },
+  "2074401": {},
+  "1687001": {
+   "duplicates": [
+    1688280,
+    1688734
+   ],
+   "blocks": [
+    929478
+   ]
+  },
+  "1687256": {
+   "blocks": [
+    1687253
+   ]
+  },
+  "1689636": {
+   "blocks": [
+    1482662,
+    1690547,
+    1690548
+   ]
+  },
+  "1689680": {
+   "blocks": [
+    1482662
+   ],
+   "depends_on": [
+    1685677
+   ]
+  },
+  "1690481": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1694361"
+   ]
+  },
+  "1693116": {
+   "blocks": [
+    1672369
+   ]
+  },
+  "1693225": {
+   "duplicates": [
+    1692774
+   ],
+   "see_also": [
+    "https://webcompat.com/issues/67181"
+   ],
+   "regressed_by": [
+    1686421
+   ]
+  },
+  "1700676": {
+   "blocks": [
+    1647316
+   ]
+  },
+  "1702416": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1519200",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1708119"
+   ],
+   "blocks": [
+    1702411
+   ],
+   "depends_on": [
+    1706928
+   ]
+  },
+  "1702422": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1708141",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1855352"
+   ],
+   "blocks": [
+    1702411
+   ],
+   "depends_on": [
+    1690326,
+    1705304,
+    1712582
+   ]
+  },
+  "1702594": {
+   "blocks": [
+    1702411
+   ]
+  },
+  "1706005": {
+   "duplicates": [
+    1702418
+   ],
+   "blocks": [
+    1702411
+   ]
+  },
+  "1710387": {
+   "blocks": [
+    1158011
+   ],
+   "regressed_by": [
+    1708567
+   ]
+  },
+  "1716069": {
+   "see_also": [
+    "https://github.com/webcompat/web-bugs/issues/76013",
+    "https://github.com/webcompat/web-bugs/issues/75779"
+   ],
+   "blocks": [
+    1896699
+   ],
+   "regressions": [
+    1725026,
+    1725800
+   ]
+  },
+  "1721684": {},
+  "1722466": {},
+  "1723503": {
+   "regressed_by": [
+    1719281
+   ]
+  },
+  "1730418": {
+   "duplicates": [
+    1733875
+   ],
+   "blocks": [
+    1649372
+   ],
+   "regressions": [
+    1731755
+   ]
+  },
+  "1733054": {
+   "duplicates": [
+    1673276,
+    1733120
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1743219",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1715505",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1754448"
+   ]
+  },
+  "1741201": {
+   "blocks": [
+    1739219
+   ],
+   "regressed_by": [
+    994190
+   ]
+  },
+  "1741210": {
+   "blocks": [
+    1739219
+   ]
+  },
+  "1745870": {
+   "blocks": [
+    1737198
+   ]
+  },
+  "1754448": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1733054"
+   ]
+  },
+  "1755206": {
+   "duplicates": [
+    1762432
+   ],
+   "see_also": [
+    "https://github.com/webcompat/web-bugs/issues/104593",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1837614",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1944071"
+   ],
+   "blocks": [
+    1835388
+   ],
+   "depends_on": [
+    1838153
+   ],
+   "regressions": [
+    1852536
+   ]
+  },
+  "1757145": {
+   "blocks": [
+    1649372,
+    1741197
+   ]
+  },
+  "1764097": {
+   "blocks": [
+    1396527
+   ],
+   "regressed_by": [
+    1757186
+   ]
+  },
+  "1765590": {
+   "blocks": [
+    1725938,
+    1755902
+   ]
+  },
+  "1768691": {
+   "regressed_by": [
+    1740902
+   ]
+  },
+  "1770787": {
+   "blocks": [
+    1702411
+   ]
+  },
+  "1774336": {
+   "blocks": [
+    1768116
+   ]
+  },
+  "1777914": {
+   "duplicates": [
+    1753790
+   ],
+   "blocks": [
+    1601415,
+    1601601,
+    1601919,
+    1602634,
+    1602683,
+    1602927,
+    1603248,
+    1775241
+   ],
+   "regressed_by": [
+    1598164
+   ]
+  },
+  "1781075": {
+   "blocks": [
+    1634793
+   ]
+  },
+  "1790526": {
+   "duplicates": [
+    1961538
+   ],
+   "blocks": [
+    1289609,
+    1367146
+   ]
+  },
+  "1790666": {
+   "see_also": [
+    "https://github.com/webcompat/web-bugs/issues/109058",
+    "https://github.com/webcompat/web-bugs/issues/112754"
+   ]
+  },
+  "1798962": {
+   "blocks": [
+    1407355
+   ]
+  },
+  "1799169": {
+   "blocks": [
+    1407355
+   ]
+  },
+  "1813643": {
+   "blocks": [
+    1702411
+   ]
+  },
+  "1814706": {
+   "blocks": [
+    1702411
+   ]
+  },
+  "1819135": {
+   "blocks": [
+    1682508,
+    1736916,
+    1252998
+   ]
+  },
+  "1822889": {
+   "blocks": [
+    1639542,
+    1639545
+   ]
+  },
+  "1827390": {
+   "blocks": [
+    1828609
+   ],
+   "depends_on": [
+    1814580
+   ],
+   "regressed_by": [
+    1788986,
+    1820823
+   ],
+   "regressions": [
+    1829850,
+    1830384
+   ]
+  },
+  "1828627": {},
+  "1833810": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1588498"
+   ],
+   "blocks": [
+    1588498
+   ],
+   "regressed_by": [
+    1781201
+   ]
+  },
+  "1837201": {
+   "regressed_by": [
+    1781201
+   ]
+  },
+  "1837548": {},
+  "1837614": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1755206"
+   ]
+  },
+  "1843229": {
+   "duplicates": [
+    1848810
+   ]
+  },
+  "1843872": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1927179"
+   ],
+   "blocks": [
+    1702411
+   ],
+   "depends_on": [
+    1712582,
+    1851783,
+    1852071,
+    1852072
+   ],
+   "regressed_by": [
+    1781201
+   ]
+  },
+  "1845552": {
+   "blocks": [
+    906714,
+    1815647
+   ]
+  },
+  "1862630": {
+   "blocks": [
+    1158011
+   ]
+  },
+  "1878577": {
+   "duplicates": [
+    1878603
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1639542"
+   ],
+   "depends_on": [
+    1889316
+   ]
+  },
+  "1891227": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1897072"
+   ],
+   "depends_on": [
+    1891664
+   ],
+   "regressed_by": [
+    1791767
+   ]
+  },
+  "1893313": {},
+  "1898185": {
+   "regressed_by": [
+    1895319
+   ]
+  },
+  "1899697": {},
+  "1902204": {},
+  "1909883": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1907701",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1904284",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1854770",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1911417",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1911450",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1917508",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1918854"
+   ],
+   "depends_on": [
+    1594368,
+    1914723
+   ]
+  },
+  "1923056": {
+   "blocks": [
+    1671932,
+    1866402
+   ],
+   "depends_on": [
+    1913561
+   ]
+  },
+  "1924658": {
+   "blocks": [
+    1671932,
+    1867997
+   ],
+   "regressed_by": [
+    1866402
+   ]
+  },
+  "1928939": {
+   "duplicates": [
+    1929293
+   ],
+   "blocks": [
+    1671932,
+    1927723
+   ],
+   "depends_on": [
+    1928028
+   ],
+   "regressed_by": [
+    1927410
+   ]
+  },
+  "1930378": {
+   "blocks": [
+    1936308,
+    1942577
+   ],
+   "depends_on": [
+    1932880
+   ]
+  },
+  "1931513": {
+   "blocks": [
+    1671932,
+    1942003,
+    1953860
+   ],
+   "depends_on": [
+    1932101
+   ]
+  },
+  "1940722": {
+   "blocks": [
+    1943045
+   ],
+   "regressed_by": [
+    1925205
+   ]
+  },
+  "1940765": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1857439"
+   ],
+   "blocks": [
+    1943006
+   ],
+   "depends_on": [
+    1783242
+   ],
+   "regressions": [
+    1943951
+   ]
+  },
+  "1942708": {
+   "blocks": [
+    1928020,
+    1941835
+   ]
+  },
+  "1960275": {
+   "depends_on": [
+    1960309,
+    1960591,
+    1962329,
+    1964400,
+    1965643,
+    1968869
+   ]
+  },
+  "1968028": {},
+  "1970564": {},
+  "1972221": {
+   "duplicates": [
+    1972648
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1972561"
+   ],
+   "blocks": [
+    1953860
+   ],
+   "regressed_by": [
+    1962133
+   ]
+  },
+  "1975065": {},
+  "1975544": {
+   "regressed_by": [
+    1781277
+   ]
+  },
+  "1977787": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1781277"
+   ],
+   "blocks": [
+    1329996
+   ]
+  },
+  "1991018": {
+   "blocks": [
+    1990758
+   ],
+   "regressions": [
+    1993725
+   ]
+  },
+  "1991839": {
+   "blocks": [
+    1991834
+   ]
+  },
+  "1992764": {
+   "blocks": [
+    1801530
+   ]
+  },
+  "2006245": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1973984"
+   ]
+  },
+  "2008535": {},
+  "2011916": {
+   "duplicates": [
+    2009617
+   ],
+   "blocks": [
+    2009617
+   ],
+   "regressed_by": [
+    1948103,
+    1948824
+   ]
+  },
+  "2017513": {
+   "regressed_by": [
+    1969120
+   ]
+  },
+  "2018378": {},
+  "2021894": {
+   "duplicates": [
+    2027978
+   ]
+  },
+  "2022090": {},
+  "2022335": {
+   "duplicates": [
+    2025342
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2025342"
+   ]
+  },
+  "2022478": {},
+  "2022722": {
+   "duplicates": [
+    2027977
+   ]
+  },
+  "2024220": {},
+  "2024440": {
+   "duplicates": [
+    2030222
+   ]
+  },
+  "2025349": {},
+  "2025415": {
+   "duplicates": [
+    2025410
+   ],
+   "blocks": [
+    2028615
+   ]
+  },
+  "2027694": {
+   "blocks": [
+    2027795
+   ],
+   "regressed_by": [
+    1886894
+   ]
+  },
+  "2028005": {},
+  "2033468": {},
+  "2039535": {
+   "see_also": [
+    "https://mozilla-hub.atlassian.net/browse/SNG-3619"
+   ]
+  },
+  "2043213": {
+   "blocks": [
+    1987573,
+    2041909
+   ]
+  },
+  "2045599": {
+   "regressed_by": [
+    2039101
+   ]
+  },
+  "2065160": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2053492"
+   ],
+   "blocks": [
+    1585978
+   ]
+  },
+  "2065499": {
+   "duplicates": [
+    2067482
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2066923"
+   ],
+   "blocks": [
+    1585978,
+    2082773,
+    2051494
+   ]
+  },
+  "2067771": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2016438"
+   ],
+   "blocks": [
+    1979140
+   ],
+   "regressed_by": [
+    1969325
+   ]
+  },
+  "2069362": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1585978"
+   ],
+   "blocks": [
+    2076134
+   ]
+  },
+  "2073741": {
+   "blocks": [
+    1847294
+   ]
+  },
+  "1687254": {
+   "blocks": [
+    1687253
+   ]
+  },
+  "1692494": {
+   "regressed_by": [
+    1691721
+   ]
+  },
+  "1695717": {
+   "duplicates": [
+    1702621
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1694035"
+   ],
+   "blocks": [
+    1158011,
+    1665621
+   ]
+  },
+  "1695917": {
+   "blocks": [
+    1698671
+   ],
+   "regressions": [
+    1698023
+   ]
+  },
+  "1700046": {
+   "regressed_by": [
+    1663924
+   ]
+  },
+  "1702415": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1703801"
+   ]
+  },
+  "1708729": {
+   "duplicates": [
+    1710196
+   ],
+   "regressed_by": [
+    1698503
+   ]
+  },
+  "1711675": {},
+  "1711971": {
+   "blocks": [
+    1158011
+   ],
+   "regressions": [
+    1715011,
+    1715013
+   ]
+  },
+  "1713283": {
+   "regressed_by": [
+    1705659
+   ]
+  },
+  "1719046": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1703232",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1843384"
+   ],
+   "blocks": [
+    1716548
+   ]
+  },
+  "1724896": {},
+  "1730852": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1756749",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1756751"
+   ],
+   "blocks": [
+    1716548
+   ],
+   "depends_on": [
+    1736264
+   ]
+  },
+  "1732584": {
+   "duplicates": [
+    1732101
+   ]
+  },
+  "1733938": {
+   "blocks": [
+    1649372
+   ],
+   "regressed_by": [
+    1719135
+   ]
+  },
+  "1743995": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2049173"
+   ],
+   "blocks": [
+    1649372
+   ],
+   "regressions": [
+    1744900
+   ]
+  },
+  "1746846": {
+   "blocks": [
+    1396527,
+    1746300
+   ],
+   "regressed_by": [
+    1746300
+   ]
+  },
+  "1748097": {
+   "blocks": [
+    1158011,
+    1739213
+   ]
+  },
+  "1752270": {
+   "duplicates": [
+    1732628
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1733449"
+   ],
+   "blocks": [
+    1741845
+   ],
+   "depends_on": [
+    1735595
+   ]
+  },
+  "1752529": {},
+  "1776210": {
+   "duplicates": [
+    1782482
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1773584",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1842860"
+   ],
+   "blocks": [
+    1773708
+   ]
+  },
+  "1783642": {
+   "duplicates": [
+    1783247
+   ]
+  },
+  "1788684": {
+   "see_also": [
+    "https://github.com/webcompat/web-bugs/issues/110593",
+    "https://hstspreload.org/?domain=asus.com"
+   ]
+  },
+  "1805529": {
+   "blocks": [
+    1806358
+   ],
+   "depends_on": [
+    1795687
+   ]
+  },
+  "1817129": {
+   "blocks": [
+    1789857
+   ]
+  },
+  "1818214": {
+   "blocks": [
+    1639542
+   ],
+   "regressed_by": [
+    1784966
+   ]
+  },
+  "1820408": {
+   "blocks": [
+    1789857
+   ]
+  },
+  "1822495": {
+   "blocks": [
+    1571543
+   ],
+   "regressions": [
+    1775997
+   ]
+  },
+  "1830384": {
+   "blocks": [
+    1831154
+   ],
+   "depends_on": [
+    1788986
+   ],
+   "regressed_by": [
+    1827390
+   ]
+  },
+  "1839818": {},
+  "1855940": {
+   "blocks": [
+    1714354
+   ]
+  },
+  "1859316": {
+   "blocks": [
+    1864725
+   ]
+  },
+  "1861885": {
+   "blocks": [
+    1804051,
+    1826198
+   ]
+  },
+  "1864385": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1864434"
+   ],
+   "blocks": [
+    1946656
+   ]
+  },
+  "1871048": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1824325"
+   ],
+   "regressed_by": [
+    1851992
+   ],
+   "regressions": [
+    1875265,
+    1875792
+   ]
+  },
+  "1874581": {
+   "blocks": [
+    1158011
+   ],
+   "depends_on": [
+    1877942
+   ]
+  },
+  "1874583": {
+   "blocks": [
+    1158011
+   ]
+  },
+  "1875701": {
+   "see_also": [
+    "https://github.com/mozilla/neqo/security/advisories/GHSA-5m9j-vr32-g7j5",
+    "https://github.com/mozilla/neqo-ghsa-5m9j-vr32-g7j5/pull/1"
+   ],
+   "blocks": [
+    1158011
+   ],
+   "depends_on": [
+    1877942
+   ]
+  },
+  "1879259": {
+   "blocks": [
+    1877619
+   ],
+   "depends_on": [
+    1653276
+   ]
+  },
+  "1884349": {
+   "regressed_by": [
+    1706377
+   ]
+  },
+  "1885096": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1507582"
+   ],
+   "blocks": [
+    1332714,
+    1850388
+   ],
+   "depends_on": [
+    1178095,
+    1790163,
+    1800628
+   ]
+  },
+  "1887614": {
+   "blocks": [
+    906714,
+    1880879
+   ],
+   "regressions": [
+    1890346
+   ]
+  },
+  "1895687": {
+   "see_also": [
+    "https://issues.chromium.org/issues/344343043"
+   ],
+   "blocks": [
+    906714
+   ]
+  },
+  "1899291": {
+   "blocks": [
+    1899321
+   ]
+  },
+  "1899786": {
+   "regressed_by": [
+    1356686
+   ]
+  },
+  "1900013": {
+   "blocks": [
+    1649372,
+    1872711
+   ],
+   "regressions": [
+    1950118
+   ]
+  },
+  "1901517": {
+   "blocks": [
+    1901525
+   ],
+   "depends_on": [
+    1901495
+   ]
+  },
+  "1907604": {},
+  "1908014": {},
+  "1910593": {
+   "duplicates": [
+    1920399
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1799411"
+   ],
+   "blocks": [
+    1917573
+   ],
+   "regressed_by": [
+    1874464,
+    1906239
+   ],
+   "regressions": [
+    1914796,
+    1916233
+   ]
+  },
+  "1911300": {
+   "duplicates": [
+    1886571
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1943284",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1949119"
+   ],
+   "blocks": [
+    1898679,
+    1757387
+   ],
+   "regressed_by": [
+    1721448
+   ]
+  },
+  "1915982": {},
+  "1918928": {
+   "regressions": [
+    1920055,
+    1920307
+   ]
+  },
+  "1931331": {},
+  "1931477": {},
+  "1934402": {
+   "regressed_by": [
+    1925014
+   ]
+  },
+  "1943951": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1944041"
+   ],
+   "blocks": [
+    1914562
+   ],
+   "regressed_by": [
+    1940765
+   ]
+  },
+  "1950118": {
+   "regressed_by": [
+    1900013
+   ]
+  },
+  "1951536": {
+   "blocks": [
+    1847294
+   ]
+  },
+  "1952697": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1882856",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1941128"
+   ],
+   "blocks": [
+    1970558
+   ]
+  },
+  "1958422": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1953368",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1951750"
+   ],
+   "blocks": [
+    1953406
+   ]
+  },
+  "1964920": {
+   "depends_on": [
+    2066910
+   ]
+  },
+  "1965648": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1989432"
+   ],
+   "depends_on": [
+    1990699
+   ]
+  },
+  "1968390": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1222633",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=372970"
+   ],
+   "depends_on": [
+    1968202
+   ]
+  },
+  "1972843": {
+   "duplicates": [
+    1973137
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1980177"
+   ],
+   "blocks": [
+    1953860
+   ]
+  },
+  "1978226": {},
+  "1978542": {
+   "blocks": [
+    1649372,
+    1801530
+   ]
+  },
+  "1980725": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1988666",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1989488"
+   ],
+   "blocks": [
+    1978188
+   ]
+  },
+  "1984469": {
+   "blocks": [
+    1847294
+   ],
+   "regressions": [
+    1988782
+   ]
+  },
+  "1984876": {
+   "blocks": [
+    1861789
+   ],
+   "regressed_by": [
+    1980822
+   ]
+  },
+  "1986095": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1980171",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1982486",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1983245",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1467345",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1989596",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2026491"
+   ]
+  },
+  "1998185": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1879917"
+   ],
+   "depends_on": [
+    2004944
+   ]
+  },
+  "2000189": {
+   "blocks": [
+    1999128
+   ]
+  },
+  "2021594": {
+   "blocks": [
+    1481298,
+    2022790
+   ]
+  },
+  "2022282": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2024658"
+   ]
+  },
+  "2022567": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2021922"
+   ]
+  },
+  "2022726": {
+   "duplicates": [
+    2023309
+   ],
+   "blocks": [
+    1649372
+   ]
+  },
+  "2023355": {},
+  "2023958": {
+   "regressed_by": [
+    1852900
+   ]
+  },
+  "2026491": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1986095",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2082673"
+   ],
+   "depends_on": [
+    1866496,
+    1983245,
+    2073819
+   ]
+  },
+  "2030136": {
+   "blocks": [
+    1953459
+   ],
+   "regressed_by": [
+    2022792
+   ]
+  },
+  "2036898": {},
+  "2036932": {},
+  "2039085": {},
+  "2039387": {
+   "duplicates": [
+    2039348,
+    2040296,
+    2040573
+   ],
+   "blocks": [
+    1971185
+   ]
+  },
+  "2041610": {},
+  "2042482": {
+   "duplicates": [
+    2042845
+   ],
+   "blocks": [
+    1481298
+   ],
+   "depends_on": [
+    2017712
+   ]
+  },
+  "2044951": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2048707"
+   ],
+   "blocks": [
+    1953459
+   ]
+  },
+  "2045783": {},
+  "2052534": {
+   "blocks": [
+    1953459
+   ],
+   "depends_on": [
+    2053499
+   ]
+  },
+  "2052632": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2052794"
+   ],
+   "blocks": [
+    1953459,
+    2048673
+   ]
+  },
+  "2054024": {},
+  "2056559": {
+   "regressed_by": [
+    1989970
+   ]
+  },
+  "2060060": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1926258",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2060066"
+   ],
+   "blocks": [
+    2060483
+   ]
+  },
+  "2067502": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2064203"
+   ]
+  },
+  "2071477": {
+   "see_also": [
+    "https://mozilla-hub.atlassian.net/browse/FXPE-144"
+   ],
+   "blocks": [
+    2037091
+   ]
+  },
+  "2073666": {
+   "blocks": [
+    1847294
+   ]
+  },
+  "2077485": {
+   "blocks": [
+    2077567
+   ]
+  },
+  "2077492": {},
+  "2078543": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2080863"
+   ],
+   "blocks": [
+    2036862
+   ]
+  },
+  "1685427": {
+   "duplicates": [
+    1685043,
+    1687851,
+    1689187
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1684849"
+   ],
+   "blocks": [
+    1648496
+   ]
+  },
+  "1685942": {
+   "duplicates": [
+    1685923
+   ],
+   "blocks": [
+    1678296,
+    1685923
+   ],
+   "regressions": [
+    1692120
+   ]
+  },
+  "1699024": {},
+  "1699998": {
+   "blocks": [
+    1649372,
+    1694521
+   ]
+  },
+  "1700703": {
+   "duplicates": [
+    1706586
+   ],
+   "blocks": [
+    1158011,
+    1665621
+   ]
+  },
+  "1700857": {
+   "duplicates": [
+    1424820
+   ]
+  },
+  "1702529": {
+   "blocks": [
+    1158011
+   ],
+   "regressed_by": [
+    1689554
+   ]
+  },
+  "1704762": {
+   "depends_on": [
+    1698321
+   ]
+  },
+  "1706975": {
+   "blocks": [
+    1649372
+   ]
+  },
+  "1716588": {
+   "blocks": [
+    1158011
+   ],
+   "regressed_by": [
+    1713580
+   ]
+  },
+  "1729497": {},
+  "1745150": {},
+  "1746733": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=772330"
+   ]
+  },
+  "1749164": {
+   "blocks": [
+    1207753
+   ]
+  },
+  "1753204": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1768250",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1717644"
+   ],
+   "depends_on": [
+    1754746
+   ]
+  },
+  "1755126": {
+   "blocks": [
+    1396527,
+    1600309
+   ],
+   "regressed_by": [
+    1600309
+   ]
+  },
+  "1757427": {
+   "blocks": [
+    1207753
+   ]
+  },
+  "1765652": {
+   "blocks": [
+    1746524
+   ]
+  },
+  "1772505": {
+   "regressed_by": [
+    1635092
+   ]
+  },
+  "1784348": {
+   "regressions": [
+    1822377
+   ]
+  },
+  "1791689": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1720221"
+   ],
+   "regressed_by": [
+    1732792
+   ]
+  },
+  "1792541": {
+   "blocks": [
+    1684037
+   ]
+  },
+  "1810362": {
+   "duplicates": [
+    1874094,
+    1878445
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=920367",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1874094",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1849143"
+   ],
+   "blocks": [
+    136898,
+    1682799,
+    1874137
+   ]
+  },
+  "1814712": {
+   "duplicates": [
+    1816143
+   ],
+   "blocks": [
+    1709355,
+    1793822
+   ]
+  },
+  "1815904": {},
+  "1817130": {
+   "blocks": [
+    1790674
+   ]
+  },
+  "1824091": {
+   "blocks": [
+    1795940
+   ]
+  },
+  "1831467": {
+   "blocks": [
+    1631722,
+    1821228
+   ]
+  },
+  "1833233": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1833141"
+   ]
+  },
+  "1844827": {
+   "duplicates": [
+    1959501
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1793083",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1692207",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1797033",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1900207"
+   ],
+   "blocks": [
+    795346,
+    1484287
+   ]
+  },
+  "1850273": {},
+  "1853203": {},
+  "1861061": {
+   "blocks": [
+    1797715
+   ],
+   "depends_on": [
+    1867004
+   ]
+  },
+  "1867680": {},
+  "1871533": {
+   "duplicates": [
+    1866925
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1866925"
+   ],
+   "regressed_by": [
+    1856288
+   ]
+  },
+  "1873940": {
+   "blocks": [
+    906714,
+    1876105
+   ]
+  },
+  "1874132": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1802086"
+   ],
+   "blocks": [
+    1465462
+   ]
+  },
+  "1878143": {
+   "blocks": [
+    1878131,
+    1883045
+   ]
+  },
+  "1887714": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1869176",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1869107",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1846626",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1898891"
+   ],
+   "blocks": [
+    1198508
+   ]
+  },
+  "1898465": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1890559"
+   ],
+   "blocks": [
+    1613372
+   ]
+  },
+  "1900104": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1172080"
+   ],
+   "blocks": [
+    1899673
+   ],
+   "regressed_by": [
+    1873973
+   ]
+  },
+  "1900339": {
+   "regressed_by": [
+    1871963
+   ]
+  },
+  "1902621": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1966621",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1968494"
+   ]
+  },
+  "1903400": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1901325",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1892748",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1920444"
+   ],
+   "blocks": [
+    1514234
+   ],
+   "regressions": [
+    1907110
+   ]
+  },
+  "1903415": {
+   "blocks": [
+    1903405,
+    1484287
+   ]
+  },
+  "1908115": {
+   "blocks": [
+    1909281
+   ],
+   "regressed_by": [
+    1896350
+   ]
+  },
+  "1909219": {
+   "duplicates": [
+    1909143,
+    1909221
+   ]
+  },
+  "1911658": {
+   "regressed_by": [
+    1910360
+   ]
+  },
+  "1912865": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1913158",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2042179"
+   ],
+   "blocks": [
+    1332714,
+    1850388
+   ],
+   "depends_on": [
+    1916085
+   ]
+  },
+  "1914723": {
+   "blocks": [
+    1909883
+   ]
+  },
+  "1917664": {
+   "blocks": [
+    1931036
+   ],
+   "depends_on": [
+    1768724
+   ]
+  },
+  "1925171": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1895215",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1970207"
+   ],
+   "blocks": [
+    1923692
+   ]
+  },
+  "1927410": {
+   "blocks": [
+    1671932,
+    1928028
+   ],
+   "depends_on": [
+    1911030
+   ],
+   "regressed_by": [
+    1866402,
+    1919788
+   ],
+   "regressions": [
+    1928939,
+    1929293
+   ]
+  },
+  "1929190": {
+   "blocks": [
+    1671932,
+    1925418
+   ],
+   "depends_on": [
+    1928092
+   ]
+  },
+  "1931685": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1931684"
+   ],
+   "depends_on": [
+    1931893
+   ],
+   "regressed_by": [
+    1922193
+   ]
+  },
+  "1932308": {
+   "duplicates": [
+    1931292,
+    1933519,
+    1934085
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1915134"
+   ],
+   "regressed_by": [
+    1865040
+   ]
+  },
+  "1938471": {
+   "regressed_by": [
+    1810805
+   ]
+  },
+  "1942030": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1621877",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=996055"
+   ]
+  },
+  "1942068": {
+   "blocks": [
+    1938203
+   ]
+  },
+  "1944811": {},
+  "1949195": {
+   "regressed_by": [
+    1603699
+   ],
+   "regressions": [
+    1954766
+   ]
+  },
+  "1952304": {
+   "blocks": [
+    1158011
+   ],
+   "depends_on": [
+    1959128
+   ],
+   "regressed_by": [
+    1942325
+   ]
+  },
+  "1962986": {
+   "blocks": [
+    1953406
+   ],
+   "regressions": [
+    1964336,
+    1964345
+   ]
+  },
+  "1964208": {
+   "blocks": [
+    1865198
+   ],
+   "depends_on": [
+    1964207
+   ]
+  },
+  "1965338": {
+   "regressed_by": [
+    1955579
+   ]
+  },
+  "1965987": {
+   "blocks": [
+    1847294
+   ]
+  },
+  "1966501": {
+   "blocks": [
+    1847294
+   ],
+   "regressions": [
+    2001573
+   ]
+  },
+  "1973574": {
+   "blocks": [
+    1978188
+   ]
+  },
+  "1976376": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1974155",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1973772",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1979955",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1970656"
+   ],
+   "blocks": [
+    1861789
+   ]
+  },
+  "1980035": {
+   "blocks": [
+    1861789
+   ],
+   "regressed_by": [
+    1960627
+   ]
+  },
+  "1980302": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1984105"
+   ],
+   "blocks": [
+    1481298
+   ],
+   "depends_on": [
+    1988525
+   ],
+   "regressed_by": [
+    1972350
+   ]
+  },
+  "1986649": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1979383",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1950166"
+   ]
+  },
+  "1987021": {},
+  "1989895": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1996316"
+   ],
+   "blocks": [
+    1987256
+   ]
+  },
+  "1994314": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1976964",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1996813",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2009372"
+   ],
+   "blocks": [
+    1716548,
+    1801530,
+    1889193
+   ],
+   "depends_on": [
+    1997949,
+    1998646,
+    2007582
+   ]
+  },
+  "1999659": {
+   "blocks": [
+    1999128
+   ]
+  },
+  "2003766": {
+   "see_also": [
+    "https://issues.chromium.org/issues/40063810"
+   ]
+  },
+  "2017712": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2017732",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2014694",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2033733"
+   ],
+   "blocks": [
+    1481298,
+    2042482
+   ]
+  },
+  "2021922": {
+   "duplicates": [
+    2022045,
+    2022506
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2022567"
+   ],
+   "blocks": [
+    2041408
+   ],
+   "depends_on": [
+    2045875
+   ]
+  },
+  "2024244": {},
+  "2024253": {},
+  "2030370": {},
+  "2036909": {},
+  "2036930": {},
+  "2040347": {
+   "blocks": [
+    1953459
+   ]
+  },
+  "2043200": {
+   "duplicates": [
+    2049893
+   ],
+   "depends_on": [
+    2032140
+   ]
+  },
+  "2045847": {
+   "regressed_by": [
+    1953464
+   ]
+  },
+  "2051415": {
+   "blocks": [
+    1847294,
+    2048673
+   ]
+  },
+  "2054044": {
+   "blocks": [
+    1649372
+   ]
+  },
+  "2057385": {},
+  "2061918": {},
+  "2065480": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1759711",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2066750"
+   ],
+   "blocks": [
+    2066742
+   ]
+  },
+  "2066017": {
+   "blocks": [
+    2046859
+   ]
+  },
+  "2066852": {
+   "duplicates": [
+    2068787,
+    2069188,
+    2069513,
+    2070726
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2074752"
+   ],
+   "regressed_by": [
+    2056195
+   ]
+  },
+  "2071549": {},
+  "2077491": {},
+  "2077504": {
+   "duplicates": [
+    2077505
+   ]
+  },
+  "2078515": {
+   "blocks": [
+    2036862
+   ]
+  },
+  "2079722": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1824929"
+   ],
+   "blocks": [
+    1795940
+   ]
+  },
+  "2079754": {},
+  "1687320": {},
+  "1696037": {},
+  "1706594": {
+   "duplicates": [
+    1726415
+   ],
+   "see_also": [
+    "https://github.com/mozilla/web-ext/issues/2219",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1684299",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1637742"
+   ],
+   "blocks": [
+    1682508
+   ],
+   "regressed_by": [
+    1681529
+   ],
+   "regressions": [
+    1735899
+   ]
+  },
+  "1724635": {
+   "regressed_by": [
+    1719070
+   ]
+  },
+  "1732875": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1719070"
+   ],
+   "depends_on": [
+    1731523
+   ]
+  },
+  "1734198": {
+   "blocks": [
+    1158011
+   ]
+  },
+  "1735309": {
+   "blocks": [
+    1158011
+   ],
+   "depends_on": [
+    1733603
+   ]
+  },
+  "1740274": {
+   "blocks": [
+    1402014,
+    1574971
+   ],
+   "depends_on": [
+    1667102
+   ]
+  },
+  "1751293": {},
+  "1768140": {},
+  "1770485": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1772074"
+   ],
+   "blocks": [
+    1709175
+   ],
+   "regressions": [
+    1774434,
+    1774804
+   ]
+  },
+  "1770786": {
+   "blocks": [
+    1702411
+   ]
+  },
+  "1784700": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1745178",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1748451"
+   ],
+   "regressions": [
+    1824674
+   ]
+  },
+  "1808631": {
+   "blocks": [
+    1649372
+   ]
+  },
+  "1841242": {
+   "blocks": [
+    1795940
+   ]
+  },
+  "1845870": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1782561",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1971020"
+   ],
+   "blocks": [
+    1484287
+   ]
+  },
+  "1847659": {
+   "duplicates": [
+    1420575
+   ],
+   "blocks": [
+    1423877,
+    1871420,
+    1895075
+   ]
+  },
+  "1860195": {},
+  "1863908": {
+   "duplicates": [
+    1861960
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1864477"
+   ],
+   "depends_on": [
+    1864051
+   ]
+  },
+  "1868042": {},
+  "1881123": {
+   "blocks": [
+    1852752
+   ],
+   "depends_on": [
+    1881437
+   ]
+  },
+  "1895277": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1781743"
+   ],
+   "blocks": [
+    720362
+   ]
+  },
+  "1899841": {
+   "regressed_by": [
+    1898191
+   ]
+  },
+  "1903169": {
+   "duplicates": [
+    1903446
+   ],
+   "blocks": [
+    1861789
+   ],
+   "regressed_by": [
+    1883353
+   ]
+  },
+  "1911741": {
+   "blocks": [
+    1915830
+   ],
+   "depends_on": [
+    1915848
+   ]
+  },
+  "1914141": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1911951",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1916515"
+   ],
+   "depends_on": [
+    1723456
+   ]
+  },
+  "1914309": {
+   "duplicates": [
+    1920697
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1902931"
+   ],
+   "blocks": [
+    1158011
+   ],
+   "depends_on": [
+    1922479,
+    1923287
+   ],
+   "regressed_by": [
+    1899706
+   ]
+  },
+  "1920941": {
+   "blocks": [
+    1898247
+   ]
+  },
+  "1922193": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1923663",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1989181"
+   ],
+   "blocks": [
+    1923663,
+    1931569
+   ],
+   "regressions": [
+    1929973,
+    1931684,
+    1931685
+   ]
+  },
+  "1925832": {
+   "blocks": [
+    1671932,
+    1911030
+   ],
+   "depends_on": [
+    1925813
+   ]
+  },
+  "1934710": {
+   "blocks": [
+    1909968
+   ]
+  },
+  "1948543": {
+   "duplicates": [
+    1848596
+   ],
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1896460",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1881258",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=334799",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1981797"
+   ]
+  },
+  "1950166": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1986649"
+   ],
+   "blocks": [
+    1928537
+   ],
+   "depends_on": [
+    1733498
+   ]
+  },
+  "1966610": {},
+  "1973772": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=1976376"
+   ]
+  },
+  "2002687": {
+   "blocks": [
+    1847294
+   ],
+   "regressed_by": [
+    2001618
+   ],
+   "regressions": [
+    2007199
+   ]
+  },
+  "2005048": {
+   "blocks": [
+    2011746
+   ]
+  },
+  "2009204": {
+   "blocks": [
+    1978188
+   ]
+  },
+  "2023302": {},
+  "2024250": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2024249"
+   ]
+  },
+  "2026961": {
+   "regressed_by": [
+    2025145
+   ]
+  },
+  "2034558": {
+   "duplicates": [
+    2044021
+   ],
+   "blocks": [
+    1882979,
+    2034815
+   ]
+  },
+  "2036666": {},
+  "2037014": {
+   "blocks": [
+    2038251
+   ],
+   "regressed_by": [
+    2033907
+   ]
+  },
+  "2039707": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2013465"
+   ],
+   "blocks": [
+    1882276
+   ],
+   "regressed_by": [
+    1906590
+   ]
+  },
+  "2044536": {},
+  "2045511": {
+   "blocks": [
+    1322426
+   ]
+  },
+  "2049334": {
+   "see_also": [
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2050874"
+   ],
+   "blocks": [
+    1953459,
+    2048673
+   ]
+  },
+  "2066016": {
+   "blocks": [
+    2060483
+   ],
+   "regressed_by": [
+    1949422
+   ]
+  },
+  "2067031": {
+   "blocks": [
+    1396527
+   ]
+  },
+  "2067308": {},
+  "2071485": {
+   "duplicates": [
+    2076767
+   ],
+   "see_also": [
+    "https://mozilla-hub.atlassian.net/browse/FXPE-145"
+   ],
+   "blocks": [
+    2037091,
+    2076681,
+    2080083,
+    2080290
+   ],
+   "depends_on": [
+    2073257
+   ]
+  }
+ },
+ "kernel": {
+  "203": {},
+  "264": {},
+  "351": {},
+  "416": {},
+  "826": {},
+  "1174": {},
+  "1371": {},
+  "1486": {},
+  "2115": {},
+  "2513": {},
+  "3575": {},
+  "4006": {},
+  "4223": {},
+  "4522": {},
+  "4952": {},
+  "5011": {},
+  "5025": {},
+  "5271": {},
+  "5306": {},
+  "5551": {},
+  "5559": {},
+  "5609": {},
+  "5714": {},
+  "6428": {},
+  "6681": {
+   "depends_on": [
+    6322
+   ]
+  },
+  "6802": {},
+  "7009": {},
+  "7282": {},
+  "7453": {},
+  "7969": {
+   "blocks": [
+    7216,
+    56331
+   ]
+  },
+  "8134": {},
+  "8160": {},
+  "8320": {},
+  "8736": {},
+  "9725": {},
+  "9765": {},
+  "9821": {},
+  "9933": {},
+  "9937": {},
+  "10002": {
+   "blocks": [
+    9832
+   ]
+  },
+  "10049": {
+   "blocks": [
+    9832
+   ]
+  },
+  "10125": {},
+  "10320": {
+   "blocks": [
+    9832
+   ]
+  },
+  "10323": {
+   "blocks": [
+    9832
+   ]
+  },
+  "11039": {
+   "blocks": [
+    10492
+   ]
+  },
+  "11316": {
+   "blocks": [
+    11167
+   ]
+  },
+  "11357": {
+   "blocks": [
+    11167
+   ]
+  },
+  "11571": {},
+  "11746": {},
+  "12262": {},
+  "12869": {
+   "blocks": [
+    12398
+   ]
+  },
+  "13224": {},
+  "13245": {
+   "blocks": [
+    7216,
+    13070
+   ]
+  },
+  "13312": {},
+  "13348": {},
+  "13922": {},
+  "14874": {
+   "blocks": [
+    14885
+   ]
+  },
+  "15517": {},
+  "15878": {},
+  "16188": {},
+  "16554": {},
+  "20152": {},
+  "24642": {},
+  "30892": {},
+  "31232": {},
+  "36682": {},
+  "42759": {},
+  "43253": {},
+  "60577": {},
+  "60735": {},
+  "60747": {},
+  "66051": {},
+  "83231": {},
+  "83361": {},
+  "85841": {},
+  "89431": {},
+  "108791": {},
+  "114151": {},
+  "118471": {},
+  "153561": {},
+  "175381": {},
+  "196743": {},
+  "196919": {},
+  "199971": {},
+  "200897": {},
+  "202673": {},
+  "204387": {},
+  "206893": {},
+  "207225": {},
+  "207597": {},
+  "208315": {},
+  "213107": {},
+  "214401": {},
+  "217528": {},
+  "217596": {},
+  "219154": {},
+  "219375": {},
+  "220444": {},
+  "220747": {},
+  "221561": {},
+  "12": {},
+  "204": {},
+  "660": {},
+  "724": {},
+  "760": {},
+  "1090": {},
+  "1232": {},
+  "1268": {},
+  "2096": {},
+  "2987": {},
+  "3656": {},
+  "3753": {},
+  "4063": {},
+  "4365": {},
+  "4685": {},
+  "4844": {},
+  "4868": {},
+  "5078": {},
+  "5220": {},
+  "5775": {},
+  "5948": {},
+  "6249": {},
+  "6573": {},
+  "6757": {},
+  "6986": {},
+  "7003": {},
+  "7096": {},
+  "7364": {},
+  "7625": {},
+  "7799": {},
+  "8563": {},
+  "8936": {},
+  "9272": {
+   "blocks": [
+    9243
+   ]
+  },
+  "9401": {},
+  "9580": {},
+  "10216": {},
+  "10239": {
+   "blocks": [
+    9243
+   ]
+  },
+  "10996": {},
+  "11019": {},
+  "11148": {},
+  "11160": {},
+  "11636": {},
+  "11649": {},
+  "11756": {},
+  "11805": {
+   "blocks": [
+    11167
+   ]
+  },
+  "12405": {
+   "blocks": [
+    11808
+   ]
+  },
+  "12631": {},
+  "12697": {},
+  "13308": {},
+  "13551": {},
+  "13942": {
+   "blocks": [
+    13615
+   ]
+  },
+  "14300": {
+   "blocks": [
+    14230
+   ]
+  },
+  "14522": {},
+  "14642": {},
+  "15080": {},
+  "15481": {},
+  "15604": {
+   "blocks": [
+    14885
+   ]
+  },
+  "15692": {},
+  "16344": {},
+  "16348": {
+   "blocks": [
+    15310
+   ]
+  },
+  "19642": {
+   "blocks": [
+    16444
+   ]
+  },
+  "21372": {
+   "blocks": [
+    16444
+   ]
+  },
+  "31982": {
+   "blocks": [
+    27352
+   ]
+  },
+  "33822": {},
+  "36092": {
+   "blocks": [
+    32012
+   ]
+  },
+  "38162": {},
+  "58951": {},
+  "59371": {},
+  "59921": {},
+  "60666": {},
+  "61121": {},
+  "61531": {},
+  "63411": {},
+  "65651": {},
+  "68061": {},
+  "70051": {},
+  "70661": {},
+  "78721": {},
+  "86051": {},
+  "87021": {},
+  "87881": {},
+  "89271": {},
+  "101011": {},
+  "109341": {},
+  "112161": {},
+  "194567": {},
+  "199185": {},
+  "199377": {},
+  "202757": {},
+  "202765": {},
+  "207447": {},
+  "211665": {},
+  "212017": {},
+  "212331": {},
+  "214839": {},
+  "215039": {},
+  "215871": {},
+  "217114": {},
+  "217496": {},
+  "220465": {},
+  "27": {},
+  "287": {},
+  "365": {},
+  "961": {},
+  "1233": {},
+  "1389": {},
+  "1542": {},
+  "2224": {},
+  "2929": {},
+  "3674": {},
+  "3749": {},
+  "4252": {},
+  "4486": {},
+  "4560": {},
+  "4717": {},
+  "4973": {},
+  "5552": {},
+  "5914": {},
+  "6422": {},
+  "6521": {},
+  "6537": {},
+  "6760": {},
+  "6867": {},
+  "7156": {},
+  "7208": {},
+  "7454": {},
+  "7864": {},
+  "7910": {},
+  "8133": {},
+  "8410": {},
+  "8664": {},
+  "8687": {},
+  "9294": {},
+  "9350": {
+   "blocks": [
+    9243
+   ]
+  },
+  "9391": {},
+  "9757": {
+   "blocks": [
+    9243
+   ]
+  },
+  "10191": {
+   "blocks": [
+    9832
+   ]
+  },
+  "11106": {},
+  "11308": {
+   "blocks": [
+    11167
+   ]
+  },
+  "12040": {},
+  "12186": {},
+  "12567": {},
+  "12609": {
+   "blocks": [
+    12398
+   ]
+  },
+  "12781": {
+   "blocks": [
+    12398
+   ]
+  },
+  "13106": {
+   "blocks": [
+    13070
+   ]
+  },
+  "13327": {
+   "blocks": [
+    13070
+   ]
+  },
+  "13537": {},
+  "13638": {
+   "blocks": [
+    13070
+   ]
+  },
+  "14214": {
+   "blocks": [
+    14230
+   ]
+  },
+  "14387": {},
+  "14438": {},
+  "14863": {
+   "blocks": [
+    7216,
+    14230
+   ]
+  },
+  "16118": {},
+  "20882": {
+   "blocks": [
+    16444
+   ]
+  },
+  "25902": {},
+  "34552": {},
+  "34712": {},
+  "35282": {
+   "blocks": [
+    32012
+   ]
+  },
+  "35422": {
+   "blocks": [
+    32012
+   ]
+  },
+  "35832": {
+   "blocks": [
+    32012
+   ]
+  },
+  "42888": {},
+  "44571": {},
+  "45631": {},
+  "53301": {},
+  "56611": {},
+  "57551": {},
+  "62361": {},
+  "62561": {},
+  "62621": {},
+  "63451": {},
+  "73821": {},
+  "74531": {},
+  "75111": {},
+  "78711": {},
+  "83161": {},
+  "88741": {},
+  "89381": {},
+  "93401": {},
+  "97341": {},
+  "108881": {},
+  "115921": {},
+  "188881": {},
+  "189851": {},
+  "194933": {},
+  "194961": {},
+  "195269": {},
+  "196571": {},
+  "200069": {},
+  "205307": {},
+  "205759": {},
+  "206525": {},
+  "206583": {},
+  "206783": {},
+  "207025": {},
+  "211605": {},
+  "216333": {},
+  "216733": {},
+  "220562": {},
+  "220902": {},
+  "221388": {},
+  "323": {},
+  "835": {},
+  "1061": {},
+  "1073": {},
+  "1192": {},
+  "2672": {},
+  "5145": {},
+  "5320": {},
+  "6277": {},
+  "6530": {
+   "blocks": [
+    6402
+   ]
+  },
+  "6693": {},
+  "6753": {},
+  "7171": {},
+  "7378": {},
+  "7753": {},
+  "8791": {},
+  "8797": {},
+  "8996": {},
+  "9157": {},
+  "9395": {},
+  "9661": {
+   "blocks": [
+    9243
+   ]
+  },
+  "9954": {
+   "blocks": [
+    9832
+   ]
+  },
+  "10591": {},
+  "10636": {},
+  "11511": {
+   "blocks": [
+    11167
+   ]
+  },
+  "11774": {},
+  "12046": {
+   "blocks": [
+    11808
+   ]
+  },
+  "12092": {},
+  "12176": {},
+  "12433": {},
+  "12478": {},
+  "12500": {
+   "blocks": [
+    11808
+   ]
+  },
+  "12886": {
+   "blocks": [
+    7216,
+    12398
+   ]
+  },
+  "12971": {
+   "blocks": [
+    12398
+   ]
+  },
+  "13867": {},
+  "13912": {},
+  "14936": {
+   "blocks": [
+    14885
+   ]
+  },
+  "14972": {},
+  "15538": {},
+  "16082": {
+   "blocks": [
+    15310
+   ]
+  },
+  "16183": {},
+  "16220": {
+   "blocks": [
+    16055
+   ]
+  },
+  "16507": {},
+  "20312": {},
+  "24102": {},
+  "25342": {},
+  "26622": {},
+  "32942": {},
+  "36882": {},
+  "37042": {
+   "blocks": [
+    7216,
+    32012
+   ]
+  },
+  "40272": {
+   "blocks": [
+    36912
+   ]
+  },
+  "42775": {},
+  "45351": {},
+  "46171": {},
+  "53381": {},
+  "54231": {},
+  "58741": {},
+  "60665": {},
+  "60780": {},
+  "60853": {},
+  "63881": {},
+  "78691": {
+   "see_also": [
+    "https://bugzilla.kernel.org/show_bug.cgi?id=81671"
+   ]
+  },
+  "85581": {},
+  "90961": {},
+  "102861": {},
+  "106181": {},
+  "188771": {},
+  "192601": {},
+  "195505": {},
+  "195923": {},
+  "195957": {},
+  "197807": {
+   "see_also": [
+    "https://bugzilla.kernel.org/show_bug.cgi?id=197147"
+   ]
+  },
+  "198483": {},
+  "199509": {},
+  "199753": {},
+  "199951": {},
+  "200085": {},
+  "200541": {},
+  "200991": {},
+  "201151": {},
+  "202759": {},
+  "202801": {},
+  "202823": {},
+  "203517": {},
+  "205283": {
+   "see_also": [
+    "https://bugzilla.kernel.org/show_bug.cgi?id=205099"
+   ]
+  },
+  "205695": {},
+  "206645": {},
+  "208739": {},
+  "210551": {},
+  "210857": {},
+  "214503": {},
+  "214541": {},
+  "215777": {},
+  "216024": {},
+  "216327": {},
+  "217098": {},
+  "217529": {},
+  "217699": {
+   "see_also": [
+    "https://bugzilla.kernel.org/show_bug.cgi?id=217700"
+   ]
+  },
+  "218838": {},
+  "221733": {},
+  "483": {},
+  "816": {},
+  "1821": {},
+  "2569": {},
+  "2971": {},
+  "3473": {},
+  "3601": {},
+  "5364": {},
+  "5368": {},
+  "5581": {},
+  "5644": {},
+  "5681": {},
+  "5863": {},
+  "6322": {
+   "blocks": [
+    6681
+   ]
+  },
+  "6508": {},
+  "6730": {},
+  "6796": {},
+  "7297": {},
+  "7354": {},
+  "7444": {},
+  "7635": {},
+  "7780": {
+   "blocks": [
+    7216,
+    56331
+   ]
+  },
+  "8044": {},
+  "8668": {},
+  "8733": {},
+  "9321": {
+   "blocks": [
+    9243
+   ]
+  },
+  "9635": {
+   "blocks": [
+    9243
+   ]
+  },
+  "11199": {},
+  "11244": {
+   "blocks": [
+    11167
+   ]
+  },
+  "11703": {
+   "blocks": [
+    7216
+   ]
+  },
+  "11782": {},
+  "12048": {
+   "blocks": [
+    11167
+   ]
+  },
+  "12714": {},
+  "12982": {},
+  "13128": {},
+  "13463": {
+   "blocks": [
+    12398
+   ]
+  },
+  "13584": {
+   "blocks": [
+    13070
+   ]
+  },
+  "13960": {
+   "blocks": [
+    13615
+   ]
+  },
+  "14992": {},
+  "15006": {
+   "blocks": [
+    7216,
+    56331
+   ]
+  },
+  "15142": {
+   "blocks": [
+    14885
+   ]
+  },
+  "15150": {},
+  "15419": {},
+  "15642": {},
+  "16195": {},
+  "16494": {},
+  "18492": {
+   "blocks": [
+    16444
+   ]
+  },
+  "20942": {},
+  "27382": {
+   "blocks": [
+    27352
+   ]
+  },
+  "29532": {},
+  "34322": {},
+  "35082": {},
+  "42976": {},
+  "48891": {},
+  "54731": {},
+  "57911": {},
+  "60835": {},
+  "64651": {},
+  "69341": {},
+  "81901": {},
+  "82101": {},
+  "95801": {},
+  "102121": {},
+  "109531": {},
+  "109681": {
+   "blocks": [
+    195183
+   ]
+  },
+  "185621": {
+   "blocks": [
+    178231
+   ]
+  },
+  "192251": {},
+  "194717": {},
+  "194907": {},
+  "196947": {},
+  "199373": {},
+  "199381": {},
+  "199417": {},
+  "201063": {},
+  "202761": {},
+  "203175": {},
+  "203993": {},
+  "205003": {},
+  "205417": {},
+  "210889": {},
+  "212305": {},
+  "215105": {},
+  "215415": {},
+  "215541": {},
+  "215545": {},
+  "216343": {},
+  "216573": {},
+  "218200": {},
+  "219408": {},
+  "220071": {}
+ }
+}

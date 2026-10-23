@@ -1,0 +1,1485 @@
+{
+  "status": "EXPLORATORY (held-out set previously analysed); plan: evidence_audit_and_baselines_plan.md",
+  "models": {
+    "Jev 1.13": {
+      "wrong_action": {
+        "n": 500,
+        "positives": 215,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.549,
+            "auroc_ci95": [
+              0.496,
+              0.602
+            ],
+            "auprc": 0.498
+          },
+          "action_rule": {
+            "auroc": 0.762,
+            "auroc_ci95": [
+              0.722,
+              0.802
+            ],
+            "auprc": 0.63,
+            "brier": 0.212,
+            "ece10": 0.167
+          },
+          "action_only": {
+            "auroc": 0.762,
+            "auroc_ci95": [
+              0.722,
+              0.802
+            ],
+            "auprc": 0.63,
+            "brier": 0.212,
+            "ece10": 0.168
+          },
+          "E_dec": {
+            "auroc": 0.763,
+            "auroc_ci95": [
+              0.721,
+              0.802
+            ],
+            "auprc": 0.642,
+            "brier": 0.214,
+            "ece10": 0.184
+          },
+          "E_unc": {
+            "auroc": 0.708,
+            "auroc_ci95": [
+              0.665,
+              0.754
+            ],
+            "auprc": 0.619,
+            "brier": 0.214,
+            "ece10": 0.046
+          },
+          "E_all": {
+            "auroc": 0.769,
+            "auroc_ci95": [
+              0.729,
+              0.809
+            ],
+            "auprc": 0.691,
+            "brier": 0.21,
+            "ece10": 0.118
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.0,
+            "ci95": [
+              -0.012,
+              0.011
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": 0.006,
+            "ci95": [
+              -0.016,
+              0.03
+            ],
+            "excludes_0": false
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.214,
+            "ci95": [
+              0.147,
+              0.286
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.159,
+            "ci95": [
+              0.097,
+              0.225
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "severity_wrong": {
+        "n": 500,
+        "positives": 193,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.613,
+            "auroc_ci95": [
+              0.565,
+              0.664
+            ],
+            "auprc": 0.488
+          },
+          "action_rule": {
+            "auroc": 0.303,
+            "auroc_ci95": [
+              0.258,
+              0.351
+            ],
+            "auprc": 0.326,
+            "brier": 0.29,
+            "ece10": 0.31
+          },
+          "action_only": {
+            "auroc": 0.303,
+            "auroc_ci95": [
+              0.258,
+              0.351
+            ],
+            "auprc": 0.326,
+            "brier": 0.29,
+            "ece10": 0.31
+          },
+          "E_dec": {
+            "auroc": 0.282,
+            "auroc_ci95": [
+              0.235,
+              0.332
+            ],
+            "auprc": 0.326,
+            "brier": 0.317,
+            "ece10": 0.385
+          },
+          "E_unc": {
+            "auroc": 0.385,
+            "auroc_ci95": [
+              0.333,
+              0.438
+            ],
+            "auprc": 0.345,
+            "brier": 0.303,
+            "ece10": 0.288
+          },
+          "E_all": {
+            "auroc": 0.373,
+            "auroc_ci95": [
+              0.322,
+              0.425
+            ],
+            "auprc": 0.35,
+            "brier": 0.306,
+            "ece10": 0.275
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": -0.021,
+            "ci95": [
+              -0.053,
+              0.011
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": 0.091,
+            "ci95": [
+              0.059,
+              0.125
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": -0.331,
+            "ci95": [
+              -0.409,
+              -0.257
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": -0.229,
+            "ci95": [
+              -0.288,
+              -0.171
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "any_node_wrong": {
+        "n": 500,
+        "positives": 286,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.56,
+            "auroc_ci95": [
+              0.511,
+              0.61
+            ],
+            "auprc": 0.649
+          },
+          "action_rule": {
+            "auroc": 0.414,
+            "auroc_ci95": [
+              0.369,
+              0.461
+            ],
+            "auprc": 0.565,
+            "brier": 0.255,
+            "ece10": 0.082
+          },
+          "action_only": {
+            "auroc": 0.414,
+            "auroc_ci95": [
+              0.369,
+              0.461
+            ],
+            "auprc": 0.565,
+            "brier": 0.255,
+            "ece10": 0.083
+          },
+          "E_dec": {
+            "auroc": 0.559,
+            "auroc_ci95": [
+              0.509,
+              0.608
+            ],
+            "auprc": 0.639,
+            "brier": 0.265,
+            "ece10": 0.219
+          },
+          "E_unc": {
+            "auroc": 0.572,
+            "auroc_ci95": [
+              0.523,
+              0.622
+            ],
+            "auprc": 0.642,
+            "brier": 0.267,
+            "ece10": 0.182
+          },
+          "E_all": {
+            "auroc": 0.599,
+            "auroc_ci95": [
+              0.551,
+              0.645
+            ],
+            "auprc": 0.684,
+            "brier": 0.26,
+            "ece10": 0.193
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.145,
+            "ci95": [
+              0.099,
+              0.192
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": 0.04,
+            "ci95": [
+              0.005,
+              0.073
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": -0.002,
+            "ci95": [
+              -0.076,
+              0.072
+            ],
+            "excludes_0": false
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.012,
+            "ci95": [
+              -0.055,
+              0.078
+            ],
+            "excludes_0": false
+          }
+        }
+      }
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "wrong_action": {
+        "n": 500,
+        "positives": 369,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.473,
+            "auroc_ci95": [
+              0.411,
+              0.533
+            ],
+            "auprc": 0.718
+          },
+          "action_rule": {
+            "auroc": 0.701,
+            "auroc_ci95": [
+              0.659,
+              0.744
+            ],
+            "auprc": 0.825,
+            "brier": 0.185,
+            "ece10": 0.193
+          },
+          "action_only": {
+            "auroc": 0.701,
+            "auroc_ci95": [
+              0.659,
+              0.744
+            ],
+            "auprc": 0.825,
+            "brier": 0.185,
+            "ece10": 0.193
+          },
+          "E_dec": {
+            "auroc": 0.736,
+            "auroc_ci95": [
+              0.686,
+              0.784
+            ],
+            "auprc": 0.845,
+            "brier": 0.187,
+            "ece10": 0.198
+          },
+          "E_unc": {
+            "auroc": 0.735,
+            "auroc_ci95": [
+              0.682,
+              0.785
+            ],
+            "auprc": 0.87,
+            "brier": 0.198,
+            "ece10": 0.205
+          },
+          "E_all": {
+            "auroc": 0.748,
+            "auroc_ci95": [
+              0.694,
+              0.799
+            ],
+            "auprc": 0.869,
+            "brier": 0.187,
+            "ece10": 0.198
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.035,
+            "ci95": [
+              0.003,
+              0.069
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": 0.012,
+            "ci95": [
+              -0.009,
+              0.032
+            ],
+            "excludes_0": false
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.262,
+            "ci95": [
+              0.176,
+              0.356
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.262,
+            "ci95": [
+              0.179,
+              0.353
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "severity_wrong": {
+        "n": 500,
+        "positives": 364,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.46,
+            "auroc_ci95": [
+              0.399,
+              0.52
+            ],
+            "auprc": 0.698
+          },
+          "action_rule": {
+            "auroc": 0.707,
+            "auroc_ci95": [
+              0.667,
+              0.751
+            ],
+            "auprc": 0.822,
+            "brier": 0.196,
+            "ece10": 0.22
+          },
+          "action_only": {
+            "auroc": 0.707,
+            "auroc_ci95": [
+              0.667,
+              0.751
+            ],
+            "auprc": 0.822,
+            "brier": 0.196,
+            "ece10": 0.219
+          },
+          "E_dec": {
+            "auroc": 0.62,
+            "auroc_ci95": [
+              0.572,
+              0.666
+            ],
+            "auprc": 0.812,
+            "brier": 0.212,
+            "ece10": 0.243
+          },
+          "E_unc": {
+            "auroc": 0.435,
+            "auroc_ci95": [
+              0.372,
+              0.497
+            ],
+            "auprc": 0.666,
+            "brier": 0.227,
+            "ece10": 0.136
+          },
+          "E_all": {
+            "auroc": 0.506,
+            "auroc_ci95": [
+              0.443,
+              0.567
+            ],
+            "auprc": 0.727,
+            "brier": 0.219,
+            "ece10": 0.136
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": -0.087,
+            "ci95": [
+              -0.142,
+              -0.032
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": -0.113,
+            "ci95": [
+              -0.168,
+              -0.058
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.16,
+            "ci95": [
+              0.085,
+              0.237
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": -0.025,
+            "ci95": [
+              -0.104,
+              0.058
+            ],
+            "excludes_0": false
+          }
+        }
+      },
+      "any_node_wrong": {
+        "n": 500,
+        "positives": 416,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.401,
+            "auroc_ci95": [
+              0.333,
+              0.472
+            ],
+            "auprc": 0.79
+          },
+          "action_rule": {
+            "auroc": 0.743,
+            "auroc_ci95": [
+              0.689,
+              0.797
+            ],
+            "auprc": 0.906,
+            "brier": 0.13,
+            "ece10": 0.167
+          },
+          "action_only": {
+            "auroc": 0.743,
+            "auroc_ci95": [
+              0.689,
+              0.797
+            ],
+            "auprc": 0.906,
+            "brier": 0.13,
+            "ece10": 0.168
+          },
+          "E_dec": {
+            "auroc": 0.755,
+            "auroc_ci95": [
+              0.694,
+              0.815
+            ],
+            "auprc": 0.91,
+            "brier": 0.139,
+            "ece10": 0.183
+          },
+          "E_unc": {
+            "auroc": 0.544,
+            "auroc_ci95": [
+              0.487,
+              0.603
+            ],
+            "auprc": 0.875,
+            "brier": 0.147,
+            "ece10": 0.091
+          },
+          "E_all": {
+            "auroc": 0.724,
+            "auroc_ci95": [
+              0.659,
+              0.793
+            ],
+            "auprc": 0.904,
+            "brier": 0.14,
+            "ece10": 0.111
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.012,
+            "ci95": [
+              -0.019,
+              0.044
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": -0.031,
+            "ci95": [
+              -0.075,
+              0.009
+            ],
+            "excludes_0": false
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.354,
+            "ci95": [
+              0.246,
+              0.461
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.144,
+            "ci95": [
+              0.037,
+              0.244
+            ],
+            "excludes_0": true
+          }
+        }
+      }
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "wrong_action": {
+        "n": 500,
+        "positives": 401,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.551,
+            "auroc_ci95": [
+              0.479,
+              0.621
+            ],
+            "auprc": 0.797
+          },
+          "action_rule": {
+            "auroc": 0.58,
+            "auroc_ci95": [
+              0.546,
+              0.618
+            ],
+            "auprc": 0.828,
+            "brier": 0.168,
+            "ece10": 0.168
+          },
+          "action_only": {
+            "auroc": 0.58,
+            "auroc_ci95": [
+              0.546,
+              0.618
+            ],
+            "auprc": 0.828,
+            "brier": 0.168,
+            "ece10": 0.167
+          },
+          "E_dec": {
+            "auroc": 0.637,
+            "auroc_ci95": [
+              0.581,
+              0.695
+            ],
+            "auprc": 0.848,
+            "brier": 0.17,
+            "ece10": 0.174
+          },
+          "E_unc": {
+            "auroc": 0.62,
+            "auroc_ci95": [
+              0.56,
+              0.68
+            ],
+            "auprc": 0.858,
+            "brier": 0.18,
+            "ece10": 0.149
+          },
+          "E_all": {
+            "auroc": 0.715,
+            "auroc_ci95": [
+              0.659,
+              0.768
+            ],
+            "auprc": 0.898,
+            "brier": 0.166,
+            "ece10": 0.17
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.057,
+            "ci95": [
+              0.01,
+              0.103
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": 0.078,
+            "ci95": [
+              0.03,
+              0.124
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.086,
+            "ci95": [
+              -0.011,
+              0.181
+            ],
+            "excludes_0": false
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.069,
+            "ci95": [
+              0.02,
+              0.119
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "severity_wrong": {
+        "n": 500,
+        "positives": 404,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.57,
+            "auroc_ci95": [
+              0.5,
+              0.639
+            ],
+            "auprc": 0.818
+          },
+          "action_rule": {
+            "auroc": 0.437,
+            "auroc_ci95": [
+              0.4,
+              0.47
+            ],
+            "auprc": 0.802,
+            "brier": 0.186,
+            "ece10": 0.187
+          },
+          "action_only": {
+            "auroc": 0.437,
+            "auroc_ci95": [
+              0.4,
+              0.47
+            ],
+            "auprc": 0.802,
+            "brier": 0.187,
+            "ece10": 0.187
+          },
+          "E_dec": {
+            "auroc": 0.498,
+            "auroc_ci95": [
+              0.436,
+              0.559
+            ],
+            "auprc": 0.815,
+            "brier": 0.188,
+            "ece10": 0.194
+          },
+          "E_unc": {
+            "auroc": 0.582,
+            "auroc_ci95": [
+              0.513,
+              0.647
+            ],
+            "auprc": 0.827,
+            "brier": 0.187,
+            "ece10": 0.185
+          },
+          "E_all": {
+            "auroc": 0.579,
+            "auroc_ci95": [
+              0.509,
+              0.643
+            ],
+            "auprc": 0.811,
+            "brier": 0.188,
+            "ece10": 0.188
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.061,
+            "ci95": [
+              0.012,
+              0.108
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": 0.081,
+            "ci95": [
+              0.033,
+              0.129
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": -0.072,
+            "ci95": [
+              -0.131,
+              -0.017
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.012,
+            "ci95": [
+              -0.019,
+              0.043
+            ],
+            "excludes_0": false
+          }
+        }
+      },
+      "any_node_wrong": {
+        "n": 500,
+        "positives": 446,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.488,
+            "auroc_ci95": [
+              0.398,
+              0.577
+            ],
+            "auprc": 0.874
+          },
+          "action_rule": {
+            "auroc": 0.415,
+            "auroc_ci95": [
+              0.361,
+              0.463
+            ],
+            "auprc": 0.884,
+            "brier": 0.111,
+            "ece10": 0.124
+          },
+          "action_only": {
+            "auroc": 0.415,
+            "auroc_ci95": [
+              0.361,
+              0.463
+            ],
+            "auprc": 0.884,
+            "brier": 0.111,
+            "ece10": 0.124
+          },
+          "E_dec": {
+            "auroc": 0.425,
+            "auroc_ci95": [
+              0.347,
+              0.499
+            ],
+            "auprc": 0.874,
+            "brier": 0.111,
+            "ece10": 0.122
+          },
+          "E_unc": {
+            "auroc": 0.49,
+            "auroc_ci95": [
+              0.396,
+              0.585
+            ],
+            "auprc": 0.859,
+            "brier": 0.116,
+            "ece10": 0.133
+          },
+          "E_all": {
+            "auroc": 0.498,
+            "auroc_ci95": [
+              0.4,
+              0.596
+            ],
+            "auprc": 0.86,
+            "brier": 0.115,
+            "ece10": 0.129
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.01,
+            "ci95": [
+              -0.047,
+              0.063
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": 0.073,
+            "ci95": [
+              -0.008,
+              0.154
+            ],
+            "excludes_0": false
+          },
+          "E_dec-final_step_conf": {
+            "diff": -0.063,
+            "ci95": [
+              -0.164,
+              0.04
+            ],
+            "excludes_0": false
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.002,
+            "ci95": [
+              -0.039,
+              0.042
+            ],
+            "excludes_0": false
+          }
+        }
+      }
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "wrong_action": {
+        "n": 500,
+        "positives": 362,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.401,
+            "auroc_ci95": [
+              0.341,
+              0.461
+            ],
+            "auprc": 0.659
+          },
+          "action_rule": {
+            "auroc": 0.688,
+            "auroc_ci95": [
+              0.647,
+              0.732
+            ],
+            "auprc": 0.809,
+            "brier": 0.173,
+            "ece10": 0.174
+          },
+          "action_only": {
+            "auroc": 0.688,
+            "auroc_ci95": [
+              0.647,
+              0.732
+            ],
+            "auprc": 0.809,
+            "brier": 0.174,
+            "ece10": 0.174
+          },
+          "E_dec": {
+            "auroc": 0.677,
+            "auroc_ci95": [
+              0.625,
+              0.729
+            ],
+            "auprc": 0.803,
+            "brier": 0.175,
+            "ece10": 0.174
+          },
+          "E_unc": {
+            "auroc": 0.733,
+            "auroc_ci95": [
+              0.681,
+              0.784
+            ],
+            "auprc": 0.849,
+            "brier": 0.176,
+            "ece10": 0.153
+          },
+          "E_all": {
+            "auroc": 0.731,
+            "auroc_ci95": [
+              0.679,
+              0.784
+            ],
+            "auprc": 0.84,
+            "brier": 0.175,
+            "ece10": 0.173
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": -0.012,
+            "ci95": [
+              -0.039,
+              0.019
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": 0.055,
+            "ci95": [
+              0.009,
+              0.101
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.276,
+            "ci95": [
+              0.179,
+              0.379
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.332,
+            "ci95": [
+              0.241,
+              0.428
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "severity_wrong": {
+        "n": 500,
+        "positives": 367,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.415,
+            "auroc_ci95": [
+              0.354,
+              0.474
+            ],
+            "auprc": 0.675
+          },
+          "action_rule": {
+            "auroc": 0.32,
+            "auroc_ci95": [
+              0.276,
+              0.36
+            ],
+            "auprc": 0.717,
+            "brier": 0.214,
+            "ece10": 0.107
+          },
+          "action_only": {
+            "auroc": 0.32,
+            "auroc_ci95": [
+              0.276,
+              0.36
+            ],
+            "auprc": 0.717,
+            "brier": 0.215,
+            "ece10": 0.107
+          },
+          "E_dec": {
+            "auroc": 0.307,
+            "auroc_ci95": [
+              0.259,
+              0.358
+            ],
+            "auprc": 0.696,
+            "brier": 0.219,
+            "ece10": 0.105
+          },
+          "E_unc": {
+            "auroc": 0.44,
+            "auroc_ci95": [
+              0.384,
+              0.496
+            ],
+            "auprc": 0.709,
+            "brier": 0.223,
+            "ece10": 0.133
+          },
+          "E_all": {
+            "auroc": 0.453,
+            "auroc_ci95": [
+              0.399,
+              0.507
+            ],
+            "auprc": 0.723,
+            "brier": 0.221,
+            "ece10": 0.124
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": -0.013,
+            "ci95": [
+              -0.041,
+              0.018
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": 0.145,
+            "ci95": [
+              0.089,
+              0.202
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": -0.107,
+            "ci95": [
+              -0.164,
+              -0.049
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.025,
+            "ci95": [
+              -0.031,
+              0.081
+            ],
+            "excludes_0": false
+          }
+        }
+      },
+      "any_node_wrong": {
+        "n": 500,
+        "positives": 425,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.289,
+            "auroc_ci95": [
+              0.226,
+              0.353
+            ],
+            "auprc": 0.768
+          },
+          "action_rule": {
+            "auroc": 0.725,
+            "auroc_ci95": [
+              0.664,
+              0.79
+            ],
+            "auprc": 0.913,
+            "brier": 0.122,
+            "ece10": 0.132
+          },
+          "action_only": {
+            "auroc": 0.725,
+            "auroc_ci95": [
+              0.664,
+              0.79
+            ],
+            "auprc": 0.913,
+            "brier": 0.122,
+            "ece10": 0.132
+          },
+          "E_dec": {
+            "auroc": 0.668,
+            "auroc_ci95": [
+              0.611,
+              0.725
+            ],
+            "auprc": 0.912,
+            "brier": 0.125,
+            "ece10": 0.068
+          },
+          "E_unc": {
+            "auroc": 0.626,
+            "auroc_ci95": [
+              0.551,
+              0.705
+            ],
+            "auprc": 0.88,
+            "brier": 0.131,
+            "ece10": 0.091
+          },
+          "E_all": {
+            "auroc": 0.663,
+            "auroc_ci95": [
+              0.596,
+              0.733
+            ],
+            "auprc": 0.898,
+            "brier": 0.129,
+            "ece10": 0.081
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": -0.056,
+            "ci95": [
+              -0.117,
+              0.009
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": -0.005,
+            "ci95": [
+              -0.068,
+              0.056
+            ],
+            "excludes_0": false
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.379,
+            "ci95": [
+              0.285,
+              0.479
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.337,
+            "ci95": [
+              0.243,
+              0.439
+            ],
+            "excludes_0": true
+          }
+        }
+      }
+    },
+    "openjev/openjev-27B": {
+      "wrong_action": {
+        "n": 500,
+        "positives": 237,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.575,
+            "auroc_ci95": [
+              0.525,
+              0.623
+            ],
+            "auprc": 0.573
+          },
+          "action_rule": {
+            "auroc": 0.746,
+            "auroc_ci95": [
+              0.705,
+              0.787
+            ],
+            "auprc": 0.647,
+            "brier": 0.22,
+            "ece10": 0.168
+          },
+          "action_only": {
+            "auroc": 0.746,
+            "auroc_ci95": [
+              0.705,
+              0.787
+            ],
+            "auprc": 0.647,
+            "brier": 0.22,
+            "ece10": 0.168
+          },
+          "E_dec": {
+            "auroc": 0.748,
+            "auroc_ci95": [
+              0.706,
+              0.79
+            ],
+            "auprc": 0.642,
+            "brier": 0.22,
+            "ece10": 0.173
+          },
+          "E_unc": {
+            "auroc": 0.651,
+            "auroc_ci95": [
+              0.604,
+              0.698
+            ],
+            "auprc": 0.571,
+            "brier": 0.235,
+            "ece10": 0.062
+          },
+          "E_all": {
+            "auroc": 0.752,
+            "auroc_ci95": [
+              0.71,
+              0.794
+            ],
+            "auprc": 0.668,
+            "brier": 0.223,
+            "ece10": 0.144
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.002,
+            "ci95": [
+              -0.007,
+              0.011
+            ],
+            "excludes_0": false
+          },
+          "E_all-E_dec": {
+            "diff": 0.004,
+            "ci95": [
+              -0.019,
+              0.025
+            ],
+            "excludes_0": false
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.173,
+            "ci95": [
+              0.11,
+              0.238
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.076,
+            "ci95": [
+              0.025,
+              0.128
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "severity_wrong": {
+        "n": 500,
+        "positives": 194,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.627,
+            "auroc_ci95": [
+              0.581,
+              0.679
+            ],
+            "auprc": 0.545
+          },
+          "action_rule": {
+            "auroc": 0.233,
+            "auroc_ci95": [
+              0.194,
+              0.276
+            ],
+            "auprc": 0.326,
+            "brier": 0.271,
+            "ece10": 0.107
+          },
+          "action_only": {
+            "auroc": 0.233,
+            "auroc_ci95": [
+              0.194,
+              0.276
+            ],
+            "auprc": 0.326,
+            "brier": 0.271,
+            "ece10": 0.107
+          },
+          "E_dec": {
+            "auroc": 0.277,
+            "auroc_ci95": [
+              0.229,
+              0.327
+            ],
+            "auprc": 0.357,
+            "brier": 0.29,
+            "ece10": 0.351
+          },
+          "E_unc": {
+            "auroc": 0.398,
+            "auroc_ci95": [
+              0.347,
+              0.45
+            ],
+            "auprc": 0.379,
+            "brier": 0.292,
+            "ece10": 0.281
+          },
+          "E_all": {
+            "auroc": 0.392,
+            "auroc_ci95": [
+              0.337,
+              0.444
+            ],
+            "auprc": 0.4,
+            "brier": 0.287,
+            "ece10": 0.276
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": 0.043,
+            "ci95": [
+              0.01,
+              0.081
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": 0.115,
+            "ci95": [
+              0.074,
+              0.159
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": -0.351,
+            "ci95": [
+              -0.416,
+              -0.287
+            ],
+            "excludes_0": true
+          },
+          "E_unc-final_step_conf": {
+            "diff": -0.229,
+            "ci95": [
+              -0.273,
+              -0.186
+            ],
+            "excludes_0": true
+          }
+        }
+      },
+      "any_node_wrong": {
+        "n": 500,
+        "positives": 296,
+        "scores": {
+          "final_step_conf": {
+            "auroc": 0.564,
+            "auroc_ci95": [
+              0.516,
+              0.613
+            ],
+            "auprc": 0.672
+          },
+          "action_rule": {
+            "auroc": 0.712,
+            "auroc_ci95": [
+              0.663,
+              0.76
+            ],
+            "auprc": 0.72,
+            "brier": 0.227,
+            "ece10": 0.226
+          },
+          "action_only": {
+            "auroc": 0.712,
+            "auroc_ci95": [
+              0.663,
+              0.76
+            ],
+            "auprc": 0.72,
+            "brier": 0.227,
+            "ece10": 0.227
+          },
+          "E_dec": {
+            "auroc": 0.619,
+            "auroc_ci95": [
+              0.57,
+              0.666
+            ],
+            "auprc": 0.698,
+            "brier": 0.236,
+            "ece10": 0.246
+          },
+          "E_unc": {
+            "auroc": 0.609,
+            "auroc_ci95": [
+              0.561,
+              0.658
+            ],
+            "auprc": 0.69,
+            "brier": 0.245,
+            "ece10": 0.12
+          },
+          "E_all": {
+            "auroc": 0.672,
+            "auroc_ci95": [
+              0.626,
+              0.717
+            ],
+            "auprc": 0.773,
+            "brier": 0.231,
+            "ece10": 0.146
+          }
+        },
+        "contrasts": {
+          "E_dec-action_rule": {
+            "diff": -0.093,
+            "ci95": [
+              -0.133,
+              -0.057
+            ],
+            "excludes_0": true
+          },
+          "E_all-E_dec": {
+            "diff": 0.053,
+            "ci95": [
+              0.023,
+              0.082
+            ],
+            "excludes_0": true
+          },
+          "E_dec-final_step_conf": {
+            "diff": 0.055,
+            "ci95": [
+              -0.012,
+              0.118
+            ],
+            "excludes_0": false
+          },
+          "E_unc-final_step_conf": {
+            "diff": 0.045,
+            "ci95": [
+              -0.008,
+              0.093
+            ],
+            "excludes_0": false
+          }
+        }
+      }
+    }
+  }
+}
