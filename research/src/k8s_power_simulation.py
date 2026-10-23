@@ -88,5 +88,32 @@ def main():
     OUT.write_text(json.dumps(out, indent=2))
 
 
+def realized(n):
+    """Amendment 2 gate 3: recompute the K1 table at the realized test n and fix d*."""
+    global NS
+    NS = [n]
+    d_conf = np.sqrt(2) * norm.ppf(AUC_CONF)
+    cells = []
+    for D in DIFFS:
+        for p in PREV:
+            for rho in RHO:
+                d_rule = tune_rule_shift(AUC_CONF + D, p, rho)
+                ps = np.array([one_study(n, p, rho, d_conf, d_rule) for _ in range(SIMS)])
+                cells.append({"diff": D, "prevalence": p, "rho": rho, "n": n,
+                              "power_alpha_0.05": round(float(np.mean(ps <= 0.05)), 3),
+                              "power_alpha_0.0167_holm_worst": round(float(np.mean(ps <= 0.05 / 3)), 3)})
+                print(cells[-1], flush=True)
+    ok = [D for D in DIFFS if all(c["power_alpha_0.05"] >= 0.80 for c in cells if c["diff"] == D)]
+    d_star = min(ok) if ok else None
+    out = ROOT / "research" / "results" / "k8s_power_realized.json"
+    out.write_text(json.dumps({"n": n, "d_star": d_star, "rule": "smallest simulated effect with power >= 0.80 in every setting at nominal alpha",
+                               "cells": cells}, indent=2))
+    print("d_star", d_star)
+
+
 if __name__ == "__main__":
-    main()
+    import sys as _sys
+    if len(_sys.argv) == 3 and _sys.argv[1] == "--n":
+        realized(int(_sys.argv[2]))
+    else:
+        main()

@@ -1,60 +1,47 @@
-# Kubernetes replication: build report and feasibility outcome
+# Kubernetes replication: build report (Amendment 2)
 
 **Protocol:** `independent_workflow_preregistration.md` v1 plus
-Amendment 1 (cleaning fix).
+Amendment 1 (cleaning) and Amendment 2 (test widened to 600, one-time).
 
-**Snapshot:** 2026-10-23T17:51:00.031112+00:00
+**History.** The pre-registered 500-issue test window failed the
+feasibility gate (16 escalate). That result is kept in git at commit
+`09ae38a`. This report is the amended build.
 
-**Calls:** none. This was a GitHub-only build; no Jev call was made.
+**Snapshot:** 2026-10-23T17:54:37.382680+00:00
 
-## Counts
+**Calls:** none (GitHub-only build).
 
-- **Fetched:** 12,535 candidate items (issues and pull requests).
-- **Eligible:** 1,320.
-- **Exclusions:** {"not_exactly_one_kind": 2093, "not_exactly_one_sig": 187, "too_short_after_cleaning": 30, "pull_request": 8738, "not_exactly_one_priority": 36, "excluded_label": 120, "after_cutoff": 11}.
+## Splits
 
-**Splits (chronological):**
-
-| Split | Issues | Created | Filed through issue forms |
-|---|---:|---|---:|
-| Development | 500 | 2016-02-03 – 2020-08-13 | 0% |
-| Calibration | 150 | 2020-08-17 – 2022-04-21 | 22% |
-| Test | 483 (after removing 17 linked) | 2022-05-09 – 2026-09-30 | 80% |
-
-## Target-action prevalence under F
-
-| Split | accept | defer | escalate |
-|---|---:|---:|---:|
-| Development | 237 | 153 | 110 |
-| Calibration | 87 | 48 | 15 |
-| Test | 380 | 87 | **16** |
+| Split | Issues | Created | Issue-form share | accept | defer | escalate |
+|---|---:|---|---:|---:|---:|---:|
+| Development | 500 | 2015-06-02 – 2019-07-18 | 0% | 248 | 149 | 103 |
+| Calibration | 150 | 2019-07-19 – 2021-04-09 | 0% | 81 | 49 | 20 |
+| Test | 582 (600 minus 18 linked) | 2021-04-16 – 2026-09-30 | 72% | 441 | 116 | 25 |
 
 ## Gates
 
-- **Leakage, hard checks: PASS** (after Amendment 1).
-  - **First build:** 24 issues kept quoted prow commands, and old-template
-    kind answers leaked.
-  - **Fixed** by Amendment 1. The rebuild has 0 hard failures.
-- **Feasibility: FAIL.** The rule needs n ≥ 20 for each action in both the
-  development and test sets. The test set has **16 escalate**.
-  **By the pre-committed rule, the study stops as infeasible under the
-  pre-registered design. No model call is made.**
+1. **Feasibility: PASS.** Every action has n ≥ 20 in both the
+   development and test sets, after linked-issue removal.
+2. **Leakage, hard checks: PASS** (0 failures).
+3. **Power at the realized n = 582:** recomputed before any call
+   (`k8s_power_realized.json`). d\* is fixed from it.
+4. **Not authorized by passing these gates:** the 270-call smoke test and
+   the 40-issue blinded human read. Each is a separate decision.
 
-## Why the gate fails
+## Binding framing
 
-The project changed between the two periods:
+Development and test differ at once in:
+- **label prevalence:** 21% vs 4% escalate;
+- **input format:** 0% vs 72% issue forms;
+- **period:** 2015–2019 vs 2021–2026.
 
-| | Development (2016–2020) | Test (2022–2026) |
-|---|---|---|
-| `critical-urgent` issues | 22% | 3% |
-| Issues filed through forms | 0% | 80% |
-
-This is itself a large, natural label-prior shift. It is exactly the
-situation the paper's label-shift finding concerns, so it is
-informative. But the frozen design cannot be run on it.
+So this is a **combined temporal and distribution-shift test**, not an
+isolated label-shift test. It is a transfer test, not a guaranteed
+replication.
 
 ## Other diagnostics
 
-- **Priority-label lag:** median 4 days, 90th percentile 443 days.
-- **Early-triage subset:** 729 issues.
-- **Dataset SHA-256:** `ed30cb7119cc3530f6f5066e452be283b6938ddbe32c36c6e09b793e8f2bc9bd`.
+- **Priority-label lag:** median 4 days, 90th percentile 468 days.
+- **Early-triage subset:** 732 issues.
+- **Dataset SHA-256:** `60aa4120c2e51b3c5bbc0554cf8b4833df6905e763c655606693fb69089372ba`.
