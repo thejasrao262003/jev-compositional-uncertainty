@@ -1,6 +1,6 @@
 # Pre-registration: independent-workflow replication (Kubernetes issue triage)
 
-**Status:** DRAFT 2.2 for review, 2026-10-23.
+**Status:** DRAFT 2.3 for review, 2026-10-23.
 - Draft 1 (commit `7c692be`) is superseded; Draft 2 responds to its
   review, issues A–F plus the smaller items.
 - **Draft 2.1** fixes four problems found in a line-by-line read of
@@ -14,6 +14,12 @@
     integration, not the specification; storage plugins; devices and
     images);
   - names the blinded reader.
+- **Draft 2.3** answers the review of Draft 2.2:
+  - consistent K3 interpretation (inconclusive, never "fails");
+  - unstable answers handled identically in the BBSE C and μ;
+  - a pre-committed stop rule for too-rare actions;
+  - a qualified K2 power claim;
+  - the exact model-facing input, traced to code and commits.
 - No issue has been fetched for this study.
 - No model call has been made.
 - No outcome exists.
@@ -228,9 +234,23 @@ after approval**, including after the smoke test.
     "Must be actively worked on as someone's top priority right now"]}}
 ```
 
-**Adapter (appended to the issue text, as in the original):**
-- after node 1: `Routing determination: <sig>.`
-- after node 2: `Bug assessment: a bug.` or `Bug assessment: not a bug.`
+**Exact model-facing input.**
+- **The request body** is exactly `{"state": <state>, "model":
+  "jev-latest", "questions": <one of the three JSON objects above>}`.
+- **It is sent by** `research/src/jev_client/client.py`, unchanged since
+  commit `f480613`. There are no wrapper or system instructions. The
+  JSON objects above are the exact `questions` values.
+- **The state** is built by the original adapter, `node_state` in
+  `research/src/run_mozilla_validation.py` at commit `7c15bd7`. Only its
+  two strings are relabelled for this workflow:
+  - **node 1:** `state` = cleaned issue text.
+  - **node 2:** `state` = `<text>\n\nRouting determination: <sig>.`
+  - **node 3:** `state` = `<text>\n\nRouting determination: <sig>. Bug
+    assessment: <a bug | not a bug>.`
+  - **A missing upstream decision** is written `undetermined`, never
+    `None`, as in the original.
+- **Recorded in the runner's manifest:** the new runner's code hash, and
+  a unit test asserting these exact strings.
 
 ### 4.2 Truth tables
 
@@ -380,8 +400,17 @@ subsample with equal counts per priority level (seed fixed,
     `score` answer, excluding unstable answers.
   - Confusion matrix: C[i, j] = share of quota-subsample issues with
     answer i and label j.
-  - Answer mix: μ[i] = share of **test** issues with answer i (no test
-    labels).
+  - Answer mix: μ[i] = share of **test** issues with answer i, among
+    test issues with a **stable** `score` answer. Unstable answers are
+    excluded from both C and μ, so both are defined on the same event,
+    a stable answer, and each sums to 1. No test labels are used.
+  - **Estimand.** The correction estimates the test label mix
+    *conditional on a stable `score` answer*. It assumes instability is
+    unrelated to the label. The unstable-answer fraction is reported for
+    the quota subsample and for the test set.
+  - **Weights apply to all quota-subsample issues by label,** including
+    those with an unstable answer. Those issues stay in the fit, with the
+    weight of their label.
   - Solve C v = μ. If cond(C) > 100 or the solve fails, K3 is
     **"not evaluable"** and counted as not supported. Negative v are
     clipped to 0.
@@ -449,9 +478,14 @@ K1–K3, family-wise α = 0.05.
   realized-n power is reported.
 
 **K2 and K3:**
-- **K2** (above chance) is a one-sample contrast against 0.5. It is
-  strictly easier than K1 at the same n and effect, so it is not
-  simulated separately.
+- **K2** (above chance) is a one-sample contrast against 0.5.
+  - **Not simulated.** Under the simulation's assumptions the action-rule
+    score's own AUROC (0.58–0.75 for the K1 effects simulated) is
+    expected to be easier to distinguish from 0.5 than the paired
+    difference is from 0.
+  - **The power of K2 was not directly evaluated.** A non-supported K2
+    is read with the same equivalence-style rule as K1, with d\* taken
+    from the K1 table as an approximation, and is labelled as such.
 - **K3 was not simulated.** Its effect size cannot be planned from the
   original study, because that study had no quota-vs-natural mismatch on
   a priority target. A non-supported K3 is therefore always reported as
@@ -471,8 +505,15 @@ K1–K3, family-wise α = 0.05.
   - **Upper bound ≥ d\*:** reported as **inconclusive**. An effect of
     detectable size remains compatible with the data.
   - Either way, this is stated in the paper's abstract.
-- **K3 supported:** the label-free correction transfers.
-- **K3 not supported or not evaluable:** it does not, with the reason.
+- **K3 supported:** the pre-registered test supports the label-free
+  correction in this workflow.
+- **K3 not supported: inconclusive about the correction.** It is never
+  reported as evidence that the correction fails, because K3's power was
+  not simulated. The report says which case applies:
+  - (i) **a negative point estimate** (arm b below arm a);
+  - (ii) **a positive but non-significant estimate**;
+  - (iii) **not evaluable**: the stability check failed (cond(C) > 100)
+    or the solve failed.
 - **Stability is not accuracy.** Passing the condition-number check
   shows only that the BBSE inversion is numerically stable, not that the
   estimated mix is correct. The estimated mix is reported against the
@@ -505,10 +546,14 @@ Kubernetes triage and are reported as such.
 2. Counts by routing, kind and priority, and their joint distributions,
    per split.
 3. Target-action prevalence under F, per split.
-   - **Feasibility (descriptive, no rebalancing):** each target action
-     present in development with n ≥ 20.
-   - If not, report it, and the decision on proceeding is made before
-     any call.
+   - **Feasibility rule (pre-committed, no rebalancing):** each target
+     action (accept, defer, escalate) must have n ≥ 20 in the development
+     set **and** n ≥ 20 in the test set.
+   - **If any count is below 20, the study stops.** It is reported as
+     infeasible under the pre-registered design. No model call is made.
+   - **Any alternative design** (for example, merging actions or another
+     population) requires a new dated amendment, written and approved
+     before any model call. It is reported as a deviation.
 4. Split sizes, linked-issue removals and the label-lag distribution.
 5. The leakage audit: hard checks, soft-flag rates, and the 40-issue
    blinded sample, ready for an author to read.
