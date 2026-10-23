@@ -1,6 +1,6 @@
 # Pre-registration: independent-workflow replication (Kubernetes issue triage)
 
-**Status:** DRAFT 2.1 for review, 2026-10-23.
+**Status:** DRAFT 2.2 for review, 2026-10-23.
 - Draft 1 (commit `7c692be`) is superseded; Draft 2 responds to its
   review, issues A–F plus the smaller items.
 - **Draft 2.1** fixes four problems found in a line-by-line read of
@@ -9,6 +9,11 @@
   2. model-facing questions that were not pre-registered;
   3. no power statement for K2 and K3;
   4. an unspecified (human) blinded reader.
+- **Draft 2.2:**
+  - adds the reviewer's SIG-scope nuances to the routing criteria (CNI
+    integration, not the specification; storage plugins; devices and
+    images);
+  - names the blinded reader.
 - No issue has been fetched for this study.
 - No model call has been made.
 - No outcome exists.
@@ -151,8 +156,13 @@ boundary, using the existing builders' functions.
   are authorized.
   - **Sample:** 40 cleaned issues (seed `zlib.crc32("k8s-blind")`),
     stratified 20 development and 20 test.
-  - **Reader:** a human author (not an AI assistant) reads each one
-    without its labels.
+  - **Reader:** Tushar M (a human author who did not design the cleaning
+    rules), or Thejas P Rao if Tushar is unavailable. Not an AI
+    assistant.
+    - The reader receives the cleaned text only, without reference
+      labels, model outputs, or any marker of development or test.
+    - The reader records the label-cue judgment for each issue before
+      seeing any label metadata.
   - **What the reader records**, per issue:
     1. Is any of the three labels stated or recoverable from an explicit
        cue (a prow command, label text, form heading, SIG team mention,
@@ -186,9 +196,14 @@ and `c3 = 1` with `c2 = 1` means defer. The semantics in this workflow:
 
 ### 4.1 Model-facing questions (frozen at approval)
 
-The questions use the original study's format and adapter. The option
-criteria for routing are the authors' summaries of each SIG's scope, and
-they must be checked against the SIG charters at approval. Priority
+The questions use the original study's format and adapter.
+- **Routing criteria** summarize each SIG's official scope. They were
+  checked against the Kubernetes community SIG descriptions in review
+  (2026-10-23). Network covers the Kubernetes side of network-plugin
+  integration, not the CNI specification itself. Node's charter
+  excludes network and persistent-storage management.
+- **The charters establish scope, not that every label is correct,**
+  which is consistent with the operational target (§4.2). Priority
 criteria quote the label descriptions (§3.1). **No wording may change
 after approval**, including after the smoke test.
 
@@ -196,9 +211,9 @@ after approval**, including after the smoke test.
 {"routing": {"type": "choice",
   "instructions": "Which Kubernetes special interest group (SIG) should own this issue?",
   "criteria": {
-    "network": "Cluster networking: Services, kube-proxy, DNS, Ingress and Gateway, NetworkPolicy, endpoints, CNI integration",
-    "storage": "Storage: volumes, PersistentVolumes and claims, StorageClasses, CSI, snapshots, attach and mount",
-    "node": "The node and kubelet: pod lifecycle on the node, container runtime (CRI), resource management, cgroups, node status"}}}
+    "network": "Cluster networking: Services, kube-proxy, DNS, Ingress and Gateway, NetworkPolicy, endpoints, and the Kubernetes side of network-plugin (CNI) integration",
+    "storage": "Persistent storage: volumes, PersistentVolumes and claims, StorageClasses, storage plugins and CSI, snapshots, attach and mount",
+    "node": "The node and kubelet: pod lifecycle on the node, container runtime (CRI), node-level resource management, devices and images, node status and reliability"}}}
 ```
 ```json
 {"bug": {"type": "noul",
