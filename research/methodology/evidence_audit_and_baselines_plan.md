@@ -132,3 +132,36 @@ now. The results go in `CITATION_VERIFICATION.md`.
   `research/src/baseline_ablations.py`.
 - Results: `research/results/evidence_audit.{json,md}` and
   `research/results/baseline_ablations.{json,md}`.
+
+## Addendum H (2026-10-23)
+
+**Status:** written after sections E and F were computed, before H is
+computed.
+
+**Observation from F.** On the severity-wrong target, estimators fitted
+on development bugs rank held-out errors *below* chance. A direct
+tabulation explains why: P(severity wrong | `score` decision) inverts
+between the quota-sampled development mix and the natural held-out mix.
+For Jev, a level-1 answer is 60% wrong in development and 20% wrong
+held out.
+
+**Question.** Is the inversion a label-prior shift that re-weighting can
+repair?
+
+**Analysis:**
+- Refit the action-rule and decision-only estimators on development bugs
+  re-weighted to each tracker's natural (group × level) label mix.
+- The mix comes from the held-out manifests' label counts, the same
+  weights as the power simulation. No held-out model output is used.
+- The weighted rule uses weighted error rates by action. The weighted
+  estimator uses scikit-learn `LogisticRegression(C=1.0)` with
+  standardized features and `sample_weight`.
+- Evaluate on the held-out bugs for all three targets, for all 5 models,
+  with the same AUROC and bootstrap CIs.
+
+**Reading (fixed now):**
+- If re-weighting restores above-chance ranking on severity-wrong, the
+  inversion is attributed to prior shift.
+- The paper then states that decision-conditioned error rates must be
+  estimated under the deployment label mix.
+- Either way the result is exploratory.
