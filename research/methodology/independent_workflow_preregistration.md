@@ -873,3 +873,11 @@ how to treat the model version. That decision will be a new amendment.
 is served. It counts toward the budget, and the cap becomes 10,290. If
 the version is not served, nothing more runs, and the authors choose
 between running on `jev-1.14.0` (disclosed) and stopping.
+
+**Smoke test on the pinned `jev-1.13.0`: PASS** (2026-10-24).
+- **Calls:** 270 (30 development issues × 9).
+- **Results:** all HTTP 200; all parsed; all resolved to `jev-1.13.0`;
+  0 retries; 0 failed issues.
+- **Only these criteria were inspected.**
+- **The smoke outputs are reused as part of the development set** (§5).
+- **The full run needs separate authorization.**

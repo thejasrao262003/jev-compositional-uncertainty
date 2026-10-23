@@ -1,0 +1,23 @@
+{
+ "smoke": {
+  "label": "smoke",
+  "issues": 30,
+  "failed_issues": [],
+  "attempts_total": 270,
+  "models_seen": [
+   "jev-1.13.0"
+  ],
+  "plan": {
+   "dataset_sha256": "59113ed8f178fe58a8502e404e305ab902c8ce7178a80dc9ea9f6f7d44902519",
+   "runner_sha256": "daaaa530b096ddcd8675b5d6020affd8f25ad9e1f5af4afb1cae0a6bd90664eb",
+   "development": 500,
+   "test": 582,
+   "smoke_issues": 30,
+   "smoke_calls": 270,
+   "full_calls_excluding_smoke": 9468,
+   "planned_total": 9738,
+   "cap_including_retries": 10290,
+   "attempts_already_recorded": 0
+  }
+ }
+}
