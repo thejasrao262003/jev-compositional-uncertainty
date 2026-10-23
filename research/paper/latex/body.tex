@@ -857,8 +857,15 @@ estimated under the deployment label distribution, which can be
 estimated without labels only for models whose answers discriminate the
 label. Two caveats bound this. Under known synthetic shifts, the label-free
 estimate of the mix is biased toward the development mix (for Jev it
-underestimates a 50\% share of serious bugs by 0.21), so the repair is
-directional rather than an accurate estimate. And the constructed-target
+underestimates a 50\% share of serious bugs by 0.21), so BBSE does not
+recover the deployment mix. The ranking improves anyway because the
+estimate collapses onto the middle severity level (for the kernel it is
+$[0, 1, 0]$ against a true $[0.02, 0.73, 0.25]$): the re-weighted fit is
+then dominated by middle-level bugs, as the natural-mix set is, so the
+decision-to-error relationship takes the right direction even though the
+other levels are effectively dropped. Where the estimate points the
+wrong way, the repair fails: for Phi-3.5 it puts no weight on the middle
+level. And the constructed-target
 result itself is not fragile to how labels are mapped: with Mozilla's S2
 counted as level 1, or kernel bugs with default severity or unset
 regression excluded, decisions still beat confidence for every model,
@@ -965,8 +972,13 @@ leaving few reviewable errors (Phi-3.5's oracle exceeds no review because
   because every accept looks alike to it, and confidence cannot either:
   among Jev's 245 accepted held-out cases, the decision estimator,
   final-step confidence and \score{}'s probability of the top level rank
-  the 38 wrong accepts at AUROC 0.46, 0.49 and 0.49.
-  The value exists; the identification fails.
+  the 38 wrong accepts at AUROC 0.46, 0.49 and 0.49, with 95\% intervals
+  that all include chance (for example 0.49 [0.37, 0.60] for confidence).
+  With so few positives this shows that the tested signals did not
+  establish useful discrimination for Jev, not that none is possible; for
+  OpenJev, \score{}'s top-level probability does carry a weak
+  within-action signal (0.68 [0.56, 0.78], above confidence).
+  The value exists; for Jev the identification fails.
   \item \textbf{General models:} cost is dominated by over-escalation
   (\emph{escalate} when the target is \emph{accept}). More review cannot
   reduce that; even the oracle saves at most 5\%.
