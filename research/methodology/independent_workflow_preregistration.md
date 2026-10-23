@@ -881,3 +881,14 @@ between running on `jev-1.14.0` (disclosed) and stopping.
 - **Only these criteria were inspected.**
 - **The smoke outputs are reused as part of the development set** (§5).
 - **The full run needs separate authorization.**
+
+## Results recorded (2026-10-24)
+
+**Run:** 9,738 calls, all valid. **Analysis:** run once as frozen
+(`k8s_results.md`).
+
+| | Verdict |
+|---|---|
+| K1 | Supported (+0.149 [+0.091, +0.207]) |
+| K2 | Supported |
+| K3 | Inconclusive (negative estimate; −0.350 [−0.428, −0.271]; BBSE estimate [0, 1, 0] vs true [0.69, 0.26, 0.05]) |

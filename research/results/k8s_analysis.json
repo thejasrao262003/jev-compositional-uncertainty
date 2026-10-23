@@ -1,0 +1,140 @@
+{
+  "n": {
+    "development": 500,
+    "test": 582,
+    "failed": []
+  },
+  "primary": {
+    "K1": {
+      "auroc_rule": 0.7765,
+      "auroc_conf": 0.6283,
+      "p_one_sided": 0.0,
+      "ci95": [
+        0.0906,
+        0.2073
+      ],
+      "holm": true,
+      "d_star": 0.1,
+      "status": "supported"
+    },
+    "K2": {
+      "auroc_rule": 0.7765,
+      "p_one_sided": 0.0,
+      "ci95": [
+        0.2405,
+        0.3116
+      ],
+      "holm": true,
+      "status": "supported"
+    },
+    "K3": {
+      "bbse": {
+        "cond": 39.01499218992527,
+        "evaluable": true,
+        "negative_before_clip": true,
+        "estimated_test_mix_stable": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "v": [
+          0.0,
+          8.349,
+          0.0
+        ]
+      },
+      "auroc_arm_a": 0.699,
+      "auroc_arm_b": 0.3485,
+      "p_one_sided": 1.0,
+      "ci95": [
+        -0.4282,
+        -0.2705
+      ],
+      "holm": false,
+      "status": "inconclusive (negative estimate)",
+      "true_test_mix_stable_reported_after": [
+        0.692,
+        0.263,
+        0.045
+      ]
+    },
+    "rate_table": {
+      "accept": 0.1154,
+      "defer": 0.5258,
+      "escalate": 0.4859
+    },
+    "overall_dev_error_rate": 0.35
+  },
+  "secondary": {
+    "E_dec_minus_rule": {
+      "p_one_sided": 0.0,
+      "ci95": [
+        0.0042,
+        0.0168
+      ]
+    },
+    "E_all_minus_E_dec": {
+      "p_one_sided": 0.8895,
+      "ci95": [
+        -0.0458,
+        0.01
+      ]
+    },
+    "auroc_E_dec": 0.7866,
+    "auroc_E_all": 0.7694,
+    "arm_c_calibration_weights": {
+      "q_cal": [
+        0.451,
+        0.418,
+        0.131
+      ],
+      "auroc": 0.6631
+    },
+    "any_node": {
+      "auroc_rule": 0.7214,
+      "auroc_conf": 0.6477
+    },
+    "priority_wrong_natural_dev_rule_auroc": 0.74,
+    "instability_by_label": {
+      "quota": {
+        "0": 0.0,
+        "1": 0.029,
+        "2": 0.039
+      },
+      "development": {
+        "0": 0.006,
+        "1": 0.018,
+        "2": 0.039
+      }
+    },
+    "instability_test_overall": 0.012,
+    "per_sig": {
+      "node": {
+        "n": 521,
+        "auroc_rule": 0.8224,
+        "auroc_conf": 0.621
+      }
+    },
+    "early_triage": {
+      "n": 442,
+      "auroc_rule": 0.76,
+      "auroc_conf": 0.6316
+    },
+    "level0_sublabels": {
+      "important-longterm": {
+        "n": 215,
+        "priority_wrong_rate": 0.763
+      },
+      "backlog": {
+        "n": 189,
+        "priority_wrong_rate": 0.714
+      }
+    },
+    "hypothetical_cost": {
+      "no_review": 460,
+      "oracle_at_10pct": 418,
+      "k": 59,
+      "note": "frozen cost table, not validated for Kubernetes triage"
+    }
+  }
+}
