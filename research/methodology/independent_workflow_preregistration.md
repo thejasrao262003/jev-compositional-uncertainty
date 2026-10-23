@@ -889,6 +889,6 @@ between running on `jev-1.14.0` (disclosed) and stopping.
 
 | | Verdict |
 |---|---|
-| K1 | Supported (+0.149 [+0.091, +0.207]) |
+| K1 | Supported (+0.148 [+0.091, +0.207]) |
 | K2 | Supported |
 | K3 | Inconclusive (negative estimate; −0.350 [−0.428, −0.271]; BBSE estimate [0, 1, 0] vs true [0.69, 0.26, 0.05]) |

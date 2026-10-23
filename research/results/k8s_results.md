@@ -27,9 +27,9 @@ not an isolated label-shift test.
 
 | | Estimate | 95% CI (paired) | Verdict |
 |---|---|---|---|
-| **K1:** action error rate vs final-step confidence | 0.777 vs 0.628, **+0.149** | [+0.091, +0.207] | **Supported. The finding replicates.** |
-| **K2:** action error rate vs chance | 0.777 | [+0.241, +0.312] above 0.5 | **Supported** |
-| **K3:** BBSE-weighted vs unweighted quota fit (priority-wrong target) | 0.349 vs 0.699, **−0.350** | [−0.428, −0.271] | **Inconclusive (negative estimate)**, by the frozen rule |
+| **K1:** action error rate vs final-step confidence | 0.776 vs 0.628, **+0.148** | [+0.091, +0.207] | **Supported. The finding replicates.** |
+| **K2:** action error rate vs chance | 0.776 | [+0.241, +0.312] above 0.5 | **Supported** |
+| **K3:** BBSE-weighted vs unweighted quota fit (priority-wrong target) | 0.348 vs 0.699, **−0.350** | [−0.428, −0.271] | **Inconclusive (negative estimate)**, by the frozen rule |
 
 **About K3.**
 - **Why the label is "inconclusive":** the frozen rule calls a
@@ -87,7 +87,7 @@ review 460, oracle at 10% (k = 59) 418.
    workflow on a different platform, with three-way routing, a different
    binary question and triager priority, it holds across a five-year
    chronological shift. The action's historical error rate ranks
-   failures better than final-step confidence, by +0.149.
+   failures better than final-step confidence, by +0.148.
 2. **It again comes almost entirely from the action rule;** the
    estimator adds little.
 3. **The label-free correction did not transfer.** Its estimate
