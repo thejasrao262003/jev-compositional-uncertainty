@@ -110,3 +110,26 @@ All four models are reported whatever the outcome.
 - **The full run,** after explicit user authorization of the Modal spend.
 - **Output** goes to `research/data/k8s/crossmodel/<model>_raw_responses.jsonl`.
   The runner refuses to overwrite an existing file.
+
+## Amendment 1 (2026-10-24, after results were seen): competence sensitivity
+
+**Not part of the frozen primary analysis.** The primary result and the
+overall reading ("holds on Kubernetes") are unchanged.
+
+**Request.** After the results were seen, the authors asked that models
+which cannot do the task not carry the cross-model claim. Dropping only
+the model that failed XK1 would be selective reporting, so one criterion
+is applied to every model, Jev 1.13 included.
+
+**Criterion.** A model is **competent** if its test-set accuracy beats
+chance on every step:
+- routing above 1/3;
+- bug or not above 1/2;
+- priority above 1/3.
+
+**Reported:**
+- XK1 status for the competent models, with Jev's from the parent study;
+- every model's per-step accuracy.
+
+**The primary table stays complete and is reported in full.** The paper
+leads with the competent models and summarises the others.

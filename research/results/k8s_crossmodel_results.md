@@ -49,3 +49,24 @@ models).
   decision estimator again adds little.
 - **K3 (BBSE) was evaluable only for OpenJev-27B,** where the estimate was
   negative. The others failed the condition-number gate.
+
+## Amendment 1 (post hoc, disclosed): competence sensitivity
+
+**Criterion:** test accuracy above chance on every step (routing above
+1/3, bug above 1/2, priority above 1/3). It is applied to every model,
+Jev included.
+
+| Model | Routing | Bug | Priority | Competent | XK1 / K1 |
+|---|---|---|---|---|---|
+| Jev 1.13 | 0.952 | 0.916 | 0.371 | yes | supported |
+| OpenJev-27B | 0.912 | 0.907 | 0.404 | yes | supported |
+| Qwen2.5-7B | 0.890 | 0.868 | 0.270 | no | supported |
+| OLMo-2-7B | 0.923 | 0.832 | 0.082 | no | supported |
+| Phi-3.5-mini | 0.924 | 0.761 | 0.046 | no | not replicated |
+
+**Both competent models support the finding.**
+- **The split matches the paper's model classes:** the two models trained
+  for typed decisions pass, and all three general instruct models fail on
+  priority, as they push severity to "blocking" on Mozilla and kernel.
+- **The primary result and overall reading are unchanged.** The paper
+  leads with the competent models and summarises the others.

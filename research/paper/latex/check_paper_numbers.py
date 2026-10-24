@@ -209,13 +209,18 @@ xm = json.loads((RES / "k8s_crossmodel_analysis.json").read_text())
 X = xm["per_model"]
 assert xm["overall"] == "holds on Kubernetes"
 for name, m in (("Qwen2.5", "Qwen/Qwen2.5-7B-Instruct"), ("OLMo-2", "allenai/OLMo-2-1124-7B-Instruct"),
-                ("OpenJev-27B", "openjev__openjev-27B"), ("Phi-3.5", "microsoft/Phi-3.5-mini-instruct")):
-    need(f"k8s xm {name}", f"{name} ({X[m]['auroc_rule']:.3f} vs.\\ {X[m]['auroc_conf']:.3f})")
+                ("OpenJev-27B:", "openjev__openjev-27B"), ("Phi-3.5", "microsoft/Phi-3.5-mini-instruct")):
+    need(f"k8s xm {name}", f"{name} ({X[m]['auroc_rule']:.3f} vs.\\ {X[m]['auroc_conf']:.3f})" if not name.endswith(":") else
+         f"{name} {X[m]['auroc_rule']:.3f} vs.\\ {X[m]['auroc_conf']:.3f})")
 assert X["microsoft/Phi-3.5-mini-instruct"]["XK1"] == "not replicated"
 need("k8s xm phi escalate", f"escalated {X['microsoft/Phi-3.5-mini-instruct']['test_action_mix']['escalate']} of the 582")
-r = sorted(v["test_wrong_action_rate_exact"] for v in X.values())
-need("k8s xm wrong rates", f"{round(100 * r[0])}--{round(100 * r[-1])}\\%")
-need("abstract xm", "as did three of four further models")
+need("k8s xm wrong max", f"up to {round(100 * max(v['test_wrong_action_rate_exact'] for v in X.values()))}\\%")
+C = xm["amendment1_competence"]
+assert C["competent"] == C["competent_supported"] == ["Jev 1.13", "openjev__openjev-27B"]
+need("k8s competent prio", f"accuracies were {C['models']['Jev 1.13']['accuracy']['priority']:.3f} and {C['models']['openjev__openjev-27B']['accuracy']['priority']:.3f}")
+gp = sorted(v["accuracy"]["priority"] for m, v in C["models"].items() if not v["competent"])
+need("k8s general prio", f"(accuracy {round(100 * gp[0])}--{round(100 * gp[-1])}\\%)")
+need("abstract xm", "as did three of four further models, including the only other one competent at every step")
 
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:

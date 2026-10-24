@@ -77,6 +77,24 @@ def main():
                             "test_wrong_action_rate_exact": sum(p["y_wrong_action"] for p in T) / len(T)}
         per[m], full[m], sens[m] = r, r, low_mass_sensitivity(ds, raw, r)
     res = combine(per)
+    # Amendment 1 (post hoc): competence = above chance on every step, applied to every model incl. Jev 1.13
+    jev_raw = [json.loads(l) for l in (ak.DATA / "k8s_raw_responses.jsonl").open()]
+    jev = json.loads((ak.RES / "k8s_analysis.json").read_text())["primary"]["K1"]
+    comp = {}
+    for m, raw in [("Jev 1.13", jev_raw)] + [(m, [json.loads(l) for l in (CM / f"{m.replace('/', '__')}_raw_responses.jsonl").open()])
+                                              for m in MODELS if per[m] is not None]:
+        P, _ = ak.per_issue(ds, raw)
+        T = [p for p in P if p["split"] == "test"]
+        a = {"routing": sum(p["red"]["choice"]["modal_decision"] == p["sig"] for p in T) / len(T),
+             "bug": sum(p["red"]["noul"]["decision"] == p["bug"] for p in T) / len(T),
+             "priority": sum(1 - p["y_priority_wrong"] for p in T) / len(T)}
+        ok = a["routing"] > 1 / 3 and a["bug"] > 1 / 2 and a["priority"] > 1 / 3
+        x1 = jev["status"] if m == "Jev 1.13" else res["per_model"][m]["XK1"]
+        comp[m] = {"accuracy": {k: round(v, 4) for k, v in a.items()}, "competent": ok, "XK1": x1}
+    res["amendment1_competence"] = {"criterion": "test accuracy above chance on every step (1/3, 1/2, 1/3)",
+                                    "models": comp,
+                                    "competent_supported": [m for m, v in comp.items() if v["competent"] and v["XK1"] == "supported"],
+                                    "competent": [m for m, v in comp.items() if v["competent"]]}
     res["low_mass_sensitivity"] = sens
     res["exploratory"] = {m: {"secondary": r["secondary"], "K3": r["primary"]["K3"]} for m, r in full.items()}
     OUT.write_text(json.dumps(res, indent=2, default=str))

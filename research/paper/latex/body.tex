@@ -728,6 +728,24 @@ models.
   \citep{geuter2026innerjev}), with TypeSafe's documented confidence
   formulas.
 \end{itemize}
+\para{Why these models} Jev is itself a language-model-based decision
+service used zero-shot: it receives text and a typed question, with no
+training on the task. The comparison that isolates Jev is therefore
+other models used the same way, through the same questions, adapter and
+confidence formulas. We chose open-weight models at the small end of
+zero-shot classification, 3.8B to 7B parameters, the scale chosen when
+routine classification must be cheap, from three independent families
+with different training data, plus OpenJev, the only openly available
+model trained for Jev's interface (27B). Open weights make every run
+reproducible. The question is not which model classifies best, but
+whether the failure-prediction findings belong to Jev or to any model
+that makes typed decisions through this interface; weaker models are
+useful for that, since they produce more failures to predict. A
+supervised classifier trained on each workflow's labels, such as a
+linear model on bag-of-words features, is the simpler alternative
+wherever such labels exist; it answers a different question and is not
+evaluated here.
+
 Each model's estimator was trained on that model's own outputs for the
 442 training bugs and tested on its 500 held-out bugs. The pre-registered
 tests mirror HR1 and HR2, with Holm correction across all 8 tests.
@@ -922,16 +940,22 @@ within 30 days.
 \para{Four further models} A second pre-registration, written before any
 of their outputs existed, ran the same workflow and analysis on the four
 comparison models (1,082 issues each, no failures), with Holm correction
-over all eight primary tests. By its fixed rule the finding holds on
-Kubernetes: the action rule beat final-step confidence for Qwen2.5
-(0.710 vs.\ 0.555), OLMo-2 (0.850 vs.\ 0.255) and OpenJev-27B (0.796
-vs.\ 0.569). It was not replicated for Phi-3.5 (0.519 vs.\ 0.674),
-which escalated 580 of the 582 test issues, leaving the rule nothing to
-rank. These smaller models are weak at this task (wrong-action rates of
-55--95\%), and each concentrates on one action, so part of the rule's
-advantage here is identifying the dominant, usually wrong action; the
-contrast is also a reminder that confidence can be informative when
-decisions collapse, or inversely informative (OLMo-2).
+over all eight primary tests. Here the models split by competence. Only
+the two models trained for typed decisions beat chance on every step
+(routing, bug or not, and priority): Jev and OpenJev-27B, whose priority
+accuracies were 0.371 and 0.404 against a chance level of one third. For
+both, the action rule beat final-step confidence (OpenJev-27B: 0.796
+vs.\ 0.569). The three general instruct models handled routing and the
+bug question but not priority (accuracy 5--27\%), so their workflows
+were wrong on most issues (wrong-action rates up to 95\%); this
+competence check was added after the results were seen, applied to
+every model, and does not replace the primary result. Among these weak
+models the rule still beat confidence for Qwen2.5 (0.710 vs.\ 0.555) and
+OLMo-2 (0.850 vs.\ 0.255), but largely by flagging the one action each
+model chose almost always; it was not replicated for Phi-3.5 (0.519
+vs.\ 0.674), which escalated 580 of the 582 test issues and so left the
+rule nothing to rank. By the pre-registered rule (at least three of
+four) the finding holds on Kubernetes.
 
 \para{The label-free correction did not transfer} The pre-registered
 label-shift test is inconclusive by its frozen rule, with a negative

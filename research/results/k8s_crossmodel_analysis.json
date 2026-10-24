@@ -115,6 +115,64 @@
   },
   "overall": "holds on Kubernetes",
   "holm_family_size": 8,
+  "amendment1_competence": {
+    "criterion": "test accuracy above chance on every step (1/3, 1/2, 1/3)",
+    "models": {
+      "Jev 1.13": {
+        "accuracy": {
+          "routing": 0.9519,
+          "bug": 0.9158,
+          "priority": 0.3711
+        },
+        "competent": true,
+        "XK1": "supported"
+      },
+      "Qwen/Qwen2.5-7B-Instruct": {
+        "accuracy": {
+          "routing": 0.89,
+          "bug": 0.8677,
+          "priority": 0.2698
+        },
+        "competent": false,
+        "XK1": "supported"
+      },
+      "microsoft/Phi-3.5-mini-instruct": {
+        "accuracy": {
+          "routing": 0.9244,
+          "bug": 0.7612,
+          "priority": 0.0464
+        },
+        "competent": false,
+        "XK1": "not replicated"
+      },
+      "allenai/OLMo-2-1124-7B-Instruct": {
+        "accuracy": {
+          "routing": 0.9227,
+          "bug": 0.8316,
+          "priority": 0.0825
+        },
+        "competent": false,
+        "XK1": "supported"
+      },
+      "openjev__openjev-27B": {
+        "accuracy": {
+          "routing": 0.9124,
+          "bug": 0.9072,
+          "priority": 0.4038
+        },
+        "competent": true,
+        "XK1": "supported"
+      }
+    },
+    "competent_supported": [
+      "Jev 1.13",
+      "openjev__openjev-27B"
+    ],
+    "competent": [
+      "Jev 1.13",
+      "openjev__openjev-27B"
+    ]
+  },
   "low_mass_sensitivity": {
     "Qwen/Qwen2.5-7B-Instruct": null,
     "microsoft/Phi-3.5-mini-instruct": null,
