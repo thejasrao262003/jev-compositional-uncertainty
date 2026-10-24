@@ -1,0 +1,28 @@
+{
+ "model": "openjev__openjev-27B",
+ "smoke": true,
+ "issues": 30,
+ "passes": 90,
+ "failures": 0,
+ "dataset_sha256": "59113ed8f178fe58a8502e404e305ab902c8ce7178a80dc9ea9f6f7d44902519",
+ "runner_sha256": "bfeeb4aebae22b18da83d4d3393c967e136713009f1dc149e6f1c9821c48ba83",
+ "server_version": {
+  "model_dir": "openjev",
+  "T": 0.85,
+  "noul_t": 1.829074,
+  "noul_bias": 0.0,
+  "flags": {
+   "perms": 1,
+   "stagger": true,
+   "loop_break": false,
+   "compact": false,
+   "compact_cap": 0,
+   "layout": "",
+   "pad": 0,
+   "targeted": true,
+   "instr_style": "pyrepr"
+  },
+  "shim_file": "shim.py",
+  "shim_sha256": "81a22f1b1b8912a465059207ef9f60b7c6c16b4de6372305d867efbe38a1987a"
+ }
+}

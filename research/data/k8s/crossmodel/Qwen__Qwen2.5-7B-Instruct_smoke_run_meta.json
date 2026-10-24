@@ -1,0 +1,13 @@
+{
+ "model": "Qwen/Qwen2.5-7B-Instruct",
+ "smoke": true,
+ "issues": 30,
+ "passes": 90,
+ "failures": 0,
+ "dataset_sha256": "59113ed8f178fe58a8502e404e305ab902c8ce7178a80dc9ea9f6f7d44902519",
+ "runner_sha256": "bfeeb4aebae22b18da83d4d3393c967e136713009f1dc149e6f1c9821c48ba83",
+ "server_version": null,
+ "label_mass_min": 0.9999245070739562,
+ "label_mass_median": 0.9999999942135389,
+ "share_mass_below_0_5": 0.0
+}
