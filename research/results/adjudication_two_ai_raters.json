@@ -1,0 +1,197 @@
+{
+  "status": "EXPLORATORY two-AI-rater analysis (Amendment 2); NOT the pre-registered human validation; rater 2 is the study's analysis assistant, knows F, not blind to the study design",
+  "n": 50,
+  "target_mix": {
+    "accept": 33,
+    "escalate": 9,
+    "defer": 8
+  },
+  "rater2_action_mix": {
+    "accept": 22,
+    "escalate": 12,
+    "defer": 16
+  },
+  "rater2_cant_tell": {
+    "severity": 1,
+    "regression": 14,
+    "action": 0
+  },
+  "action": [
+    {
+      "comparison": "rater1(R1) vs rater2  [inter-rater baseline]",
+      "n": 40,
+      "agree": 20,
+      "agreement": 0.5,
+      "wilson95": [
+        0.352,
+        0.648
+      ],
+      "kappa": 0.22,
+      "kappa_ci95": [
+        -0.025,
+        0.443
+      ]
+    },
+    {
+      "comparison": "rater1(R2) vs rater2  [inter-rater baseline]",
+      "n": 40,
+      "agree": 23,
+      "agreement": 0.575,
+      "wilson95": [
+        0.422,
+        0.715
+      ],
+      "kappa": 0.323,
+      "kappa_ci95": [
+        0.148,
+        0.511
+      ]
+    },
+    {
+      "comparison": "rater2 vs a*",
+      "n": 50,
+      "agree": 28,
+      "agreement": 0.56,
+      "wilson95": [
+        0.423,
+        0.688
+      ],
+      "kappa": 0.285,
+      "kappa_ci95": [
+        0.084,
+        0.487
+      ]
+    },
+    {
+      "comparison": "rater1(R1) vs a*",
+      "n": 40,
+      "agree": 15,
+      "agreement": 0.375,
+      "wilson95": [
+        0.242,
+        0.53
+      ],
+      "kappa": -0.157,
+      "kappa_ci95": [
+        -0.333,
+        0.074
+      ]
+    },
+    {
+      "comparison": "rater1(R2) vs a*",
+      "n": 40,
+      "agree": 22,
+      "agreement": 0.55,
+      "wilson95": [
+        0.398,
+        0.693
+      ],
+      "kappa": 0.015,
+      "kappa_ci95": [
+        -0.192,
+        0.25
+      ]
+    },
+    {
+      "comparison": "F(rater2 severity, regression) vs a*  [label validity, end to end]",
+      "n": 35,
+      "agree": 20,
+      "agreement": 0.571,
+      "wilson95": [
+        0.409,
+        0.72
+      ],
+      "kappa": 0.231,
+      "kappa_ci95": [
+        -0.036,
+        0.479
+      ]
+    },
+    {
+      "comparison": "F(rater2 labels) vs rater2 direct action  [rule validity]",
+      "n": 35,
+      "agree": 28,
+      "agreement": 0.8,
+      "wilson95": [
+        0.641,
+        0.9
+      ],
+      "kappa": 0.673,
+      "kappa_ci95": [
+        0.468,
+        0.858
+      ]
+    }
+  ],
+  "label_validity": {
+    "severity": {
+      "comparison": "rater2 severity vs tracker level",
+      "n": 49,
+      "agree": 23,
+      "agreement": 0.469,
+      "wilson95": [
+        0.337,
+        0.606
+      ],
+      "kappa": -0.041,
+      "kappa_ci95": [
+        -0.243,
+        0.182
+      ]
+    },
+    "regression": {
+      "comparison": "rater2 regression vs tracker regression",
+      "n": 36,
+      "agree": 32,
+      "agreement": 0.889,
+      "wilson95": [
+        0.747,
+        0.956
+      ],
+      "kappa": 0.739,
+      "kappa_ci95": [
+        0.471,
+        0.939
+      ]
+    },
+    "severity_confusion": {
+      "tracker=0 / rater2=1": 4,
+      "tracker=1 / rater2=0": 4,
+      "tracker=1 / rater2=1": 19,
+      "tracker=1 / rater2=2": 13,
+      "tracker=1 / rater2=None": 1,
+      "tracker=2 / rater2=1": 5,
+      "tracker=2 / rater2=2": 4
+    },
+    "regression_confusion": {
+      "tracker=0 / rater2=0": 23,
+      "tracker=0 / rater2=1": 3,
+      "tracker=0 / rater2=None": 12,
+      "tracker=1 / rater2=0": 1,
+      "tracker=1 / rater2=1": 9,
+      "tracker=1 / rater2=None": 2
+    }
+  },
+  "error_attribution_rater2_vs_a_star": {
+    "label-driven": 12,
+    "of which raters also disagree": 15,
+    "ambiguity (rater can't tell severity or regression)": 6,
+    "rule-driven": 4
+  },
+  "confusion_rater2_vs_a_star": {
+    "target=accept / rater2=accept": 19,
+    "target=accept / rater2=defer": 7,
+    "target=accept / rater2=escalate": 7,
+    "target=defer / rater2=defer": 6,
+    "target=defer / rater2=escalate": 2,
+    "target=escalate / rater2=accept": 3,
+    "target=escalate / rater2=defer": 3,
+    "target=escalate / rater2=escalate": 3
+  },
+  "failure_label_check": {
+    "n": 50,
+    "jev_wrong_vs_a_star": 23,
+    "jev_wrong_vs_rater2": 19,
+    "agreement": 0.6
+  }
+}
