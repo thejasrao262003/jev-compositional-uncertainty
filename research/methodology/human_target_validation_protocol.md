@@ -127,3 +127,36 @@ denominators, with its rate reported.
   that the constructed target agrees with independent judgment about as
   well as two judges agree with each other.
 - **Either way, the result is reported.**
+
+## Amendment 1 (2026-10-24): AI-judge pilot, written before the key is opened
+
+**What was received:** one set of action ratings for the 50 bugs,
+produced by an AI assistant (`ratings_AI_pilot.tsv`, with rationales in
+the session record). This is **not** the pre-registered two-human
+validation, and it does not satisfy it.
+- **One rater, and an AI.**
+- **No severity or regression ratings,** so label-validity and
+  rule-validity analyses are not possible.
+- **It uses a category outside the rubric** (`request_evidence`).
+- **Its "defer" means low urgency** (rationales such as "no build failure
+  or runtime impact"). The rubric's defer means "schedule for the next
+  release", which is more urgent than accept.
+
+**Analysis (exploratory, labelled "AI-judge pilot"; mapping fixed now,
+before the key is opened):**
+- `accept` → accept; `escalate` → escalate.
+- `request_evidence` → **can't tell**, excluded from agreement
+  denominators, with its rate reported.
+- **AI "defer":** reported under two pre-stated readings, with no choice
+  made between them:
+  - (R1) taken literally as defer;
+  - (R2) read as accept, per its rationales.
+
+**Reported:**
+- agreement with a\* (Wilson 95%);
+- Cohen's κ (bootstrap 95%);
+- the confusion matrix by action;
+- agreement of Jev's failure label (a ≠ a\*) with "a ≠ AI action", on the
+  bugs the AI rated.
+
+**The pre-registered human validation remains open.**
