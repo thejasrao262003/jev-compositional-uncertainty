@@ -56,7 +56,8 @@ construction in \cref{sec:crossmodel}.
   (RQ1; \cref{sec:heldout,sec:crossmodel}, pre-registered). A frozen
   decision-feature estimator ranks failures better than final-step
   confidence on 500 new bugs, and the gap replicates across five models
-  from four sources. Paired ablations show what carries it: the
+  from four sources and in an independent Kubernetes workflow
+  (\cref{sec:k8s}). Paired ablations show what carries it: the
   historical error rate of the chosen action. For the two Jev-style models
   the estimator adds nothing detectable to that rate, and confidence adds
   little except for the weakest general models.
@@ -728,6 +729,10 @@ models.
   \citep{geuter2026innerjev}), with TypeSafe's documented confidence
   formulas.
 \end{itemize}
+Each model's estimator was trained on that model's own outputs for the
+442 training bugs and tested on its 500 held-out bugs. The pre-registered
+tests mirror HR1 and HR2, with Holm correction across all 8 tests.
+
 \para{Why these models} Jev is itself a language-model-based decision
 service used zero-shot: it receives text and a typed question, with no
 training on the task. The comparison that isolates Jev is therefore
@@ -745,10 +750,6 @@ supervised classifier trained on each workflow's labels, such as a
 linear model on bag-of-words features, is the simpler alternative
 wherever such labels exist; it answers a different question and is not
 evaluated here.
-
-Each model's estimator was trained on that model's own outputs for the
-442 training bugs and tested on its 500 held-out bugs. The pre-registered
-tests mirror HR1 and HR2, with Holm correction across all 8 tests.
 
 \para{Deviations, disclosed} We recorded three pre-registration
 amendments.
@@ -993,19 +994,6 @@ to beat confidence for any model (for Jev its point estimate is 4 units
 lower, with an interval spanning zero). Under the frozen table, every review arm costs more than no review at all; for Jev,
 658 with no review against 681--714 with review (\cref{fig:intervention}).
 
-\begin{coltable}
-\centering
-\caption{Exploratory cost sensitivity: best feasible arm minus no review
-(negative, in bold: review pays), with rankings frozen as pre-registered.
-$m$ scales wrong-accept costs, $h$ is the human cost per escalation, and
-$p^{*}$ is the break-even precision for reviewing an accepted case whose
-target is \emph{escalate}. $^{\dagger}$The pre-registered table. Point
-estimates only.}
-\label{tab:costsens}
-\small
-\resizebox{\linewidth}{!}{\input{table_cost_sensitivity.tex}}
-\end{coltable}
-
 \para{Sensitivity to costs (exploratory)} The pre-registered result holds
 under one frozen cost table. In a post-hoc analysis planned before
 computing it, we re-scored the same frozen rankings on a grid of cost
@@ -1022,6 +1010,19 @@ not reverse these savings: if a review resolves correctly only 80\% of
 the time, Jev's saving at twice the wrong-accept cost falls from 44 to 26
 units. The stopping decision below was
 made under the frozen table and, by its rule, is not reopened.
+
+\begin{coltable}
+\centering
+\caption{Exploratory cost sensitivity: best feasible arm minus no review
+(negative, in bold: review pays), with rankings frozen as pre-registered.
+$m$ scales wrong-accept costs, $h$ is the human cost per escalation, and
+$p^{*}$ is the break-even precision for reviewing an accepted case whose
+target is \emph{escalate}. $^{\dagger}$The pre-registered table. Point
+estimates only.}
+\label{tab:costsens}
+\small
+\resizebox{\linewidth}{!}{\input{table_cost_sensitivity.tex}}
+\end{coltable}
 
 \begin{colfigure}
 \centering
@@ -1108,7 +1109,7 @@ the pre-registered costs the signals tested here did not identify the
 cases well enough to pay for the reviews.
 
 %======================================================================
-\section{Method: audits that caught defects}
+\section{Lessons from the study's own audits}
 \label{sec:method}
 %======================================================================
 
@@ -1149,8 +1150,10 @@ selectivity on pilot inputs, before freezing any escalation policy.
 %======================================================================
 
 \begin{itemize}
-  \item \textbf{Generality.} Five models in one domain (bug triage) and
-  one workflow. Jev was version 1.13.0. The general instruct models use
+  \item \textbf{Generality.} Five models in one domain, software issue
+  triage, across two workflows (Bugzilla bug triage and Kubernetes issue
+  triage). Jev was version 1.13.0. On Kubernetes the three general
+  instruct models were below chance on the priority step. The general instruct models use
   our prompt and readout, not a trained decision interface. Later
   versions and other domains may behave differently.
   \item \textbf{References are not truth.} Mozilla's triage sample
@@ -1206,34 +1209,7 @@ selectivity on pilot inputs, before freezing any escalation policy.
 \end{itemize}
 
 %======================================================================
-\section{Pre-registered follow-up (planned; not yet run)}
-\label{sec:prereg}
-%======================================================================
-
-\emph{No result in this paper comes from the studies in this section.}
-
-\para{Case-level expensive-error estimator (stopped)} The case-level
-follow-up proposed after the intervention test was developed and then
-stopped before data collection by its own pre-registered feasibility rule
-(\cref{sec:intervention}). It is not pending.
-
-\para{Template study} To test the
-composition question under control, we pre-registered a
-study on deterministic template content: 3{,}103 units, each instance
-describing one incident about one service, with value-neutral sentence
-frames and 13 automated audits. Its primary tests are H1, confidence-ranked
-vs.\ random overrides at a 10\% budget scored by cost, and H2,
-per-primitive vs.\ raw-product ranking, with a sign-flip test clustered by
-service. Both are Holm-corrected. The sample size is set from a second
-calibration pilot, with a content ceiling of 720 instances. Given the
-results above, a null H1 is a live outcome, and it would be reported as
-the answer to the composition question. Deterministic templates raise
-their own external-validity questions. That is why the real-data studies
-above are reported separately, and why their conclusions do not depend on
-the follow-up.
-
-%======================================================================
-\section{Conclusion}
+\section{Conclusion and future work}
 %======================================================================
 
 \para{What the evidence shows} In a dependent workflow of typed
@@ -1246,7 +1222,8 @@ it changes. Re-weighting to a known deployment mix repairs them; the
 label-free estimate of that mix did so only when the middle level
 dominated, and made ranking worse in an independent workflow where it did
 not. The predictive finding itself replicated in that independent
-Kubernetes workflow across a five-year chronological shift. Under the
+Kubernetes workflow across a five-year chronological shift, for Jev and
+for three of the four further models. Under the
 pre-registered costs, no review policy built on these signals beat no
 review.
 
@@ -1263,3 +1240,12 @@ behaves under measured rather than assumed costs. Failure prediction,
 uncertainty estimation and review value are three different problems,
 and a workflow's uncertainty has to be evaluated against the decision it
 is meant to improve.
+
+\para{Future work} Beyond the pre-registered two-human validation of the
+target, we have pre-registered, but not run, a study on deterministic
+template content (3{,}103 units with value-neutral sentence frames and
+13 automated audits) that tests the composition question under control:
+confidence-ranked against random overrides at a 10\% budget scored by
+cost, and per-primitive against raw-product ranking. Given the results
+above, a null result there is a live outcome. No result in this paper
+depends on it.

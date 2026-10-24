@@ -5,6 +5,7 @@
 \usepackage{cite}
 \input{macros}
 \usepackage{placeins}
+\usepackage{balance}
 \usepackage{float}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise]{cleveref}
@@ -40,6 +41,9 @@ selective prediction, escalation, label shift, human review, LLM evaluation, bug
 \appendices
 \input{appendix}
 \FloatBarrier
+\section*{Acknowledgment}
+\input{acknowledgment}
+\balance
 \bibliographystyle{IEEEtran}
 \let\OLDthebibliography\thebibliography
 \renewcommand\thebibliography[1]{\OLDthebibliography{#1}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}

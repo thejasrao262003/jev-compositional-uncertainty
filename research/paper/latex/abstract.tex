@@ -3,27 +3,23 @@ When a workflow chains typed AI decisions, which signals identify the
 cases where it fails, and do they identify the errors worth sending to a
 human? We chain the three primitives of Jev, TypeSafe's typed decision
 model (a categorical \choice{}, a binary \noul{} and an ordinal
-\score{}), into a dependent bug-triage workflow and study it on 442
-Mozilla and Linux kernel bugs, then in pre-registered tests on 500 new
-bugs and four further models. Failure is disagreement with a target
-action we construct from reference labels. A frozen decision-feature
-estimator ranks failures better than the model's final-step confidence
-(pre-registered; AUROC 0.76 vs.\ 0.55 on the new bugs, and supported for
-all five models), but its signal is almost entirely one simple quantity,
-the historical error rate of the action the workflow chose: for the two
-Jev-style models the estimator adds nothing detectable to that rate, and
-confidence adds little except for the weakest general models. These error rates are not portable across label
-distributions: fitted on a quota-sampled development set, they rank
-errors on a natural-mix set below chance for targets that bypass our
-rule. Re-weighting to the deployment label mix repairs the ranking, even
-with the mix estimated from the model's own predictions without test
-labels for models whose predictions discriminate the label, although
-that estimated mix is itself biased and the same correction made ranking
-worse in an independent workflow. That independent pre-registered
-replication, on Kubernetes issue triage across a five-year chronological
-split, confirmed the predictive finding (AUROC 0.78 vs.\ 0.63), as did three of four further models, including the only other one competent at every step. Prediction did not
-become review value: under the pre-registered costs no 10\% review
-policy beat no review, an oracle locates the value in wrongly accepted
-cases the tested signals do not isolate, and whether review pays depends on
-the cost ratio. Knowing which decisions are likely wrong is not knowing
-which are worth correcting.
+\score{}), into a bug-triage workflow and study it on 442 Mozilla and
+Linux kernel bugs, then in pre-registered tests on 500 new bugs, four
+further models and an independent Kubernetes workflow. Failure is
+disagreement with a target action we construct from reference labels. A
+frozen decision-feature estimator ranks failures better than final-step
+confidence (AUROC 0.76 vs.\ 0.55 on the new bugs, supported for all five
+models), and its signal is almost entirely the historical error rate of
+the chosen action. The Kubernetes replication, on a
+chronological split, confirmed this (AUROC 0.78 vs.\ 0.63),
+as did three of four further models, including the only other one competent at every step. These error rates do not
+transfer across label mixes: fitted on a quota-sampled
+development set, they can rank natural-mix errors below chance.
+Re-weighting to the deployment mix repairs the ranking, but the
+label-free estimate of that mix is biased and made ranking worse on
+Kubernetes. Prediction did not become review value: under the
+pre-registered costs no 10\% review policy beat no review, an oracle
+locates the value in wrongly accepted cases the tested signals do not
+isolate, and whether review pays depends on the cost ratio. Knowing
+which decisions are likely wrong is not knowing which are worth
+correcting.
