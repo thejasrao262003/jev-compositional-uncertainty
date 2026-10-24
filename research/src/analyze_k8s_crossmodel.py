@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parent
@@ -42,7 +43,7 @@ def combine(per_model):
                   "diff": round(k1["auroc_rule"] - k1["auroc_conf"], 4), "ci95": k1["ci95"],
                   "p_XK1": k1["p_one_sided"], "XK1": x1, "p_XK2": k2["p_one_sided"],
                   "XK2": "supported" if H[(m, "XK2")] else "inconclusive",
-                  "K3_exploratory": r["primary"]["K3"]["status"], "rate_table": r["primary"]["rate_table"]}
+                  "K3_exploratory": r["primary"]["K3"]["status"], **r.get("descriptive", {}), "rate_table": r["primary"]["rate_table"]}
     st = [v.get("XK1") for v in out.values()]
     overall = ("holds on Kubernetes" if st.count("supported") >= 3 else
                "does not generalise" if st.count("not replicated") >= 2 else "mixed")
@@ -69,6 +70,11 @@ def main():
             continue
         raw = [json.loads(l) for l in f.open()]
         r = ak.analyze(ds, raw)
+        P, _ = ak.per_issue(ds, raw)  # descriptive, added after results were seen
+        T = [p for p in P if p["split"] == "test"]
+        r["descriptive"] = {"test_action_mix": dict(Counter(p["s1"] for p in T)),
+                            "test_wrong_action_rate": round(sum(p["y_wrong_action"] for p in T) / len(T), 4),
+                            "test_wrong_action_rate_exact": sum(p["y_wrong_action"] for p in T) / len(T)}
         per[m], full[m], sens[m] = r, r, low_mass_sensitivity(ds, raw, r)
     res = combine(per)
     res["low_mass_sensitivity"] = sens

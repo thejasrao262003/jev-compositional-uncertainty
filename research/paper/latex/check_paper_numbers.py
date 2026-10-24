@@ -204,6 +204,19 @@ need("K8s abstract", f"(AUROC {K1['auroc_rule']:.2f} vs.\\ {K1['auroc_conf']:.2f
 aj = json.loads((RES / "adjudication_ai_pilot.json").read_text())
 need("AI judge kappa", f"between ${aj['R1_defer_as_defer']['kappa']:.3f}$ and $+{aj['R2_defer_as_accept']['kappa']:.3f}$")
 
+# Kubernetes cross-model (added 2026-10-24)
+xm = json.loads((RES / "k8s_crossmodel_analysis.json").read_text())
+X = xm["per_model"]
+assert xm["overall"] == "holds on Kubernetes"
+for name, m in (("Qwen2.5", "Qwen/Qwen2.5-7B-Instruct"), ("OLMo-2", "allenai/OLMo-2-1124-7B-Instruct"),
+                ("OpenJev-27B", "openjev__openjev-27B"), ("Phi-3.5", "microsoft/Phi-3.5-mini-instruct")):
+    need(f"k8s xm {name}", f"{name} ({X[m]['auroc_rule']:.3f} vs.\\ {X[m]['auroc_conf']:.3f})")
+assert X["microsoft/Phi-3.5-mini-instruct"]["XK1"] == "not replicated"
+need("k8s xm phi escalate", f"escalated {X['microsoft/Phi-3.5-mini-instruct']['test_action_mix']['escalate']} of the 582")
+r = sorted(v["test_wrong_action_rate_exact"] for v in X.values())
+need("k8s xm wrong rates", f"{round(100 * r[0])}--{round(100 * r[-1])}\\%")
+need("abstract xm", "as did three of four further models")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")

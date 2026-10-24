@@ -919,6 +919,20 @@ little ($+0.004$ to $+0.017$) and confidence adds nothing. The contrast
 holds for the any-node target, within SIG Node, and on issues triaged
 within 30 days.
 
+\para{Four further models} A second pre-registration, written before any
+of their outputs existed, ran the same workflow and analysis on the four
+comparison models (1,082 issues each, no failures), with Holm correction
+over all eight primary tests. By its fixed rule the finding holds on
+Kubernetes: the action rule beat final-step confidence for Qwen2.5
+(0.710 vs.\ 0.555), OLMo-2 (0.850 vs.\ 0.255) and OpenJev-27B (0.796
+vs.\ 0.569). It was not replicated for Phi-3.5 (0.519 vs.\ 0.674),
+which escalated 580 of the 582 test issues, leaving the rule nothing to
+rank. These smaller models are weak at this task (wrong-action rates of
+55--95\%), and each concentrates on one action, so part of the rule's
+advantage here is identifying the dominant, usually wrong action; the
+contrast is also a reminder that confidence can be informative when
+decisions collapse, or inversely informative (OLMo-2).
+
 \para{The label-free correction did not transfer} The pre-registered
 label-shift test is inconclusive by its frozen rule, with a negative
 estimate: re-weighting a deliberately mismatched fit by BBSE lowered its
