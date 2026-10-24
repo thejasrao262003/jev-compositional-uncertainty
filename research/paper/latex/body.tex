@@ -1130,27 +1130,17 @@ selectivity on pilot inputs, before freezing any escalation policy.
   interim results were seen. On 3\% of OLMo-2's requests, most of the
   probability fell outside the allowed labels; excluding them does not
   change its result.
-  \item \textbf{Target validity.} Two AI raters judged the right action
-  for 50 held-out bugs from the cleaned text alone (exploratory; not the
-  pre-registered human validation). The first, an AI assistant, gave only
-  actions; its agreement with the constructed target was at about chance
+  \item \textbf{Target validity.} An exploratory pilot in which one AI
+  assistant chose the right action for 50 held-out bugs, blind to labels
+  and outputs, agreed with the constructed target at about chance level
   (Cohen's $\kappa$ between $-0.157$ and $+0.015$ under two pre-stated
-  readings of its categories). The second, the assistant that conducted
-  this study's analysis and therefore knows the action rule, rated
-  severity, regression and action and committed them before the key was
-  opened. It agreed with the target at $\kappa = 0.285$, comparable to its
-  agreement with the first rater ($\kappa$ between $0.220$ and $0.323$),
-  so the target agrees with one judge about as well as the judges agree
-  with each other, and neither agreement is high. The weak link is the
-  tracker severity field ($\kappa = -0.041$ against the second rater),
-  not the regression field ($\kappa = 0.739$) or the rule (F applied to
-  the rater's own labels matched its direct action at $\kappa = 0.673$).
-  Jev's failure label agreed with failure defined against the second
-  rater on 60\% of the bugs. Every failure result in this paper is
-  therefore disagreement with an operational target built from tracker
-  labels, and its correspondence to the action a competent human would
-  choose is unestablished; a pre-registered two-human validation is
-  designed and not yet run.
+  readings of its categories). With a single rater and no inter-rater
+  baseline, this cannot tell whether the target or the judge is at
+  fault, but it makes the limitation concrete: every failure result in
+  this paper is disagreement with an operational target built from
+  tracker labels, and its correspondence to the action a competent
+  evaluator would choose is unestablished. A pre-registered two-human
+  validation is designed and not yet run.
   \item \textbf{Independent replication.} The Kubernetes study is one
   further workflow; its development and test sets differ in period,
   format and label mix at once, its leakage read was performed by an AI

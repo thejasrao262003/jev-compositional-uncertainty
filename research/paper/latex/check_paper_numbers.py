@@ -204,15 +204,6 @@ need("K8s abstract", f"(AUROC {K1['auroc_rule']:.2f} vs.\\ {K1['auroc_conf']:.2f
 aj = json.loads((RES / "adjudication_ai_pilot.json").read_text())
 need("AI judge kappa", f"between ${aj['R1_defer_as_defer']['kappa']:.3f}$ and $+{aj['R2_defer_as_accept']['kappa']:.3f}$")
 
-t2 = json.loads((RES / "adjudication_two_ai_raters.json").read_text())
-A = {x["comparison"].split("  ")[0]: x for x in t2["action"]}
-need("2-rater vs a*", f"$\\kappa = {A['rater2 vs a*']['kappa']:.3f}$")
-need("inter-rater", f"between ${A['rater1(R1) vs rater2']['kappa']:.3f}$ and ${A['rater1(R2) vs rater2']['kappa']:.3f}$")
-need("severity validity", f"$\\kappa = {t2['label_validity']['severity']['kappa']:.3f}$")
-need("regression validity", f"$\\kappa = {t2['label_validity']['regression']['kappa']:.3f}$")
-need("rule validity", f"$\\kappa = {A['F(rater2 labels) vs rater2 direct action'.split('  ')[0]]['kappa']:.3f}$")
-need("failure label", f"on {round(100 * t2['failure_label_check']['agreement'])}\\% of the bugs")
-
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")
