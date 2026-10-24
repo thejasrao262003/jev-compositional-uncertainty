@@ -200,6 +200,10 @@ assert K1["status"] == "supported" and k8["K2"]["status"] == "supported"
 need("K8s K3", f"AUROC from {K3['auroc_arm_a']:.3f} to {K3['auroc_arm_b']:.3f} (${K3['auroc_arm_b'] - K3['auroc_arm_a']:.3f}$ [${K3['ci95'][0]:.3f}$, ${K3['ci95'][1]:.3f}$])")
 need("K8s abstract", f"(AUROC {K1['auroc_rule']:.2f} vs.\\ {K1['auroc_conf']:.2f})")
 
+# AI-judge pilot (added 2026-10-24)
+aj = json.loads((RES / "adjudication_ai_pilot.json").read_text())
+need("AI judge kappa", f"between ${aj['R1_defer_as_defer']['kappa']:.2f}$ and $+{aj['R2_defer_as_accept']['kappa']:.2f}$")
+
 bad = [c for c in checks if not c[2]]
 for label, text, ok in checks:
     print(("OK   " if ok else "MISS ") + f"{label}: {text}")

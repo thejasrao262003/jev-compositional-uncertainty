@@ -1,0 +1,61 @@
+{
+  "status": "EXPLORATORY AI-judge pilot (Amendment 1); not the pre-registered human validation",
+  "n": 50,
+  "cant_tell": 10,
+  "target_mix": {
+    "accept": 33,
+    "escalate": 9,
+    "defer": 8
+  },
+  "R1_defer_as_defer": {
+    "n_rated": 40,
+    "agree_with_a_star": 15,
+    "agreement": 0.375,
+    "wilson95": [
+      0.242,
+      0.53
+    ],
+    "kappa": -0.157,
+    "kappa_ci95": [
+      -0.333,
+      0.074
+    ],
+    "confusion": {
+      "target=accept / ai=accept": 13,
+      "target=accept / ai=defer": 7,
+      "target=accept / ai=escalate": 6,
+      "target=defer / ai=accept": 6,
+      "target=defer / ai=escalate": 1,
+      "target=escalate / ai=accept": 5,
+      "target=escalate / ai=escalate": 2
+    },
+    "jev_failure_label_agreement": 0.525,
+    "jev_wrong_vs_a_star": 18,
+    "jev_wrong_vs_ai": 27
+  },
+  "R2_defer_as_accept": {
+    "n_rated": 40,
+    "agree_with_a_star": 22,
+    "agreement": 0.55,
+    "wilson95": [
+      0.398,
+      0.693
+    ],
+    "kappa": 0.015,
+    "kappa_ci95": [
+      -0.192,
+      0.25
+    ],
+    "confusion": {
+      "target=accept / ai=accept": 20,
+      "target=accept / ai=escalate": 6,
+      "target=defer / ai=accept": 6,
+      "target=defer / ai=escalate": 1,
+      "target=escalate / ai=accept": 5,
+      "target=escalate / ai=escalate": 2
+    },
+    "jev_failure_label_agreement": 0.7,
+    "jev_wrong_vs_a_star": 18,
+    "jev_wrong_vs_ai": 22
+  }
+}

@@ -1130,6 +1130,17 @@ selectivity on pilot inputs, before freezing any escalation policy.
   interim results were seen. On 3\% of OLMo-2's requests, most of the
   probability fell outside the allowed labels; excluding them does not
   change its result.
+  \item \textbf{Target validity.} An exploratory pilot in which one AI
+  assistant chose the right action for 50 held-out bugs, blind to labels
+  and outputs, agreed with the constructed target at about chance level
+  (Cohen's $\kappa$ between $-0.16$ and $+0.02$ under two pre-stated
+  readings of its categories). With a single rater and no inter-rater
+  baseline, this cannot tell whether the target or the judge is at
+  fault, but it makes the limitation concrete: every failure result in
+  this paper is disagreement with an operational target built from
+  tracker labels, and its correspondence to the action a competent
+  evaluator would choose is unestablished. A pre-registered two-human
+  validation is designed and not yet run.
   \item \textbf{Independent replication.} The Kubernetes study is one
   further workflow; its development and test sets differ in period,
   format and label mix at once, its leakage read was performed by an AI
