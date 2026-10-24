@@ -1,0 +1,51 @@
+code,severity(0/1/2/cant_tell),regression(yes/no/cant_tell),action(accept/defer/escalate/cant_tell),reason
+H01,1,no,accept,Preflight caching lost outside devtools: extra requests but pages work; normal queue.
+H02,1,cant_tell,accept,Debug-build assertion from a live site; release impact unknown; normal crash triage.
+H03,1,no,accept,Overflow only with non-default somaxconn > 65535; avoidable configuration.
+H04,2,yes,escalate,Driver dies and hits BUG(); tracked as a regression from 2.6.24 with a do-not-close note.
+H05,2,cant_tell,defer,Extensions cannot initialise for affected users and restart does not help; rare; schedule.
+H06,2,cant_tell,escalate,Filesystem corruption and hangs leading to data loss.
+H07,1,no,accept,Robustness: retry fetching a config after connectivity returns.
+H08,1,no,defer,Wrong IDN decoding in a security prompt; misleading display with spoofing potential; schedule rather than drop everything.
+H09,1,yes,defer,Lockdep warning (potential deadlock) not seen in 5.0.x; real regression; schedule.
+H10,1,no,accept,Card stops under heavy traffic; module reload works around it.
+H11,0,no,accept,Deprecation warnings during compile; no functional impact.
+H12,2,yes,defer,Nightly crash with an identified regressor but only three crashes; fix in cycle.
+H13,1,cant_tell,defer,Intermittent multi-second search delays; user-facing performance; retry works around it.
+H14,2,no,escalate,Remote server can crash the Firefox parent process from web content.
+H15,1,cant_tell,defer,About 250 ms added to cold HTTP/3 connections; performance; schedule.
+H16,cant_tell,no,accept,Unspecified locking concern with no failure shown.
+H17,1,no,accept,Narrow data race; author states no observed impact or security implication.
+H18,2,no,escalate,Use-after-free in the socket process reachable from a compromised content process (security).
+H19,2,yes,escalate,In-memory corruption crashing executables; bisected to a commit; revert fixes it.
+H20,2,yes,defer,Nightly parent-process null crash with a suspected regressor; fix in cycle.
+H21,2,no,escalate,Firefox crashes whenever FIPS mode is on (enterprise distribution); unusable for those users.
+H22,1,no,accept,Memory leaks on error paths only.
+H23,1,cant_tell,defer,Extra connection delay on IPv4-only networks with DoH and HEv3; performance.
+H24,1,no,accept,libata driver fails on old hardware; old IDE driver works; never worked before.
+H25,2,cant_tell,escalate,Kernel BUG when activating RAID-0 volumes; storage unusable.
+H26,1,cant_tell,accept,Intermittent wrong-thread assertion; little detail.
+H27,1,no,accept,Resume freezes after a drive hot-swap sequence; re-inserting the drive works around it; never worked.
+H28,1,cant_tell,accept,Debug-build assertion from a live site; normal triage.
+H29,2,cant_tell,defer,Nightly null crash signature; low volume; fix in cycle.
+H30,1,yes,defer,6.4.4 regression: a CPU core stuck in io-wait with MariaDB; downgrade works around it.
+H31,1,no,accept,Spec conformance: prefetch not reused while in flight.
+H32,1,cant_tell,defer,HTTP-only pages fail to load when DoH upgrades them; disabling DoH works around it.
+H33,2,yes,escalate,Append redirection truncates files (silent data loss); earlier kernel works.
+H34,1,no,accept,Debug warning at boot; privacy-address timer disabled; no other impact.
+H35,1,cant_tell,defer,Images on a major site fail to load for several reporters; diagnosis in progress.
+H36,2,yes,escalate,5.6.0 leaves laptops without Wi-Fi; regression on a released kernel.
+H37,1,no,accept,Weaker signal and slow association; connectivity still works.
+H38,2,yes,defer,Module completely broken since 2.6.31; patch attached; niche feature.
+H39,1,no,escalate,HTTP/3 header newline splitting enables header injection (security).
+H40,2,yes,defer,Resume fails on a later kernel; earlier kernel works; schedule the regression fix.
+H41,1,no,accept,Device-specific USB reset after days; replug or reboot recovers.
+H42,1,cant_tell,accept,Slow detection of a lost connection with DoH; annoyance.
+H43,1,no,defer,Crash-consistency bug: file mode not persisted after fsync; data-integrity guarantee; schedule.
+H44,1,no,accept,Intermittent build failure from files not being closed.
+H45,0,no,accept,Small leak on module unload; no functional impact.
+H46,0,no,accept,Avoid an unnecessary sync dispatch; improvement, not a failure.
+H47,2,yes,escalate,3.15 regression: adapter cannot connect to any network.
+H48,0,no,accept,New device support with a patch; not a failure.
+H49,2,cant_tell,escalate,Kernel oops in TCP retransmit on a busy production proxy.
+H50,1,yes,defer,3.9 regression: PHY errors and frequent TCP disconnects; degraded but working.

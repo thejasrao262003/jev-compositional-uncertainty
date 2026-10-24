@@ -160,3 +160,30 @@ before the key is opened):**
   bugs the AI rated.
 
 **The pre-registered human validation remains open.**
+
+## Amendment 2 (2026-10-24), at the authors' direction: a second AI rater
+
+**Change.**
+- **The second rater:** the authors directed this project's analysis
+  assistant (Claude) to rate the 50 bugs with the full rubric (severity,
+  regression, direct action and reason): `ratings_CLAUDE.csv`.
+- **Committed before any comparison;** the key was not opened.
+
+**Disclosures.**
+- **This rater designed the study and knows the action rule F,** which
+  could bias its direct actions toward a\*.
+- **It had earlier seen only aggregate pilot statistics,** not per-bug
+  labels.
+- **The two AI raters** (the Amendment 1 pilot and this one) provide an
+  inter-rater baseline.
+- **The result is reported as "two AI raters", not as human
+  validation.**
+
+**Analyses** are those of the protocol, with the Amendment 1 mapping for
+the first rater:
+- inter-rater κ on action;
+- agreement of each rater with a\*;
+- label validity (this rater's severity and regression vs the tracker's);
+- rule validity (F applied to this rater's severity and regression, vs
+  its own direct action);
+- error attribution.
