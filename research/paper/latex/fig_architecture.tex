@@ -1,0 +1,58 @@
+% Study architecture (shared by all wrappers): data -> typed decision workflow -> evaluation.
+\begin{tikzpicture}[
+  font=\footnotesize,
+  src/.style={draw=black!45, fill=black!4, rounded corners=2pt, align=center, text width=2.7cm, inner sep=2pt, line width=0.5pt},
+  prim/.style={draw=blue!60!black, fill=white, rounded corners=2pt, align=center, minimum width=2.05cm, minimum height=0.95cm, inner sep=2pt, line width=0.7pt, drop shadow={opacity=0.18, shadow xshift=0.4mm, shadow yshift=-0.4mm}},
+  box/.style={draw=#1!65!black, fill=#1!9, rounded corners=2pt, align=center, inner sep=3pt, line width=0.5pt},
+  arr/.style={-{Stealth[length=1.7mm]}, line width=0.65pt, draw=black!75},
+  refarr/.style={-{Stealth[length=1.7mm]}, line width=0.55pt, draw=black!50, densely dashed},
+  lane/.style={draw=#1!45, fill=#1!3, rounded corners=4pt, inner sep=2.2mm, line width=0.6pt},
+  step/.style={circle, fill=#1!65!black, text=white, font=\scriptsize\bfseries, inner sep=1.1pt, minimum size=3.6mm},
+  steplabel/.style={font=\footnotesize\bfseries, text=#1!60!black, anchor=west}]
+
+% ---------------- (1) data ----------------
+\node[src] (ker) {Linux kernel Bugzilla\\[-1pt]{\scriptsize 240 dev\,/\,250 test bugs}};
+\node[src, above=2.5mm of ker] (moz) {Mozilla Bugzilla\\[-1pt]{\scriptsize 202 dev\,/\,250 test bugs}};
+\node[src, below=2.5mm of ker] (k8s) {Kubernetes GitHub\\[-1pt]{\scriptsize 500 dev\,/\,582 test issues}};
+\node[font=\scriptsize, text=black!65, text width=2.7cm, align=center, below=1.2mm of k8s] (cleannote) {all texts cleaned: privacy scrub, label-leak removal, $\leq$2{,}000 characters};
+\foreach \t in {moz,k8s} \draw[line width=0.65pt, draw=black!75] (\t.east) -- ++(3mm,0) |- (ker.east);
+\coordinate (bus) at ($(ker.east)+(3mm,0)$);
+
+% ---------------- (2) workflow ----------------
+\node[prim, right=15mm of ker] (c) {\choice{}\\[-1pt]routing $c_1$};
+\node[prim, right=8.5mm of c] (n) {\noul{}\\[-1pt]bug\,/\,regression $c_2$};
+\node[prim, right=8.5mm of n] (s) {\score{}\\[-1pt]severity\,/\,priority $c_3$};
+\foreach \x in {c,n,s} \node[font=\scriptsize, text=blue!55!black, above=0.6mm of \x] {$3\times$ call $\rightarrow$ modal vote};
+\draw[arr] (c) -- node[above, font=\scriptsize]{$x{+}c_1$} (n);
+\draw[arr] (n) -- node[above, font=\scriptsize]{$x{+}c_{1:2}$} (s);
+\path (n.south) -- (s.south) coordinate[pos=0.5] (ns);
+\node[box=orange, below=9mm of ns, text width=5.2cm] (F) {\textbf{action rule} $a = F(c_2, c_3)$\\[-1pt]{\scriptsize accept\,/\,defer\,/\,escalate\,/\,request evidence}};
+\draw[arr] (n.south) -- (n.south |- F.north);
+\draw[arr] (s.south) -- (s.south |- F.north);
+\node[font=\scriptsize, text=black!60, align=center, text width=5.2cm, below=1.5mm of F] (models) {Jev 1.13 via the TypeSafe API, or a comparison model behind the same interface: \mbox{OpenJev-27B}, \mbox{Qwen2.5-7B}, \mbox{OLMo-2-7B}, \mbox{Phi-3.5-mini}};
+\draw[arr] (ker.east) -- node[above, font=\scriptsize, pos=0.6]{evidence $x$} (c);
+
+% ---------------- (3) evaluation ----------------
+\node[box=red, text width=2.6cm, anchor=west] (y) at ($(F.east)+(11mm,0)$) {\textbf{failure label}\\[-1pt]$y = \mathbf{1}[a \neq a^{*}]$};
+\node[box=gray, text width=2.6cm, anchor=south] (ref) at ($(y.north |- s.north)+(0,0)$) {\textbf{target}\\[-1pt]$a^{*} = F(c_2^{*}, c_3^{*})$};
+\draw[arr] (ref) -- (y);
+\draw[arr] (F.east) ++(0,0) -- node[above, font=\scriptsize, pos=0.55]{action $a$} (y.west);
+\node[box=teal, text width=2.6cm, below=3.5mm of y] (rq12) {\textbf{RQ1, RQ2: ranking}\\[-1pt]{\scriptsize AUROC of final-step confidence, action-rule score $r(a)$ and estimator $E_{\mathrm{dec}}$; label-shift reweighting}};
+\node[box=violet, text width=2.6cm, below=3mm of rq12] (rq3) {\textbf{RQ3: review value}\\[-1pt]{\scriptsize 10\% review budget, frozen cost matrix; cost vs.\ no review and oracle}};
+\draw[arr] (y) -- (rq12);
+\draw[arr] (rq12) -- (rq3);
+
+% ---------------- lanes ----------------
+\begin{scope}[on background layer]
+\node[lane=gray, fit=(moz)(k8s)(cleannote)] (L1) {};
+\coordinate (ctop) at ($(c.north)+(0,4.5mm)$);
+\node[lane=blue, fit=(c)(s)(F)(models)(ctop)] (L2) {};
+\node[lane=teal, fit=(ref)(y)(rq12)(rq3)] (L3) {};
+\end{scope}
+\node[step=gray, anchor=south west] (t1) at ($(L1.north west)+(1mm,1mm)$) {1}; \node[steplabel=gray] at (t1.east) {Data};
+\node[step=blue, anchor=south west] (t2) at ($(L2.north west)+(1mm,1mm)$) {2}; \node[steplabel=blue] at (t2.east) {Typed decision workflow};
+\node[step=teal, anchor=south west] (t3) at ($(L3.north west)+(1mm,1mm)$) {3}; \node[steplabel=teal] at (t3.east) {Evaluation};
+
+% reference labels bypass the model
+\draw[refarr] (L1.north) -- ++(0,8.5mm) -| node[pos=0.25, above, font=\scriptsize]{reference labels $(c_1^{*}, c_2^{*}, c_3^{*})$, never shown to the model} ($(ref.north)+(8mm,0)$);
+\end{tikzpicture}

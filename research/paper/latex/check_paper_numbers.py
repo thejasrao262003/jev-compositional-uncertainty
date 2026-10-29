@@ -185,7 +185,7 @@ need("J6 Jev bias", f"underestimates a 50\\% share of serious bugs by {-j6['bias
 j5i = json.loads((RES / "audit_j5_intervals.json").read_text())
 cj = j5i["Jev 1.13"]["conf"]; po = j5i["openjev/openjev-27B"]["p2"]
 need("J5 Jev conf CI", f"{cj['auroc']:.2f} [{cj['ci95'][0]:.2f}, {cj['ci95'][1]:.2f}] for confidence")
-need("J5 OpenJev p2", f"({po['auroc']:.2f} [{po['ci95'][0]:.2f}, {po['ci95'][1]:.2f}]); a paired comparison")
+need("J5 OpenJev p2", f"({po['auroc']:.2f} [{po['ci95'][0]:.2f}, {po['ci95'][1]:.2f}]), and a paired comparison")
 assert j5i["openjev/openjev-27B"]["p2_minus_conf"]["ci95"][0] > 0
 assert all(j5i["Jev 1.13"][k]["ci95"][0] < 0.5 < j5i["Jev 1.13"][k]["ci95"][1] for k in ("E_dec", "conf", "p2")) or j5i["Jev 1.13"]["E_dec"]["ci95"][1] < 0.53
 

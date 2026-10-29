@@ -17,84 +17,96 @@ work has examined uncertainty across multi-step agent trajectories
 identify the cases where it fails, and can those signals identify the
 specific costly errors for which human review is worthwhile?} The two
 halves can come apart: a signal can rank failures well and still not say
-which reviews pay. Heterogeneity matters because Jev exposes three primitives whose uncertainty is
-\emph{structurally} different. \choice{} returns a
-distribution over labels plus a scalar confidence. \score{} returns an
-ordinal distribution plus a scalar confidence. \noul{} returns a single
-probability with no separate confidence field. Treating these numbers as
-one kind of quantity is a modeling assumption, and this paper tests it.
+which reviews pay. Heterogeneity matters because Jev exposes three
+primitives whose uncertainty is \emph{structurally} different. \choice{}
+returns a distribution over labels plus a scalar confidence. \score{}
+returns an ordinal distribution plus a scalar confidence. \noul{} returns
+a single probability with no separate confidence field. Treating these
+numbers as one kind of quantity is a modeling assumption, and this paper
+tests it.
 
-\para{What TypeSafe documents} TypeSafe's documentation describes
-Jev's \texttt{confidence} for \choice{} and \score{} as a number that
-``collapses'' the output distribution into a value between 0 and 1. It
-is 1 when all probability is on one outcome and 0 when probability is
-spread evenly. The documentation calls this ``one reasonable way to
-summarize a distribution, not the only one'', and advises setting
-thresholds from one's own data \citep{typesafe2026confidence}. For
-\noul{}, it returns ``a single probability'' with ``no separate
-\texttt{confidence}''. Our results are therefore not a test of a
-calibration claim. They are a measurement of how these documented
-concentration statistics behave as escalation signals when Jev's
-primitives are chained, which the documentation leaves open.
+TypeSafe's documentation describes Jev's \texttt{confidence} for
+\choice{} and \score{} as a number that ``collapses'' the output
+distribution into a value between 0 and 1. It is 1 when all probability
+is on one outcome and 0 when probability is spread evenly. The
+documentation calls this ``one reasonable way to summarize a
+distribution, not the only one'', and advises setting thresholds from
+one's own data \citep{typesafe2026confidence}. For \noul{}, it returns
+``a single probability'' with ``no separate \texttt{confidence}''. Our
+results are therefore not a test of a calibration claim. They measure
+how these documented concentration statistics behave as escalation
+signals when Jev's primitives are chained, which the documentation
+leaves open.
 
-\para{Research questions} Failure here means disagreement between the
-workflow's action and a target action we construct from reference labels
-(\cref{sec:setting}); we return to targets that do not depend on that
-construction in \cref{sec:crossmodel}.
-\begin{itemize}
-  \item \textbf{RQ1.} Which signals rank workflow failures: the models'
-  confidence, or what the workflow decided?
-  \item \textbf{RQ2.} Are those signals stable when the label
-  distribution changes between development and deployment?
-  \item \textbf{RQ3.} Do signals that rank failures also identify the
-  reviews that reduce cost?
-\end{itemize}
+Failure here means disagreement between the workflow's action and a
+target action we construct from reference labels (\cref{sec:setting});
+we return to targets that do not depend on that construction in
+\cref{sec:crossmodel}. We ask three research questions. The first (RQ1)
+is which signals rank workflow failures: the models' confidence, or what
+the workflow decided. The second (RQ2) is whether those signals stay
+stable when the label distribution changes between development and
+deployment. The third (RQ3) is whether signals that rank failures also
+identify the reviews that reduce cost.
 
-\para{Contributions}
-\begin{enumerate}
-  \item \textbf{The action's historical error rate predicts failure}
-  (RQ1; \cref{sec:heldout,sec:crossmodel}, pre-registered). A frozen
-  decision-feature estimator ranks failures better than final-step
-  confidence on 500 new bugs, and the gap replicates across five models
-  from four sources and in an independent Kubernetes workflow
-  (\cref{sec:k8s}). Paired ablations show what carries it: the
-  historical error rate of the chosen action. For the two Jev-style models
-  the estimator adds nothing detectable to that rate, and confidence adds
-  little except for the weakest general models.
-  \item \textbf{Those error rates are not portable across label mixes}
-  (RQ2; \cref{sec:crossmodel}, exploratory). Fitted on a quota-sampled
-  development set, decision-conditioned error rates can rank a
-  natural-mix set's errors below chance on targets that bypass our
-  construction. Re-weighting to the deployment label mix repairs the
-  ranking, including with weights estimated from the models' own
-  predictions without any test labels for the models whose predictions
-  discriminate the label; under known synthetic shifts, however, that
-  label-free estimate of the mix is biased toward the development mix, so
-  the repair is directional rather than an accurate estimate of the mix.
-  \item \textbf{Ranking failures is not finding valuable reviews}
-  (RQ3; \cref{sec:intervention}, pre-registered). Under the
-  pre-registered costs no 10\% review policy beat no review; an oracle
-  locates the value in wrongly accepted cases that the tested signals do
-  not isolate; and an exploratory sensitivity analysis shows that
-  whether review pays depends on the ratio of wrong-accept cost to review
-  cost. A case-level score failed a pre-registered feasibility check, so
-  its confirmatory study was stopped before new data.
-  \item \textbf{Supporting evidence and method}
-  (\cref{sec:char,sec:transfer,sec:real,sec:comp,sec:method}). Inside the
-  workflow the primitives' confidence signals behave differently, fixed
-  thresholds set on constructed content do not transfer, and \score{}
-  compresses severity on two trackers, consistent with single-task audits
-  of Jev \citep{deusser2026jev,meng2026jevaudit}. A pre-registration and
-  audit process caught seven defects, five of them before the data that
-  would have exposed them existed.
-\end{enumerate}
+The novelty of this work is methodological. First, we evaluate
+uncertainty at the level of a \emph{workflow} of structurally different
+typed decisions joined by an explicit action rule, so that a failure is
+defined on the action the workflow takes rather than on any single
+answer, and every step-level signal can be compared as a predictor of
+that failure. Second, we separate two questions that are usually merged,
+whether a signal ranks failures and whether acting on it pays, by
+scoring a fixed review budget against a frozen cost matrix, random
+review and an oracle bound. Third, we treat the evaluation itself as an
+object of control: every confirmatory test was pre-registered and frozen
+by hash before its data existed, and the central finding was replicated
+across five models and in an independent, chronologically split
+workflow. \Cref{sec:novelty} sets these elements out in full.
 
-\para{Non-claims} We make no claim about general calibration, other
-Jev versions or other APIs, domains beyond software bug triage, or real-world
-operational benefit.
+Our answers are as follows. For RQ1, a frozen decision-feature estimator
+ranks failures better than final-step confidence on 500 new bugs, and
+the gap replicates across five models from four sources and in an
+independent Kubernetes workflow (\cref{sec:heldout,sec:crossmodel,sec:k8s}).
+Paired ablations show that the signal is almost entirely the historical
+error rate of the chosen action; for the two Jev-style models the
+estimator adds nothing detectable to that rate, and confidence adds
+little except for the weakest general models. For RQ2, those error rates
+are not portable across label mixes: fitted on a quota-sampled
+development set, they can rank a natural-mix set's errors below chance on
+targets that bypass our construction. Re-weighting to the deployment
+label mix repairs the ranking, even with weights estimated from the
+models' own predictions without test labels when those predictions
+discriminate the label, but under known synthetic shifts that label-free
+estimate is biased toward the development mix, and it made ranking
+worse on Kubernetes. For RQ3, under the pre-registered costs no 10\%
+review policy beat no review (\cref{sec:intervention}). An oracle locates
+the value in wrongly accepted cases that the tested signals do not
+isolate, an exploratory sensitivity analysis shows that whether review
+pays depends on the ratio of wrong-accept cost to review cost, and a
+case-level score failed a pre-registered feasibility check, so its
+confirmatory study was stopped before new data. Supporting results show
+that the primitives' confidence signals behave differently inside the
+workflow, that fixed thresholds set on constructed content do not
+transfer, and that \score{} compresses severity on two trackers,
+consistent with single-task audits of Jev
+\citep{deusser2026jev,meng2026jevaudit}
+(\cref{sec:char,sec:transfer,sec:real,sec:comp}); the study's own audit
+process caught seven defects, five of them before the data that would
+have exposed them existed (\cref{sec:method}).
+
+We make no claim about general calibration, other Jev versions or other
+APIs, domains beyond software issue triage, or real-world operational
+benefit. The rest of the paper is organized as follows.
+\Cref{sec:related} reviews related work and \cref{sec:setting} describes
+the methodology. \Cref{sec:char,sec:transfer,sec:real,sec:comp} report
+the exploratory analyses on the original trackers,
+\cref{sec:heldout,sec:crossmodel,sec:k8s} the pre-registered tests of
+failure prediction, and \cref{sec:intervention} the test of review value.
+\Cref{sec:method,sec:threats} discuss the audits and threats to
+validity, and \cref{sec:conclusion,sec:future} conclude.
 
 %======================================================================
 \section{Related work}
+\label{sec:related}
 %======================================================================
 
 \para{Evaluations of Jev and open decision models} Jev has been
@@ -236,89 +248,135 @@ deferral and label shift in a targeted pass), and the Jev literature is growing 
 appeared in September and October 2026.
 
 %======================================================================
-\section{Setting}
+\section{Methodology}
 \label{sec:setting}
 %======================================================================
 
-\para{Jev and repeats} All calls go to the TypeSafe API with model
-\texttt{jev-latest}, which resolved to \texttt{jev-1.13.0} in every one of
-our calls. Each node is called three times, and the three
-answers are reduced to one decision. For \choice{} and \score{} we take
-the modal decision with a tie tolerance of 0.02; a node with no
-two-of-three majority is \emph{repeat-unstable}. For \noul{} we threshold
-the mean probability at 0.5, and its confidence-like value is
-$2\,|\bar{p}-0.5|$.
-
-\para{Workflow} Node~1 (\choice{}) routes the incident to a
-network or storage subsystem. Node~2 (\noul{}) assesses a binary
-property: customer impact on constructed data, regression on real bugs.
-Node~3 (\score{}) rates severity on three levels. Each node reads the
-evidence plus the upstream decisions, appended by a fixed adapter
-(\cref{fig:workflow}).
-
 \begin{widefigure}
 \centering
-\resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[node distance=1.45cm, every node/.style={font=\small},
-  box/.style={draw, rounded corners, minimum width=2.6cm, minimum height=0.9cm, align=center},
-  arr/.style={-{Stealth[length=2mm]}, thick}]
-\node[box, fill=blue!6] (ev) {evidence $x$};
-\node[box, right=of ev] (c) {\choice{}\\ routing $c_1$};
-\node[box, right=of c] (n) {\noul{}\\ $c_2$ (impact / regression)};
-\node[box, right=of n] (s) {\score{}\\ severity $c_3$};
-\node[box, below=1.0cm of n, fill=orange!8] (f) {$a = F(c_2, c_3)$};
-\draw[arr] (ev) -- (c);
-\draw[arr] (c) -- node[above=2pt]{\tiny $x{+}c_1$} (n);
-\draw[arr] (n) -- node[above=2pt]{\tiny $x{+}c_1{+}c_2$} (s);
-\draw[arr] (n) -- (f);
-\draw[arr] (s) |- (f);
-\end{tikzpicture}}
-\caption{The three-step workflow. Each node is called three times. The
-action rule $F$ uses only $c_2$ and $c_3$.}
+\resizebox{\linewidth}{!}{\input{fig_architecture}}
+\caption{Study architecture. (1)~Bug and issue reports from three public
+trackers are cleaned and stripped of label leaks. (2)~The evidence passes
+through a dependent chain of three typed decisions, each called three
+times and reduced by modal vote, with upstream decisions appended to the
+evidence; an explicit action rule $F$ maps the second and third decisions
+to an action. The same chain runs on Jev and on four comparison models.
+(3)~Reference labels, never shown to the model, give the target action
+$\astar$ through the same rule; a failure is $a \neq \astar$. Failure
+signals are evaluated for ranking (RQ1, RQ2) and for review value under a
+fixed budget and frozen costs (RQ3).}
+\label{fig:arch}
 \label{fig:workflow}
 \end{widefigure}
 
-\para{Target action} The target is $\astar = F(c_2^{*}, c_3^{*})$,
-where $F$ maps an \emph{unclear} $c_2$ to \emph{request more evidence},
-$c_3 = 2$ to \emph{escalate}, $c_3 = 1$ with $c_2 = 1$ to \emph{defer},
-and everything else to \emph{accept} (\cref{tab:F}). $F$ is a construct
-we defined, not an independently validated outcome, and every strategy
-result is conditional on it.
+\subsection{Study architecture}
+\Cref{fig:arch} shows the three stages of the study. Bug reports from the
+Mozilla and Linux kernel Bugzilla trackers, and issues from the
+Kubernetes GitHub repository, are cleaned, privacy-scrubbed, stripped of
+text that leaks their labels, and truncated to 2{,}000 characters. Each
+report then passes through the same three-step decision workflow, and
+the workflow's action is compared with a target action computed from the
+tracker's reference labels, which the model never sees. The comparison
+defines the failure label on which every signal is evaluated.
 
-\para{Strategies}
-\begin{itemize}
-  \item \textbf{S1:} $F$ applied to the node decisions.
-  \item \textbf{S4a:} S1 plus escalation on repeat instability.
-  \item \textbf{S2:} escalate the $\lceil qn\rceil$ instances with the
-  lowest product of per-node confidences and accept the rest. Here $q$
-  is the share of non-accept targets.
-  \item \textbf{S5:} the same, ranked by per-primitive rank-normalized
-  uncertainty.
-  \item \textbf{2h / 5h:} S1 plus confidence-ranked escalation of a fixed
-  10\% budget.
-  \item \textbf{R:} the same budget escalated at random.
-\end{itemize}
-\para{Statistics} Agreement rates carry Wilson 95\% intervals.
-AUROCs use the Mann--Whitney estimator, with 95\% percentile bootstrap
-intervals over bugs ($B = 2{,}000$, fixed seed). Bugs are distinct
-reports with no shared unit, so we resample bugs. Paired strategy
-comparisons use the exact McNemar test on discordant pairs, and the
-difference in $P(Y_{\text{decision}})$ gets a bootstrap interval. Within
-every resample, the set-relative rankings (S2, 2h) are recomputed. We
-compare the two trackers through the difference of their paired
-differences, with independent bootstraps per tracker. We do not compare
-their $p$-values. For budgeted overrides, the reference is the
-\emph{exact} expected cost of $k$ random overrides. The randomization
+\subsection{Workflow, repeats and action rule}
+All Jev calls go to the TypeSafe API with model \texttt{jev-latest}, which
+resolved to \texttt{jev-1.13.0} in every analysed call. Node~1
+(\choice{}) routes the report to a subsystem: network or storage on the
+Bugzilla trackers. Node~2 (\noul{}) answers a binary question: customer
+impact on constructed data, regression on real bugs. Node~3 (\score{})
+rates severity on three levels. Each node reads the evidence plus the
+upstream decisions, appended by a fixed adapter. Each node is called
+three times, and the three answers are reduced to one decision: for
+\choice{} and \score{} we take the modal decision with a tie tolerance of
+0.02, and a node with no two-of-three majority is
+\emph{repeat-unstable}; for \noul{} we threshold the mean probability at
+0.5, and its confidence-like value is $2\,|\bar{p}-0.5|$. The action rule
+$F$ maps an \emph{unclear} $c_2$ to \emph{request more evidence},
+$c_3 = 2$ to \emph{escalate}, $c_3 = 1$ with $c_2 = 1$ to \emph{defer},
+and everything else to \emph{accept} (\cref{tab:F}).
+
+\subsection{Target action and failure signals}
+The target is $\astar = F(c_2^{*}, c_3^{*})$, the same rule applied to
+the reference labels. $F$ is a construct we defined, not an
+independently validated outcome, and every failure result is conditional
+on it. A workflow fails on a report when its action differs from the
+target, $y = \mathbf{1}[a \neq \astar]$. We compare three kinds of
+failure signal. The first is the model's own \emph{final-step
+confidence} (low confidence ranks first), alone or composed across
+nodes. The second is the \emph{action-rule score}
+$r(a) = (e(a) + \bar r)/(n(a) + 1)$, the historical error rate of the
+action the workflow chose, where $e(a)$ and $n(a)$ count the errors and
+uses of action $a$ on development data and $\bar r$ is the overall
+development error rate. The third is a frozen logistic estimator on the
+decisions ($E_{\text{dec}}$) or on the decisions plus the uncertainty
+signals ($E_{\text{all}}$), fitted on development data only.
+
+\subsection{Escalation strategies}
+The exploratory analyses compare six escalation strategies. S1 applies
+$F$ to the node decisions, and S4a adds escalation on repeat
+instability. S2 escalates the $\lceil qn\rceil$ instances with the
+lowest product of per-node confidences and accepts the rest, where $q$
+is the share of non-accept targets, and S5 does the same with
+per-primitive rank-normalized uncertainty. Strategies 2h and 5h keep S1
+and add confidence-ranked escalation of a fixed 10\% budget, and R
+escalates the same budget at random.
+
+\subsection{Evaluation and statistics}
+Outcomes are $P(Y_{\text{decision}})$, the probability that the action
+equals $\astar$, and the cost under a frozen matrix (\cref{tab:cost}),
+in which a wrong \emph{accept} costs 6--10, any other mismatch 1, and
+each escalation an extra 1 for human time. Agreement rates carry Wilson
+95\% intervals. AUROCs use the Mann--Whitney estimator, with 95\%
+percentile bootstrap intervals over bugs ($B = 2{,}000$, fixed seed).
+Bugs are distinct reports with no shared unit, so we resample bugs.
+Paired strategy comparisons use the exact McNemar test on discordant
+pairs, and the difference in $P(Y_{\text{decision}})$ gets a bootstrap
+interval. Within every resample, the set-relative rankings (S2, 2h) are
+recomputed. We compare the two trackers through the difference of their
+paired differences, with independent bootstraps per tracker, and do not
+compare their $p$-values. For budgeted overrides, the reference is the
+\emph{exact} expected cost of $k$ random overrides; the randomization
 $p$-value (10{,}000 random $k$-subsets) is conditional on the evaluated
 bugs, and a bootstrap interval over bugs gives the sampling uncertainty.
-An interval that covers the null value is read as \emph{no evidence of an
-effect}, not as evidence of no effect. The scripts are
-\texttt{paper\_statistics.py} and \texttt{mozilla\_exploratory\_analysis.py}.
+An interval that covers the null value is read as \emph{no evidence of
+an effect}, not as evidence of no effect. Confirmatory tests are
+one-sided paired bootstrap tests with Holm correction within each
+pre-registered family. The scripts are \texttt{paper\_statistics.py} and
+\texttt{mozilla\_exploratory\_analysis.py}.
 
-\para{Outcomes} Outcomes are $P(Y_{\text{decision}})$, the probability that the action
-equals $\astar$, and the cost under a frozen matrix (\cref{tab:cost}),
-in which a wrong \emph{accept} costs 6--10, any other mismatch 1, and each
-escalation an extra 1 for human time.
+\subsection{Novelty of the methodology}
+\label{sec:novelty}
+\Cref{tab:novelty} sets out what is new in this design and what each
+element makes it possible to conclude. Taken together, the elements turn
+a question that is usually answered at the level of single predictions,
+whether a model's uncertainty is trustworthy, into two testable
+questions about a workflow: which signals predict that the workflow's
+action is wrong, and whether acting on those signals pays for itself.
+The pre-registration, the cross-model and cross-workflow replications,
+and the explicit separation of ranking from value are what allow the
+negative result on review value to be read as a finding rather than as
+a failed experiment.
+
+\begin{widetable}
+\centering
+\caption{Methodological elements of this study and what each makes it
+possible to conclude.}
+\label{tab:novelty}
+\small
+\begin{tabularx}{\linewidth}{l Y Y}
+\toprule
+Element & What we do & What it makes possible \\
+\midrule
+Unit of analysis & A dependent chain of three structurally different typed decisions (categorical, binary, ordinal) mapped to an action by an explicit rule $F$ & Failure is defined on the action taken, so every step-level signal can be compared as a predictor of workflow failure \\ \addlinespace
+Failure signals & Final-step and composed confidence, the action-rule score $r(a)$ and frozen estimators, compared by paired tests & Shows whether confidence adds anything beyond what the workflow decided \\ \addlinespace
+Prediction vs.\ value & A fixed 10\% review budget scored with a frozen cost matrix against random review, confidence-ranked review and an oracle bound & Separates ``ranks failures'' from ``finds the reviews that pay'' \\ \addlinespace
+Shift diagnosis & Development and deployment label mixes differ by design; re-weighting with known and label-free (BBSE) mix estimates & Exposes the dependence of decision-conditioned error rates on the label prior \\ \addlinespace
+Confirmatory control & Pre-registration, hash-frozen estimators and protocols, dated amendments, independent recomputation & Separates confirmatory from exploratory claims (\cref{tab:claims}) \\ \addlinespace
+Replication & Five models behind one interface, and an independent, chronologically split Kubernetes workflow & Tests whether the findings belong to Jev or to the workflow design \\
+\bottomrule
+\end{tabularx}
+\end{widetable}
 
 %======================================================================
 \section{Characterization: incompatible uncertainty semantics}
@@ -561,17 +619,15 @@ add anything \emph{beyond} the decisions? Starting from the decision-based
 action $F$, we also escalate the $k$ least-confident bugs that $F$ did
 not escalate, for every $k$, and compare with the exact expectation under
 random selection (\cref{fig:override}). We report two AUROCs with
-different prediction targets, which should not be conflated:
-\begin{itemize}
-  \item \textbf{(A) Missed serious bugs.} Among bugs that $F$ did not
-  escalate, does low composed confidence rank those whose target is
-  \emph{escalate} first? This is what an override budget can fix. AUROC
-  0.49 [0.37, 0.61] on Mozilla and 0.50 [0.40, 0.60] on the kernel.
-  \item \textbf{(B) Any decision error.} Across all bugs, does low composed
-  confidence rank those where $F$'s action is wrong first? AUROC 0.54
-  [0.45, 0.63] on Mozilla and 0.47 [0.40, 0.54] on the kernel.
-\end{itemize}
-Every interval covers 0.5 (\cref{fig:forest}). The data show no evidence that composed
+different prediction targets, which should not be conflated. Target (A)
+is \emph{missed serious bugs}: among bugs that $F$ did not escalate, does
+low composed confidence rank those whose target is \emph{escalate} first?
+This is what an override budget can fix, and the AUROC is 0.49 [0.37,
+0.61] on Mozilla and 0.50 [0.40, 0.60] on the kernel. Target (B) is
+\emph{any decision error}: across all bugs, does low composed confidence
+rank those where $F$'s action is wrong first? The AUROC is 0.54 [0.45,
+0.63] on Mozilla and 0.47 [0.40, 0.54] on the kernel. Every interval
+covers 0.5 (\cref{fig:forest}). The data show no evidence that composed
 confidence ranks either target better than chance, but they cannot rule
 out a modest signal (AUROC up to about 0.6). 
 
@@ -602,18 +658,14 @@ confidence is at chance for both escalation targets, (A) and (B).}
 $k = \lceil 0.1n \rceil$ overrides ($k = 21$ on Mozilla, 24 on the kernel),
 let $T$ be the total cost of the confidence-ranked overrides and $\mu$ the
 exact expected total under $k$ overrides drawn uniformly from the same
-candidates. Two analyses answer two different questions.
-\begin{itemize}
-  \item \textbf{Randomization test, conditional on the evaluated bugs.}
-  This asks whether the ranking selected worse or better overrides than
-  random selection \emph{on these bugs}. The statistic is $|T - \mu|$.
-  The null distribution comes from 10{,}000 random $k$-subsets of the
-  candidates, and the test is two-sided.
-  \item \textbf{Bootstrap over bugs.} This asks how stable the per-bug
-  difference $(T - \mu)/n$ is under resampling of the bugs, with rankings
-  and $\mu$ recomputed in each resample.
-\end{itemize}
-On Mozilla, $T = 390$ against $\mu = 357.2$. The observed value sits at
+candidates. Two analyses answer two different questions. A
+randomization test, conditional on the evaluated bugs, asks whether the
+ranking selected worse or better overrides than random selection
+\emph{on these bugs}; its statistic is $|T - \mu|$, and its two-sided
+null distribution comes from 10{,}000 random $k$-subsets of the
+candidates. A bootstrap over bugs asks how stable the per-bug difference
+$(T - \mu)/n$ is under resampling of the bugs, with rankings and $\mu$
+recomputed in each resample. On Mozilla, $T = 390$ against $\mu = 357.2$. The observed value sits at
 the edge of the null distribution (2.5--97.5\% range 323--388), so
 $p = 0.05$. The per-bug difference is $+0.16$ [$-0.01$, 0.24], and 97\% of
 resamples are positive. That is borderline evidence that the product
@@ -663,47 +715,38 @@ action, and the two signals that do reach it are close to uninformative.
 
 \para{Design} The exploratory analyses above suggested that a model's
 \emph{decisions} carry the information its confidence lacks. We tested
-this prospectively, as follows.
-\begin{itemize}
-  \item \textbf{Estimator.} We trained one decision-feature estimator
-  ($E_{\text{dec}}$: $L_2$-regularized logistic regression on the
-  \score{} level, the \noul{} decision and the workflow action, with
-  $\lambda = 1$) on all 442 previously collected bugs. We froze it by
-  hash, before any new data existed.
-  \item \textbf{Fresh bugs.} We collected 500 new bugs: 250 per tracker,
-  sampled at each tracker's \emph{natural} mix, with no overlap with the
-  training bugs. That required 4{,}500 Jev calls.
-  \item \textbf{Hypotheses (pre-registered).} HR1: $E_{\text{dec}}$
-  ranks wrong workflow actions better than low final-step confidence.
-  HR2: $E_{\text{dec}}$ ranks above chance on each tracker. One-sided
-  bootstrap tests, Holm-corrected.
-\end{itemize}
+this prospectively. We trained one decision-feature estimator
+($E_{\text{dec}}$: $L_2$-regularized logistic regression on the
+\score{} level, the \noul{} decision and the workflow action, with
+$\lambda = 1$) on all 442 previously collected bugs and froze it by hash
+before any new data existed. We then collected 500 new bugs, 250 per
+tracker, sampled at each tracker's \emph{natural} mix with no overlap
+with the training bugs, which required 4{,}500 Jev calls. Two hypotheses
+were pre-registered: $E_{\text{dec}}$ ranks wrong workflow actions
+better than low final-step confidence (HR1), and $E_{\text{dec}}$ ranks
+above chance on each tracker (HR2), both by one-sided bootstrap tests
+with Holm correction.
 
-\para{Result} Both hypotheses are supported.
-\begin{itemize}
-  \item \textbf{HR1:} $E_{\text{dec}}$ reaches AUROC 0.763 against 0.549
-  for final-step confidence, a difference of $+0.214$ (one-sided 95\%
-  lower bound $+0.158$).
-  \item \textbf{HR2:} AUROC is 0.811 on Mozilla (lower bound 0.762) and
-  0.697 on the kernel (lower bound 0.648).
-  \item \textbf{Split integrity:} tracker links (duplicates, see-also,
-  blocks, depends-on, regressions) connect 9 held-out bugs to development
-  bugs; without them $E_{\text{dec}}$ reaches 0.770 against 0.551. On the
-  70 Mozilla bugs filed in the 12 months before sampling, $E_{\text{dec}}$
-  reaches 0.847 against 0.519. Refitting the estimator after removing
-  every development bug linked to a held-out bug gives 0.772 against 0.551
-  (difference $+0.221$ [$+0.154$, $+0.288$]).
-  \item \textbf{Per tracker:} the difference is $+0.279$ [$+0.191$,
-  $+0.374$] on Mozilla and $+0.124$ [$+0.023$, $+0.225$] on the kernel,
-  weaker but excluding zero.
-  \item \textbf{Independent recomputation:} a separate script that shares
-  no code with the analysis rebuilds the reduction, action rule, features,
-  AUROC and bootstrap from the raw responses, and it reproduces every
-  point estimate above exactly.
-  \item \textbf{Calibration:} the estimator's predicted failure rate
-  matches the observed rate overall. But it outputs only 7--8 distinct
-  risk levels (ECE 0.18--0.20).
-\end{itemize}
+\para{Result} Both hypotheses are supported. For HR1, $E_{\text{dec}}$
+reaches AUROC 0.763 against 0.549 for final-step confidence, a
+difference of $+0.214$ (one-sided 95\% lower bound $+0.158$). For HR2,
+the AUROC is 0.811 on Mozilla (lower bound 0.762) and 0.697 on the
+kernel (lower bound 0.648). Per tracker, the difference is $+0.279$
+[$+0.191$, $+0.374$] on Mozilla and $+0.124$ [$+0.023$, $+0.225$] on the
+kernel, weaker but excluding zero.
+
+The result survives three integrity checks. Tracker links (duplicates,
+see-also, blocks, depends-on, regressions) connect 9 held-out bugs to
+development bugs; without them $E_{\text{dec}}$ reaches 0.770 against
+0.551. On the 70 Mozilla bugs filed in the 12 months before sampling,
+$E_{\text{dec}}$ reaches 0.847 against 0.519. Refitting the estimator
+after removing every development bug linked to a held-out bug gives
+0.772 against 0.551 (difference $+0.221$ [$+0.154$, $+0.288$]). A
+separate script that shares no code with the analysis rebuilds the
+reduction, action rule, features, AUROC and bootstrap from the raw
+responses and reproduces every point estimate exactly. The estimator's
+predicted failure rate matches the observed rate overall, but it outputs
+only 7--8 distinct risk levels (ECE 0.18--0.20).
 
 %======================================================================
 \section{Cross-model replication}
@@ -712,23 +755,18 @@ this prospectively, as follows.
 
 \para{Models} To test whether the result is specific to Jev, we ran the
 same 942 bugs, questions and three-step adapter through four further
-models.
-\begin{itemize}
-  \item \textbf{OpenJev 27B} \citep{openjev2026}: an independently
-  trained Jev-style decision model (Hugging Face \texttt{openjev/openjev},
-  commit \texttt{b4a89f5}; several unrelated projects share the name).
-  It is served on one H100 exactly as its authors specify, with their
-  calibrated readout. Its 2{,}826
-  requests had 0 failures. (An unofficial architectural reconstruction
-  of Jev also exists \citep{gomez2026openjev}, but it has no trained
-  weights, so it could not be evaluated.)
-  \item \textbf{Three general instruct models:} Qwen2.5-7B
-  \citep{qwen2024qwen25}, OLMo-2-7B \citep{olmo2024olmo2} and
-  Phi-3.5-mini \citep{abdin2024phi3}. Each runs behind a Jev-compatible
-  readout: next-token probabilities over the allowed labels (as in
-  \citep{geuter2026innerjev}), with TypeSafe's documented confidence
-  formulas.
-\end{itemize}
+models. OpenJev 27B \citep{openjev2026} is an independently trained
+Jev-style decision model (Hugging Face \texttt{openjev/openjev}, commit
+\texttt{b4a89f5}; several unrelated projects share the name), served on
+one H100 exactly as its authors specify, with their calibrated readout;
+its 2{,}826 requests had 0 failures. (An unofficial architectural
+reconstruction of Jev also exists \citep{gomez2026openjev}, but it has no
+trained weights, so it could not be evaluated.) The other three are
+general instruct models, Qwen2.5-7B \citep{qwen2024qwen25}, OLMo-2-7B
+\citep{olmo2024olmo2} and Phi-3.5-mini \citep{abdin2024phi3}, each run
+behind a Jev-compatible readout: next-token probabilities over the
+allowed labels (as in \citep{geuter2026innerjev}), with TypeSafe's
+documented confidence formulas.
 Each model's estimator was trained on that model's own outputs for the
 442 training bugs and tested on its 500 held-out bugs. The pre-registered
 tests mirror HR1 and HR2, with Holm correction across all 8 tests.
@@ -752,15 +790,12 @@ wherever such labels exist; it answers a different question and is not
 evaluated here.
 
 \para{Deviations, disclosed} We recorded three pre-registration
-amendments.
-\begin{itemize}
-  \item OpenJev was added before any of its outputs existed.
-  \item OLMo-2 needed a newer \texttt{transformers} release.
-  \item A readout bug, in which a SentencePiece word-start token was
-  shared by all digit labels, was found after interim results had been
-  seen. All three general models were re-run under one corrected
-  readout. The conclusions did not change.
-\end{itemize}
+amendments. OpenJev was added before any of its outputs existed; OLMo-2
+needed a newer \texttt{transformers} release; and a readout bug, in
+which a SentencePiece word-start token was shared by all digit labels,
+was found after interim results had been seen, so all three general
+models were re-run under one corrected readout. The conclusions did not
+change.
 
 \begin{colfigure}
 \centering
@@ -785,16 +820,12 @@ intervals overlap only for OLMo-2.}
 \end{colfigure}
 
 \para{Result} All 8 pre-registered tests are supported
-(\cref{fig:crossmodel}, \cref{tab:crossmodel}).
-\begin{itemize}
-  \item \textbf{Decision estimators:} AUROC 0.64--0.76.
-  \item \textbf{Final-step confidence:} 0.40--0.58.
-  \item \textbf{Weakest model:} OLMo-2 (0.637 vs.\ 0.551; one-sided
-  $p = 0.037$, passing at the last Holm step).
-  \item \textbf{Transfer:} Jev's frozen estimator, never refitted,
-  reaches 0.76 [0.72, 0.80] on OpenJev's outputs, as well as OpenJev's
-  own estimator does.
-\end{itemize}
+(\cref{fig:crossmodel}, \cref{tab:crossmodel}). The decision estimators
+reach AUROC 0.64--0.76 and final-step confidence 0.40--0.58. The weakest
+model is OLMo-2 (0.637 vs.\ 0.551; one-sided $p = 0.037$, passing at the
+last Holm step). Jev's frozen estimator, never refitted, reaches 0.76
+[0.72, 0.80] on OpenJev's outputs, as well as OpenJev's own estimator
+does.
 
 \begin{widetable}
 \centering
@@ -816,12 +847,8 @@ different interfaces.}
 error rate of the action the workflow chose'' (estimated on training
 bugs only), matches the estimator for Jev (0.76) and OpenJev (0.75), and
 comes close for the others (0.58--0.70). Single uncertainty signals each
-sit at chance for workflow failure:
-\begin{itemize}
-  \item routing confidence: 0.48--0.52;
-  \item regression confidence: 0.45--0.56;
-  \item severity entropy: 0.40--0.55.
-\end{itemize}
+sit at chance for workflow failure: routing confidence at 0.48--0.52,
+regression confidence at 0.45--0.56 and severity entropy at 0.40--0.55.
 The predictive information is therefore mostly \emph{which action was
 chosen} and how often that action has been wrong before. Part of this is
 structural: the action and the target are both outputs of the same rule
@@ -895,15 +922,11 @@ counted as level 1, or kernel bugs with default severity or unset
 regression excluded, decisions still beat confidence for every model,
 except OLMo-2 when default-severity kernel bugs are removed.
 
-\para{Failure modes differ by model family}
-\begin{itemize}
-  \item \textbf{Jev-style models (Jev and OpenJev):} both pull severity
-  to the middle level.
-  \item \textbf{General instruct models:} they push severity to
-  ``blocking'' for 67--100\% of bugs, whatever the true level, and are
-  wrong far more often (72--80\% vs.\ 43--47\%).
-\end{itemize}
-The absolute failure rates are not a clean quality comparison, because
+\para{Failure modes differ by model family} The two Jev-style models,
+Jev and OpenJev, both pull severity to the middle level. The general
+instruct models push severity to ``blocking'' for 67--100\% of bugs,
+whatever the true level, and are wrong far more often (72--80\%
+vs.\ 43--47\%). The absolute failure rates are not a clean quality comparison, because
 the two groups use different interfaces. The within-model contrast is.
 
 %======================================================================
@@ -975,18 +998,13 @@ being dominant.
 %======================================================================
 
 \para{Design} We pre-registered the test before computing any cost
-outcome.
-\begin{itemize}
-  \item \textbf{Budget:} 50 reviews (10\%) per model on the held-out
-  bugs. A review escalates the case to a human, priced with the frozen
-  cost matrix.
-  \item \textbf{Primary arm (A1):} rank candidates by the
-  \emph{action-level expected saving} of a review, estimated on training
-  bugs. It is cost-aware rather than error-rate-based, because a wrong
-  \emph{defer} costs no more than an escalation.
-  \item \textbf{Comparators:} confidence-ranked review (B) and random
-  review (C).
-\end{itemize}
+outcome. Each model gets a budget of 50 reviews (10\%) on the held-out
+bugs; a review escalates the case to a human and is priced with the
+frozen cost matrix. The primary arm (A1) ranks candidates by the
+\emph{action-level expected saving} of a review, estimated on training
+bugs; it is cost-aware rather than error-rate-based, because a wrong
+\emph{defer} costs no more than an escalation. The comparators are
+confidence-ranked review (B) and random review (C).
 
 \para{Result} Two of ten pre-registered tests are supported: A1 beats
 random for Jev and OpenJev, by about 10--12 cost units. A1 is not shown
@@ -1051,27 +1069,23 @@ leaving few reviewable errors (Phi-3.5's oracle exceeds no review because
 \end{colfigure}
 
 \para{Where the cost is} A descriptive follow-up separates two regimes.
-\begin{itemize}
-  \item \textbf{Jev-style models:} 40--52\% of no-review cost comes from
-  wrongly \emph{accepted} serious or regression bugs. An oracle that
-  picked the right 50 cases would save 33--44\%. But those cases are
-  15--16\% of accepted cases. The action rule cannot separate them,
-  because every accept looks alike to it, and confidence cannot either:
-  among Jev's 245 accepted held-out cases, the decision estimator,
-  final-step confidence and \score{}'s probability of the top level rank
-  the 38 wrong accepts at AUROC 0.46, 0.49 and 0.49, with 95\% intervals
-  that all include chance (for example 0.49 [0.37, 0.60] for confidence).
-  With so few positives this shows that the tested signals did not
-  establish useful discrimination for Jev, not that none is possible; for
-  OpenJev, \score{}'s top-level probability does carry a weak
-  within-action signal (0.68 [0.56, 0.78]); a paired comparison puts it
-  above confidence by $+0.14$ (95\% interval [$+0.04$, $+0.22$]). The
-  conclusion is therefore model- and signal-specific, not universal.
-  The value exists; for Jev the identification fails.
-  \item \textbf{General models:} cost is dominated by over-escalation
-  (\emph{escalate} when the target is \emph{accept}). More review cannot
-  reduce that; even the oracle saves at most 5\%.
-\end{itemize}
+For the Jev-style models, 40--52\% of no-review cost comes from wrongly
+\emph{accepted} serious or regression bugs, and an oracle that picked
+the right 50 cases would save 33--44\%. But those cases are 15--16\% of
+accepted cases. The action rule cannot separate them, because every
+accept looks alike to it, and confidence cannot either: among Jev's 245
+accepted held-out cases, the decision estimator, final-step confidence
+and \score{}'s probability of the top level rank the 38 wrong accepts at
+AUROC 0.46, 0.49 and 0.49, with 95\% intervals that all include chance
+(for example 0.49 [0.37, 0.60] for confidence). With so few positives
+this shows that the tested signals did not establish useful
+discrimination for Jev, not that none is possible; for OpenJev,
+\score{}'s top-level probability does carry a weak within-action signal
+(0.68 [0.56, 0.78]), and a paired comparison puts it above confidence by
+$+0.14$ (95\% interval [$+0.04$, $+0.22$]). The value exists; for Jev
+the identification fails. For the general models, cost is dominated by
+over-escalation (\emph{escalate} when the target is \emph{accept}), which
+more review cannot reduce; even the oracle saves at most 5\%.
 Ranking which actions are wrong is therefore not the same as finding
 which reviews save money: frequent errors and expensive errors differ.
 
@@ -1086,23 +1100,18 @@ Jev's \texttt{score} mass on levels 1 and 2 ($p_1, p_2$) and its
 against no review (630 vs.\ 713) and captured 22\% of the oracle saving.
 But the training bugs were quota-sampled. Reweighted to each tracker's
 natural label mix, a 10\% budget is projected to cost \emph{more} than
-no review, with power near zero.
-\begin{itemize}
-  \item \textbf{Feasibility check.} Before generating any fresh case, we
-  pre-registered a check that varied only the review budget (1--10\%).
-  Viability required power $\geq 0.80$ to show lower cost than no
-  review, with at most 1{,}000 fresh bugs, and a negative median
-  projected cost change. Each simulated study first resampled the
-  training bugs, so uncertainty in error prevalence and ranking quality
-  was propagated.
-  \item \textbf{Result.} No budget was viable. The highest power was
-  0.20 (1\% budget, 1{,}000 bugs), with a median change of $-2$ and an
-  80\% range of $[-46, +20]$. Every budget of 2\% or more had a positive
-  median cost change, and power below 0.15.
-  \item \textbf{Decision.} By the binding stop rule, the confirmatory
-  study was not run and no further designs were searched. No fresh API
-  calls were made.
-\end{itemize}
+no review, with power near zero. Before generating any fresh case, we
+pre-registered a feasibility check that varied only the review budget
+(1--10\%). Viability required power $\geq 0.80$ to show lower cost than
+no review, with at most 1{,}000 fresh bugs, and a negative median
+projected cost change; each simulated study first resampled the training
+bugs, so uncertainty in error prevalence and ranking quality was
+propagated. No budget was viable. The highest power was 0.20 (1\% budget,
+1{,}000 bugs), with a median change of $-2$ and an 80\% range of
+$[-46, +20]$, and every budget of 2\% or more had a positive median cost
+change and power below 0.15. By the binding stop rule, the confirmatory
+study was not run, no further designs were searched, and no fresh API
+calls were made.
 This is a feasibility assessment, not evidence that review cannot help.
 The oracle shows that a good selector would save substantially; under
 the pre-registered costs the signals tested here did not identify the
@@ -1146,106 +1155,117 @@ We recommend this check, together with measuring each trigger's
 selectivity on pilot inputs, before freezing any escalation policy.
 
 %======================================================================
-\section{Limitations}
+\section{Threats to validity}
+\label{sec:threats}
 %======================================================================
 
-\begin{itemize}
-  \item \textbf{Generality.} Five models in one domain, software issue
-  triage, across two workflows (Bugzilla bug triage and Kubernetes issue
-  triage). Jev was version 1.13.0. On Kubernetes the three general
-  instruct models were below chance on the priority step. The general instruct models use
-  our prompt and readout, not a trained decision interface. Later
-  versions and other domains may behave differently.
-  \item \textbf{References are not truth.} Mozilla's triage sample
-  excludes re-triaged bugs, which biases agreement upward. Kernel labels
-  are reporters' claims, and the kernel's middle level is a default value.
-  \item \textbf{Small constructed samples.} The \choice{} error subgroup
-  is $n = 6$, and \noul{}'s perfect accuracy on constructed data is 24
-  items.
-  \item \textbf{Constructed target.} $\astar = F(\cdot)$ is constructed,
-  and all strategy results are conditional on it.
-  \item \textbf{Memorization.} Old public bugs may appear in training
-  data. The recent subsets are small (Mozilla 54, kernel 35).
-  \item \textbf{Cross-model deviations.} Three amendments to the
-  cross-model pre-registration, including a readout bug fixed after
-  interim results were seen. On 3\% of OLMo-2's requests, most of the
-  probability fell outside the allowed labels; excluding them does not
-  change its result.
-  \item \textbf{Target validity.} An exploratory pilot in which one AI
-  assistant chose the right action for 50 held-out bugs, blind to labels
-  and outputs, agreed with the constructed target at about chance level
-  (Cohen's $\kappa$ between $-0.157$ and $+0.015$ under two pre-stated
-  readings of its categories). With a single rater and no inter-rater
-  baseline, this cannot tell whether the target or the judge is at
-  fault, but it makes the limitation concrete: every failure result in
-  this paper is disagreement with an operational target built from
-  tracker labels, and its correspondence to the action a competent
-  evaluator would choose is unestablished. A pre-registered two-human
-  validation is designed and not yet run.
-  \item \textbf{Independent replication.} The Kubernetes study is one
-  further workflow; its development and test sets differ in period,
-  format and label mix at once, its leakage read was performed by an AI
-  assistant at the authors' direction rather than by a human author as
-  pre-registered, and its protocol has seven dated amendments, all
-  written before any model output existed.
-  \item \textbf{Label-prior shift.} Decision-conditioned error
-  estimators fitted on the quota-sampled development bugs can invert on a
-  natural-mix set (\cref{tab:targets}). The label-free correction (BBSE)
-  corrects only the severity dimension, assumes pure label shift, and
-  fails by construction for models whose answers do not discriminate the
-  label; these analyses are exploratory and on the same held-out bugs.
-  \item \textbf{Reuse of the held-out set.} The 500 held-out bugs were
-  fresh for the prediction tests only. The intervention test was
-  pre-registered after their prediction results were known (no cost
-  outcome had been computed), and the cost-sensitivity analysis is post
-  hoc on the same bugs, so neither is an independent confirmation.
-  \item \textbf{Intervention scope.} One budget and one cost table, both
-  frozen in advance; the cost-sensitivity analysis is exploratory, uses
-  point estimates, and real operational costs are unknown. Reviewers are assumed correct, and the oracle is an
-  upper bound, not a strategy.
-  \item \textbf{Protocol revisions.} The protocol went through twelve
-  revisions. All are dated and disclosed, and each was made before the
-  data it affects existed. The number is nonetheless large.
-\end{itemize}
+\para{Construct validity} The failure label is disagreement with a
+constructed target, $\astar = F(\cdot)$, and all strategy results are
+conditional on it. Its inputs are tracker labels, which are not truth:
+Mozilla's triage sample excludes re-triaged bugs, which biases agreement
+upward, kernel labels are reporters' claims, and the kernel's middle
+level is a default value. An exploratory pilot in which one AI assistant
+chose the right action for 50 held-out bugs, blind to labels and outputs,
+agreed with the constructed target at about chance level (Cohen's
+$\kappa$ between $-0.157$ and $+0.015$ under two pre-stated readings of
+its categories). With a single rater and no inter-rater baseline, this
+cannot tell whether the target or the judge is at fault, but it makes
+the limitation concrete: every failure result in this paper is
+disagreement with an operational target built from tracker labels, and
+its correspondence to the action a competent evaluator would choose is
+unestablished. A pre-registered two-human validation is designed and not
+yet run. The review-value analysis uses one budget and one cost table,
+both frozen in advance; real operational costs are unknown, reviewers
+are assumed correct, and the oracle is an upper bound, not a strategy.
+
+\para{Internal validity} The 500 held-out bugs were fresh for the
+prediction tests only. The intervention test was pre-registered after
+their prediction results were known (no cost outcome had been computed),
+and the cost-sensitivity analysis is post hoc on the same bugs, so
+neither is an independent confirmation. Decision-conditioned error
+estimators fitted on the quota-sampled development bugs can invert on a
+natural-mix set (\cref{tab:targets}); the label-free correction (BBSE)
+corrects only the severity dimension, assumes pure label shift and fails
+by construction for models whose answers do not discriminate the label,
+and these analyses are exploratory and on the same held-out bugs. The
+constructed-data findings rest on small samples (the \choice{} error
+subgroup is $n = 6$, and \noul{}'s perfect accuracy on constructed data
+is 24 items). Old public bugs may appear in model training data, and the
+recent subsets used to check this are small (Mozilla 54, kernel 35). The
+protocol went through twelve revisions and the cross-model protocol
+three amendments, including a readout bug fixed after interim results
+were seen; on 3\% of OLMo-2's requests most of the probability fell
+outside the allowed labels, and excluding them does not change its
+result. All revisions are dated and disclosed, and each was made before
+the data it affects existed, but the number is nonetheless large.
+
+\para{External validity} The study covers five models in one domain,
+software issue triage, across two workflows (Bugzilla bug triage and
+Kubernetes issue triage), with Jev at version 1.13.0. The general
+instruct models use our prompt and readout, not a trained decision
+interface, and on Kubernetes they were below chance on the priority
+step. The Kubernetes study is one further workflow: its development and
+test sets differ in period, format and label mix at once, its leakage
+read was performed by an AI assistant at the authors' direction rather
+than by a human author as pre-registered, and its protocol has seven
+dated amendments, all written before any model output existed. Later
+model versions and other domains may behave differently.
 
 %======================================================================
-\section{Conclusion and future work}
+\section{Conclusion}
+\label{sec:conclusion}
 %======================================================================
 
-\para{What the evidence shows} In a dependent workflow of typed
-decisions, what the workflow decided ranked its failures better than how
-confident it was, on 500 new bugs and for five models, with failure
-measured against a target we constructed. Almost all of that signal is
-the historical error rate of the chosen action. Those error rates depend
-on the label distribution they were estimated under and can invert when
-it changes. Re-weighting to a known deployment mix repairs them; the
-label-free estimate of that mix did so only when the middle level
-dominated, and made ranking worse in an independent workflow where it did
-not. The predictive finding itself replicated in that independent
-Kubernetes workflow across a five-year chronological shift, for Jev and
-for three of the four further models. Under the
+This paper asked whether the uncertainty signals of a chained, typed AI
+decision workflow identify the cases where it fails, and whether they
+identify the errors worth sending to a human. In a dependent workflow of
+three typed decisions, what the workflow decided ranked its failures
+better than how confident it was, on 500 new bugs and for five models,
+with failure measured against a target we constructed. Almost all of
+that signal is the historical error rate of the chosen action. The
+predictive finding replicated in an independent Kubernetes workflow
+across a five-year chronological shift, for Jev and for three of the
+four further models.
+
+Those error rates depend on the label distribution they were estimated
+under and can invert when it changes. Re-weighting to a known deployment
+mix repairs them; the label-free estimate of that mix did so only when
+the middle level dominated, and made ranking worse in the independent
+workflow where it did not.
+
+Predicting failures did not translate into review value. Under the
 pre-registered costs, no review policy built on these signals beat no
-review.
+review. The expensive errors, wrongly accepted serious bugs, share their
+action and largely their confidence with correctly accepted ones, so
+neither signal separates them, and whether review pays at all is set by
+the ratio of wrong-accept cost to review cost relative to the precision
+the signals reach. Failure prediction, uncertainty estimation and review
+value are therefore three different problems, and a workflow's
+uncertainty has to be evaluated against the decision it is meant to
+improve.
 
-\para{What explains it} The expensive errors, wrongly accepted serious
-bugs, share their action and largely their confidence with correctly
-accepted ones, so neither signal separates them; whether review pays at
-all is set by the ratio of wrong-accept cost to review cost relative to
-the precision the signals reach.
+%======================================================================
+\section{Future scope}
+\label{sec:future}
+%======================================================================
 
-\para{What remains open} Whether these findings hold for further
-workflows and independently established outcomes, whether a signal exists that
-separates expensive errors within an action, and how review value
-behaves under measured rather than assumed costs. Failure prediction,
-uncertainty estimation and review value are three different problems,
-and a workflow's uncertainty has to be evaluated against the decision it
-is meant to improve.
-
-\para{Future work} Beyond the pre-registered two-human validation of the
-target, we have pre-registered, but not run, a study on deterministic
-template content (3{,}103 units with value-neutral sentence frames and
-13 automated audits) that tests the composition question under control:
-confidence-ranked against random overrides at a 10\% budget scored by
-cost, and per-primitive against raw-product ranking. Given the results
-above, a null result there is a live outcome. No result in this paper
-depends on it.
+The most direct extension is to validate the target itself: a
+pre-registered study in which two human evaluators independently choose
+the right action for a sample of held-out bugs would show how far the
+constructed target agrees with expert judgment, and whether its
+disagreements come from the tracker labels, the action rule or genuine
+ambiguity. A second line of work is a signal that separates expensive
+errors \emph{within} an action, since the oracle shows that such a
+signal would make review pay; OpenJev's weak within-action severity
+signal suggests where to look. Third, the study should be repeated on
+workflows outside software triage, on newer model versions and with
+supervised classifiers as a reference, to test how far the separation
+between prediction and review value generalizes. Fourth, review value
+should be measured under real rather than assumed costs, with reviewers
+who can themselves be wrong. Finally, we have pre-registered, but not
+run, a study on deterministic template content (3{,}103 units with
+value-neutral sentence frames and 13 automated audits) that tests the
+composition question under control, comparing confidence-ranked against
+random overrides at a 10\% budget scored by cost, and per-primitive
+against raw-product ranking; given the results above, a null result
+there is a live outcome. No result in this paper depends on it.
