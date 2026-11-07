@@ -4,7 +4,7 @@
 %======================================================================
 
 Typed decision models return an answer in a fixed format, such as a
-label, a yes/no or a rating, together with a probability or a
+label, a yes/no or a rating. The answer comes with a probability or a
 confidence. The answer can be well formed and still wrong. Chain several
 of these answers into a workflow and a mistake at one step becomes the
 input to the next. A natural design is to combine the confidence each
@@ -14,16 +14,14 @@ should look at a case.
 Jev, TypeSafe's typed decision model, has been benchmarked on single
 tasks \citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and
 uncertainty along multi-step agent trajectories has been studied
-separately \citep{lin2026uqagents}. Our question is operational. When a
-workflow chains several typed decisions, which signals identify the
-cases where it fails, and do those signals find the costly errors that
-justify a human review? The two parts can come apart. A signal can rank
+separately \citep{lin2026uqagents}. Our question is operational. When a workflow chains several typed decisions, which signals identify
+the cases where it fails? And do those signals find the costly errors
+that justify a human review? The two parts can come apart. A signal can rank
 failures well and still be of little use for choosing what to review.
 
-Jev's primitives also report uncertainty in different forms. \choice{}
-returns a probability for each label plus a scalar confidence, \score{}
-returns an ordinal distribution plus a scalar confidence, and \noul{}
-returns a single probability with no confidence field. TypeSafe
+Jev's primitives also report uncertainty in different forms. \choice{} returns a probability for each label plus a scalar confidence.
+\score{} returns an ordinal distribution plus a scalar confidence.
+\noul{} returns a single probability with no confidence field. TypeSafe
 describes its confidence as one reasonable summary of a distribution and
 advises setting thresholds on one's own data
 \citep{typesafe2026confidence}. So we do not test a calibration claim.
@@ -37,14 +35,14 @@ deployment? RQ3: do signals that rank failures also find the reviews that
 reduce cost?
 
 The contribution is a methodological combination, tested empirically.
-None of its parts is new on its own, and the general point that error
-risk and review value differ is made by Park et al.\ \citep{park2026riskreview}.
+None of its parts is new on its own. Park et al.\ \citep{park2026riskreview}
+make the general point that error risk and review value differ.
 We measure uncertainty at the level of a workflow, where failure is defined on the action taken rather than
 on any single answer. We separate ranking failures from reducing cost by
 scoring a fixed review budget against a frozen cost matrix and an oracle
-bound. And we pre-registered every confirmatory test, froze the
-estimators by hash before their data existed, and replicated the main
-result across five models and a second, chronologically split workflow.
+bound. We pre-registered every confirmatory test and froze the estimators by
+hash before their data existed. We also replicated the main result across
+five models and a second, chronologically split workflow.
 
 In short, the workflow's decisions predict its failures, measured against
 our constructed target, much better than its confidence does, and the gap
@@ -59,13 +57,11 @@ pay under our cost matrix.
 %======================================================================
 
 \para{Jev and typed decisions} Deu{\ss}er et al.\ benchmarked Jev
-zero-shot on 37 datasets and found well-calibrated \choice{}
-probabilities, while binary probabilities ranked well but sat poorly
-against a 0.5 threshold \citep{deusser2026jev}. A calibration audit found
-that calibration changed with the question form and that one fitted
-temperature removed most miscalibration \citep{meng2026jevaudit}, and a
-study of political-science replications found Jev's calibration
-advantage inconsistent \citep{denney2026jev}. Open instruction-tuned
+zero-shot on 37 datasets and found well-calibrated \choice{} probabilities. Its binary probabilities
+ranked well but sat poorly against a 0.5 threshold \citep{deusser2026jev}. A calibration audit found that calibration changed with the question
+form, and that one fitted temperature removed most miscalibration
+\citep{meng2026jevaudit}. A study of political-science replications found
+Jev's calibration advantage inconsistent \citep{denney2026jev}. Open instruction-tuned
 models can produce Jev-like decisions from answer-label logits
 \citep{geuter2026innerjev}, which is the readout we use for the general
 models. All of this work evaluates single requests, and most of it is
@@ -76,7 +72,7 @@ from 2026 and not yet peer reviewed.
 \citep{elyaniv2010selective,geifman2017selective} and learning to defer
 \citep{madras2018predict,mozannar2020defer} all concern one decision.
 Bansal et al.\ show that the most accurate model need not make the best
-human--AI team \citep{bansal2021teammate}, and Park et al.\ argue that
+human--AI team \citep{bansal2021teammate}. Park et al.\ argue that
 error risk and review value are different quantities under a review
 budget \citep{park2026riskreview}. Our cost result is a case of the
 second point in a dependent workflow.
@@ -95,17 +91,16 @@ ordinal scales toward the middle \citep{zhang2026centraltendency}.
 through model tiers and decide when to defer
 \citep{zellinger2025early,bouchard2026escalation,jung2025trust}.
 Component-based reliability models treat error propagation between
-components as an architectural property that decides where detection
-and recovery belong \citep{cortellessa2007errorprop}, and bug severity
-prediction from report text is a long-studied triage task
-\citep{lamkanfi2010severity}. Our workflow is a small instance of the
+components as an architectural property. That property decides where detection and
+recovery belong \citep{cortellessa2007errorprop}. Bug severity prediction
+from report text is a long-studied triage task \citep{lamkanfi2010severity}. Our workflow is a small instance of the
 same propagation problem, with human escalation as the recovery step.
 
 Our literature search was web-based and did not systematically cover
-reliability engineering or human--computer interaction. Within it, we
-found no prior work that tests, on real labels and held-out data,
-which signals predict failure in a chain of structurally different typed
-decisions and whether they find the reviews that pay.
+reliability engineering or human--computer interaction. Within it, we found no prior work that tests which signals predict
+failure in a chain of structurally different typed decisions, on real
+labels and held-out data. Nor did we find work that asks whether those
+signals find the reviews that pay.
 
 %======================================================================
 \section{Methodology}
@@ -119,19 +114,17 @@ decisions and whether they find the reviews that pay.
 cleaned and stripped of label leaks, then pass through three typed
 decisions, each called three times and reduced by modal vote. An action
 rule $F$ maps the second and third decisions to an action. Reference
-labels, never shown to the model, give the target $\astar$ through the
-same rule, and a failure is $a \neq \astar$.}
+labels, never shown to the model, give the target $\astar$ through the same rule. A failure is
+$a \neq \astar$.}
 \label{fig:arch}
 \end{widefigure}
 
-\para{Data and workflow} \Cref{fig:arch} shows the pipeline. We use 202
-Mozilla and 240 Linux kernel networking and storage bugs for development,
-sampled in equal quotas per subsystem and severity level, 500 newer bugs
-(250 per tracker) at each tracker's natural label mix as a held-out set,
-and 1{,}082 Kubernetes issues for the replication. Texts are
-privacy-scrubbed and truncated to 2{,}000 characters. Node~1 (\choice{})
-routes a report to a subsystem, node~2 (\noul{}) asks whether it is a
-regression, and node~3 (\score{}) rates severity on three levels. Each
+\para{Data and workflow} \Cref{fig:arch} shows the pipeline. For development we use 202 Mozilla and 240 Linux kernel networking and
+storage bugs, sampled in equal quotas per subsystem and severity level.
+The held-out set has 500 newer bugs (250 per tracker) at each tracker's
+natural label mix. The replication uses 1{,}082 Kubernetes issues. Texts are
+privacy-scrubbed and truncated to 2{,}000 characters. Node~1 (\choice{}) routes a report to a subsystem. Node~2 (\noul{}) asks
+whether it is a regression, and node~3 (\score{}) rates severity on three levels. Each
 node sees the evidence plus the earlier decisions. Every node is called
 three times, and the answers are reduced to one decision by modal vote
 (for \noul{}, the mean probability is thresholded at 0.5). All Jev calls
@@ -140,27 +133,29 @@ their three answers are identical and repeat instability plays no role
 for them.
 
 \para{Action, target and failure} The rule $F$ maps an unclear $c_2$ to
-\emph{request evidence}, $c_3 = 2$ to \emph{escalate}, $c_3 = 1$ with
-$c_2 = 1$ to \emph{defer}, and anything else to \emph{accept}. The target
-is the same rule on the reference labels, $\astar = F(c_2^{*}, c_3^{*})$,
-and a failure is $y = \mathbf{1}[a \neq \astar]$. $F$ is our construct,
+\emph{request evidence} and $c_3 = 2$ to \emph{escalate}. It maps
+$c_3 = 1$ with $c_2 = 1$ to \emph{defer}, and anything else to
+\emph{accept}. The target is the same rule applied to the reference labels,
+$\astar = F(c_2^{*}, c_3^{*})$. A failure is
+$y = \mathbf{1}[a \neq \astar]$. $F$ is our construct,
 so every failure result is conditional on it.
 
-\para{Failure signals} We compare three kinds of signal: the model's
-final-step confidence, alone or composed across nodes; the action-rule
-score $r(a) = (e(a) + \bar r)/(n(a) + 1)$, the smoothed error rate of the
-chosen action on development data; and a logistic estimator on the
-decisions ($E_{\text{dec}}$), fitted on development data and frozen. In
+\para{Failure signals} We compare three kinds of signal. The first
+is the model's final-step confidence, alone or composed across nodes. The
+second is the action-rule score $r(a) = (e(a) + \bar r)/(n(a) + 1)$, the
+smoothed error rate of the chosen action on development data. The third
+is a logistic estimator on the decisions ($E_{\text{dec}}$), fitted on
+development data and frozen. In
 \cref{sec:crossmodel} we add a post hoc baseline that passes the model's
 own probabilities through $F$. Because $r(a)$ takes one value per action,
-its AUROC involves many ties; in the cost test, ties at the budget
+its AUROC involves many ties. In the cost test, ties at the budget
 boundary are resolved as an exact expectation over a random order.
 
 \para{Evaluation} AUROCs use the Mann--Whitney estimator with 95\%
 bootstrap intervals over bugs ($B = 2{,}000$). Confirmatory tests are
-one-sided paired bootstrap tests with Holm correction. Costs come from a
-matrix frozen in advance: a wrong \emph{accept} costs 6--10, any other
-mismatch 1, and each escalation 1 more for the reviewer's time.
+one-sided paired bootstrap tests with Holm correction. Costs come from a matrix frozen in advance. A wrong \emph{accept}
+costs 6--10 and any other mismatch 1, and each escalation adds 1 for the
+reviewer's time.
 
 \para{Novelty} \Cref{tab:novelty} lists the elements of the design and
 what each lets us conclude. The contribution is their combination, not
@@ -191,15 +186,14 @@ Replication & Five models behind one interface and an independent Kubernetes wor
 
 The three primitives' confidences behave very differently. \choice{}
 confidence is near 1.0 for most bugs (85\% of Mozilla and 96\% of kernel
-bugs are at $\geq 0.90$), yet it still discriminates its own errors
+bugs are at $\geq 0.90$). Yet it still discriminates its own errors
 (AUROC 0.90 [0.83, 0.96] on Mozilla, 0.98 [0.95, 1.00] on the kernel). \noul{}'s confidence-like
-value carries no usable information (AUROC 0.53 [0.42, 0.65] and 0.41
-[0.32, 0.50]), and \score{}'s
-confidence is about the same at every true level (AUROC 0.58
+value carries no usable information (AUROC 0.53 [0.42, 0.65] and 0.41 [0.32, 0.50]). \score{}'s confidence is about the same at every true level (AUROC 0.58
 [0.50, 0.66] and 0.57 [0.50, 0.64]).
-Fixed thresholds tuned on constructed data did not transfer: on real
-text a \choice{} trigger at 0.90 fired on 85\% and 96\% of bugs, and a
-product cut escalated 88\% and 78\% against targets of 41\% and 42\%.
+Fixed thresholds tuned on constructed data did not transfer. On real
+text, a \choice{} trigger at 0.90 fired on 85\% and 96\% of bugs. A
+product cut escalated 88\% and 78\% of bugs against targets of 41\% and
+42\%.
 \begin{coltable}
 \centering
 \caption{Node agreement with reference labels on the development bugs
@@ -221,10 +215,9 @@ Node & Agreement & Base & Agreement & Base \\
 \end{coltable}
 
 The answers themselves are uneven (\cref{tab:agree}). \choice{} routes
-well above baseline on both trackers. \noul{}'s errors change direction:
-on Mozilla it mostly misses regressions (23 misses vs.\ 17 false
-alarms), while on the kernel it over-flags them (63 false alarms vs.\ 3
-misses). \score{} compresses severity toward the middle level
+well above baseline on both trackers. \noul{}'s errors change direction. On Mozilla it mostly misses
+regressions (23 misses vs.\ 17 false alarms). On the kernel it
+over-flags them (63 false alarms vs.\ 3 misses). \score{} compresses severity toward the middle level
 (\cref{fig:sev}). Most minor bugs are rated higher than their label
 (79\% on Mozilla, 75\% on the kernel), and many serious bugs lower (43\%
 and 56\%). Using Mozilla's own severity definitions moved agreement only
@@ -255,8 +248,7 @@ extremes.}
 \label{fig:sev}
 \end{colfigure}
 
-Composing confidences did not help. A naive comparison looks
-favourable to decisions: on Mozilla, the decision-based action beat a
+Composing confidences did not help. A naive comparison looks favourable to decisions. On Mozilla, the decision-based action beat a
 confidence-product rule by 0.17 [0.08, 0.27] in the probability of the
 right action (exact McNemar $p = 0.0004$). But the confidence rule never
 reads the decisions, while the target escalates on the severity
@@ -264,8 +256,8 @@ decision, so that comparison is confounded. The fairer test starts from
 the decision-based action and adds escalations ranked by low composed
 confidence. Among
 bugs the rule did not escalate, composed confidence ranked missed serious
-bugs at chance (AUROC 0.49 [0.37, 0.61] and 0.50 [0.40, 0.60]), and across all bugs it ranked wrong
-actions at chance as well (0.54 [0.45, 0.63] and 0.47 [0.40, 0.54]). At a budget of 10\% of bugs,
+bugs at chance (AUROC 0.49 [0.37, 0.61] and 0.50 [0.40, 0.60]). Across all bugs, it ranked wrong actions at
+chance as well (0.54 [0.45, 0.63] and 0.47 [0.40, 0.54]). At a budget of 10\% of bugs,
 confidence-ranked overrides did no better than random selection on
 either tracker. Every one of these intervals
 covers 0.5 (\cref{fig:forest}). The reason is structural. The only
@@ -288,10 +280,10 @@ read.
 \legend{Mozilla, Kernel}
 \end{axis}
 \end{tikzpicture}
-\caption{Confidence AUROCs on the development bugs; dashed line: chance.
-Only \choice{}'s confidence discriminates its own errors, and composed
-confidence is at chance for both escalation targets, (A) missed serious
-bugs and (B) any wrong action.}
+\caption{Confidence AUROCs on the development bugs. The dashed line
+marks chance. Only \choice{}'s confidence discriminates its own errors.
+Composed confidence is at chance for both escalation targets: (A) missed
+serious bugs and (B) any wrong action.}
 \label{fig:forest}
 \end{colfigure} These observations led to the pre-registered tests below.
 
@@ -300,9 +292,9 @@ bugs and (B) any wrong action.}
 \label{sec:heldout}
 %======================================================================
 
-We trained $E_{\text{dec}}$ ($L_2$-regularized logistic regression on
-the \score{} level, the \noul{} decision and the action) on the 442
-development bugs, froze it by hash, and only then collected the 500
+We trained $E_{\text{dec}}$, an $L_2$-regularized logistic regression on
+the \score{} level, the \noul{} decision and the action, on the 442
+development bugs. We froze it by hash, and only then collected the 500
 held-out bugs (4{,}500 Jev calls). We pre-registered two hypotheses:
 $E_{\text{dec}}$ ranks wrong actions better than low final-step
 confidence (HR1), and above chance on each tracker (HR2).
@@ -310,15 +302,13 @@ confidence (HR1), and above chance on each tracker (HR2).
 Both were supported. $E_{\text{dec}}$ reached AUROC 0.763 against 0.549
 for confidence, a difference of $+0.214$ with a one-sided lower bound of
 $+0.158$. Per tracker it reached 0.811 on Mozilla and 0.697 on the
-kernel (one-sided lower bounds 0.762 and 0.648), and the gap over confidence was $+0.279$ [$+0.191$, $+0.374$] on
-Mozilla and a weaker $+0.124$ [$+0.023$, $+0.225$] on the kernel. On the
-70 Mozilla bugs filed in the 12 months before sampling, which are least
-likely to appear in model training data, $E_{\text{dec}}$ reached 0.847
-against 0.519. The result held when every development bug linked to a held-out
-bug was removed and the estimator refitted (0.772 against 0.551), and an
-independent script that shares no code with the analysis reproduced
-every point estimate. The estimator's predicted failure rate matches
-the observed rate overall, but it outputs only 7--8 distinct risk levels
+kernel (one-sided lower bounds 0.762 and 0.648). The gap over confidence was $+0.279$ [$+0.191$, $+0.374$] on
+Mozilla and a weaker $+0.124$ [$+0.023$, $+0.225$] on the kernel. We also checked the 70 Mozilla bugs filed in the 12 months before
+sampling, which are the least likely to appear in model training data.
+On these, $E_{\text{dec}}$ reached 0.847 against 0.519. The result held when every development bug linked to a held-out
+bug was removed and the estimator refitted (0.772 against 0.551). An independent script that shares no code with the analysis reproduced
+every point estimate. The estimator's predicted failure rate matches the observed rate overall. But it outputs only 7--8 distinct risk
+levels
 (ECE 0.18--0.20), so it ranks better than it calibrates.
 
 %======================================================================
@@ -327,19 +317,18 @@ the observed rate overall, but it outputs only 7--8 distinct risk levels
 %======================================================================
 
 To see whether the result is specific to Jev, we ran the same bugs,
-questions and adapter through four more models: OpenJev-27B
-\citep{openjev2026}, an independently trained Jev-style model, and three
-small general instruct models, Qwen2.5-7B \citep{qwen2024qwen25},
+questions and adapter through four more models. OpenJev-27B \citep{openjev2026} is an
+independently trained Jev-style model. The other three are small general
+instruct models: Qwen2.5-7B \citep{qwen2024qwen25},
 OLMo-2-7B \citep{olmo2024olmo2} and Phi-3.5-mini \citep{abdin2024phi3}.
 Jev is used zero-shot, so the fair comparison is other models used the
 same way, through the same questions and TypeSafe's confidence formulas.
 We picked small open models because they are cheap to run and fully
 reproducible. They are also weaker than Jev, so they produce more
-failures, which gives the predictors more positives to rank. The
-protocol had three amendments: OpenJev was added before any of its
-outputs existed, OLMo-2 needed a newer \texttt{transformers} release,
-and a readout bug found after interim results led us to re-run all three
-general models. The conclusions did not change.
+failures, which gives the predictors more positives to rank. The protocol had three amendments. OpenJev was added before any of its
+outputs existed, and OLMo-2 needed a newer \texttt{transformers}
+release. A readout bug found after interim results led us to re-run all
+three general models. The conclusions did not change.
 
 \begin{colfigure}
 \centering
@@ -365,12 +354,12 @@ workflow actions better than the model's final-step confidence on the
 
 \begin{widetable}
 \centering
-\caption{Per-model results on the 500 held-out bugs. AUROC columns rank
-wrong workflow actions (95\% bootstrap CI): the decision estimator fitted
-on each model's own development outputs, final-step confidence, the
-action-rule score and Jev's frozen estimator applied unchanged. Cost
-columns are from the pre-registered review test (\cref{sec:intervention});
-the oracle is an upper bound that must spend all 50 reviews.}
+\caption{Per-model results on the 500 held-out bugs. AUROC columns rank wrong workflow actions (95\% bootstrap CI). They show
+the decision estimator fitted on each model's own development outputs,
+final-step confidence and the action-rule score. The last column applies
+Jev's frozen estimator unchanged. Cost
+columns are from the pre-registered review test (\cref{sec:intervention}). The oracle is an upper bound that must spend
+all 50 reviews.}
 \label{tab:crossmodel}
 \resizebox{\textwidth}{!}{\input{table_crossmodel.tex}}
 \end{widetable}
@@ -384,8 +373,7 @@ at the last Holm step. Jev's frozen estimator, never refitted, reached
 estimator did.
 
 Most of this signal is simply which action was chosen. The action's
-error rate on development data matches the estimator for Jev (0.76) and
-OpenJev (0.75) and comes close for the others (0.58--0.70). For Jev the
+error rate on development data matches the estimator for Jev (0.76) and OpenJev (0.75). It comes close for the others (0.58--0.70). For Jev the
 estimator adds $+0.000$ [$-0.012$, $+0.011$] beyond that rate. For Qwen2.5 and OLMo-2 it adds a little
 ($+0.035$ and $+0.057$). Single uncertainty signals sit at chance:
 routing confidence at 0.48--0.52, regression confidence at 0.45--0.56
@@ -393,50 +381,44 @@ and severity entropy at 0.40--0.55. Adding them to the decision features
 helps only the weakest general models ($+0.054$ for Phi-3.5, $+0.078$ for
 OLMo-2). Part of this is built in, since the
 action and the target come from the same rule $F$. The two model
-families also fail differently. Jev and OpenJev pull severity to the
-middle level, while the general models call 67--100\% of bugs
-``blocking'' whatever the true level, and are wrong far more often
+families also fail differently. Jev and OpenJev pull severity to the middle level. The general models
+call 67--100\% of bugs ``blocking'' whatever the true level, and they are
+wrong far more often
 (72--80\% vs.\ 43--47\%).
 
 Because the action and the target share $F$, we added a stronger
 confidence baseline after the main results (exploratory, with the plan
-committed before computing). It passes the model's own probabilities
-through $F$: the risk is one minus the probability, under the model's
-\score{} distribution and \noul{} probability, that $F$ yields the chosen
-action. It did no better than final-step confidence (Jev 0.535
-vs.\ 0.549), and the action-rule score beat it for four of five models
+committed before computing). It passes the model's own probabilities through $F$. The risk is one
+minus the probability that $F$ yields the chosen action, computed from
+the model's \score{} distribution and \noul{} probability. It did no better than final-step confidence (Jev 0.535 vs.\ 0.549). The action-rule score beat it for four of five
+models
 (Jev $+0.228$ [$+0.158$, $+0.297$]). The exception was OLMo-2 ($+0.024$
-[$-0.073$, $+0.123$]). The decisions therefore carry information that
+[$-0.073$, $+0.123$]). So the decisions carry information that
 the model's own probabilities, combined through the same rule, do not.
 
 In exploratory analyses, that dependence also makes the rates sensitive
 to the label mix (RQ2). The development
-set was quota-sampled by severity and the held-out set was not. On a
-target that bypasses $F$ (the severity answer being wrong), estimators
-fitted on development data ranked held-out errors far below chance, 0.28
-for Jev and OpenJev. Jev's level-1 answers were 60\% wrong in the
+set was quota-sampled by severity and the held-out set was not. Take a target that bypasses $F$: the severity answer
+being wrong. Estimators fitted on development data ranked held-out errors
+on it far below chance, 0.28 for Jev and OpenJev. Jev's level-1 answers were 60\% wrong in the
 development set and 20\% wrong in the natural mix. Re-weighting to the
-natural mix fixed this for four of five models (\cref{tab:targets}; Jev
-0.79 vs.\ 0.61 for confidence).
+natural mix fixed this for four of five models (\cref{tab:targets}). For Jev
+it reached 0.79, against 0.61 for confidence.
 
 \begin{coltable}
 \centering
-\caption{Exploratory: held-out AUROC of the decision estimator on two
-targets that bypass $F$, fitted on the quota-sampled development bugs
-(``dev fit'') or re-weighted to the natural label mix, against
-final-step confidence. Bold: re-weighted estimator above confidence.}
+\caption{Exploratory: held-out AUROC of the decision estimator on two targets that bypass $F$. It is fitted on the quota-sampled
+development bugs (``dev fit'') or re-weighted to the natural label mix,
+and compared with final-step confidence. Bold: re-weighted estimator above confidence.}
 \label{tab:targets}
 \small
 \resizebox{\linewidth}{!}{\input{table_target_robustness.tex}}
 \end{coltable}
  Estimating
 the mix without labels by BBSE \citep{lipton2018bbse} recovered most of
-that gain for Jev (0.74), OpenJev (0.78) and Qwen2.5 (0.74), but not for
-the right reason. The estimated mix was wrong. For the kernel it was
-$[0, 1, 0]$ against a true $[0.02, 0.73, 0.25]$, and the ranking improved
-only because the middle level happened to dominate. Under known
-synthetic shifts the estimate was biased toward the development mix, and
-for Phi-3.5, whose severity answers are nearly all ``blocking'', it gave
+that gain for Jev (0.74), OpenJev (0.78) and Qwen2.5 (0.74). It did so for the wrong reason. The estimated mix was wrong. For the kernel it was
+$[0, 1, 0]$ against a true $[0.02, 0.73, 0.25]$. The ranking improved only because the middle level happened to dominate. Under known synthetic shifts, the estimate was biased toward the
+development mix. For Phi-3.5, whose severity answers are nearly all ``blocking'', it gave
 no gain at all.
 
 %======================================================================
@@ -447,17 +429,17 @@ no gain at all.
 We pre-registered a replication on issue triage in the Kubernetes GitHub
 repository before collecting any of its data. It differs in platform,
 labelling process, routing (network, storage, node) and questions (bug
-or not, priority). The split is chronological: 500 issues from 2015--2019
-for development and the 582 latest eligible issues from 2021--2026 for
-testing, with linked issues removed and label leaks stripped from the
-text.
+or not, priority). The split is chronological. Development uses 500 issues from 2015--2019,
+and testing uses the 582 latest eligible issues from 2021--2026. Linked
+issues were removed and label leaks stripped from the text.
 
 \begin{coltable}
 \centering
-\caption{Kubernetes test set (582 issues): AUROC for wrong actions of the
-action-rule score and of final-step confidence, their paired difference
-(95\% CI), and test-set priority accuracy (chance 0.33). Jev is from the
-first pre-registration, the other four models from the second.}
+\caption{Kubernetes test set (582 issues). Columns give the AUROC of the
+action-rule score and of final-step confidence for wrong actions, and
+their paired difference (95\% CI). Priority is test-set priority accuracy
+(chance 0.33). Jev's row is from the first pre-registration and the other
+four from the second.}
 \label{tab:k8s}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -477,19 +459,18 @@ Phi-3.5-mini & 0.519 & 0.674 & $-0.155$ [$-0.284$, $-0.009$] & 0.046 \\
 
 For Jev the action rule again beat confidence, 0.776 against 0.628, a
 paired difference of $+0.148$ [$+0.091$, $+0.207$]. As before, the
-decision estimator added little ($+0.004$ to $+0.017$), and the contrast
-held for the any-node target, within SIG Node, and on issues triaged
+decision estimator added little ($+0.004$ to $+0.017$). The contrast held for the any-node target, within SIG Node, and on issues triaged
 within 30 days. Because the two periods also differ in issue format and
 label mix, this is a combined test of temporal and distribution shift. A second
 pre-registration ran the four other models (\cref{tab:k8s}). By its fixed
 rule, at least three of four, the finding holds. The detail matters,
-though. A competence check that we defined after seeing the results, and
-applied to every model, shows that only Jev and OpenJev-27B beat chance
-on every step, and OpenJev is trained for Jev's interface, so these are
-two related systems. The three
-general models handled routing and the bug question but failed on
-priority, so their workflows were wrong most of the time (wrong-action
-rates up to 95\%), and the rule ``won'' largely by flagging the one
+though. We defined a competence check after seeing the results and
+applied it to every model. Only Jev and OpenJev-27B beat chance on every
+step, and OpenJev is trained for Jev's interface, so these two are
+related systems. The three
+general models handled routing and the bug question but failed on priority. Their
+workflows were wrong most of the time (wrong-action rates up to 95\%).
+The rule ``won'' largely by flagging the one
 action each model nearly always chose. Phi-3.5 escalated 580 of the 582
 test issues, which left the rule nothing to rank.
 
@@ -497,8 +478,8 @@ The label-free correction did not carry over. Re-weighting a deliberately
 mismatched fit by BBSE lowered its AUROC from 0.699 to 0.348
 ($-0.350$ [$-0.428$, $-0.271$]). By its frozen rule, this test, the only
 pre-registered test of RQ2, is inconclusive with a negative estimate. BBSE again
-estimated the mix as entirely middle level, $[0, 1, 0]$, while the true
-mix was $[0.69, 0.26, 0.05]$, so the weighting pushed the fit the wrong
+estimated the mix as entirely middle level, $[0, 1, 0]$. The true mix was
+$[0.69, 0.26, 0.05]$, so the weighting pushed the fit the wrong
 way. This supports our reading of the earlier gains as a coincidence of
 a dominant middle level.
 
@@ -531,13 +512,14 @@ is compared with confidence-ranked and random review.
 \end{tikzpicture}
 \caption{Total cost at a 10\% review budget under the pre-registered cost
 matrix. No feasible strategy beats no review. A perfect reviewer (oracle)
-would cut Jev's cost by 44\% and OpenJev's by 33\%. Point estimates;
-intervals for the pre-registered contrasts are in the text.}
+would cut Jev's cost by 44\% and OpenJev's by 33\%. Point estimates are shown. Intervals for the pre-registered contrasts
+are given in the text.}
 \label{fig:intervention}
 \end{colfigure}
 
-Two of ten pre-registered tests were supported: the action rule beat
-random review for Jev ($-9.8$ cost units [$-17.4$, $-2.6$]) and OpenJev
+Two of ten pre-registered tests were supported. The action rule beat
+random review for Jev ($-9.8$ cost units [$-17.4$, $-2.6$]) and for
+OpenJev
 ($-12.2$ [$-22.2$, $-3.6$]). It was not shown to beat confidence for any
 model (Jev $-4.3$ [$-39.6$, $+36.9$]). Descriptively, with no interval
 pre-registered, every review arm cost more than no review at all.
@@ -545,15 +527,15 @@ For Jev that was 658 with no review against 681--714 with review
 (\cref{fig:intervention}).
 
 The oracle shows where the money is. For the Jev-style models, 40--52\%
-of no-review cost comes from wrongly accepted serious or regression
-bugs, and picking the right 50 cases would save 33--44\%. Those cases are
+of no-review cost comes from wrongly accepted serious or regression bugs. Picking the right 50 cases would save
+33--44\%. Those cases are
 only 15--16\% of accepted cases, and none of the pre-registered signals
-could find them: among Jev's 245 accepted held-out cases, the decision
-estimator, final-step confidence and \score{}'s top-level probability
-ranked the 38 wrong accepts at AUROC 0.46, 0.49 and 0.49. The post hoc
+could find them. Jev accepted 245 held-out cases, 38 of them
+wrongly. The decision estimator, final-step confidence and \score{}'s
+top-level probability ranked those 38 at AUROC 0.46, 0.49 and 0.49. The post hoc
 implied-probability baseline did somewhat better (0.596 [0.508, 0.682]
-for Jev, 0.681 [0.589, 0.773] for OpenJev), a weak signal whose value for
-review we have not tested. For the general models the
+for Jev, 0.681 [0.589, 0.773] for OpenJev). That signal is weak,
+and we have not tested its value for review. For the general models the
 problem is different: they over-escalate, and even the oracle saves at
 most 5\%.
 
@@ -568,19 +550,19 @@ break-even precision. $^{\dagger}$The pre-registered table.}
 \resizebox{\linewidth}{!}{\input{table_cost_sensitivity.tex}}
 \end{coltable}
 
-The conclusion depends on the costs (\cref{tab:costsens}). In an
-exploratory re-scoring within a factor of 2 of the frozen matrix, review
-pays for Jev, OpenJev and Qwen2.5 when a wrong accept costs twice as much
-(for Jev, 44--69 units below no review) or a review half as much,
-because the break-even precision then falls to about the 14--16\% share
-of wrong accepts. The ordering of the arms is steadier than their sign:
+The conclusion depends on the costs (\cref{tab:costsens}). As an exploratory analysis, we re-scored the frozen rankings
+on cost matrices within a factor of 2 of the original. Review pays for
+Jev, OpenJev and Qwen2.5 when a wrong accept costs twice as much (for
+Jev, 44--69 units below no review) or a review half as much. In those
+cases the break-even precision falls to about the 14--16\% share of wrong
+accepts. The ordering of the arms is steadier than their sign:
 the action rule beats random for both Jev-style models in 12 of 16
 cells. If reviewers are right only 80\% of the time, Jev's saving at twice
 the wrong-accept cost falls from 44 to 26 units but does not
 disappear.
 We also tried a per-case score built to find the expensive errors. On
-the development mix it cut cost by 12\% against no review (630 vs.\ 713),
-but the development bugs were quota-sampled, and re-weighted to the
+the development mix it cut cost by 12\% against no review (630 vs.\ 713). But the development bugs were quota-sampled, and
+re-weighted to the
 natural mix it was projected to cost more than no review. Its
 pre-registered feasibility check required power of at least 0.80 with at
 most 1{,}000 fresh bugs. The highest power was 0.20, so we stopped that
@@ -592,47 +574,46 @@ study before collecting new data.
 %======================================================================
 
 The largest threat is construct validity. Failure means disagreeing with
-a target built from tracker labels, and those labels are not ground
-truth: Mozilla's sample excludes re-triaged bugs, kernel severities are
-reporters' claims, and the kernel's middle level is a default value. In an exploratory pilot, one AI assistant chose actions for 50
-held-out bugs and agreed with the target at about chance (Cohen's
+a target built from tracker labels, and those labels are not ground truth. Mozilla's sample excludes
+re-triaged bugs. Kernel severities are reporters' claims, and the
+kernel's middle level is a default value. In an exploratory pilot, one AI assistant chose actions for 50 held-out bugs.
+It agreed with the target at about chance (Cohen's
 $\kappa$ between $-0.157$ and $+0.015$). With one rater we cannot tell
 whether the target or the judge is at fault. A two-human validation is
 designed but not yet run. The cost matrix is also our construct, and real
 review costs are unknown.
 
 On internal validity, the cost test was pre-registered after the
-prediction results on the same held-out bugs were known, though before
-any cost was computed, and the cost-sensitivity and label-shift analyses
-are exploratory. Old public bugs may appear in model
+prediction results on the same held-out bugs were known, though before any cost was computed. The cost-sensitivity and
+label-shift analyses are exploratory. Old public bugs may appear in model
 training data, and the recent subsets we can check are small (Mozilla 54,
 kernel 35). The
 protocols were revised several times, including a readout bug in the
 cross-model study fixed after interim results were seen. Every revision
 is dated and disclosed. Our own audits caught seven defects, five of them
-before the data that would have exposed them existed; the confound
-between confidence and decisions was found only after a result.
+before the data that would have exposed them existed. The confound between confidence and
+decisions was found only after a result.
 
 On external validity, the study covers five models in one domain,
 software issue triage, across two workflows and one Jev version. On
-Kubernetes the general models were below chance on priority, and the
-Kubernetes leakage read was done by an AI assistant at our direction.
+Kubernetes the general models were below chance on priority. The Kubernetes leakage read was done by an AI
+assistant at our direction.
 
 %======================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 %======================================================================
 
-In a chain of three typed decisions, what the workflow decided predicted
-its failures, measured as disagreement with a label-derived target, far
-better than how confident it was. This held on 500 new
+We studied a chain of three typed decisions. What the workflow decided
+predicted its failures far better than how confident it was, with failure
+measured as disagreement with a label-derived target. This held on 500 new
 bugs, for five models, and on an independent Kubernetes workflow. Most
 of the signal is the error rate of the chosen action, and that rate
 depends on the label mix it was measured under. Under our cost matrix,
 predicting failures did not make review worthwhile. The costly errors are wrong accepts that
-look like correct accepts to every pre-registered signal, so whether review
-pays comes down to the ratio of error cost to review cost and to how
-precisely a signal can find those cases.
+look like correct accepts to every pre-registered signal. So whether
+review pays comes down to two things: the ratio of error cost to review
+cost, and how precisely a signal can find those cases.
 
 %======================================================================
 \section{Future scope}
@@ -650,13 +631,12 @@ model versions, supervised baselines and measured review costs.
 \section*{Data and code availability}
 %======================================================================
 
-Code, the pre-registration documents with their full commit history, all
-model outputs and the analysis results are available at
+Code, all model outputs and the analysis results are available at
 \url{https://github.com/thejasrao262003/jev-compositional-uncertainty}.
-The analyses can be re-run offline from the released outputs, and a
-script checks every number in the full version of this paper against the
-result files. Re-running model calls needs a TypeSafe API key; Jev was
-pinned to \texttt{jev-1.13.0}, and later API versions may behave
+So are the pre-registration documents, with their full commit history.
+The analyses can be re-run offline from the released outputs. A script
+checks every number in the full version of this paper against the
+result files. Re-running model calls needs a TypeSafe API key. Jev was pinned to \texttt{jev-1.13.0}, and later API versions may behave
 differently. OpenJev-27B was served at Hugging Face commit
 \texttt{b4a89f5} under vLLM 0.29.0, and Qwen2.5, Phi-3.5 and OLMo-2 under
 \texttt{transformers}.

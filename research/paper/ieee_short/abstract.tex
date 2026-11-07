@@ -1,22 +1,23 @@
 % Abstract, short version
-Many systems chain an AI model's typed decisions into a workflow and use
-the model's own confidence to decide which cases a human should check.
-We test that practice with Jev, TypeSafe's typed decision model, whose
-three primitives (a categorical \choice{}, a binary \noul{} and an
-ordinal \score{}) we chain into a bug-triage workflow. After exploratory
-work on 442 Mozilla and Linux kernel bugs, we ran pre-registered tests on
-500 new bugs, four further models and an independent Kubernetes
-workflow. A failure is a disagreement between the workflow's action and
-a target action built from reference labels; that target has not yet been
-validated against human judgment. A frozen estimator that
-reads only the workflow's decisions ranks failures better than
-final-step confidence (AUROC 0.76 vs.\ 0.55 on the new bugs), for all
-five models, and most of its signal is how often the chosen action was
-wrong before. The Kubernetes replication agreed (AUROC 0.78 vs.\ 0.63),
-as did three of four further models, including the only other one
-competent at every step. These error rates do not transfer across label
-mixes, and a label-free correction that helped on the bug trackers made
-ranking worse on Kubernetes. Better ranking did not reduce cost: under
-the pre-registered cost matrix, with reviewers assumed correct, no 10\%
-review policy beat no review. The savings sit in wrongly accepted cases
-that none of the pre-registered signals could pick out.
+Many systems chain an AI model's typed decisions into a workflow. They
+then use the model's own confidence to decide which cases a human should
+check. We test that practice with Jev, TypeSafe's typed decision model.
+Its three primitives are a categorical \choice{}, a binary \noul{} and an
+ordinal \score{}, and we chain them into a bug-triage workflow. After
+exploratory work on 442 Mozilla and Linux kernel bugs, we ran
+pre-registered tests on 500 new bugs, four further models and an
+independent Kubernetes workflow. A failure is a disagreement between the
+workflow's action and a target action built from reference labels. That
+target has not yet been validated against human judgment. A frozen
+estimator that reads only the workflow's decisions ranks failures better
+than final-step confidence (AUROC 0.76 vs.\ 0.55 on the new bugs). This
+holds for all five models, and most of the signal is how often the
+chosen action was wrong before. The Kubernetes replication agreed (AUROC
+0.78 vs.\ 0.63), as did three of four further models. Only one of those
+three, OpenJev, was competent at every step of the workflow. These error rates
+do not transfer across label mixes. A label-free correction that helped
+on the bug trackers made ranking worse on Kubernetes. Better ranking also
+did not reduce cost. Under the pre-registered cost matrix, with reviewers
+assumed correct, no 10\% review policy beat no review. The savings sit
+in wrongly accepted cases that none of the pre-registered signals could
+pick out.
