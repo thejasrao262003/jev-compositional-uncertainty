@@ -9,8 +9,9 @@ TypeSafe's decision API, answers closed questions through three
 primitives: a categorical \choice{}, a binary \noul{} and an ordinal
 \score{}, each with a number between 0 and 1. Prior work has benchmarked
 these primitives and their calibration on single requests
-\citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and argued in
-general that error risk is not review value \citep{park2026riskreview}.
+\citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and argued that
+the chance of an error and the value of reviewing it are different
+quantities \citep{park2026riskreview}.
 
 We study an operational question that single-request benchmarks leave
 open. \emph{When a workflow chains several typed decisions, which
@@ -29,7 +30,7 @@ further models. Our contributions:
   than final-step confidence on 500 new bugs, and the gap replicates
   across five models from four sources. Most of the signal is the chosen
   action's historical error rate.
-  \item \textbf{Prediction is not review value} (\cref{sec:intervention}).
+  \item \textbf{Better prediction did not lower review cost} (\cref{sec:intervention}).
   Under the pre-registered costs, no review strategy built on that signal
   beats no review at a 10\% budget. An oracle locates the value in wrongly
   accepted cases that the tested signals do not isolate, and an
