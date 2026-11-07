@@ -3,53 +3,44 @@
 \section{Introduction}
 %======================================================================
 
-Typed decision models return an answer in a fixed format, such as a
-label, a yes/no or a rating. The answer comes with a probability or a
-confidence. The answer can be well formed and still wrong. Chain several
-of these answers into a workflow and a mistake at one step becomes the
-input to the next. A natural design is to combine the confidence each
-step reports into one workflow-level signal that says when a person
-should look at a case.
+This project started as a study of compositional uncertainty. Typed
+decision models such as Jev, TypeSafe's model, return a label, a yes/no
+or a rating together with a probability or confidence. We wanted to know
+whether the confidence reported at each step of a workflow built from
+such answers could be combined into one signal for when to hand a case
+to a person. If every step says how sure it is, the workflow ought to
+know when it is likely to be wrong.
 
-Jev, TypeSafe's typed decision model, has been benchmarked on single
-tasks \citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and
-uncertainty along multi-step agent trajectories has been studied
-separately \citep{lin2026uqagents}. Our question is operational. When a workflow chains several typed decisions, which signals identify
-the cases where it fails? And do those signals find the costly errors
-that justify a human review? The two parts can come apart. A signal can rank
-failures well and still be of little use for choosing what to review.
+Our first analyses, on real Mozilla and Linux kernel bugs, did not bear
+this out. Jev's three primitives report uncertainty in different forms:
+\choice{} and \score{} return a distribution with a scalar confidence,
+while \noul{} returns a single probability. Composed confidence ranked
+the workflow's failures no better than chance (\cref{sec:explore}). What
+did rank them was simpler, namely which action the workflow had chosen.
+That observation reshaped the study. We froze a predictor built on the
+decisions, collected new data and organised the rest of the study around three research questions. RQ1
+asks which signals rank workflow failures, RQ2 whether they stay useful
+when the label mix shifts between development and deployment, and RQ3
+whether ranking failures helps choose the cases worth reviewing.
 
-Jev's primitives also report uncertainty in different forms. \choice{} returns a probability for each label plus a scalar confidence.
-\score{} returns an ordinal distribution plus a scalar confidence.
-\noul{} returns a single probability with no confidence field. TypeSafe
-describes its confidence as one reasonable summary of a distribution and
-advises setting thresholds on one's own data
-\citep{typesafe2026confidence}. So we do not test a calibration claim.
-We measure how these numbers behave as escalation signals once the
-primitives are chained.
+Jev has been benchmarked on single tasks
+\citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and uncertainty
+along agent trajectories has been studied separately
+\citep{lin2026uqagents}. Neither line of work follows structurally
+different typed decisions through a chain into an escalation policy.
+TypeSafe describes Jev's confidence as one reasonable summary of a
+distribution and advises setting thresholds on one's own data
+\citep{typesafe2026confidence}. So rather than test a calibration claim,
+this paper looks at how the numbers behave once the primitives are
+chained.
 
-We ask three questions. RQ1: which signals rank workflow failures, the
-model's confidence or what the workflow decided? RQ2: do those signals
-stay useful when the label distribution shifts between development and
-deployment? RQ3: do signals that rank failures also find the reviews that
-reduce cost?
-
-The contribution is a methodological combination, tested empirically.
-None of its parts is new on its own. Park et al.\ \citep{park2026riskreview}
-make the general point that error risk and review value differ.
-We measure uncertainty at the level of a workflow, where failure is defined on the action taken rather than
-on any single answer. We separate ranking failures from reducing cost by
-scoring a fixed review budget against a frozen cost matrix and an oracle
-bound. We pre-registered every confirmatory test and froze the estimators by
-hash before their data existed. We also replicated the main result across
-five models and a second, chronologically split workflow.
-
-In short, the workflow's decisions predict its failures, measured against
-our constructed target, much better than its confidence does, and the gap
-holds across models and workflows. Most
-of that signal is the error rate of the chosen action. Those error rates
-shift with the label mix. And none of the pre-registered signals made review
-pay under our cost matrix.
+The study's value lies in how it was run rather than in a new technique;
+Park et al.\ \citep{park2026riskreview} already argue in general that
+error risk and review value differ. We define failure on the action a workflow takes, and score a fixed
+review budget against a frozen cost matrix and an oracle bound. Every
+confirmatory test was pre-registered with the estimators frozen by hash,
+and the main result was replicated across five models and a second,
+chronologically split workflow.
 
 %======================================================================
 \section{Related work}
@@ -90,11 +81,12 @@ ordinal scales toward the middle \citep{zhang2026centraltendency}.
 \para{Cascades and software reliability} Cascades route a single query
 through model tiers and decide when to defer
 \citep{zellinger2025early,bouchard2026escalation,jung2025trust}.
-Component-based reliability models treat error propagation between
-components as an architectural property. That property decides where detection and
-recovery belong \citep{cortellessa2007errorprop}. Bug severity prediction
-from report text is a long-studied triage task \citep{lamkanfi2010severity}. Our workflow is a small instance of the
-same propagation problem, with human escalation as the recovery step.
+Reliability models treat error propagation between components as an
+architectural property that decides where recovery belongs
+\citep{cortellessa2007errorprop}, and our workflow is a small instance
+of that problem, with human escalation as the recovery step. Bug
+severity prediction is itself a long-studied triage task
+\citep{lamkanfi2010severity}.
 
 Our literature search was web-based and did not systematically cover
 reliability engineering or human--computer interaction. Within it, we found no prior work that tests which signals predict
@@ -123,8 +115,9 @@ $a \neq \astar$.}
 storage bugs, sampled in equal quotas per subsystem and severity level.
 The held-out set has 500 newer bugs (250 per tracker) at each tracker's
 natural label mix. The replication uses 1{,}082 Kubernetes issues. Texts are
-privacy-scrubbed and truncated to 2{,}000 characters. Node~1 (\choice{}) routes a report to a subsystem. Node~2 (\noul{}) asks
-whether it is a regression, and node~3 (\score{}) rates severity on three levels. Each
+privacy-scrubbed and truncated to 2{,}000 characters. Node~1 (\choice{}) routes a report to a subsystem, node~2 (\noul{})
+asks whether it is a regression, and node~3 (\score{}) rates severity on
+three levels. Each
 node sees the evidence plus the earlier decisions. Every node is called
 three times, and the answers are reduced to one decision by modal vote
 (for \noul{}, the mean probability is thresholded at 0.5). All Jev calls
@@ -158,8 +151,7 @@ costs 6--10 and any other mismatch 1, and each escalation adds 1 for the
 reviewer's time.
 
 \para{Novelty} \Cref{tab:novelty} lists the elements of the design and
-what each lets us conclude. The contribution is their combination, not
-any single element.
+what each lets us conclude. The contribution lies in combining them.
 
 \begin{coltable}
 \centering
@@ -227,7 +219,7 @@ from 0.53 to 0.56, so the compression does not come from our mapping.
 \centering
 \begin{tikzpicture}
 \begin{groupplot}[group style={group size=2 by 1, horizontal sep=0.35cm, y descriptions at=edge left},
-  width=0.5\linewidth, height=3.8cm, view={0}{90}, enlargelimits=false, axis on top,
+  width=0.5\linewidth, height=3.4cm, view={0}{90}, enlargelimits=false, axis on top,
   colormap={sev}{rgb255=(255,255,255) rgb255=(107,174,214) rgb255=(33,113,181)},
   point meta min=0, point meta max=0.8,
   xtick={0,1,2}, ytick={0,1,2}, y dir=reverse,
@@ -248,7 +240,7 @@ extremes.}
 \label{fig:sev}
 \end{colfigure}
 
-Composing confidences did not help. A naive comparison looks favourable to decisions. On Mozilla, the decision-based action beat a
+A naive comparison of composition rules looks favourable to decisions. On Mozilla, the decision-based action beat a
 confidence-product rule by 0.17 [0.08, 0.27] in the probability of the
 right action (exact McNemar $p = 0.0004$). But the confidence rule never
 reads the decisions, while the target escalates on the severity
@@ -267,7 +259,7 @@ read.
 \begin{colfigure}
 \centering
 \begin{tikzpicture}
-\begin{axis}[width=0.78\linewidth, height=4.6cm, xmin=0.25, xmax=1.05, ymin=0.4, ymax=5.6,
+\begin{axis}[width=0.78\linewidth, height=3.9cm, xmin=0.25, xmax=1.05, ymin=0.4, ymax=5.6,
   ytick={1,2,3,4,5}, yticklabels={(B) any error, (A) missed serious, \score{} own, \noul{} own, \choice{} own},
   xlabel={AUROC (95\% bootstrap interval)}, grid=major, grid style={gray!20},
   tick label style={font=\scriptsize}, label style={font=\scriptsize},
@@ -307,9 +299,9 @@ Mozilla and a weaker $+0.124$ [$+0.023$, $+0.225$] on the kernel. We also checke
 sampling, which are the least likely to appear in model training data.
 On these, $E_{\text{dec}}$ reached 0.847 against 0.519. The result held when every development bug linked to a held-out
 bug was removed and the estimator refitted (0.772 against 0.551). An independent script that shares no code with the analysis reproduced
-every point estimate. The estimator's predicted failure rate matches the observed rate overall. But it outputs only 7--8 distinct risk
-levels
-(ECE 0.18--0.20), so it ranks better than it calibrates.
+every point estimate. Its predicted failure rate matches the observed rate overall, but with
+only 7--8 distinct risk levels (ECE 0.18--0.20) it ranks better than it
+calibrates.
 
 %======================================================================
 \section{Cross-model replication}
@@ -333,7 +325,7 @@ three general models. The conclusions did not change.
 \begin{colfigure}
 \centering
 \begin{tikzpicture}
-\begin{axis}[width=0.8\linewidth, height=4.2cm, xmin=0.3, xmax=0.9, ymin=0.4, ymax=5.6,
+\begin{axis}[width=0.8\linewidth, height=3.8cm, xmin=0.3, xmax=0.9, ymin=0.4, ymax=5.6,
   ytick={1,2,3,4,5}, yticklabels={OLMo-2, Phi-3.5, Qwen2.5, OpenJev, Jev 1.13},
   xlabel={held-out AUROC for wrong actions (95\% CI)}, grid=major, grid style={gray!20},
   tick label style={font=\scriptsize}, label style={font=\scriptsize},
@@ -393,8 +385,8 @@ minus the probability that $F$ yields the chosen action, computed from
 the model's \score{} distribution and \noul{} probability. It did no better than final-step confidence (Jev 0.535 vs.\ 0.549). The action-rule score beat it for four of five
 models
 (Jev $+0.228$ [$+0.158$, $+0.297$]). The exception was OLMo-2 ($+0.024$
-[$-0.073$, $+0.123$]). So the decisions carry information that
-the model's own probabilities, combined through the same rule, do not.
+[$-0.073$, $+0.123$]). The decisions thus carry information beyond what the model's own
+probabilities provide when combined through the same rule.
 
 In exploratory analyses, that dependence also makes the rates sensitive
 to the label mix (RQ2). The development
@@ -416,8 +408,9 @@ and compared with final-step confidence. Bold: re-weighted estimator above confi
 \end{coltable}
  Estimating
 the mix without labels by BBSE \citep{lipton2018bbse} recovered most of
-that gain for Jev (0.74), OpenJev (0.78) and Qwen2.5 (0.74). It did so for the wrong reason. The estimated mix was wrong. For the kernel it was
-$[0, 1, 0]$ against a true $[0.02, 0.73, 0.25]$. The ranking improved only because the middle level happened to dominate. Under known synthetic shifts, the estimate was biased toward the
+that gain for Jev (0.74), OpenJev (0.78) and Qwen2.5 (0.74). Its estimate of the mix, however, was wrong: for the kernel it was
+$[0, 1, 0]$ against a true $[0.02, 0.73, 0.25]$, and the ranking improved
+only because the middle level happened to dominate. Under known synthetic shifts, the estimate was biased toward the
 development mix. For Phi-3.5, whose severity answers are nearly all ``blocking'', it gave
 no gain at all.
 
@@ -462,9 +455,8 @@ paired difference of $+0.148$ [$+0.091$, $+0.207$]. As before, the
 decision estimator added little ($+0.004$ to $+0.017$). The contrast held for the any-node target, within SIG Node, and on issues triaged
 within 30 days. Because the two periods also differ in issue format and
 label mix, this is a combined test of temporal and distribution shift. A second
-pre-registration ran the four other models (\cref{tab:k8s}). By its fixed
-rule, at least three of four, the finding holds. The detail matters,
-though. We defined a competence check after seeing the results and
+pre-registration ran the four other models (\cref{tab:k8s}). By its fixed rule, at least three of four, the finding holds. We also
+defined a competence check after seeing the results and
 applied it to every model. Only Jev and OpenJev-27B beat chance on every
 step, and OpenJev is trained for Jev's interface, so these two are
 related systems. The three
@@ -526,7 +518,7 @@ pre-registered, every review arm cost more than no review at all.
 For Jev that was 658 with no review against 681--714 with review
 (\cref{fig:intervention}).
 
-The oracle shows where the money is. For the Jev-style models, 40--52\%
+The oracle bound shows where the savings are. For the Jev-style models, 40--52\%
 of no-review cost comes from wrongly accepted serious or regression bugs. Picking the right 50 cases would save
 33--44\%. Those cases are
 only 15--16\% of accepted cases, and none of the pre-registered signals
@@ -555,9 +547,9 @@ on cost matrices within a factor of 2 of the original. Review pays for
 Jev, OpenJev and Qwen2.5 when a wrong accept costs twice as much (for
 Jev, 44--69 units below no review) or a review half as much. In those
 cases the break-even precision falls to about the 14--16\% share of wrong
-accepts. The ordering of the arms is steadier than their sign:
-the action rule beats random for both Jev-style models in 12 of 16
-cells. If reviewers are right only 80\% of the time, Jev's saving at twice
+accepts. The ranking of the review arms was more stable than whether they beat
+no review: the action rule beat random for both Jev-style models in 12 of
+16 cells. If reviewers are right only 80\% of the time, Jev's saving at twice
 the wrong-accept cost falls from 44 to 26 units but does not
 disappear.
 We also tried a per-case score built to find the expensive errors. On
@@ -567,6 +559,38 @@ natural mix it was projected to cost more than no review. Its
 pre-registered feasibility check required power of at least 0.80 with at
 most 1{,}000 fresh bugs. The highest power was 0.20, so we stopped that
 study before collecting new data.
+
+%======================================================================
+\section{Discussion}
+\label{sec:discussion}
+%======================================================================
+
+Two features of the workflow explain most of what we found. The action
+rule reads only the binary and ordinal answers, while the only confidence
+that tracked correctness belonged to the routing step. So composed confidence mixed one useful signal with two that carried
+almost nothing, and it could not see the errors that mattered for the
+action. In addition, the action and the target come from the same rule,
+so an action's past error rate reflects the workflow and its label mix
+as much as the model. That is why it ranks failures well, and also why
+it moves when the mix changes.
+
+The finding that changed the direction of the study came from an audit
+rather than a planned test: estimators fitted on the quota-sampled
+development set ranked natural-mix severity errors well below chance.
+Until then, the design had treated decision-conditioned error rates as
+properties of the model. They need to be measured under the label mix in
+which they will be used.
+
+Three practical points follow for anyone building a workflow like this.
+Log each action's error rate on labelled data from your own setting, and
+recompute it whenever the mix of cases changes, instead of relying on
+step-level confidence. Measure how often any escalation trigger fires on
+pilot inputs before freezing it; our confidence trigger fired on most
+real inputs. Before paying for reviews, compare the precision your
+selector reaches on the costly errors with the break-even precision your
+costs imply. In our setting no pre-registered signal came close, even
+though a perfect selector would have cut the Jev-style models' costs by
+a third or more.
 
 %======================================================================
 \section{Threats to validity}
@@ -604,16 +628,15 @@ assistant at our direction.
 \label{sec:conclusion}
 %======================================================================
 
-We studied a chain of three typed decisions. What the workflow decided
-predicted its failures far better than how confident it was, with failure
-measured as disagreement with a label-derived target. This held on 500 new
-bugs, for five models, and on an independent Kubernetes workflow. Most
-of the signal is the error rate of the chosen action, and that rate
-depends on the label mix it was measured under. Under our cost matrix,
-predicting failures did not make review worthwhile. The costly errors are wrong accepts that
-look like correct accepts to every pre-registered signal. So whether
-review pays comes down to two things: the ratio of error cost to review
-cost, and how precisely a signal can find those cases.
+What a chain of typed decisions decided was a far better guide to its
+failures than how confident its models were. This held on 500 new bugs,
+for five models and on an independent Kubernetes workflow, with failure
+measured against a label-derived target. Most of the signal is each
+action's past error rate, so it has to be measured under the label mix
+in which it will be used. Turning a good ranking into lower cost is a
+separate problem. Under our cost matrix the expensive errors were wrong
+accepts that every pre-registered signal treated like correct ones, and
+review paid only when errors were made more costly or reviews cheaper.
 
 %======================================================================
 \section{Future scope}

@@ -1,23 +1,19 @@
 % Abstract, short version
-Many systems chain an AI model's typed decisions into a workflow. They
-then use the model's own confidence to decide which cases a human should
-check. We test that practice with Jev, TypeSafe's typed decision model.
-Its three primitives are a categorical \choice{}, a binary \noul{} and an
-ordinal \score{}, and we chain them into a bug-triage workflow. After
+We set out to test a common design for AI workflows: chain a model's
+typed decisions, and use the model's own confidence to decide which cases
+a person should check. Our test bed is a bug-triage workflow built from
+the three primitives of Jev, TypeSafe's typed decision model (a
+categorical \choice{}, a binary \noul{} and an ordinal \score{}). After
 exploratory work on 442 Mozilla and Linux kernel bugs, we ran
-pre-registered tests on 500 new bugs, four further models and an
-independent Kubernetes workflow. A failure is a disagreement between the
-workflow's action and a target action built from reference labels. That
-target has not yet been validated against human judgment. A frozen
-estimator that reads only the workflow's decisions ranks failures better
-than final-step confidence (AUROC 0.76 vs.\ 0.55 on the new bugs). This
-holds for all five models, and most of the signal is how often the
-chosen action was wrong before. The Kubernetes replication agreed (AUROC
-0.78 vs.\ 0.63), as did three of four further models. Only one of those
-three, OpenJev, was competent at every step of the workflow. These error rates
-do not transfer across label mixes. A label-free correction that helped
-on the bug trackers made ranking worse on Kubernetes. Better ranking also
-did not reduce cost. Under the pre-registered cost matrix, with reviewers
-assumed correct, no 10\% review policy beat no review. The savings sit
-in wrongly accepted cases that none of the pre-registered signals could
-pick out.
+pre-registered tests on 500 new bugs, four further models and a separate
+Kubernetes workflow. We count a failure when the workflow's action
+differs from a target built from tracker labels, a target we have not yet
+validated against human judgment. The models' confidence turned out to be
+a poor guide. A frozen estimator that reads only what the workflow decided
+ranked failures far better (AUROC 0.76 against 0.55 on the new bugs).
+It did so for all five models and again on Kubernetes, where only Jev
+and OpenJev handled every step competently. Most of its signal is the past error rate
+of the chosen action, which shifts when the mix of labels changes. Better
+ranking did not lower cost: under our pre-registered cost matrix, with
+reviewers assumed correct, no 10\% review policy beat doing no review at
+all.
