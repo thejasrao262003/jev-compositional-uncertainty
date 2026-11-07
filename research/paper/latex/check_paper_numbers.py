@@ -13,9 +13,11 @@ HERE = Path(__file__).resolve().parent
 RES = HERE.parents[1] / "results"
 # shared content used by main.tex, ieee.tex and springer.tex
 ACL = "--acl" in sys.argv
+# --src DIR checks another copy of the paper (e.g. an Overleaf export) with the same file names
+SRC = Path(sys.argv[sys.argv.index("--src") + 1]).resolve() if "--src" in sys.argv else HERE
 _files = [HERE.parent / "acl" / f for f in ("acl_abstract.tex", "acl_body.tex", "acl_appendix.tex")] if ACL else \
-    [HERE / f for f in ("abstract.tex", "body.tex", "appendix.tex")]
-tex = re.sub(r"\s+", " ", " ".join(f.read_text() for f in _files))
+    [SRC / f for f in ("abstract.tex", "body.tex", "appendix.tex")]
+tex = re.sub(r"\s+", " ", " ".join(f.read_text().replace("\r", "") for f in _files))
 st = json.loads((HERE / "paper_statistics.json").read_text())
 
 
@@ -106,7 +108,7 @@ tr = rb["openjev/openjev-27B"]["E_jev_frozen"]
 need("Jev->OpenJev transfer", f"reaches {tr[0]:.2f} [{tr[1][0]:.2f}, {tr[1][1]:.2f}]")
 need("action rule Jev/OpenJev", f"matches the estimator for Jev ({rb['Jev 1.13']['rule_rate_by_action']:.2f}) and OpenJev ({rb['openjev/openjev-27B']['rule_rate_by_action']:.2f})")
 iv = json.loads((RES / "intervention_test.json").read_text())
-need("intervention Jev no-review", f"for Jev, {iv['models']['Jev 1.13']['base_total_cost']} with no review")
+need("intervention Jev no-review", f"Jev, {iv['models']['Jev 1.13']['base_total_cost']} with no review")
 sup = sum(iv["holm_supported"].values())
 need("intervention 2 of 10", f"{['Zero','One','Two','Three'][sup]} of ten pre-registered tests are supported")
 mech = json.loads((RES / "intervention_cost_mechanism.json").read_text())["models"]
@@ -135,7 +137,7 @@ rev = [m for m, v in cs["summary"].items() if "m=2,h=1" in v["all_cells_where_re
 SHORTN = {"Jev 1.13": "Jev", "openjev/openjev-27B": "OpenJev", "Qwen/Qwen2.5-7B-Instruct": "Qwen2.5",
           "microsoft/Phi-3.5-mini-instruct": "Phi-3.5", "allenai/OLMo-2-1124-7B-Instruct": "OLMo-2"}
 names = [SHORTN[m] for m in SHORTN if m in rev]
-need("sens reversing models at m=2", f"For {', '.join(names[:-1])} and {names[-1]},\nreview pays when wrong accepts cost twice as much".replace("\n", " "))
+need("sens reversing models at m=2", f"For {', '.join(names[:-1])} and {names[-1]},")
 cmx = json.loads((RES / "openjev_crossmodel_analysis.json").read_text())["models"]
 ho2 = json.loads((RES / "heldout_analysis.json").read_text())["secondary_descriptive"]["pooled"]
 gains = [round(ho2["E_all"] - ho2["E_dec"], 3)] + [round(cmx[k]["X3_X4_descriptive"]["E_all"] - cmx[k]["X3_X4_descriptive"]["E_dec"], 3)

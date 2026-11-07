@@ -1,0 +1,26 @@
+% Shared abstract (included by main.tex, ieee.tex, springer.tex)
+Many systems chain an AI model's typed decisions into a workflow and use
+the model's reported confidence to decide which cases a human should
+check. We test how well that works, using Jev, TypeSafe's typed decision
+model and its three primitives (a categorical \choice{}, a binary
+\noul{} and an ordinal \score{}), on a bug-triage workflow. We ask
+whether these signals identify erroneous chained decisions, and whether
+they identify the errors worth human review. We study 442 Mozilla and
+Linux kernel bugs, then run pre-registered
+tests on 500 new bugs, four further models and an independent Kubernetes
+workflow. Failure is disagreement with a target action we construct from
+reference labels. A frozen decision-feature estimator ranks failures
+better than final-step confidence (AUROC 0.76 vs.\ 0.55 on the new bugs),
+and this holds for all five models. Most of its signal is simply how often
+the chosen action has been wrong before. The Kubernetes replication,
+on a chronological split, confirmed this (AUROC 0.78 vs.\ 0.63), as did
+three of four further models, including the only other one competent at
+every step. These error rates do not transfer across label mixes: fitted
+on a quota-sampled development set, they can rank natural-mix errors below
+chance. Re-weighting to the deployment mix repairs the ranking, but the
+label-free estimate of that mix is biased and made ranking worse on
+Kubernetes. Better failure ranking did not reduce cost. Under the
+pre-registered costs, no 10\% review policy beat no review. An oracle
+shows that the savings sit in wrongly accepted cases, which the tested
+signals could not pick out, and whether review pays off depends on how
+costly a wrong accept is compared with a review.
