@@ -1,7 +1,7 @@
 Typed decision models such as Jev return a label with a numeric
 confidence, and their primitives have been benchmarked on single tasks.
 We ask what single-task benchmarks leave open: when a workflow chains
-heterogeneous typed decisions, which signals identify its failures, and
+several typed decisions, which signals identify its failures, and
 can they identify the costly errors for which human review is worthwhile?
 We chain Jev's categorical, binary and ordinal primitives into a
 dependent bug-triage workflow and evaluate it on Mozilla and Linux kernel
@@ -20,4 +20,4 @@ cost twice as much. An oracle shows the expensive errors exist, but the signals
 tested could not isolate them, and a case-level score failed a
 pre-registered feasibility check (power at most 0.20), so the
 confirmatory study was stopped before new data. Predicting which
-decisions are wrong is not knowing which are worth correcting.
+decisions are wrong is not the same as knowing which are worth correcting.

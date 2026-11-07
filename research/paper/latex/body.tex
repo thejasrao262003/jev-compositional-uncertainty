@@ -13,17 +13,17 @@ Prior work has benchmarked Jev's primitives and calibration on single
 tasks \citep{deusser2026jev,meng2026jevaudit,denney2026jev}, and recent
 work has examined uncertainty across multi-step agent trajectories
 \citep{lin2026uqagents}. We study a different, operational question.
-\emph{When a workflow chains heterogeneous typed decisions, which signals
+\emph{When a workflow chains several typed decisions, which signals
 identify the cases where it fails, and can those signals identify the
-specific costly errors for which human review is worthwhile?} The two
-halves can come apart: a signal can rank failures well and still not say
-which reviews pay. Heterogeneity matters because Jev exposes three
-primitives whose uncertainty is \emph{structurally} different. \choice{}
-returns a distribution over labels plus a scalar confidence. \score{}
-returns an ordinal distribution plus a scalar confidence. \noul{} returns
-a single probability with no separate confidence field. Treating these
-numbers as one kind of quantity is a modeling assumption, and this paper
-tests it.
+specific costly errors for which human review is worthwhile?} A signal
+can rank failures well and still not say which reviews pay. This matters
+because Jev's three primitives report uncertainty in \emph{structurally}
+different forms: \choice{} picks from unordered labels and returns a
+probability for each plus a scalar confidence, \score{} rates an ordered
+scale and returns an ordinal distribution plus a scalar confidence, and
+\noul{} answers yes/no and returns a single probability with no separate
+confidence field. Treating these numbers as one kind of quantity is a
+modeling assumption, and this paper tests it.
 
 TypeSafe's documentation describes Jev's \texttt{confidence} for
 \choice{} and \score{} as a number that ``collapses'' the output
@@ -347,16 +347,11 @@ pre-registered family. The scripts are \texttt{paper\_statistics.py} and
 
 \subsection{Novelty of the methodology}
 \label{sec:novelty}
-\Cref{tab:novelty} sets out what is new in this design and what each
-element makes it possible to conclude. Taken together, the elements turn
-a question that is usually answered at the level of single predictions,
-whether a model's uncertainty is trustworthy, into two testable
-questions about a workflow: which signals predict that the workflow's
-action is wrong, and whether acting on those signals pays for itself.
-The pre-registration, the cross-model and cross-workflow replications,
-and the explicit separation of ranking from value are what allow the
-negative result on review value to be read as a finding rather than as
-a failed experiment.
+\Cref{tab:novelty} summarizes the methodological elements of this study
+and what each one makes it possible to conclude. Pre-registration, the
+cross-model and cross-workflow replications, and the separation of
+ranking from value are what let the negative result on review value be
+read as a finding rather than a failed experiment.
 
 \begin{widetable}
 \centering
@@ -911,12 +906,12 @@ then dominated by middle-level bugs, as the natural-mix set is, so the
 decision-to-error relationship takes the right direction even though the
 other levels are effectively dropped. Where the estimate points the
 wrong way, the repair fails: for Phi-3.5 it puts no weight on the middle
-level, and ranking does not improve. To be explicit: what worked is the
-ranking, for Jev, OpenJev and Qwen2.5; what did not work is the estimate
-of the deployment mix; and what remains open is whether the ranking gain
-survives deployment mixes in which the middle level is not dominant, since
-it may depend on that coincidence. The correction improved a downstream
-metric while failing to estimate the quantity it targets. And the constructed-target
+level, and ranking does not improve. In short, the ranking improved for
+Jev, OpenJev and Qwen2.5, but the estimate of the deployment mix itself
+did not, and whether the ranking gain survives deployment mixes in which
+the middle level is not dominant is still open, since it may depend on
+that coincidence. The correction improved a downstream metric while
+failing to estimate the quantity it targets. And the constructed-target
 result itself is not fragile to how labels are mapped: with Mozilla's S2
 counted as level 1, or kernel bugs with default severity or unset
 regression excluded, decisions still beat confidence for every model,
@@ -926,8 +921,9 @@ except OLMo-2 when default-severity kernel bugs are removed.
 Jev and OpenJev, both pull severity to the middle level. The general
 instruct models push severity to ``blocking'' for 67--100\% of bugs,
 whatever the true level, and are wrong far more often (72--80\%
-vs.\ 43--47\%). The absolute failure rates are not a clean quality comparison, because
-the two groups use different interfaces. The within-model contrast is.
+vs.\ 43--47\%). Because the two groups use different interfaces, the
+absolute failure rates are not a clean quality comparison, but the
+within-model contrast between the estimator and confidence is.
 
 %======================================================================
 \section{An independent workflow: Kubernetes issue triage}
@@ -1082,8 +1078,9 @@ this shows that the tested signals did not establish useful
 discrimination for Jev, not that none is possible; for OpenJev,
 \score{}'s top-level probability does carry a weak within-action signal
 (0.68 [0.56, 0.78]), and a paired comparison puts it above confidence by
-$+0.14$ (95\% interval [$+0.04$, $+0.22$]). The value exists; for Jev
-the identification fails. For the general models, cost is dominated by
+$+0.14$ (95\% interval [$+0.04$, $+0.22$]). So the recoverable value
+exists for OpenJev, but for Jev the tested signals do not isolate it. For
+the general models, cost is dominated by
 over-escalation (\emph{escalate} when the target is \emph{accept}), which
 more review cannot reduce; even the oracle saves at most 5\%.
 Ranking which actions are wrong is therefore not the same as finding
@@ -1239,10 +1236,10 @@ review. The expensive errors, wrongly accepted serious bugs, share their
 action and largely their confidence with correctly accepted ones, so
 neither signal separates them, and whether review pays at all is set by
 the ratio of wrong-accept cost to review cost relative to the precision
-the signals reach. Failure prediction, uncertainty estimation and review
-value are therefore three different problems, and a workflow's
-uncertainty has to be evaluated against the decision it is meant to
-improve.
+the signals reach. Predicting a failure, estimating uncertainty, and
+knowing which fixes are worth the cost are three separate problems, and a
+workflow's uncertainty has to be evaluated against the decision it is
+meant to improve.
 
 %======================================================================
 \section{Future scope}
