@@ -1,12 +1,12 @@
 % Shared abstract (included by main.tex, ieee.tex, springer.tex)
-Teams increasingly chain an AI model's typed decisions into a workflow,
-hoping the model's reported confidence will flag the cases a human should
-check. We test that hope with Jev, TypeSafe's typed decision model and
-its three primitives (a categorical \choice{}, a binary \noul{} and an
-ordinal \score{}), on a bug-triage workflow, and we separate two
-questions that are usually merged: can a signal say which chained
-decisions are wrong, and can it say which of those are worth a human's
-time? We study 442 Mozilla and Linux kernel bugs, then run pre-registered
+Many systems chain an AI model's typed decisions into a workflow and use
+the model's reported confidence to decide which cases a human should
+check. We test how well that works, using Jev, TypeSafe's typed decision
+model and its three primitives (a categorical \choice{}, a binary
+\noul{} and an ordinal \score{}), on a bug-triage workflow. We keep two
+things apart that are usually run together: whether a signal can tell
+which chained decisions are wrong, and whether it can tell which of those
+are worth a human's time. We study 442 Mozilla and Linux kernel bugs, then run pre-registered
 tests on 500 new bugs, four further models and an independent Kubernetes
 workflow. Failure is disagreement with a target action we construct from
 reference labels. A frozen decision-feature estimator ranks failures
@@ -22,6 +22,6 @@ label-free estimate of that mix is biased and made ranking worse on
 Kubernetes. Prediction did not become review value: under the
 pre-registered costs no 10\% review policy beat no review, an oracle
 locates the value in wrongly accepted cases the tested signals do not
-isolate, and whether review pays depends on the cost ratio. Knowing which
-decisions are likely wrong is not the same as knowing which are worth
-correcting.
+isolate, and whether review pays depends on the cost ratio. Being able to
+flag the likely-wrong decisions did not, on its own, give us a review
+policy that saved money.
