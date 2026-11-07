@@ -1,0 +1,425 @@
+{
+  "status": "EXPLORATORY, post hoc (plan committed cfb686d before computing); held-out set analysed before",
+  "models": {
+    "Jev 1.13": {
+      "n": 500,
+      "failures": 215,
+      "scores": {
+        "final_step_conf": {
+          "auroc": 0.549,
+          "ci95": [
+            0.496,
+            0.602
+          ]
+        },
+        "action_rule": {
+          "auroc": 0.762,
+          "ci95": [
+            0.722,
+            0.802
+          ]
+        },
+        "implied": {
+          "auroc": 0.535,
+          "ci95": [
+            0.483,
+            0.585
+          ]
+        }
+      },
+      "contrasts": {
+        "action_rule-implied": {
+          "diff": 0.228,
+          "ci95": [
+            0.158,
+            0.297
+          ],
+          "excludes_0": true
+        },
+        "implied-final_step_conf": {
+          "diff": -0.014,
+          "ci95": [
+            -0.06,
+            0.033
+          ],
+          "excludes_0": false
+        }
+      },
+      "within_action": {
+        "escalate": {
+          "n": 137,
+          "failures": 101,
+          "final_step_conf": {
+            "auroc": 0.675,
+            "ci95": [
+              0.577,
+              0.774
+            ]
+          },
+          "implied": {
+            "auroc": 0.674,
+            "ci95": [
+              0.575,
+              0.773
+            ]
+          }
+        },
+        "accept": {
+          "n": 245,
+          "failures": 38,
+          "final_step_conf": {
+            "auroc": 0.487,
+            "ci95": [
+              0.374,
+              0.605
+            ]
+          },
+          "implied": {
+            "auroc": 0.596,
+            "ci95": [
+              0.508,
+              0.682
+            ]
+          }
+        },
+        "defer": {
+          "n": 118,
+          "failures": 76,
+          "final_step_conf": {
+            "auroc": 0.364,
+            "ci95": [
+              0.264,
+              0.46
+            ]
+          },
+          "implied": {
+            "auroc": 0.501,
+            "ci95": [
+              0.395,
+              0.599
+            ]
+          }
+        }
+      },
+      "actions_without_implied_probability": 0
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "n": 500,
+      "failures": 369,
+      "scores": {
+        "final_step_conf": {
+          "auroc": 0.473,
+          "ci95": [
+            0.411,
+            0.533
+          ]
+        },
+        "action_rule": {
+          "auroc": 0.701,
+          "ci95": [
+            0.659,
+            0.744
+          ]
+        },
+        "implied": {
+          "auroc": 0.466,
+          "ci95": [
+            0.401,
+            0.525
+          ]
+        }
+      },
+      "contrasts": {
+        "action_rule-implied": {
+          "diff": 0.235,
+          "ci95": [
+            0.145,
+            0.331
+          ],
+          "excludes_0": true
+        },
+        "implied-final_step_conf": {
+          "diff": -0.008,
+          "ci95": [
+            -0.022,
+            0.005
+          ],
+          "excludes_0": false
+        }
+      },
+      "within_action": {
+        "escalate": {
+          "n": 420,
+          "failures": 347,
+          "final_step_conf": {
+            "auroc": 0.637,
+            "ci95": [
+              0.561,
+              0.707
+            ]
+          },
+          "implied": {
+            "auroc": 0.636,
+            "ci95": [
+              0.56,
+              0.707
+            ]
+          }
+        },
+        "accept": {
+          "n": 71,
+          "failures": 14,
+          "final_step_conf": {
+            "auroc": 0.509,
+            "ci95": [
+              0.327,
+              0.675
+            ]
+          },
+          "implied": {
+            "auroc": 0.565,
+            "ci95": [
+              0.403,
+              0.72
+            ]
+          }
+        }
+      },
+      "actions_without_implied_probability": 0
+    },
+    "allenai/OLMo-2-1124-7B-Instruct": {
+      "n": 500,
+      "failures": 401,
+      "scores": {
+        "final_step_conf": {
+          "auroc": 0.551,
+          "ci95": [
+            0.479,
+            0.621
+          ]
+        },
+        "action_rule": {
+          "auroc": 0.58,
+          "ci95": [
+            0.546,
+            0.618
+          ]
+        },
+        "implied": {
+          "auroc": 0.556,
+          "ci95": [
+            0.484,
+            0.626
+          ]
+        }
+      },
+      "contrasts": {
+        "action_rule-implied": {
+          "diff": 0.024,
+          "ci95": [
+            -0.073,
+            0.123
+          ],
+          "excludes_0": false
+        },
+        "implied-final_step_conf": {
+          "diff": 0.005,
+          "ci95": [
+            -0.001,
+            0.012
+          ],
+          "excludes_0": false
+        }
+      },
+      "within_action": {
+        "escalate": {
+          "n": 483,
+          "failures": 400,
+          "final_step_conf": {
+            "auroc": 0.65,
+            "ci95": [
+              0.586,
+              0.709
+            ]
+          },
+          "implied": {
+            "auroc": 0.656,
+            "ci95": [
+              0.594,
+              0.715
+            ]
+          }
+        }
+      },
+      "actions_without_implied_probability": 0
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "n": 500,
+      "failures": 362,
+      "scores": {
+        "final_step_conf": {
+          "auroc": 0.401,
+          "ci95": [
+            0.341,
+            0.461
+          ]
+        },
+        "action_rule": {
+          "auroc": 0.688,
+          "ci95": [
+            0.647,
+            0.732
+          ]
+        },
+        "implied": {
+          "auroc": 0.396,
+          "ci95": [
+            0.336,
+            0.456
+          ]
+        }
+      },
+      "contrasts": {
+        "action_rule-implied": {
+          "diff": 0.293,
+          "ci95": [
+            0.203,
+            0.387
+          ],
+          "excludes_0": true
+        },
+        "implied-final_step_conf": {
+          "diff": -0.005,
+          "ci95": [
+            -0.015,
+            0.005
+          ],
+          "excludes_0": false
+        }
+      },
+      "within_action": {
+        "escalate": {
+          "n": 437,
+          "failures": 356,
+          "final_step_conf": {
+            "auroc": 0.594,
+            "ci95": [
+              0.526,
+              0.661
+            ]
+          },
+          "implied": {
+            "auroc": 0.593,
+            "ci95": [
+              0.526,
+              0.66
+            ]
+          }
+        }
+      },
+      "actions_without_implied_probability": 0
+    },
+    "openjev/openjev-27B": {
+      "n": 500,
+      "failures": 237,
+      "scores": {
+        "final_step_conf": {
+          "auroc": 0.575,
+          "ci95": [
+            0.525,
+            0.623
+          ]
+        },
+        "action_rule": {
+          "auroc": 0.746,
+          "ci95": [
+            0.705,
+            0.787
+          ]
+        },
+        "implied": {
+          "auroc": 0.535,
+          "ci95": [
+            0.483,
+            0.585
+          ]
+        }
+      },
+      "contrasts": {
+        "action_rule-implied": {
+          "diff": 0.211,
+          "ci95": [
+            0.143,
+            0.283
+          ],
+          "excludes_0": true
+        },
+        "implied-final_step_conf": {
+          "diff": -0.04,
+          "ci95": [
+            -0.09,
+            0.008
+          ],
+          "excludes_0": false
+        }
+      },
+      "within_action": {
+        "escalate": {
+          "n": 186,
+          "failures": 134,
+          "final_step_conf": {
+            "auroc": 0.64,
+            "ci95": [
+              0.545,
+              0.728
+            ]
+          },
+          "implied": {
+            "auroc": 0.638,
+            "ci95": [
+              0.542,
+              0.727
+            ]
+          }
+        },
+        "defer": {
+          "n": 116,
+          "failures": 74,
+          "final_step_conf": {
+            "auroc": 0.387,
+            "ci95": [
+              0.28,
+              0.494
+            ]
+          },
+          "implied": {
+            "auroc": 0.608,
+            "ci95": [
+              0.505,
+              0.713
+            ]
+          }
+        },
+        "accept": {
+          "n": 198,
+          "failures": 29,
+          "final_step_conf": {
+            "auroc": 0.54,
+            "ci95": [
+              0.407,
+              0.671
+            ]
+          },
+          "implied": {
+            "auroc": 0.681,
+            "ci95": [
+              0.589,
+              0.773
+            ]
+          }
+        }
+      },
+      "actions_without_implied_probability": 0
+    }
+  }
+}
